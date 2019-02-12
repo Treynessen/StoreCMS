@@ -11800,11 +11800,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Users\\trane\\Desktop\\github\\StoreEngine\\StoreEngine\\StoreEngine.csproj",
-      "projectName": "StoreEngine",
-      "projectPath": "D:\\Users\\trane\\Desktop\\github\\StoreEngine\\StoreEngine\\StoreEngine.csproj",
+      "projectUniqueName": "D:\\Users\\trane\\Desktop\\github\\StoreCMS\\StoreCMS\\StoreCMS.csproj",
+      "projectName": "StoreCMS",
+      "projectPath": "D:\\Users\\trane\\Desktop\\github\\StoreCMS\\StoreCMS\\StoreCMS.csproj",
       "packagesPath": "C:\\Users\\trane\\.nuget\\packages\\",
-      "outputPath": "D:\\Users\\trane\\Desktop\\github\\StoreEngine\\StoreEngine\\obj\\",
+      "outputPath": "D:\\Users\\trane\\Desktop\\github\\StoreCMS\\StoreCMS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("StoreEngine")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("StoreCMS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("StoreEngine")]
-[assembly: System.Reflection.AssemblyTitleAttribute("StoreEngine")]
+[assembly: System.Reflection.AssemblyProductAttribute("StoreCMS")]
+[assembly: System.Reflection.AssemblyTitleAttribute("StoreCMS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.
