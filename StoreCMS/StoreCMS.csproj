@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Core\404\Views\" />
-    <Folder Include="Core\AdminPanel\css\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

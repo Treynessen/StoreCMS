@@ -7,6 +7,7 @@ public class Program
     {
         WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
+            .UseWebRoot("Storage")
             .Build().Run();
     }
 }

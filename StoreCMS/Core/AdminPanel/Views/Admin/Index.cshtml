@@ -4,9 +4,23 @@
     <title>@ViewData["title"]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/nu_xz_gde_etot_manager/manager/assets/ext3/resources/css/ext-all-notheme-min.css" />
+    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/style.css" />
 </head>
 <body>
-
+    <div class="login_form">
+        <form method="post">
+            <div class="login_form_block">
+                <label class="login_form_label">@ViewData["userNameLabel"]</label>
+                <input class="login_form_field" type="text" name="Login">
+            </div>
+            <div class="login_form_block">
+                <label class="login_form_label">@ViewData["passwordLabel"]</label>
+                <input class="login_form_field" type="password" name="Password">
+            </div>
+            <div class="login_form_block">
+                <input class="login_form_button" type="submit" value="@ViewData["loginButtonText"]">
+            </div>
+        </form>
+    </div>
 </body>
 </html>

@@ -40,6 +40,7 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+        app.UseStaticFiles();
         app.UseMvc(routeBuilder =>
         {
             routeBuilder.MapRoute(

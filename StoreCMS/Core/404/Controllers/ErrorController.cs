@@ -13,7 +13,7 @@ namespace Trane.ErrorHandlers
             HttpContext.Response.StatusCode = 404;
             if (System.IO.File.Exists(viewFilePath))
                 return View(viewFilePath);
-            return Content(localization.PageNotFound);
+            return Content(localization.PageNotFoundText);
         }
     }
 }
