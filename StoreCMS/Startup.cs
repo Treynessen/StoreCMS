@@ -44,9 +44,9 @@ public class Startup
         app.UseMvc(routeBuilder =>
         {
             routeBuilder.MapRoute(
-                name: "adminRoute",
+                name: "adminPanel_Route",
                 template: "~/admin",
-                defaults: new { area = "AdminPanel", controller = "Admin", action = "Index" }
+                defaults: new { area = "AdminPanel", controller = "Admin", action = "LoginForm" }
             );
             routeBuilder.MapRoute(
                 name: "404",

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Core\404\Views\" />
+    <Folder Include="Core\CorePages\404\Views\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

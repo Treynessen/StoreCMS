@@ -17,7 +17,8 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.TagHelpers.input.cache
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.TagHelpers.output.cache
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.RazorCoreGenerate.cache
-D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Core\AdminPanel\Views\Admin\Index.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.RazorTargetAssemblyInfo.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.Views.pdb
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.csproj.CopyComplete
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Core\CorePages\AdminPanel\Views\Admin\LoginForm.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Core\CorePages\AdminPanel\Views\Admin\AdminPanel.g.cshtml.cs
