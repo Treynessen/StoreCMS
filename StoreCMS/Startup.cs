@@ -1,34 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Trane.Localization;
+using Trane.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc;
 
-namespace StoreCMS
+public class Startup
 {
-    public class Startup
+    private ConfigurationsContainer configurations;
+
+    public Startup(IHostingEnvironment env)
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddIniFile("Core/Config/paths_config.ini");
+        IConfiguration pathsConfig = builder.Build();
+        builder.AddIniFile("Core/Config/core_config.ini");
+        IConfiguration coreConfig = builder.Build();
+        configurations = new ConfigurationsContainer(coreConfig, pathsConfig);
+    }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddMvc();
+        services.AddSingleton<ILocalization>(provider =>
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            // Получение информации из конфигурации
+            // И возврат соответствующего объекта
+            return new RuLocalization();
+        });
+        services.AddSingleton(provider => configurations);
+    }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
+        app.UseMvc(routeBuilder =>
+        {
+            routeBuilder.MapRoute(
+                name: "adminRoute",
+                template: "~/admin",
+                defaults: new { area = "AdminPanel", controller = "Admin", action = "Index" }
+            );
+            routeBuilder.MapRoute(
+                name: "404",
+                template: "~/{*directories}",
+                defaults: new { area = "page404", controller = "Error", action = "Index" }
+            );
+        });
     }
 }
