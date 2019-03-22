@@ -1,0 +1,40 @@
+﻿@using Trane.ViewModels;
+@model LoginFormData
+@{
+    ILoginFormLocalization localization =
+        Context.RequestServices.GetService(typeof(ILoginFormLocalization))
+        as ILoginFormLocalization;
+    bool incorrect = Model == null ? false : true;
+    string login = Model?.Login;
+    login = login == null ? string.Empty : login;
+    string password = Model?.Password;
+    password = password == null ? string.Empty : password;
+}
+<!doctype html>
+<html>
+<head>
+    <title>@Html.Raw(localization.Title)</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/login_form.css" />
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <div class="loginform_block">
+        <form method="post" class="loginform_block">
+            @if (incorrect)
+            {
+                <p>@localization.IncorrectInput</p>
+            }
+            <div class="input_block">
+                <label class="loginform_block">@Html.Raw(localization.UserName)</label>
+                <input type="text" class="loginform_block" name="Login" value="@login">
+            </div>
+            <div class="input_block">
+                <label class="loginform_block">@Html.Raw(localization.Password)</label>
+                <input type="password" class="loginform_block" name="Password" value="@password">
+            </div>
+            <input type="submit" class="enter_button" value="@Html.Raw(localization.Enter)" />
+        </form>
+    </div>
+</body>
+</html>

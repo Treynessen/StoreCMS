@@ -1,11 +1,54 @@
-﻿body {background:#ebebeb;font-family: "Century Gothic", arial, sans-serif;}
+﻿body {
+    background: #ebebeb;
+    font-family: "Century Gothic", arial, sans-serif;
+}
 
-/* Логин форма */
-div.login_form {display:block;background:#fff;border-radius:5px;box-shadow:3px 3px 11px rgba(0,0,0,0.5);margin:200px auto 0;max-width:500px;padding:14px 0 1px;}
-div.login_form_block {display:block;margin:0 30px 15px;width:auto;}
-label.login_form_label {display:block;text-align:center;font-size:15pt;margin-bottom:3px;}
-p.error_msg {display:block;text-align:center;font-size:12pt;color:#ff0000;}
-input.login_form_field {display:block;margin:0 auto;width:95%;padding:5px;font-size:11pt;font-family: "Century Gothic", arial, sans-serif;background:#ebebeb;border:1px solid #c5c3c3;border-radius:4px;}
-input.login_form_button {display:block;font-family: "Century Gothic", arial, sans-serif;font-size:13pt;padding:5px;background:#00c0ff;border:none;border-radius:4px;margin:0 5px 0 auto;}
-input.login_form_button:hover {background:#00a8ff;cursor:pointer;}
-/*=============*/
+div.loginform_block {
+    display: block;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 3px 3px 11px rgba(0,0,0,0.5);
+    margin: 200px auto 0;
+    max-width: 500px;
+}
+
+form.loginform_block {
+    margin: 0 50px;
+    padding: 20px 0;
+}
+
+label.loginform_block {
+    display: block;
+    font-size: 16pt;
+    margin-bottom: 5px;
+}
+
+input.loginform_block {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #c5c3c3;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12pt;
+    background: #ebebeb;
+}
+
+div.input_block {
+    margin-bottom: 15px;
+}
+
+input.enter_button {
+    display: block;
+    font-family: "Century Gothic", arial, sans-serif;
+    font-size: 13pt;
+    padding: 5px;
+    background: #00c0ff;
+    border: none;
+    border-radius: 4px;
+    margin-left: auto;
+}
+
+    input.enter_button:hover {
+        background: #00a8ff;
+        cursor: pointer;
+    }

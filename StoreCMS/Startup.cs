@@ -1,57 +1,48 @@
-﻿using Trane.Localization;
-using Trane.Configurations;
+﻿using Trane.Localizations;
+using Trane.Db.Context;
+using Trane.Functions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 public class Startup
 {
-    private ConfigurationsContainer configurations;
+    private IConfiguration coreConfiguration;
 
     public Startup(IHostingEnvironment env)
     {
         var builder = new ConfigurationBuilder()
             .SetBasePath(env.ContentRootPath)
-            .AddIniFile("Core/Config/paths_config.ini");
-        IConfiguration pathsConfig = builder.Build();
-        builder.AddIniFile("Core/Config/core_config.ini");
-        IConfiguration coreConfig = builder.Build();
-        configurations = new ConfigurationsContainer(coreConfig, pathsConfig);
+            .AddJsonFile("Configurations/core_config.json");
+        coreConfiguration = builder.Build();
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddMvc();
-        services.AddSingleton<ILocalization>(provider =>
-        {
-            // Получение информации из конфигурации
-            // И возврат соответствующего объекта
-            return new RuLocalization();
-        });
-        services.AddSingleton(provider => configurations);
+        services.AddTransient<ILoginFormLocalization>(provider => new RuLoginFormLocalization());
+        services.AddDbContext<CMSContext>(options => options
+            .UseSqlServer(coreConfiguration.GetConnectionString("DefaultConnection")));
     }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, CMSContext db)
     {
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
+        ActionsWithDb.SetDefaultUser(db);
         app.UseStaticFiles();
         app.UseMvc(routeBuilder =>
         {
             routeBuilder.MapRoute(
-                name: "adminPanel_Route",
+                name: "admin_panel",
                 template: "~/admin",
-                defaults: new { area = "AdminPanel", controller = "Admin", action = "LoginForm" }
-            );
-            routeBuilder.MapRoute(
-                name: "404",
-                template: "~/{*directories}",
-                defaults: new { area = "page404", controller = "Error", action = "Index" }
+                defaults: new { controller = "AdminPanel", action = "LoginForm" }
             );
         });
     }
