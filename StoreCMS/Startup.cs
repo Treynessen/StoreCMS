@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using System.Text;
+
 public class Startup
 {
     private IConfiguration coreConfiguration;
@@ -31,6 +35,15 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, CMSContext db)
     {
+        //app.Run(async context =>
+        //{
+        //    StringBuilder builder = new StringBuilder();
+        //    //foreach (var kvp in context.Request.Headers)
+        //    //    builder.Append($"header[{kvp.Key}] = {kvp.Value}\n");
+        //    foreach (var cookie in context.Request.Cookies)
+        //        builder.Append($"cookie[{cookie.Key}] = {cookie.Value}\n");
+        //    await context.Response.WriteAsync(builder.ToString());
+        //});
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();

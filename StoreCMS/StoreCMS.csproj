@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Db\Entities\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

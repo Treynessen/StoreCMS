@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Trane.Db.Entities
 {
@@ -6,6 +7,7 @@ namespace Trane.Db.Entities
     {
         private string password;
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
         [Required]
         public string Login { get; set; }
