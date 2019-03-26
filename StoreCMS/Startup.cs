@@ -55,7 +55,7 @@ public class Startup
             routeBuilder.MapRoute(
                 name: "admin_panel",
                 template: "~/admin",
-                defaults: new { controller = "AdminPanel", action = "LoginForm" }
+                defaults: new { controller = "AdminPanel", action = "AdminPanel" }
             );
         });
     }
