@@ -1,14 +1,9 @@
-﻿@using Trane.ViewModels;
-@model LoginFormData
+﻿@model Trane.ViewModels.LoginFormData
 @{
     ILoginFormLocalization localization =
         Context.RequestServices.GetService(typeof(ILoginFormLocalization))
         as ILoginFormLocalization;
     bool incorrect = Model == null ? false : true;
-    string login = Model?.Login;
-    login = login == null ? string.Empty : login;
-    string password = Model?.Password;
-    password = password == null ? string.Empty : password;
 }
 <!doctype html>
 <html>
@@ -21,17 +16,18 @@
 <body>
     <div class="loginform_block">
         <form method="post" class="loginform_block">
+            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.LoginFormPage)" />
             @if (incorrect)
             {
                 <p>@localization.IncorrectInput</p>
             }
             <div class="input_block">
                 <label class="loginform_block">@Html.Raw(localization.UserName)</label>
-                <input type="text" class="loginform_block" name="Login" value="@login">
+                <input type="text" class="loginform_block" name="Login" value="@Model?.Login">
             </div>
             <div class="input_block">
                 <label class="loginform_block">@Html.Raw(localization.Password)</label>
-                <input type="password" class="loginform_block" name="Password" value="@password">
+                <input type="password" class="loginform_block" name="Password" value="@Model?.Password">
             </div>
             <input type="submit" class="enter_button" value="@Html.Raw(localization.Enter)" />
         </form>

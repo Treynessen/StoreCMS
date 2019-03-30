@@ -3,6 +3,7 @@ using Trane.Db.Entities;
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Trane.Functions
 {

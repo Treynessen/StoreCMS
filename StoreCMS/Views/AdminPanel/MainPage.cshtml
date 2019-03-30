@@ -1,0 +1,18 @@
+﻿@model User
+@{ 
+    IMainPageLocalization localization =
+        Context.RequestServices.GetService(typeof(IMainPageLocalization))
+        as IMainPageLocalization;
+}
+<!doctype html>
+<html>
+<head>
+    <title>@Html.Raw(localization.Title)</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/login_form.css" />
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    
+</body>
+</html>

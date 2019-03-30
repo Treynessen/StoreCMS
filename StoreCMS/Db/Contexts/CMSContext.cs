@@ -1,5 +1,5 @@
 ﻿using Trane.Db.Entities;
-using Trane.Db.TypesForEntities;
+using Trane.Db.Entities.TypesForEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Trane.Db.Context
@@ -8,7 +8,15 @@ namespace Trane.Db.Context
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+
         public DbSet<ConnectedUser> ConnectedUsers { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+
+        public DbSet<SimplePage> SimplePages { get; set; }
+        public DbSet<CategoryPage> CategoryPages { get; set; }
+        public DbSet<ProductPage> ProductPages { get; set; }
 
         public CMSContext(DbContextOptions<CMSContext> options)
             : base(options)

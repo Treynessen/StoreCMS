@@ -1,6 +1,7 @@
 ﻿using Trane.Localizations;
 using Trane.Db.Context;
 using Trane.Functions;
+using Trane.RouteConstraints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,12 +30,19 @@ public class Startup
     {
         services.AddMvc();
         services.AddTransient<ILoginFormLocalization>(provider => new RuLoginFormLocalization());
+        services.AddTransient<IMainPageLocalization>(provider => new RuMainPageLocalization());
         services.AddDbContext<CMSContext>(options => options
             .UseSqlServer(coreConfiguration.GetConnectionString("DefaultConnection")));
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, CMSContext db)
     {
+        //app.Run(async context =>
+        //{
+            
+        //    await context.Response.WriteAsync(context.Request.Path);
+        //});
+
         //app.Run(async context =>
         //{
         //    StringBuilder builder = new StringBuilder();
@@ -56,6 +64,12 @@ public class Startup
                 name: "admin_panel",
                 template: "~/admin",
                 defaults: new { controller = "AdminPanel", action = "AdminPanel" }
+            );
+            routeBuilder.MapRoute(
+                name: "simple_page",
+                template: "/{*breadcrumbs}",
+                defaults: new { controller = "Page", action = "PageHandler" },
+                constraints: new { breadcrumbs = new SimplePageConstraint(db) }
             );
         });
     }
