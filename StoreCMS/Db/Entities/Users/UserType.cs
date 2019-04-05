@@ -11,7 +11,7 @@ namespace Trane.Db.Entities
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }
-        public SecurityClearance SecurityClearance { get; set; }
+        public ClearanceLevel ClearanceLevel { get; set; }
 
         public List<User> Users { get; set; }
     }

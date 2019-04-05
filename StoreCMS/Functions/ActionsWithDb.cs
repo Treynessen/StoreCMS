@@ -1,8 +1,11 @@
 ﻿using Trane.Db.Context;
 using Trane.Db.Entities;
 using System;
+using System.Text;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Trane.Functions
@@ -13,7 +16,7 @@ namespace Trane.Functions
         {
             if (db.Users.Count() == 0)
             {
-                UserType userType = db.UserTypes.FirstOrDefault(t => t.Name == "Admin");
+                UserType userType = db.UserTypes.FirstOrDefault(t => t.Name.Equals("Admin", StringComparison.CurrentCultureIgnoreCase));
                 if (userType == null) userType = db.UserTypes.First();
                 db.Users.Add(new User { ID = 1, Login = "admin", Password = "admin", UserType = userType });
                 db.SaveChanges();
@@ -24,7 +27,7 @@ namespace Trane.Functions
         // На стороне клиента, в куках, сохраняем логин и ключ для входа
         public static void AddConnectedUser(CMSContext db, User user, HttpContext context)
         {
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName == user.Login);
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(user.Login, StringComparison.CurrentCulture));
 
             // Если пользователь уже был залогинен, то обновляем его данные
             // Это сделано, если вдруг пользователь заходит с другого браузера
@@ -62,6 +65,23 @@ namespace Trane.Functions
             // Использовать вместо userName хэш?
             context.Response.Cookies.Append("userName", connectedUser.UserName);
             context.Response.Cookies.Append("loginKey", connectedUser.LoginKey);
+        }
+
+        public static bool AddSimplePage(CMSContext db, SimplePage page)
+        {
+            if (!Validator.TryValidateObject(page, new ValidationContext(page), null))
+                return false;
+            string availableSymbols = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890_-";
+            page.ID = 1;
+            foreach (var p in db.SimplePages)
+            {
+                if (p.ID != page.ID)
+                    break;
+                ++page.ID;
+            }
+            db.Add(page);
+            db.SaveChanges();
+            return true;
         }
     }
 }

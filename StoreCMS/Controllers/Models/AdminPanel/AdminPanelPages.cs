@@ -2,7 +2,12 @@
 {
     public enum AdminPanelPages
     {
-        LoginFormPage = 1,
-        MainPage
+        MainPage = 1,
+        Pages,
+        Settings,
+        AddPage,
+        EditPage,
+        AddCategory, // ProductType
+        EditCategory
     }
 }

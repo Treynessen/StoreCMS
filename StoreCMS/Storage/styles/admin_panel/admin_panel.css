@@ -1,0 +1,51 @@
+﻿body {
+    background: #ebebeb;
+    font-family: "Century Gothic", arial, sans-serif;
+    margin: 0;
+}
+
+div.content_block {
+    display: block;
+    background: #fff;
+    margin: 0 2%;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 9px rgba(0,0,0,1);
+}
+
+/*========= Меню =========*/
+ul.menu_block {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+
+.menu_block li {
+    display: inline-block;
+    background-color: #00a8ff;
+    color: #00599e;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+    border-right: 1px solid #000;
+}
+
+    .menu_block li:last-child {
+        border: none;
+    }
+
+    .menu_block li > a {
+        display: block;
+        background-color: #00c0ff;
+        color: #00599e;
+        font-weight: normal;
+        text-decoration: none;
+    }
+
+        .menu_block li > a:hover {
+            background-color: #00a8ff;
+        }
+/*========================*/
+
+div.render_content_block {
+}

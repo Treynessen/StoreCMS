@@ -1,8 +1,6 @@
-﻿@model Trane.ViewModels.LoginFormData
+﻿@model LoginFormModel
+@inject ILoginFormLocalization localization
 @{
-    ILoginFormLocalization localization =
-        Context.RequestServices.GetService(typeof(ILoginFormLocalization))
-        as ILoginFormLocalization;
     bool incorrect = Model == null ? false : true;
 }
 <!doctype html>
@@ -14,12 +12,12 @@
     <meta name="viewport" content="width=device-width">
 </head>
 <body>
+    @Context.Items["Routes"]
     <div class="loginform_block">
         <form method="post" class="loginform_block">
-            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.LoginFormPage)" />
             @if (incorrect)
             {
-                <p>@localization.IncorrectInput</p>
+            <p>@Html.Raw(localization.IncorrectInput)</p>
             }
             <div class="input_block">
                 <label class="loginform_block">@Html.Raw(localization.UserName)</label>

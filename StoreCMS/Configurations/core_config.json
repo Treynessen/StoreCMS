@@ -1,5 +1,12 @@
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True"
+  },
+
+  "ClearanceLevelSettings": {
+    "ShowMainPage" :  "1",
+    "ShowPages": "1",
+    "AddPage": "1",
+    "AccessToSettings": "1"
   }
 }

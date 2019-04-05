@@ -3,6 +3,7 @@ using Trane.Db.Context;
 using Trane.ViewModels;
 using Trane.Controllers.Models;
 using Trane.Functions;
+using Trane.Configurations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trane.Controllers
@@ -19,60 +20,100 @@ namespace Trane.Controllers
         // По умолчанию AdminPanel должен отправлять пользователя либо
         // на LoginForm, либо на MainPage
         [HttpGet]
-        public IActionResult AdminPanel()
+        public IActionResult AdminPanel(AdminPanelPages pageID)
         {
+            SetRoutes("AdminPanel(GET)");
             User user = DataChecker.CheckCookies(db, HttpContext);
-            if (!DataChecker.HasAccessTo(AdminPanelPages.MainPage, user))
+            if (!DataChecker.HasAccessTo(pageID, user, HttpContext))
             {
-                return LoginForm();
+                if (!DataChecker.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
+                    return LoginForm();
+                pageID = AdminPanelPages.MainPage;
             }
-            // Если валидация прошла успешно, то отправляем пользователя в админ панель
-            return MainPage(user);
+            HttpContext.Items["User"] = user;
+            switch (pageID)
+            {
+                case AdminPanelPages.Pages:
+                    return PagesGet();
+                case AdminPanelPages.AddPage:
+                    return AddPage();
+                case AdminPanelPages.Settings:
+                    return SettingsGet();
+                default:
+                    return MainPageGet();
+            }
         }
 
         [HttpPost]
-        public IActionResult AdminPanel(AdminPanelModel model, LoginFormData lfData)
+        public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel)
         {
-            if (model.PageId == AdminPanelPages.LoginFormPage)
+            SetRoutes("AdminPanel(POST)");
+            User user = DataChecker.CheckCookies(db, HttpContext);
+            if (user == null)
             {
-                // Проверяем введенные данные. Если не проходят валидацию, то
-                // отправляем LoginFormData обратно в LoginForm
-                if (!DataChecker.IsValidLoginFormData(db, lfData, HttpContext))
-                {
-                    return LoginForm(lfData);
-                }
+                if (!DataChecker.IsValidLoginFormData(db, lfModel, HttpContext))
+                    return LoginForm(lfModel);
+                return RedirectToAction(nameof(AdminPanel));
             }
-            else
+            HttpContext.Items["User"] = user;
+            switch (model.PageId)
             {
-                User user = DataChecker.CheckCookies(db, HttpContext);
-                if (!DataChecker.HasAccessTo(model.PageId, user))
-                {
-                    if (!DataChecker.HasAccessTo(AdminPanelPages.MainPage, user))
-                        return LoginForm(lfData);
-                    else
-                    {
-                        return RedirectToAction(nameof(AdminPanelController.AdminPanel));
-                    }
-                }
-
-                switch (model.PageId)
-                {
-
-                }
+                case AdminPanelPages.AddPage:
+                    if (ActionsWithDb.AddSimplePage(db, model.SimplePage) == false)
+                        return AddPage(model.SimplePage);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
+                default:
+                    return RedirectToAction(nameof(AdminPanel));
             }
-            return RedirectToAction(nameof(AdminPanelController.AdminPanel));
         }
 
         [NonAction]
-        public IActionResult LoginForm(LoginFormData data = null)
+        public IActionResult LoginForm(LoginFormModel model = null)
         {
-            return View("LoginForm", data);
+            SetRoutes("LoginForm(GET)");
+            return View("LoginForm", model);
         }
 
         [NonAction]
-        public IActionResult MainPage(User user)
+        public IActionResult MainPageGet()
         {
-            return View("MainPage", user);
+            SetRoutes("MainPage(GET)");
+            return View("MainPage");
+        }
+
+        [NonAction]
+        public IActionResult PagesGet()
+        {
+            SetRoutes("Pages(GET)");
+            return View("Pages/Index");
+        }
+
+        [NonAction]
+        public IActionResult AddPage(SimplePage page = null)
+        {
+            SetRoutes("AddPage(GET)");
+            return View("Pages/AddPage", page);
+        }
+
+        [NonAction]
+        public IActionResult EditPage(int id)
+        {
+            SetRoutes("EditPage(GET)");
+            return View("Pages/EditPage");
+        }
+
+        [NonAction]
+        public IActionResult SettingsGet()
+        {
+            SetRoutes("Settings(GET)");
+            return View("Settings");
+        }
+
+        private void SetRoutes(string name)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Items["Routes"] as string))
+                HttpContext.Items["Routes"] = name;
+            else HttpContext.Items["Routes"] += $" -> {name}";
         }
     }
 }

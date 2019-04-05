@@ -30,7 +30,7 @@ namespace Trane.Db.Context
             {
                 ID = 1,
                 Name = "Admin",
-                SecurityClearance = SecurityClearance.VeryHigh
+                ClearanceLevel = ClearanceLevel.VeryHigh
             });
             base.OnModelCreating(modelBuilder);
         }
