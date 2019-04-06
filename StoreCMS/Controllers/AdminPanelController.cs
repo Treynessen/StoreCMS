@@ -1,18 +1,16 @@
-﻿using Trane.Db.Entities;
-using Trane.Db.Context;
-using Trane.ViewModels;
-using Trane.Controllers.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Trane.Database.Entities;
+using Trane.Database.Context;
+using Trane.OtherTypes;
 using Trane.Functions;
-using Trane.Configurations;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Trane.Controllers
 {
     public class AdminPanelController : Controller
     {
-        private CMSContext db;
+        private CMSDatabase db;
 
-        public AdminPanelController(CMSContext db)
+        public AdminPanelController(CMSDatabase db)
         {
             this.db = db;
         }
@@ -23,10 +21,10 @@ namespace Trane.Controllers
         public IActionResult AdminPanel(AdminPanelPages pageID)
         {
             SetRoutes("AdminPanel(GET)");
-            User user = DataChecker.CheckCookies(db, HttpContext);
-            if (!DataChecker.HasAccessTo(pageID, user, HttpContext))
+            User user = DataCheck.CheckCookies(db, HttpContext);
+            if (!DataCheck.HasAccessTo(pageID, user, HttpContext))
             {
-                if (!DataChecker.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
+                if (!DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
                     return LoginForm();
                 pageID = AdminPanelPages.MainPage;
             }
@@ -48,10 +46,10 @@ namespace Trane.Controllers
         public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel)
         {
             SetRoutes("AdminPanel(POST)");
-            User user = DataChecker.CheckCookies(db, HttpContext);
+            User user = DataCheck.CheckCookies(db, HttpContext);
             if (user == null)
             {
-                if (!DataChecker.IsValidLoginFormData(db, lfModel, HttpContext))
+                if (!DataCheck.IsValidLoginFormData(db, lfModel, HttpContext))
                     return LoginForm(lfModel);
                 return RedirectToAction(nameof(AdminPanel));
             }
@@ -59,7 +57,7 @@ namespace Trane.Controllers
             switch (model.PageId)
             {
                 case AdminPanelPages.AddPage:
-                    if (ActionsWithDb.AddSimplePage(db, model.SimplePage) == false)
+                    if (ActionsWithDatabase.AddSimplePage(db, model.SimplePage, HttpContext) == false)
                         return AddPage(model.SimplePage);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
                 default:

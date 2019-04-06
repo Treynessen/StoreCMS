@@ -19,42 +19,27 @@ using Trane.Functions;
 #line default
 #line hidden
 #line 2 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Trane.Localizations;
+using Trane.OtherTypes;
 
 #line default
 #line hidden
 #line 3 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Trane.Configurations;
+using Trane.Database.Context;
 
 #line default
 #line hidden
 #line 4 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Trane.Db.Entities;
+using Trane.Database.Entities;
 
 #line default
 #line hidden
 #line 5 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Trane.Db.Context;
-
-#line default
-#line hidden
-#line 6 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Trane.ViewModels;
-
-#line default
-#line hidden
-#line 7 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Trane.Controllers.Models;
-
-#line default
-#line hidden
-#line 8 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\AdminPanel\_ViewImports.cshtml"
-using Microsoft.Extensions.DependencyInjection;
+using Trane.DependencyInjection;
 
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"a9cb655373a1209120285dc4971660f9e1f9a688", @"/Views/AdminPanel/Settings.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"705b9707cd00ae71361cc867e8a646462049c3b9", @"/Views/AdminPanel/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9049d201b75fa75abda620bf76a94272daa30415", @"/Views/AdminPanel/_ViewImports.cshtml")]
     public class Views_AdminPanel_Settings : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

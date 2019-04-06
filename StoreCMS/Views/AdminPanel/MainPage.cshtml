@@ -2,10 +2,10 @@
     User user = Context.Items["User"] as User;
     Layout = "AdminPanelPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/main_page.css";
-    ClearanceLevelConfiguration configuration = Context.Items["ClearanceLevelConfiguration"] as ClearanceLevelConfiguration;
+    AccessLevelConfiguration configuration = Context.Items["AccessLevelConfiguration"] as AccessLevelConfiguration;
 }
 Main Page<br />
-Пользователь: @user.UserType.ClearanceLevel.ToString()<br />
+Пользователь: @user.UserType.AccessLevel.ToString()<br />
 Главная страница: @configuration.ShowMainPage<br />
 Страницы: @configuration.ShowPages<br />
 Добавить страницу: @configuration.AddPage<br />

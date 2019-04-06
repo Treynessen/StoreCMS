@@ -5,20 +5,14 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/add_page.css";
     bool incorrect = Model == null ? false : true;
 }
+@if (incorrect)
+{
+    <span>@localization.IncorrectInput</span>
+}
 <form method="post">
     <label>@localization.Title</label><br />
-    <input type="text" name="SimplePage.Title" value="@Model?.Title" />
-    @if (incorrect && string.IsNullOrEmpty(Model.Title))
-    {
-        <span>@localization.ThisFieldIsRequired</span>
-    }
-    <br />
+    <input type="text" name="SimplePage.Title" value="@Model?.Title" /><br />
     <label>@localization.BreadcrumbName</label><br />
-    <input type="text" name="SimplePage.BreadcrumbName" value="@Model?.BreadcrumbName" />
-    @if (incorrect && string.IsNullOrEmpty(Model.BreadcrumbName))
-    {
-        <span>@localization.ThisFieldIsRequired</span>
-    }
-    <br />
+    <input type="text" name="SimplePage.BreadcrumbName" value="@Model?.BreadcrumbName" /><br />
     <input type="submit" />
 </form>

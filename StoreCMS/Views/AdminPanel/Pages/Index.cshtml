@@ -1,12 +1,18 @@
 ﻿@inject IPageLocalization localization
-@inject CMSContext db
+@inject CMSDatabase db
 @{
     Layout = "AdminPanelPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/index.css";
-    var sortedPages = db.SimplePages.Select(page => new { page.ID, page.Title }).OrderBy(page => page.Title).ToList();
+    var sortedPages = db.SimplePages.Select(page => new { page.ID, page.Title, page.BreadcrumbName }).OrderBy(page => page.Title).ToList();
 }
 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a><br />
-@foreach(var p in sortedPages)
-{
-    @p.ID @p.Title<br />
-}
+<table>
+    @foreach (var p in sortedPages)
+    {
+        <tr>
+            <td>@p.ID</td>
+            <td>@p.Title</td>
+            <td>@p.BreadcrumbName</td>
+        </tr>
+    }
+</table>

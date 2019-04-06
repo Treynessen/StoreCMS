@@ -5,22 +5,22 @@
     try
     {
         pageID = (AdminPanelPages)Convert.ToInt32(Context.Request.Query["pageID"]);
-        pageID = DataChecker.HasAccessTo(pageID, user, Context) == false ? AdminPanelPages.MainPage : pageID;
+        pageID = DataCheck.HasAccessTo(pageID, user, Context) == false ? AdminPanelPages.MainPage : pageID;
     }
     catch
     {
         pageID = AdminPanelPages.MainPage;
     }
     Dictionary<AdminPanelPages, string> pages = new Dictionary<AdminPanelPages, string>();
-    if (DataChecker.HasAccessTo(AdminPanelPages.MainPage, user, Context))
+    if (DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, Context))
     {
         pages.Add(AdminPanelPages.MainPage, localization.MainPage);
     }
-    if (DataChecker.HasAccessTo(AdminPanelPages.Pages, user, Context))
+    if (DataCheck.HasAccessTo(AdminPanelPages.Pages, user, Context))
     {
         pages.Add(AdminPanelPages.Pages, localization.Pages);
     }
-    if (DataChecker.HasAccessTo(AdminPanelPages.Settings, user, Context))
+    if (DataCheck.HasAccessTo(AdminPanelPages.Settings, user, Context))
     {
         pages.Add(AdminPanelPages.Settings, localization.Settings);
     }
