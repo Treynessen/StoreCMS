@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Trane.Database.Entities;
-using Trane.OtherTypes;
+using Treynessen.Database.Entities;
+using Treynessen.Security;
 
-namespace Trane.Database.Context
+namespace Treynessen.Database.Context
 {
     public class CMSDatabase : DbContext
     {
@@ -11,7 +11,7 @@ namespace Trane.Database.Context
 
         public DbSet<ConnectedUser> ConnectedUsers { get; set; }
 
-        public DbSet<SimplePage> SimplePages { get; set; }
+        public DbSet<UsualPage> UsualPages { get; set; }
         public DbSet<CategoryPage> CategoryPages { get; set; }
         public DbSet<ProductPage> ProductPages { get; set; }
 
@@ -27,7 +27,7 @@ namespace Trane.Database.Context
             {
                 ID = 1,
                 Name = "Admin",
-                AccessLevel = AccessLevels.VeryHigh
+                AccessLevel = AccessLevel.VeryHigh
             });
             base.OnModelCreating(modelBuilder);
         }

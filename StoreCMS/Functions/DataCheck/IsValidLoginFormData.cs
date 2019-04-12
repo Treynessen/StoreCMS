@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Trane.Database.Context;
-using Trane.Database.Entities;
-using Trane.OtherTypes;
+using Treynessen.AdminPanelTypes;
+using Treynessen.Database.Context;
+using Treynessen.Database.Entities;
 
-namespace Trane.Functions
+namespace Treynessen.Functions
 {
     public static partial class DataCheck
     {

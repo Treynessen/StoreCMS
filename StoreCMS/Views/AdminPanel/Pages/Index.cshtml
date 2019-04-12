@@ -1,18 +1,54 @@
 ﻿@inject IPageLocalization localization
 @inject CMSDatabase db
 @{
-    Layout = "AdminPanelPage";
+    Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/index.css";
-    var sortedPages = db.SimplePages.Select(page => new { page.ID, page.Title, page.BreadcrumbName }).OrderBy(page => page.Title).ToList();
+    User user = Context.Items["User"] as User;
+    var usualPages = db.UsualPages.Select(page => new { page.ID, page.Title, page.RequestPathWithoutAlias, page.Alias, PageType = PageType.Usual });
+    var categoryPages = db.CategoryPages.Select(page => new { page.ID, page.Title, page.RequestPathWithoutAlias, page.Alias, PageType = PageType.Category });
+    var sortedPages = usualPages.Concat(categoryPages).OrderBy(page => page.Title).ToList();
 }
-<a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a><br />
-<table>
+@if (DataCheck.HasAccessTo(AdminPanelPages.AddPage, user, Context))
+{
+<div class="addPageButton">
+    <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a>
+</div>
+}
+<table class="pagesList">
+    <tr>
+        <td>ID</td>
+        <td>Title</td>
+        <td>URL</td>
+        <td>@Html.Raw(localization.PageType)</td>
+        <td>@Html.Raw(localization.ActionsWithPage)</td>
+    </tr>
     @foreach (var p in sortedPages)
     {
-        <tr>
-            <td>@p.ID</td>
-            <td>@p.Title</td>
-            <td>@p.BreadcrumbName</td>
-        </tr>
+    <tr>
+        <td>@Html.Raw(p.ID)</td>
+        <td>@Html.Raw(p.Title)</td>
+        <td>@Html.Raw(OtherFunctions.GetUrl(p.RequestPathWithoutAlias, p.Alias))</td>
+        <td>@(p.PageType == PageType.Usual ? localization.Usual : localization.Category)</td>
+        <td>
+            @if (DataCheck.HasAccessTo(AdminPanelPages.EditPage, user, Context))
+                {
+            <form method="get">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditPage)" />
+                <input type="hidden" name="pageType" value="@((int)p.PageType)" />
+                <input type="hidden" name="itemID" value="@p.ID">
+                <input type="submit" value="@Html.Raw(localization.EditPage)" />
+            </form>
+                }
+            @if (DataCheck.HasAccessTo(AdminPanelPages.DeletePage, user, Context))
+                {
+            <form method="post">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeletePage)" />
+                <input type="hidden" name="pageType" value="@((int)p.PageType)" />
+                <input type="hidden" name="itemID" value="@p.ID">
+                <input type="submit" value="@Html.Raw(localization.DeletePage)" />
+            </form>
+                }
+        </td>
+    </tr>
     }
 </table>

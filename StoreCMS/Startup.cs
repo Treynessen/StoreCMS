@@ -1,39 +1,34 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Trane.Database.Context;
-using Trane.Middlwares;
-using Trane.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Security;
+using Treynessen.OtherTypes;
+using Treynessen.Middlewares;
+using Treynessen.Localization;
+using Treynessen.Database.Context;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using System.Text;
 
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc();
-
-        services.AddTransient(provider =>
-        {
-            IHostingEnvironment env = provider.GetRequiredService<IHostingEnvironment>();
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("AppConfigurations/core_config.json");
-            return new AccessLevelConfiguration(builder.Build().GetSection("AccessLevelSettings"));
-        });
-
         services.AddDbContext<CMSDatabase>(options =>
         {
             var builder = new ConfigurationBuilder()
             .SetBasePath(services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>().ContentRootPath)
-            .AddJsonFile("AppConfigurations/core_config.json");
+            .AddJsonFile("Configurations/core_configuration.json");
             options.UseSqlServer(builder.Build().GetConnectionString("DefaultConnection"));
+        });
+
+        services.AddMvc();
+
+        services.AddTransient(provider =>
+        {
+            string rootPath = provider.GetRequiredService<IHostingEnvironment>().ContentRootPath;
+            return new AccessLevelConfiguration(rootPath, "Configurations/accessLevel_configuration.json");
         });
 
         services.AddSingleton<Translit>();
@@ -50,7 +45,7 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
         app.UseStaticFiles();
-        app.UseAccessLevelInItem("admin");
+        app.AddAccessLevelConfigInItemWhen("/admin");
         app.UseMvc(routeBuilder =>
         {
             routeBuilder.MapRoute(

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Trane.Functions
+namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {

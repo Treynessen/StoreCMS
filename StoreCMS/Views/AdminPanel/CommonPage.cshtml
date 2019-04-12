@@ -1,0 +1,67 @@
+﻿@inject IAdminPanelPageLocalization localization
+@{
+    User user = Context.Items["User"] as User;
+    AdminPanelPages pageID;
+    try
+    {
+        pageID = (AdminPanelPages)Convert.ToInt32(Context.Request.Query["pageID"]);
+        pageID = DataCheck.HasAccessTo(pageID, user, Context) == false ? AdminPanelPages.MainPage : pageID;
+    }
+    catch
+    {
+        pageID = AdminPanelPages.MainPage;
+    }
+
+    Dictionary<AdminPanelPages, string> pages = new Dictionary<AdminPanelPages, string>();
+    if (DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, Context))
+    {
+        pages.Add(AdminPanelPages.MainPage, localization.MainPage);
+    }
+    if (DataCheck.HasAccessTo(AdminPanelPages.Pages, user, Context))
+    {
+        pages.Add(AdminPanelPages.Pages, localization.Pages);
+    }
+    if (DataCheck.HasAccessTo(AdminPanelPages.Pages, user, Context))
+    {
+        pages.Add(AdminPanelPages.Templates, localization.Templates);
+    }
+    if (DataCheck.HasAccessTo(AdminPanelPages.Settings, user, Context))
+    {
+        pages.Add(AdminPanelPages.Settings, localization.Settings);
+    }
+}
+<!doctype html>
+<html>
+<head>
+    <title>@Html.Raw(localization.Title)</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/common.css" />
+    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/admin_panel.css" />
+    @if (Context.Items["PageStyle"] != null)
+    {
+        <link rel="stylesheet" type="text/css" href="@Html.Raw(Context.Items["PageStyle"])" />
+    }
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    @Context.Items["Routes"]
+    <div class="commonContainer">
+        <ul class="menuBlock">
+            @foreach (var p in pages)
+            {
+                if (pageID == p.Key)
+                {
+                    <li class="withPadding">@Html.Raw(p.Value)</li>
+                }
+                else
+                {
+                    <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="withPadding">@Html.Raw(p.Value)</a></li>
+                }
+            }
+        </ul>
+        <content>
+            @RenderBody()
+        </content>
+    </div>
+</body>
+</html>

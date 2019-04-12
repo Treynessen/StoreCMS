@@ -1,0 +1,70 @@
+﻿@model PageModel
+@inject IPageLocalization localization
+@inject CMSDatabase db
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/pages/edit_page.css";
+    var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})" });
+    bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
+}
+
+@if (incorrect)
+{
+<span>@localization.IncorrectInput</span>
+}
+<form method="post">
+    <input type="submit" value="@Html.Raw(localization.SaveButton)" />
+    <div class="workWithPageContainer">
+        <div class="leftBlock">
+            <label for="Title">@Html.Raw(localization.Title)*</label>
+            <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
+            <label for="BreadcrumbName">@Html.Raw(localization.Breadcrumb)*</label>
+            <input type="text" id="BreadcrumbName" name="PageModel.BreadcrumbName" required value="@Model?.BreadcrumbName" />
+            <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
+            <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
+            <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
+            <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
+        </div>
+        <div class="rightBlock">
+            @if (Model.PageType == PageType.Category)
+            {
+                <label for="CategoryName">@Html.Raw(localization.CategoryName)*</label>
+                <input type="text" id="CategoryName" name="PageModel.CategoryName" required value="@Model?.CategoryName" />
+            }
+            <label for="PageType">@Html.Raw(localization.PageType)</label>
+            @if (Model.PageType == PageType.Usual)
+            {
+                <input type="text" id="PageType" value="@Html.Raw(localization.Usual)" disabled />
+            }
+            else if (Model.PageType == PageType.Category)
+            {
+                <input type="text" id="PageType" value="@Html.Raw(localization.Category)" disabled />
+            }
+            <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
+            <select id="PreviousPage" name="PageModel.PreviousPageID" required>
+                <option>@Html.Raw(localization.WithoutPreviousPage)</option>
+                @foreach (var p in pages)
+                {
+                    if (p.ID == Model.PreviousPageID)
+                    {
+                        <option value="@p.ID" selected>@Html.Raw(p.Name)</option>
+                    }
+                    else
+                    {
+                        <option value="@p.ID">@Html.Raw(p.Name)</option>
+                    }
+                }
+            </select>
+            <label for="Alias">@Html.Raw(localization.Alias)</label>
+            <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
+            <div class="checkboxBlock">
+                <input type="checkbox" id="Published" name="PageModel.Published" value="@Model?.Published" checked="checked" />
+                <label for="Published">@Html.Raw(localization.Published)</label>
+            </div>
+            <div class="checkboxBlock">
+                <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="@Model?.IsRobotIndex" checked="checked" />
+                <label for="IsRobotIndex">@Html.Raw(localization.IsRobotIndex)</label>
+            </div>
+        </div>
+    </div>
+</form>

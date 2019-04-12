@@ -2,12 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>Trane</RootNamespace>
+    <RootNamespace>Treynessen</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="RouteConstraints\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

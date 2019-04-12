@@ -1,1 +1,55 @@
-﻿
+﻿table.pagesList {
+    width: 100%;
+    min-width: 100%;
+    border: 1px solid;
+    border-spacing: 0px;
+    font-size: 1.4rem;
+}
+
+.pagesList tr:first-child {
+    font-weight: bold;
+    text-align: center;
+}
+
+.pagesList tr:not(:first-child):hover {
+    background-color: #f5f5f5;
+    transition-property: background-color;
+    transition-timing-function: ease;
+    transition-duration: 300ms;
+}
+
+.pagesList td {
+    border: 1px solid;
+    padding: .5%;
+}
+
+    .pagesList td:nth-child(1) {
+        text-align: center;
+    }
+
+
+    .pagesList td:nth-child(4) {
+        text-align: center;
+    }
+
+    .pagesList td:nth-child(5) {
+        text-align: center;
+    }
+
+div.addPageButton {
+    margin-bottom: 1vh;
+}
+
+.addPageButton a {
+    display: inline-block;
+    text-decoration: none;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.4rem;
+    padding: .8vh;
+    border-radius: 5px;
+    background-color: #00c0ff;
+}
+
+    .addPageButton a:hover {
+        background: #00a8ff;
+    }
