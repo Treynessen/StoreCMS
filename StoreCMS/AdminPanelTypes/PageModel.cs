@@ -21,5 +21,7 @@
         public uint Price { get; set; }
         public uint OldPrice { get; set; }
         public string ShortDescription { get; set; }
+
+        public bool IsMainPage { get; set; }
     }
 }

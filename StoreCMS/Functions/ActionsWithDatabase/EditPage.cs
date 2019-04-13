@@ -15,7 +15,14 @@ namespace Treynessen.Functions
             model.PageModel.PageType = model.PageType.Value;
             Page page = OtherFunctions.PageModelToPage(db, model.PageModel, context);
             if (page != null)
+            {
                 page.ID = model.itemID.Value;
+                if (page is UsualPage up)
+                {
+                    if (up.PreviousPageID.HasValue && up.PreviousPage.ID == up.ID)
+                        return false;
+                }
+            }
             if (!Validator.TryValidateObject(page, new ValidationContext(page), null))
                 return false;
             OtherFunctions.SetUniqueAliasName(db, page);

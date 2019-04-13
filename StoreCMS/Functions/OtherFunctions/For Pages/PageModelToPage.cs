@@ -10,19 +10,26 @@ namespace Treynessen.Functions
     {
         public static Page PageModelToPage(CMSDatabase db, PageModel model, HttpContext context)
         {
+            if (!model.PageType.HasValue)
+                return null;
+
             Page page = null;
             switch (model.PageType.Value)
             {
                 case PageType.Usual:
                     page = new UsualPage();
-                    if (string.IsNullOrEmpty(model.Alias) && !model.PreviousPageID.HasValue && !HasMainPage(db)) // ←
-                        model.Alias = "index"; // ←
+                    if (model.IsMainPage && !model.PreviousPageID.HasValue && !HasMainPage(db)) // ←
+                        page.Alias = "index"; // ←
+                    else if (model.IsMainPage) // ←
+                        return null; // ←
                     if (model.PreviousPageID.HasValue)
                         (page as UsualPage).PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
                     page.RequestPathWithoutAlias = (page as UsualPage).PreviousPage == null ? "/"
                         : $"{GetUrl((page as UsualPage).PreviousPage)}";
                     break;
                 case PageType.Category:
+                    if (model.IsMainPage) // ←
+                        return null; // ←
                     page = new CategoryPage();
                     if (string.IsNullOrEmpty(model.CategoryName)) // ←
                         (page as CategoryPage).CategoryName = model.BreadcrumbName; // ←
@@ -34,6 +41,8 @@ namespace Treynessen.Functions
                         : $"{GetUrl((page as CategoryPage).PreviousPage)}";
                     break;
                 case PageType.Product:
+                    if (model.IsMainPage) // ←
+                        return null; // ←
                     page = new ProductPage();
                     (page as ProductPage).ProductName = model.ProductName;
                     (page as ProductPage).Price = model.Price;
@@ -49,6 +58,7 @@ namespace Treynessen.Functions
             }
             page.Title = model.Title;
             page.BreadcrumbName = model.BreadcrumbName;
+
             if (string.IsNullOrEmpty(page.Alias))
             {
                 if (string.IsNullOrEmpty(model.Alias)) // ←
@@ -56,6 +66,9 @@ namespace Treynessen.Functions
                 else 
                     page.Alias = GetCorrectAliasName(model.Alias, context); // ←
             }
+            if (page.RequestPathWithoutAlias.Equals("/") && !model.IsMainPage && !string.IsNullOrEmpty(page.Alias) && page.Alias.Equals("index"))
+                page.Alias = "ind";
+
             page.Content = model.Content;
             page.TemplatePath = model.TemplatePath;
             page.Published = model.Published;

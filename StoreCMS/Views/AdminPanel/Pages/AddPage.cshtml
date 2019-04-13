@@ -9,45 +9,106 @@
 }
 @if (incorrect)
 {
-    <span>@localization.IncorrectInput</span>
+<span>@Html.Raw(localization.IncorrectInput)</span>
 }
-<form method="post">
-    <input type="submit" value="@Html.Raw(localization.SaveButton)" />
-    <div class="workWithPageContainer">
-        <div class="leftBlock">
-            <label for="Title">@Html.Raw(localization.Title)*</label>
-            <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
-            <label for="BreadcrumbName">@Html.Raw(localization.Breadcrumb)*</label>
-            <input type="text" id="BreadcrumbName" name="PageModel.BreadcrumbName" required value="@Model?.BreadcrumbName" />
-            <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
-            <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
-            <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
-            <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
-        </div>
-        <div class="rightBlock">
-            <label for="PageType">@Html.Raw(localization.PageType)</label>
-            <select id="PageType" name="PageModel.PageType" required>
-                <option value="@((int)PageType.Usual)">@Html.Raw(localization.Usual)</option>
-                <option value="@((int)PageType.Category)">@Html.Raw(localization.Category)</option>
-            </select>
-            <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
-            <select id="PreviousPage" name="PageModel.PreviousPageID" required>
-                <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
-                @foreach (var p in pages)
-                {
-                    <option value="@p.ID">@Html.Raw(p.Name)</option>
-                }
-            </select>
-            <label for="Alias">@Html.Raw(localization.Alias)</label>
-            <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
-            <div class="checkboxBlock">
-                <input type="checkbox" id="Published" name="PageModel.Published" value="@Model?.Published" checked="checked" />
-                <label for="Published">@Html.Raw(localization.Published)</label>
-            </div>
-            <div class="checkboxBlock">
-                <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="@Model?.IsRobotIndex" checked="checked" />
-                <label for="IsRobotIndex">@Html.Raw(localization.IsRobotIndex)</label>
-            </div>
-        </div>
-    </div>
-</form>
+            <form method="post">
+                @*SAVE BUTTON*@
+                <input type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <div class="workWithPageContainer">
+                    <div class="leftBlock">
+                        @*TITLE*@
+                        <label for="Title">@Html.Raw(localization.Title)*</label>
+                        <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
+                        @*BREADCRUMB*@
+                        <label for="BreadcrumbName">@Html.Raw(localization.Breadcrumb)*</label>
+                        <input type="text" id="BreadcrumbName" name="PageModel.BreadcrumbName" required value="@Model?.BreadcrumbName" />
+                        @*PAGE DESCRIPTION*@
+                        <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
+                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
+                        @*PAGE KEYWORDS*@
+                        <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
+                        <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
+                    </div>
+                    <div class="rightBlock">
+                        @*PAGE TYPE*@
+                        <label for="PageType">@Html.Raw(localization.PageType)</label>
+                        <select id="PageType" name="PageModel.PageType" required>
+                            @if (Model == null || Model.PageType == PageType.Usual)
+                            {
+                            <option value="@((int)PageType.Usual)" selected>@Html.Raw(localization.Usual)</option>
+                            <option value="@((int)PageType.Category)">@Html.Raw(localization.Category)</option>
+                            }
+                            else
+                            {
+                            <option value="@((int)PageType.Usual)">@Html.Raw(localization.Usual)</option>
+                            <option value="@((int)PageType.Category)" selected>@Html.Raw(localization.Category)</option>
+                            }
+                        </select>
+                        @*PREVIOUS PAGE*@
+                        <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
+                        <select id="PreviousPage" name="PageModel.PreviousPageID" required>
+                            @if (Model == null || !Model.PreviousPageID.HasValue)
+                            {
+                            <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
+                            }
+                            else
+                            {
+                            <option>@Html.Raw(localization.WithoutPreviousPage)</option>
+                            }
+                            @foreach (var p in pages)
+                            {
+                                if (Model != null && Model.PreviousPageID.HasValue && Model.PreviousPageID.Value == p.ID)
+                                {
+                            <option value="@p.ID" selected>@Html.Raw(p.Name)</option>
+                                }
+                                else
+                                {
+                            <option value="@p.ID">@Html.Raw(p.Name)</option>
+                                }
+                            }
+                        </select>
+                        @*ALIAS*@
+                        <label for="Alias">@Html.Raw(localization.Alias)</label>
+                        <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
+                        @*IS MAIN PAGE?*@
+                        @if (!OtherFunctions.HasMainPage(db))
+                        {
+                        <div class="checkboxBlock">
+                                @if (Model == null || !Model.IsMainPage)
+                                {
+                            <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" />
+                                }
+                                else
+                                {
+                            <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" checked />
+                                }
+                            <label for="IsMainPage">@Html.Raw(localization.IsMainPage)</label>
+                        </div>
+                        }
+                        @*PUBLISHED?*@
+                        <div class="checkboxBlock">
+                            @if (Model == null || Model.Published)
+                            {
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
+                            }
+                            else
+                            {
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" />
+                            }
+                            <label for="Published">@Html.Raw(localization.Published)</label>
+                        </div>
+                        @*IS ROBOT INDEX?*@
+                        <div class="checkboxBlock">
+                            @if (Model == null || Model.IsRobotIndex)
+                            {
+                            <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" checked />
+                            }
+                            else
+                            {
+                            <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" />
+                            }
+                            <label for="IsRobotIndex">@Html.Raw(localization.IsRobotIndex)</label>
+                        </div>
+                    </div>
+                </div>
+            </form>

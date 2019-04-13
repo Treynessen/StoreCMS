@@ -20,6 +20,7 @@
         public string WithoutPreviousPage => "Независимая страница";
         public string Alias => "Псевдоним страницы";
         public string LinkAttributes => "Атрибуты страницы";
+        public string IsMainPage => "Главная страница";
         public string Published => "Опубликована";
         public string IsRobotIndex => "Доступна для индексации";
         public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";

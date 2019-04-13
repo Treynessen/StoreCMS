@@ -27,6 +27,8 @@ namespace Treynessen.Functions
                 case PageType.Product:
                     page = db.ProductPages.FirstOrDefaultAsync(p => p.ID == itemID).Result;
                     break;
+                default:
+                    return;
             }
             if (page == null)
                 return;

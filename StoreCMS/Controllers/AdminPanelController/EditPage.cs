@@ -24,9 +24,13 @@ namespace Treynessen.Controllers
                     case PageType.Category:
                         page = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == itemID.Value).Result;
                         break;
+                    default:
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
                 }
                 model = OtherFunctions.PageToPageModel(page);
             }
+            else
+                HttpContext.Items["IsIncorrect"] = true;
             if (model == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
             SetRoutes("EditPage");

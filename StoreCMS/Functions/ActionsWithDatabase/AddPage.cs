@@ -26,6 +26,8 @@ namespace Treynessen.Functions
                         break;
                 }
             }
+            else
+                return false;
             if (!Validator.TryValidateObject(page, new ValidationContext(page), null))
                 return false;
             OtherFunctions.SetUniqueAliasName(db, page);

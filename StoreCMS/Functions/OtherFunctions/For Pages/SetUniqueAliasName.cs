@@ -11,8 +11,6 @@ namespace Treynessen.Functions
         {
             int index = 0;
             bool has = false;
-            if (page.RequestPathWithoutAlias.Equals("/") && page.Alias.Equals("index") && HasMainPage(db)) // ←
-                page.Alias = "ind"; // ←
             string currentPath = GetUrl(page);
             do
             {

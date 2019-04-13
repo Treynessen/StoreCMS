@@ -13,6 +13,8 @@ namespace Treynessen.Functions
             switch (page)
             {
                 case UsualPage up:
+                    if (!up.PreviousPageID.HasValue && page.Alias.Equals("index"))
+                        model.IsMainPage = true;
                     model.PageType = PageType.Usual;
                     model.PreviousPageID = up.PreviousPageID;
                     break;
@@ -29,6 +31,8 @@ namespace Treynessen.Functions
                     model.ShortDescription = pp.ShortDescription;
                     model.PreviousPageID = pp.PreviousPageID;
                     break;
+                default:
+                    return null;
             }
             model.Title = page.Title;
             model.BreadcrumbName = page.BreadcrumbName;
