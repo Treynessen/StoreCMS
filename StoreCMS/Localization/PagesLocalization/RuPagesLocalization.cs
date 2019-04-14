@@ -1,6 +1,6 @@
 ﻿namespace Treynessen.Localization
 {
-    public class RuPageLocalization : IPageLocalization
+    public class RuPagesLocalization : IPagesLocalization
     {
         public string AddPage => "Добавить страницу";
         public string ActionsWithPage => "Действия";

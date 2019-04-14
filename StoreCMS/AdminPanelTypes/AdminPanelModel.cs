@@ -12,5 +12,6 @@ namespace Treynessen.AdminPanelTypes
         public int? itemID { get; set; }
 
         public PageModel PageModel { get; set; }
+        public TemplateModel TemplateModel { get; set; }
     }
 }

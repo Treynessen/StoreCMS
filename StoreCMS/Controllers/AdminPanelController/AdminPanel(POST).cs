@@ -40,6 +40,11 @@ namespace Treynessen.Controllers
                     ActionsWithDatabase.DeletePage(db, model.PageType, model.itemID);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
 
+                case AdminPanelPages.AddTemplate:
+                    if (ActionsWithDatabase.AddTemplates(db, model.TemplateModel, HttpContext) == false)
+                        return AddTemplate(model.TemplateModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
+
                 default:
                     return RedirectToAction(nameof(AdminPanel));
             }

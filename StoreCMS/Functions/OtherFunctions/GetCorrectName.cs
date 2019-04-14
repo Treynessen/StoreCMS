@@ -8,7 +8,7 @@ namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {
-        public static string GetCorrectAliasName(string basis, HttpContext context)
+        public static string GetCorrectName(string basis, HttpContext context)
         {
             if (string.IsNullOrEmpty(basis))
                 return null;

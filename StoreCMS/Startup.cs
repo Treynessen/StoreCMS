@@ -35,7 +35,8 @@ public class Startup
 
         services.AddTransient<ILoginFormLocalization>(provider => new RuLoginFormLocalization());
         services.AddTransient<IAdminPanelPageLocalization>(provider => new RuAdminPanelPageLocalization());
-        services.AddTransient<IPageLocalization>(provider => new RuPageLocalization());
+        services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
+        services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)

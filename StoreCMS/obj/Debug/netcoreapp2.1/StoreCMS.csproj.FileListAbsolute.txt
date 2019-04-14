@@ -23,9 +23,10 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Vi
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Pages\EditPage.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Pages\Index.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Settings.g.cshtml.cs
-D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\_ViewImports.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.RazorTargetAssemblyInfo.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS.Views.pdb
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.Views.pdb
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.csprojAssemblyReference.cache
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\Index.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\AddTemplate.g.cshtml.cs

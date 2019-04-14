@@ -1,0 +1,13 @@
+﻿@model TemplateModel
+@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/add_template.css";
+}
+<form method="post">
+    <label for="Name">@Html.Raw(localization.Name)</label>
+    <input type="text" id="Name" name="TemplateModel.Name" value="@Model?.Name" />
+    <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
+    <textarea id="TemplateSource" name="TemplateModel.TemplateSource">@Model?.TemplateSource</textarea>
+    <input type="submit" />
+</form>

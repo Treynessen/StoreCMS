@@ -13,12 +13,10 @@ namespace Treynessen.Controllers
             SetRoutes("AdminPanel(GET)");
 
             User user = DataCheck.CheckCookies(db, HttpContext);
+            if(!DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
+                return LoginForm();
             if (!DataCheck.HasAccessTo(model.PageId, user, HttpContext))
-            {
-                if (!DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
-                    return LoginForm();
                 model.PageId = AdminPanelPages.MainPage;
-            }
 
             HttpContext.Items["User"] = user;
 
@@ -32,6 +30,8 @@ namespace Treynessen.Controllers
                     return EditPage(model.PageType, model.itemID);
                 case AdminPanelPages.Templates:
                     return Templates();
+                case AdminPanelPages.AddTemplate:
+                    return AddTemplate();
                 case AdminPanelPages.Settings:
                     return Settings();
                 default:

@@ -3,13 +3,18 @@
     public enum AdminPanelPages
     {
         MainPage = 1,
-        Pages = 2,
-        Templates = 3,
-        Settings = 4,
+        Pages,
+        Templates,
+        Settings,
 
         AddPage,
-        AddCategoryPage,
         EditPage,
-        DeletePage
+        DeletePage,
+        AddTemplate,
+        EditTemplate,
+        DeleteTemplate,
+        AddChunk,
+        EditChunk,
+        DeleteChunk
     }
 }

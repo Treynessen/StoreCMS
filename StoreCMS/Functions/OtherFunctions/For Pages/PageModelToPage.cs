@@ -10,6 +10,8 @@ namespace Treynessen.Functions
     {
         public static Page PageModelToPage(CMSDatabase db, PageModel model, HttpContext context)
         {
+            if (model == null)
+                return null;
             if (!model.PageType.HasValue)
                 return null;
 
@@ -62,9 +64,9 @@ namespace Treynessen.Functions
             if (string.IsNullOrEmpty(page.Alias))
             {
                 if (string.IsNullOrEmpty(model.Alias)) // ←
-                    page.Alias = GetCorrectAliasName(model.BreadcrumbName, context); // ←
+                    page.Alias = GetCorrectName(model.BreadcrumbName, context); // ←
                 else 
-                    page.Alias = GetCorrectAliasName(model.Alias, context); // ←
+                    page.Alias = GetCorrectName(model.Alias, context); // ←
             }
             if (page.RequestPathWithoutAlias.Equals("/") && !model.IsMainPage && !string.IsNullOrEmpty(page.Alias) && page.Alias.Equals("index"))
                 page.Alias = "ind";

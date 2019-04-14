@@ -1,6 +1,6 @@
 ﻿namespace Treynessen.Localization
 {
-    public interface IPageLocalization
+    public interface IPagesLocalization
     {
         string AddPage { get; }
         string ActionsWithPage { get; }
