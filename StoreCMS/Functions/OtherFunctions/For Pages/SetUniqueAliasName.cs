@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.OtherTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -9,6 +10,10 @@ namespace Treynessen.Functions
     {
         public static void SetUniqueAliasName(CMSDatabase db, Page page)
         {
+            while (!ForbiddenURLs.IsCorrectUrl(GetUrl(page)))
+            {
+                page.Alias += "_page";
+            }
             int index = 0;
             bool has = false;
             string currentPath = GetUrl(page);
@@ -31,7 +36,7 @@ namespace Treynessen.Functions
                 {
                     try
                     {
-                        int lastUnderscore = page.Alias.LastIndexOf('_'); 
+                        int lastUnderscore = page.Alias.LastIndexOf('_');
                         if (lastUnderscore + 1 != page.Alias.Length)
                         {
                             if (lastUnderscore == -1)

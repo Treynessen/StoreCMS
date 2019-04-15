@@ -13,6 +13,14 @@ using Microsoft.AspNetCore.Http;
 
 public class Startup
 {
+    public Startup(IHostingEnvironment env)
+    {
+        var config = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("Configurations/core_configuration.json").Build();
+        ForbiddenURLs.SetForbiddenURL(config["ForbiddenURLs"].Split(','));
+    }
+
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDbContext<CMSDatabase>(options =>
