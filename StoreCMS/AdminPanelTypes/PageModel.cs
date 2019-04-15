@@ -9,7 +9,7 @@
         public int? PreviousPageID { get; set; }
 
         public string Content { get; set; }
-        public string TemplatePath { get; set; }
+        public int? TemplateId { get; set; }
         public bool Published { get; set; }
         public string PageDescription { get; set; }
         public string PageKeywords { get; set; }

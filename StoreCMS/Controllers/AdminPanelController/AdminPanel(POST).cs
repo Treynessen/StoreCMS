@@ -45,6 +45,15 @@ namespace Treynessen.Controllers
                         return AddTemplate(model.TemplateModel);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
 
+                case AdminPanelPages.EditTemplate:
+                    if (ActionsWithDatabase.EditTemplate(db, model, HttpContext) == false)
+                        return EditTemplate(model.itemID, model.TemplateModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditTemplate}&itemID={model.itemID}");
+
+                case AdminPanelPages.DeleteTemplate:
+                    ActionsWithDatabase.DeleteTemplate(db, model.itemID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
+
                 default:
                     return RedirectToAction(nameof(AdminPanel));
             }

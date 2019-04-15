@@ -16,6 +16,8 @@
         public string Breadcrumb => "Название страницы";
         public string PageDescription => "Description в meta-теге";
         public string PageKeywords => "Keywords в meta-теге";
+        public string Template => "Шаблон";
+        public string WithoutTemplate => "Без шаблона";
         public string PreviousPage => "Страница-родитель";
         public string WithoutPreviousPage => "Независимая страница";
         public string Alias => "Псевдоним страницы";

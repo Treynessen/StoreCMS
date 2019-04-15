@@ -32,6 +32,8 @@ namespace Treynessen.Controllers
                     return Templates();
                 case AdminPanelPages.AddTemplate:
                     return AddTemplate();
+                case AdminPanelPages.EditTemplate:
+                    return EditTemplate(model.itemID);
                 case AdminPanelPages.Settings:
                     return Settings();
                 default:

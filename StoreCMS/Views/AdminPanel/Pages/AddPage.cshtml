@@ -4,7 +4,8 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/add_page.css";
-    var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})" });
+    var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})" }).ToList();
+    var templates = db.Templates.ToList();
     bool incorrect = Model == null ? false : true;
 }
 @if (incorrect)
@@ -30,18 +31,27 @@
                         <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
                     </div>
                     <div class="rightBlock">
+                        @*TEMPLATES LIST*@
+                        <label for="TemplateId">@Html.Raw(localization.Template)</label>
+                        <select id="TemplateId" name="PageModel.TemplateId" required>
+                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                            @foreach (var t in templates)
+                            {
+                            <option value="@t.ID">@Html.Raw(t.Name)</option>
+                            }
+                        </select>
                         @*PAGE TYPE*@
                         <label for="PageType">@Html.Raw(localization.PageType)</label>
                         <select id="PageType" name="PageModel.PageType" required>
                             @if (Model == null || Model.PageType == PageType.Usual)
                             {
-                            <option value="@((int)PageType.Usual)" selected>@Html.Raw(localization.Usual)</option>
-                            <option value="@((int)PageType.Category)">@Html.Raw(localization.Category)</option>
+                                <option value="@((int)PageType.Usual)" selected>@Html.Raw(localization.Usual)</option>
+                                <option value="@((int)PageType.Category)">@Html.Raw(localization.Category)</option>
                             }
                             else
                             {
-                            <option value="@((int)PageType.Usual)">@Html.Raw(localization.Usual)</option>
-                            <option value="@((int)PageType.Category)" selected>@Html.Raw(localization.Category)</option>
+                                <option value="@((int)PageType.Usual)">@Html.Raw(localization.Usual)</option>
+                                <option value="@((int)PageType.Category)" selected>@Html.Raw(localization.Category)</option>
                             }
                         </select>
                         @*PREVIOUS PAGE*@
@@ -49,21 +59,21 @@
                         <select id="PreviousPage" name="PageModel.PreviousPageID" required>
                             @if (Model == null || !Model.PreviousPageID.HasValue)
                             {
-                            <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
+                                <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
                             }
                             else
                             {
-                            <option>@Html.Raw(localization.WithoutPreviousPage)</option>
+                                <option>@Html.Raw(localization.WithoutPreviousPage)</option>
                             }
                             @foreach (var p in pages)
                             {
                                 if (Model != null && Model.PreviousPageID.HasValue && Model.PreviousPageID.Value == p.ID)
                                 {
-                            <option value="@p.ID" selected>@Html.Raw(p.Name)</option>
+                                <option value="@p.ID" selected>@Html.Raw(p.Name)</option>
                                 }
                                 else
                                 {
-                            <option value="@p.ID">@Html.Raw(p.Name)</option>
+                                <option value="@p.ID">@Html.Raw(p.Name)</option>
                                 }
                             }
                         </select>
@@ -73,27 +83,27 @@
                         @*IS MAIN PAGE?*@
                         @if (!OtherFunctions.HasMainPage(db))
                         {
-                        <div class="checkboxBlock">
+                            <div class="checkboxBlock">
                                 @if (Model == null || !Model.IsMainPage)
                                 {
-                            <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" />
+                                    <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" />
                                 }
                                 else
                                 {
-                            <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" checked />
+                                    <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" checked />
                                 }
-                            <label for="IsMainPage">@Html.Raw(localization.IsMainPage)</label>
-                        </div>
+                                <label for="IsMainPage">@Html.Raw(localization.IsMainPage)</label>
+                            </div>
                         }
                         @*PUBLISHED?*@
                         <div class="checkboxBlock">
                             @if (Model == null || Model.Published)
                             {
-                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
+                                <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
                             }
                             else
                             {
-                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" />
+                                <input type="checkbox" id="Published" name="PageModel.Published" value="true" />
                             }
                             <label for="Published">@Html.Raw(localization.Published)</label>
                         </div>
@@ -101,11 +111,11 @@
                         <div class="checkboxBlock">
                             @if (Model == null || Model.IsRobotIndex)
                             {
-                            <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" checked />
+                                <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" checked />
                             }
                             else
                             {
-                            <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" />
+                                <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" />
                             }
                             <label for="IsRobotIndex">@Html.Raw(localization.IsRobotIndex)</label>
                         </div>

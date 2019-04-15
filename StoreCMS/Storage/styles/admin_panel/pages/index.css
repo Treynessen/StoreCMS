@@ -1,6 +1,8 @@
 ﻿table.pagesList {
     width: 100%;
     min-width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
     border: 1px solid;
     border-spacing: 0px;
     font-size: 1.4rem;
@@ -24,15 +26,30 @@
 }
 
     .pagesList td:nth-child(1) {
+        width: 5%;
+        overflow-x: auto;
         text-align: center;
     }
 
+    .pagesList td:nth-child(2) {
+        width: 30%;
+        overflow-x: auto;
+    }
+
+    .pagesList td:nth-child(3) {
+        width: 30%;
+        overflow-x: auto;
+    }
 
     .pagesList td:nth-child(4) {
+        width: 20%;
+        overflow-x: auto;
         text-align: center;
     }
 
     .pagesList td:nth-child(5) {
+        width: 15%;
+        overflow-x: auto;
         text-align: center;
     }
 
@@ -53,3 +70,17 @@ div.addPageButton {
     .addPageButton a:hover {
         background: #00a8ff;
     }
+
+input.actionButton {
+    display: inline;
+    border-style: none;
+    background-color: transparent;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.actionButton:hover {
+    color: #00599e;
+    cursor: pointer;
+}

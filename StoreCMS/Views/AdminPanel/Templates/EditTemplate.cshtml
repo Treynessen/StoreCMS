@@ -3,7 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/add_template.css";
-    bool incorrect = Model == null ? false : true;
+    bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }
 <form method="post" class="addTemplateContainer">
     @if (incorrect)

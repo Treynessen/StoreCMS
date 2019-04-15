@@ -9,6 +9,7 @@
 ul.menuBlock {
     list-style-type: none;
     width: 25%;
+    min-width: 25%;
     max-width: 25%;
     margin: 0;
     padding: 0;

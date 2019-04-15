@@ -15,7 +15,7 @@ namespace Treynessen.Functions
             {
                 string name = $"{template.Name}{(index == 0 ? "" : index.ToString())}";
                 has = false;
-                if (db.Templates.FirstOrDefaultAsync(t => t.Name.Equals(name)).Result != null)
+                if (db.Templates.FirstOrDefaultAsync(t => t.Name.Equals(name) && t.ID != template.ID).Result != null)
                     has = true;
                 if (has && index == 0)
                 {

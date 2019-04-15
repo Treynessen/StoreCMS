@@ -16,6 +16,8 @@
         string Breadcrumb { get; }
         string PageDescription { get; }
         string PageKeywords { get; }
+        string Template { get; }
+        string WithoutTemplate { get; }
         string PreviousPage { get; }
         string WithoutPreviousPage { get; }
         string Alias { get; }

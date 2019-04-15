@@ -5,6 +5,7 @@
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/edit_page.css";
     var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})", p.PreviousPageID, p.Alias });
+    var templates = db.Templates.ToList();
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }
 @if (incorrect)
@@ -35,6 +36,29 @@
                         <label for="CategoryName">@Html.Raw(localization.CategoryName)*</label>
                         <input type="text" id="CategoryName" name="PageModel.CategoryName" required value="@Model.CategoryName" />
                         }
+                        @*TEMPLATE*@
+                        <label for="TemplateId">@Html.Raw(localization.Template)</label>
+                        <select id="TemplateId" name="PageModel.TemplateId" required>
+                            @if (!Model.TemplateId.HasValue)
+                            {
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                            }
+                            else
+                            {
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
+                            }
+                            @foreach (var t in templates)
+                            {
+                                if (Model.TemplateId.HasValue && t.ID == Model.TemplateId.Value)
+                                {
+                                <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
+                            }
+                        </select>
                         @*PAGE TYPE*@
                         <label for="PageType">@Html.Raw(localization.PageType)</label>
                         @if (Model.PageType == PageType.Usual)

@@ -37,7 +37,7 @@ namespace Treynessen.Functions
             model.Title = page.Title;
             model.BreadcrumbName = page.BreadcrumbName;
             model.Alias = page.Alias;
-            model.TemplatePath = page.TemplatePath;
+            model.TemplateId = page.TemplateId;
             model.Content = page.Content;
             model.Published = page.Published;
             model.PageDescription = page.PageDescription;
