@@ -2,19 +2,19 @@
 @inject ITemplatesLocalization localization
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/templates/add_template.css";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/workWithTemplate.css";
     bool incorrect = Model == null ? false : true;
 }
-<form method="post" class="addTemplateContainer">
-    @if (incorrect)
-    {
-        <span>@Html.Raw(localization.IncorrectInput)</span>
-    }
-    <div class="nameBlock">
-        <label for="Name">@Html.Raw(localization.Name)</label>
-        <input type="text" id="Name" name="TemplateModel.Name" value="@Model?.Name" required />
-    </div>
-    <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
-    <textarea id="TemplateSource" name="TemplateModel.TemplateSource">@Model?.TemplateSource</textarea>
-    <input type="submit" value="@Html.Raw(localization.SaveButton)" />
-</form>
+            <form method="post" class="pageContainer">
+            @if (incorrect)
+            {
+                <span>@Html.Raw(localization.IncorrectInput)</span>
+            }
+                <div class="nameBlock">
+                    <label for="Name">@Html.Raw(localization.Name)</label>
+                    <input type="text" id="Name" name="TemplateModel.Name" value="@Model?.Name" required />
+                </div>
+                <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
+                <textarea id="TemplateSource" name="TemplateModel.TemplateSource">@Model?.TemplateSource</textarea>
+                <input type="submit" value="@Html.Raw(localization.SaveButton)" />
+            </form>

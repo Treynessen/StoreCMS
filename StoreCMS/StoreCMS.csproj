@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\PagesHandlerController\" />
-    <Folder Include="Views\PagesHandler\" />
-    <Folder Include="Views\Templates\" />
+    <Content Update="Views\Templates\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

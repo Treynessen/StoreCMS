@@ -7,37 +7,37 @@
 }
 @if (DataCheck.HasAccessTo(AdminPanelPages.AddTemplate, user, Context))
 {
-    <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplate)">@Html.Raw(localization.AddTemplate)</a></div>
+            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplate)">@Html.Raw(localization.AddTemplate)</a></div>
 }
-<table class="templatesList">
-    <tr>
-        <td>ID</td>
-        <td>@Html.Raw(localization.Name)</td>
-        <td>@Html.Raw(localization.Actions)</td>
-    </tr>
-    @foreach (var t in Model)
-    {
-        <tr>
-            <td>@Html.Raw(t.ID)</td>
-            <td>@Html.Raw(t.Name)</td>
-            <td>
-                @if (DataCheck.HasAccessTo(AdminPanelPages.EditTemplate, user, Context))
-                {
-                    <form method="get">
-                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)" />
-                        <input type="hidden" name="itemID" value="@t.ID">
-                        <input type="submit" class="actionButton" value="@Html.Raw(localization.EditTemplate)" />
-                    </form>
-                }
-                @if (DataCheck.HasAccessTo(AdminPanelPages.DeleteTemplate, user, Context))
-                {
-                    <form method="post">
-                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplate)" />
-                        <input type="hidden" name="itemID" value="@t.ID">
-                        <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteTemplate)" />
-                    </form>
-                }
-            </td>
-        </tr>
-    }
-</table>
+            <table class="templatesList">
+                <tr>
+                    <td>ID</td>
+                    <td>@Html.Raw(localization.Name)</td>
+                    <td>@Html.Raw(localization.Actions)</td>
+                </tr>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(t.ID)</td>
+                    <td>@Html.Raw(t.Name)</td>
+                    <td>
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.EditTemplate, user, Context))
+                    {
+                        <form method="get">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditTemplate)" />
+                        </form>
+                    }
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.DeleteTemplate, user, Context))
+                    {
+                        <form method="post">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplate)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteTemplate)" />
+                        </form>
+                    }
+                    </td>
+                </tr>
+            }
+            </table>

@@ -10,7 +10,7 @@
 }
 @if (DataCheck.HasAccessTo(AdminPanelPages.AddPage, user, Context))
 {
-<div class="addPageButton">
+            <div class="addPageButton">
                 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a>
             </div>
 }

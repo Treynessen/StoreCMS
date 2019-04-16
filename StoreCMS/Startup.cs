@@ -7,20 +7,14 @@ using Treynessen.Security;
 using Treynessen.OtherTypes;
 using Treynessen.Middlewares;
 using Treynessen.Localization;
+using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
+using Treynessen.RouteConstraints;
 
 using Microsoft.AspNetCore.Http;
 
 public class Startup
 {
-    public Startup(IHostingEnvironment env)
-    {
-        var config = new ConfigurationBuilder()
-            .SetBasePath(env.ContentRootPath)
-            .AddJsonFile("Configurations/core_configuration.json").Build();
-        ForbiddenURLs.SetForbiddenURL(config["ForbiddenURLs"].Split(','));
-    }
-
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDbContext<CMSDatabase>(options =>
@@ -57,6 +51,24 @@ public class Startup
         app.AddAccessLevelConfigInItemWhen("/admin");
         app.UseMvc(routeBuilder =>
         {
+            routeBuilder.MapRoute(
+                name: "usual_page",
+                template: "{*aliases}",
+                defaults: new { controller = "PagesHandler", action = "UsualPage" },
+                constraints: new { aliases = new UrlConstraint(PageType.Usual) }
+            );
+            routeBuilder.MapRoute(
+                name: "category_page",
+                template: "{*aliases}",
+                defaults: new { controller = "PagesHandler", action = "CategoryPage" },
+                constraints: new { aliases = new UrlConstraint(PageType.Category) }
+            );
+            routeBuilder.MapRoute(
+                name: "product_page",
+                template: "{*aliases}",
+                defaults: new { controller = "PagesHandler", action = "ProductPage" },
+                constraints: new { aliases = new UrlConstraint(PageType.Product) }
+            );
             routeBuilder.MapRoute(
                 name: "admin_panel",
                 template: "~/admin",

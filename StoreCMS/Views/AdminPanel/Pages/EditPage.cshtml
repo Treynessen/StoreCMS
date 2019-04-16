@@ -3,18 +3,18 @@
 @inject CMSDatabase db
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/pages/edit_page.css";
+    Context.Items["PageStyle"] = "/styles/admin_panel/pages/workWithPage.css";
     var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})", p.PreviousPageID, p.Alias });
     var templates = db.Templates.ToList();
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }
 @if (incorrect)
 {
-<span>@localization.IncorrectInput</span>
+            <span>@localization.IncorrectInput</span>
 }
-<form method="post">
+            <form method="post" class="pageContainer">
                 <input type="submit" value="@Html.Raw(localization.SaveButton)" />
-                <div class="workWithPageContainer">
+                <div class="leftRightBlocks">
                     <div class="leftBlock">
                         @*TITLE*@
                         <label for="Title">@Html.Raw(localization.Title)*</label>
@@ -39,25 +39,25 @@
                         @*TEMPLATE*@
                         <label for="TemplateId">@Html.Raw(localization.Template)</label>
                         <select id="TemplateId" name="PageModel.TemplateId" required>
-                            @if (!Model.TemplateId.HasValue)
+                        @if (!Model.TemplateId.HasValue)
+                        {
+                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                        }
+                        else
+                        {
+                            <option>@Html.Raw(localization.WithoutTemplate)</option>
+                        }
+                        @foreach (var t in templates)
+                        {
+                            if (Model.TemplateId.HasValue && t.ID == Model.TemplateId.Value)
                             {
-                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                            <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
                             }
                             else
                             {
-                                <option>@Html.Raw(localization.WithoutTemplate)</option>
+                            <option value="@t.ID">@Html.Raw(t.Name)</option>
                             }
-                            @foreach (var t in templates)
-                            {
-                                if (Model.TemplateId.HasValue && t.ID == Model.TemplateId.Value)
-                                {
-                                <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
-                                }
-                                else
-                                {
-                                <option value="@t.ID">@Html.Raw(t.Name)</option>
-                                }
-                            }
+                        }
                         </select>
                         @*PAGE TYPE*@
                         <label for="PageType">@Html.Raw(localization.PageType)</label>
@@ -95,7 +95,7 @@
                             <option value="@p.ID">@Html.Raw(p.Name)</option>
                             }
                         }
-                        </select>
+</select>
                         @*ALIAS*@
                         <label for="Alias">@Html.Raw(localization.Alias)</label>
                         <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
@@ -133,4 +133,7 @@
                         </div>
                     </div>
                 </div>
+                @*CONTENT*@
+                <label for="Content">@Html.Raw(localization.Content)</label>
+                <textarea id="Content" name="PageModel.Content">@Model?.Content</textarea>
             </form>

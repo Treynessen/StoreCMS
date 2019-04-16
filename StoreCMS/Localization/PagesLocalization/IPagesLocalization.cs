@@ -26,6 +26,7 @@
         string Published { get; }
         string IsRobotIndex { get; }
         string IncorrectInput { get; }
+        string Content { get; }
 
         string CategoryName { get; }
     }

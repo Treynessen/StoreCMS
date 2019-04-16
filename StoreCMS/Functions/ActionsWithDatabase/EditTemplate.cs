@@ -26,18 +26,14 @@ namespace Treynessen.Functions
                 template.ID = model.itemID.Value;
             if (!Validator.TryValidateObject(template, new ValidationContext(template), null))
                 return false;
-            IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            Directory.CreateDirectory($"{env.ContentRootPath}/Views/Templates");
+            string pathToTemplates = $"{context.RequestServices.GetService<IHostingEnvironment>().ContentRootPath}/Views/Templates";
             OtherFunctions.SetUniqueTemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
             if (!changeTemplate.TemplatePath.Equals(template.TemplatePath))
             {
-                File.Delete($"{env.ContentRootPath}/Views/Templates/{changeTemplate.Name}.cshtml");
+                File.Delete($"{pathToTemplates}/{changeTemplate.Name}.cshtml");
             }
-            using (StreamWriter sw = new StreamWriter($"{env.ContentRootPath}/Views/Templates/{template.Name}.cshtml"))
-            {
-                sw.Write(OtherFunctions.SourceToCSHTML(template.TemplateSource));
-            }
+            OtherFunctions.SourceToCSHTML(pathToTemplates, template.Name, template.TemplateSource);
             db.Entry(changeTemplate).State = EntityState.Detached;
             db.Templates.Update(template);
             db.SaveChanges();

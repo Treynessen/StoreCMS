@@ -10,9 +10,9 @@ namespace Treynessen.Functions
     {
         public static void SetUniqueAliasName(CMSDatabase db, Page page)
         {
-            while (!ForbiddenURLs.IsCorrectUrl(GetUrl(page)))
+            if (GetUrl(page).Equals("/admin"))
             {
-                page.Alias += "_page";
+                page.Alias = "admin_page";
             }
             int index = 0;
             bool has = false;

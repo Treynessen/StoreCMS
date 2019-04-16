@@ -1,6 +1,5 @@
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True"
-  },
-  "ForbiddenURLs": "/admin, /manager"
+  }
 }

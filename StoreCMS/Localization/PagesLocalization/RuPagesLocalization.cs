@@ -26,6 +26,7 @@
         public string Published => "Опубликована";
         public string IsRobotIndex => "Доступна для индексации";
         public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";
+        public string Content => "Содержимое страницы";
 
         public string CategoryName => "Название категории";
     }

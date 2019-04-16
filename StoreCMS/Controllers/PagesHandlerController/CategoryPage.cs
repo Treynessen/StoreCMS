@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Treynessen.Database.Context;
 
 namespace Treynessen.Controllers
 {
     public partial class PagesHandlerController : Controller
     {
-        private CMSDatabase db;
-
-        public PagesHandlerController(CMSDatabase db)
+        [HttpGet]
+        public IActionResult CategoryPage()
         {
-            this.db = db;
+            return Content("It's a category page");
         }
     }
 }

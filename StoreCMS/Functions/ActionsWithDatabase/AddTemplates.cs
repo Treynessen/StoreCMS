@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,14 +19,10 @@ namespace Treynessen.Functions
                 template.TemplatePath = $"~/Views/Templates/";
             if (!Validator.TryValidateObject(template, new ValidationContext(template), null))
                 return false;
-            IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            Directory.CreateDirectory($"{env.ContentRootPath}/Views/Templates");
+            string pathToTemplates = $"{context.RequestServices.GetService<IHostingEnvironment>().ContentRootPath}/Views/Templates";
             OtherFunctions.SetUniqueTemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
-            using (StreamWriter sw = new StreamWriter($"{env.ContentRootPath}/Views/Templates/{template.Name}.cshtml"))
-            {
-                sw.Write(OtherFunctions.SourceToCSHTML(template.TemplateSource));
-            }
+            OtherFunctions.SourceToCSHTML(pathToTemplates, template.Name, template.TemplateSource);
             template.ID = OtherFunctions.GetDatabaseRawID(db.Templates);
             db.Templates.Add(template);
             db.SaveChanges();
