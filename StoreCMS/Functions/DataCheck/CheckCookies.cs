@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -16,7 +16,7 @@ namespace Treynessen.Functions
             if (string.IsNullOrEmpty(userName))
                 return null;
 
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(userName, StringComparison.CurrentCulture));
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefaultAsync(cu => cu.UserName.Equals(userName, StringComparison.CurrentCulture)).Result;
 
             if (connectedUser == null)
                 return null;

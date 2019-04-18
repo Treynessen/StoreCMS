@@ -16,7 +16,7 @@ namespace Treynessen.Functions
         {
             if (!itemID.HasValue)
                 return;
-            TemplateChunk deleteChunk = db.TemplateChunks.FirstOrDefault(tc => tc.ID == itemID);
+            TemplateChunk deleteChunk = db.TemplateChunks.FirstOrDefaultAsync(tc => tc.ID == itemID).Result;
             if (deleteChunk == null)
                 return;
             string pathToViews = $"{context.RequestServices.GetRequiredService<IHostingEnvironment>().ContentRootPath}/Views";

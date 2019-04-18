@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +15,7 @@ namespace Treynessen.Functions
         {
             if (!itemID.HasValue)
                 return;
-            Template template = db.Templates.FirstOrDefault(t => t.ID == itemID);
+            Template template = db.Templates.FirstOrDefaultAsync(t => t.ID == itemID).Result;
             if (template == null)
                 return;
             var usualPagesTask = db.UsualPages.Where(up => up.TemplateId == template.ID).ToListAsync();

@@ -23,16 +23,16 @@ namespace Treynessen.Functions
 
                     /* ИНФОРМАЦИЯ О СТРАНИЦЕ */
                     builder.Insert(0, "@model Page\n");
-                    builder.Replace("[Page:Title]", "@Html.Raw(Model?.Title)");
-                    builder.Replace("[Page:Breadcrumb]", "@Html.Raw(Model?.BreadcrumbName)");
-                    builder.Replace("[Page:Content]", "@Html.Raw(Model?.Content)");
-                    builder.Replace("[Page:PageDescription]", "@Html.Raw(Model?.PageDescription)");
-                    builder.Replace("[Page:PageKeywords]", "@Html.Raw(Model?.PageKeywords)");
-                    builder.Replace("[Page:IsRobotIndex]", "@if(Model != null && Model.IsRobotIndex)\n{\n\tindex\n}\nelse\n{\n\tno-index\n}");
+                    builder.Replace("[Page:Title]", "@(Html.Raw(Model?.Title))");
+                    builder.Replace("[Page:Breadcrumb]", "@(Html.Raw(Model?.BreadcrumbName))");
+                    builder.Replace("[Page:Content]", "@(Html.Raw(Model?.Content))");
+                    builder.Replace("[Page:PageDescription]", "@(Html.Raw(Model?.PageDescription))");
+                    builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
+                    builder.Replace("[Page:IsRobotIndex]", "@(if(Model != null && Model.IsRobotIndex)\n{\n\tindex\n}\nelse\n{\n\tno-index\n})");
 
                     var chunks = GetChunks(db, source, isChunk ? templateName : null);
                     foreach (var c in chunks)
-                        builder.Replace($"[#{c.Name}]", $"@Html.Partial(\"{c.TemplatePath}\", Model)");
+                        builder.Replace($"[#{c.Name}]", $"@(await Html.PartialAsync(\"{c.TemplatePath}\", Model))");
 
                     sw.Write(builder.ToString());
                 }

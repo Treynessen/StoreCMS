@@ -18,7 +18,7 @@ namespace Treynessen.Functions
         {
             if (!model.itemID.HasValue || model.TemplateModel == null)
                 return false;
-            TemplateChunk changeChunk = db.TemplateChunks.FirstOrDefault(t => t.ID == model.itemID);
+            TemplateChunk changeChunk = db.TemplateChunks.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
             if (changeChunk == null)
                 return false;
             TemplateChunk chunk = OtherFunctions.TemplateModelToITemplate<TemplateChunk>(model.TemplateModel, context);

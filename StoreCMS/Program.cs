@@ -27,7 +27,7 @@ public class Program
     {
         if (db.Users.CountAsync().Result == 0)
         {
-            UserType userType = db.UserTypes.FirstOrDefault(t => t.Name.Equals("Admin", StringComparison.CurrentCultureIgnoreCase));
+            UserType userType = db.UserTypes.FirstOrDefaultAsync(t => t.Name.Equals("Admin", StringComparison.CurrentCultureIgnoreCase)).Result;
             if (userType == null) userType = db.UserTypes.First();
             db.Users.Add(new User { ID = 1, Login = "admin", Password = "admin", UserType = userType });
             db.SaveChanges();

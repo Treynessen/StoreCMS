@@ -17,7 +17,7 @@ namespace Treynessen.Functions
         {
             if (!model.itemID.HasValue || model.TemplateModel == null)
                 return false;
-            Template changeTemplate = db.Templates.FirstOrDefault(t => t.ID == model.itemID);
+            Template changeTemplate = db.Templates.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
             if (changeTemplate == null)
                 return false;
             Template template = OtherFunctions.TemplateModelToITemplate<Template>(model.TemplateModel, context);
