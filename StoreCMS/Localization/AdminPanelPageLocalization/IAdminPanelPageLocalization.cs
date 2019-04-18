@@ -7,6 +7,7 @@
         string MainPage { get; }
         string Pages { get; }
         string Templates { get; }
+        string TemplateChunks { get; }
         string Settings { get; }
     }
 }

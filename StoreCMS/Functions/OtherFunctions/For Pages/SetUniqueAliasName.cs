@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Treynessen.OtherTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -10,47 +13,78 @@ namespace Treynessen.Functions
     {
         public static void SetUniqueAliasName(CMSDatabase db, Page page)
         {
+            if (page == null)
+                throw new ArgumentException();
+
             if (GetUrl(page).Equals("/admin"))
             {
                 page.Alias = "admin_page";
             }
+
+            var usualPageUrlsTask = db.UsualPages.Where(up => up.GetType() == page.GetType() ? !(up.ID == page.ID) : true)
+                .Select(up => GetUrl(up)).ToListAsync();
+            var categoryPageUrlsTask = db.CategoryPages.Where(cp => cp.GetType() == page.GetType() ? !(cp.ID == page.ID) : true)
+                .Select(cp => GetUrl(cp)).ToListAsync();
+            var productPageUrlsTask = db.ProductPages.Where(pp => pp.GetType() == page.GetType() ? !(pp.ID == page.ID) : true)
+                .Select(pp => GetUrl(pp)).ToListAsync();
+
+            CancellationTokenSource categoryPageTokenSource = new CancellationTokenSource();
+            CancellationTokenSource productPageTokenSource = new CancellationTokenSource();
+
+            Func<string, List<string>, CancellationToken?, Task<bool>> hasSimilarUrlInCollection =
+                async (url, collection, token) =>
+                {
+                    if (collection == null || collection.Count == 0)
+                        return false;
+                    return await Task.Run(() =>
+                    {
+                        foreach (var c in collection)
+                            if (!token.HasValue || !token.Value.IsCancellationRequested)
+                                if (c.Equals(url))
+                                    return true;
+                        return false;
+                    });
+                };
+
             int index = 0;
             bool has = false;
             string currentPath = GetUrl(page);
+
             do
             {
-                string checkPath = $"{currentPath}{(index == 0 ? "" : index.ToString())}";
+                if (categoryPageTokenSource.IsCancellationRequested)
+                    categoryPageTokenSource = new CancellationTokenSource();
+                if (productPageTokenSource.IsCancellationRequested)
+                    productPageTokenSource = new CancellationTokenSource();
+
                 has = false;
+                string checkPath = $"{currentPath}{(index == 0 ? "" : index.ToString())}";
                 if (index == int.MaxValue)
                 {
                     page.Alias += index.ToString();
                     index = 1;
                 }
-                var UsualPage = db.UsualPages.FirstOrDefaultAsync(sp => $"{GetUrl(sp)}".Equals(checkPath) && (sp.GetType() == page.GetType() ? sp.ID != page.ID : true));
-                var categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => $"{GetUrl(cp)}".Equals(checkPath) && (cp.GetType() == page.GetType() ? cp.ID != page.ID : true));
-                var productPage = db.ProductPages.FirstOrDefaultAsync(pp => $"{GetUrl(pp)}".Equals(checkPath) && (pp.GetType() == page.GetType() ? pp.ID != page.ID : true));
-                if (UsualPage.Result != null) has = true;
-                else if (categoryPage.Result != null) has = true;
-                else if (productPage.Result != null) has = true;
+
+                var hasInUsualPagesTask = hasSimilarUrlInCollection(checkPath, usualPageUrlsTask.Result, null);
+                var hasInCategoryPagesTask = hasSimilarUrlInCollection(checkPath, categoryPageUrlsTask.Result, categoryPageTokenSource.Token);
+                var hasInProductPagesTask = hasSimilarUrlInCollection(checkPath, productPageUrlsTask.Result, productPageTokenSource.Token);
+                if (hasInUsualPagesTask.Result)
+                {
+                    has = true;
+                    categoryPageTokenSource.Cancel();
+                    productPageTokenSource.Cancel();
+                }
+                else if (hasInCategoryPagesTask.Result)
+                {
+                    has = true;
+                    productPageTokenSource.Cancel();
+                }
+                else if (hasInProductPagesTask.Result) has = true;
+
                 if (has && index == 0)
                 {
-                    try
-                    {
-                        int lastUnderscore = page.Alias.LastIndexOf('_');
-                        if (lastUnderscore + 1 != page.Alias.Length)
-                        {
-                            if (lastUnderscore == -1)
-                                throw new FormatException();
-                            Convert.ToInt32(page.Alias.Substring(lastUnderscore + 1));
-                            page.Alias = page.Alias.Substring(0, lastUnderscore + 1);
-                            currentPath = GetUrl(page);
-                        }
-                    }
-                    catch (FormatException)
-                    {
-                        page.Alias += "_";
-                        currentPath += "_";
-                    }
+                    page.Alias = GetNameWithUnderscore(page.Alias);
+                    currentPath = GetUrl(page);
                 }
                 if (!has && index != 0)
                 {

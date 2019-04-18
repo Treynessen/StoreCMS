@@ -1,0 +1,43 @@
+﻿@model TemplateChunk[]
+@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/index.css";
+    User user = Context.Items["User"] as User;
+}
+@if (DataCheck.HasAccessTo(AdminPanelPages.AddTemplateChunk, user, Context))
+{
+            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplateChunk)">@Html.Raw(localization.AddTemplateChunk)</a></div>
+}
+            <table class="templatesList">
+                <tr>
+                    <td>ID</td>
+                    <td>@Html.Raw(localization.TemplateChunkName)</td>
+                    <td>@Html.Raw(localization.Actions)</td>
+                </tr>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(t.ID)</td>
+                    <td>@Html.Raw(t.Name)</td>
+                    <td>
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.EditTemplateChunk, user, Context))
+                    {
+                        <form method="get">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplateChunk)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditTemplateChunk)" />
+                        </form>
+                    }
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.DeleteTemplateChunk, user, Context))
+                    {
+                        <form method="post">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplateChunk)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteTemplateChunk)" />
+                        </form>
+                    }
+                    </td>
+                </tr>
+            }
+            </table>

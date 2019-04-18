@@ -1,4 +1,4 @@
-﻿@model List<Template>
+﻿@model Template[]
 @inject ITemplatesLocalization localization
 @{
     Layout = "CommonPage";
@@ -12,7 +12,7 @@
             <table class="templatesList">
                 <tr>
                     <td>ID</td>
-                    <td>@Html.Raw(localization.Name)</td>
+                    <td>@Html.Raw(localization.TemplateName)</td>
                     <td>@Html.Raw(localization.Actions)</td>
                 </tr>
             @foreach (var t in Model)

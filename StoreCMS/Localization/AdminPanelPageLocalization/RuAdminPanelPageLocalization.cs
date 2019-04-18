@@ -7,6 +7,7 @@
         public string MainPage => "Главная страница";
         public string Pages => "Страницы";
         public string Templates => "Шаблоны";
+        public string TemplateChunks => "Части шаблонов";
         public string Settings => "Настройки";
     }
 }

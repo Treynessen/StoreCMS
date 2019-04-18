@@ -6,10 +6,10 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult Templates()
+        public IActionResult TemplateChunks()
         {
-            SetRoutes("Templates");
-            return View("Templates/TemplatesPage", db.Templates.ToArray());
+            SetRoutes("TemplateChunks");
+            return View("Templates/ChunksPage", db.TemplateChunks.ToArray());
         }
     }
 }

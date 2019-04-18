@@ -52,6 +52,11 @@ public class Startup
         app.UseMvc(routeBuilder =>
         {
             routeBuilder.MapRoute(
+                name: "admin_panel",
+                template: "~/admin",
+                defaults: new { controller = "AdminPanel", action = "AdminPanel" }
+            );
+            routeBuilder.MapRoute(
                 name: "usual_page",
                 template: "{*aliases}",
                 defaults: new { controller = "PagesHandler", action = "UsualPage" },
@@ -68,11 +73,6 @@ public class Startup
                 template: "{*aliases}",
                 defaults: new { controller = "PagesHandler", action = "ProductPage" },
                 constraints: new { aliases = new UrlConstraint(PageType.Product) }
-            );
-            routeBuilder.MapRoute(
-                name: "admin_panel",
-                template: "~/admin",
-                defaults: new { controller = "AdminPanel", action = "AdminPanel" }
             );
         });
     }

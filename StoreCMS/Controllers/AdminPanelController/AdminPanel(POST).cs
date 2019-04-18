@@ -41,7 +41,7 @@ namespace Treynessen.Controllers
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
 
                 case AdminPanelPages.AddTemplate:
-                    if (ActionsWithDatabase.AddTemplates(db, model.TemplateModel, HttpContext) == false)
+                    if (ActionsWithDatabase.AddTemplate(db, model.TemplateModel, HttpContext) == false)
                         return AddTemplate(model.TemplateModel);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
 
@@ -53,6 +53,20 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.DeleteTemplate:
                     ActionsWithDatabase.DeleteTemplate(db, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
+
+                case AdminPanelPages.AddTemplateChunk:
+                    if (ActionsWithDatabase.AddTemplateChunk(db, model.TemplateModel, HttpContext) == false)
+                        return AddTemplateChunk(model.TemplateModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.TemplateChunks}");
+
+                case AdminPanelPages.EditTemplateChunk:
+                    if (ActionsWithDatabase.EditTemplateChunk(db, model, HttpContext) == false)
+                        return EditTemplateChunk(model.itemID, model.TemplateModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditTemplateChunk}&itemID={model.itemID}");
+
+                case AdminPanelPages.DeleteTemplateChunk:
+                    ActionsWithDatabase.DeleteTemplateChunk(db, model.itemID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.TemplateChunks}");
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

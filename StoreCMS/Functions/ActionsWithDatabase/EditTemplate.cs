@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
@@ -16,24 +17,46 @@ namespace Treynessen.Functions
         {
             if (!model.itemID.HasValue || model.TemplateModel == null)
                 return false;
-            Template changeTemplate = db.Templates.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
+            Template changeTemplate = db.Templates.FirstOrDefault(t => t.ID == model.itemID);
             if (changeTemplate == null)
                 return false;
-            Template template = OtherFunctions.TemplateModelToTemplate(model.TemplateModel, context);
-            if (string.IsNullOrEmpty(template.TemplatePath))
-                template.TemplatePath = $"~/Views/Templates/";
+            Template template = OtherFunctions.TemplateModelToITemplate<Template>(model.TemplateModel, context);
             if (template != null)
+            {
+                if (string.IsNullOrEmpty(template.TemplatePath))
+                    template.TemplatePath = $"~/Views/Templates/";
                 template.ID = model.itemID.Value;
+            }
             if (!Validator.TryValidateObject(template, new ValidationContext(template), null))
                 return false;
+
             string pathToTemplates = $"{context.RequestServices.GetService<IHostingEnvironment>().ContentRootPath}/Views/Templates";
-            OtherFunctions.SetUniqueTemplateName(db, template);
+            if (template.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
+                template.Name = "view_imports";
+            OtherFunctions.SetUniqueITemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
-            if (!changeTemplate.TemplatePath.Equals(template.TemplatePath))
+
+            bool isChangedName = !changeTemplate.Name.Equals(template.Name);
+            bool isChangedSource = string.IsNullOrEmpty(changeTemplate.TemplateSource) ? 
+                !string.IsNullOrEmpty(template.TemplateSource) :
+                !changeTemplate.TemplateSource.Equals(template.TemplateSource);
+            if (isChangedName && !isChangedSource)
+            {
+                try
+                {
+                    File.Move($"{pathToTemplates}/{changeTemplate.Name}.cshtml", $"{pathToTemplates}/{template.Name}.cshtml");
+                }
+                catch (FileNotFoundException)
+                {
+                    OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource);
+                }
+            }
+            else if (isChangedSource)
             {
                 File.Delete($"{pathToTemplates}/{changeTemplate.Name}.cshtml");
+                OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource);
             }
-            OtherFunctions.SourceToCSHTML(pathToTemplates, template.Name, template.TemplateSource);
+
             db.Entry(changeTemplate).State = EntityState.Detached;
             db.Templates.Update(template);
             db.SaveChanges();

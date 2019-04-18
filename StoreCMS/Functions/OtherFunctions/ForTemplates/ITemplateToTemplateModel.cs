@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Treynessen.AdminPanelTypes;
-using Treynessen.Database.Entities;
+﻿using Treynessen.AdminPanelTypes;
+using Treynessen.Database.Interfaces;
 
 namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {
-        public static TemplateModel TemplateToTemplateModel(Template template)
+        public static TemplateModel ITemplateToTemplateModel(ITemplate template)
         {
             if (template == null)
                 return null;

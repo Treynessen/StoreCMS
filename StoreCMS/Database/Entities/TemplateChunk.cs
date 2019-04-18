@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Treynessen.Database.Entities
 {
-    public class Template: Interfaces.ITemplate
+    public class TemplateChunk : Interfaces.ITemplate
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }

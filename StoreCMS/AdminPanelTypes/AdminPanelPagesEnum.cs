@@ -5,6 +5,7 @@
         MainPage = 1,
         Pages,
         Templates,
+        TemplateChunks,
         Settings,
 
         AddPage,
@@ -13,8 +14,8 @@
         AddTemplate,
         EditTemplate,
         DeleteTemplate,
-        AddChunk,
-        EditChunk,
-        DeleteChunk
+        AddTemplateChunk,
+        EditTemplateChunk,
+        DeleteTemplateChunk
     }
 }
