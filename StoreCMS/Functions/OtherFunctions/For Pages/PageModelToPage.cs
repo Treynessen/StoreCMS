@@ -28,35 +28,34 @@ namespace Treynessen.Functions
                     if (model.PreviousPageID.HasValue)
                         usualPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
                     page.RequestPathWithoutAlias = usualPage.PreviousPage == null ? "/"
-                        : $"{GetUrl(usualPage.PreviousPage)}";
+                        : GetUrl(usualPage.PreviousPage);
                     break;
                 case PageType.Category:
                     if (model.IsMainPage) // ←
                         return null; // ←
                     CategoryPage categoryPage = new CategoryPage();
                     page = categoryPage;
-                    if (string.IsNullOrEmpty(model.CategoryName)) // ←
-                        categoryPage.CategoryName = model.BreadcrumbName; // ←
-                    else
-                        categoryPage.CategoryName = model.CategoryName;
                     if (model.PreviousPageID.HasValue)
                         categoryPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
                     page.RequestPathWithoutAlias = categoryPage.PreviousPage == null ? "/"
-                        : $"{GetUrl(categoryPage.PreviousPage)}";
+                        : GetUrl(categoryPage.PreviousPage);
                     break;
                 case PageType.Product:
                     if (model.IsMainPage) // ←
                         return null; // ←
+                    if (!model.PreviousPageID.HasValue) // ←
+                        return null; // ←
+                    CategoryPage productCategory = null; // ←
+                    productCategory = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.PreviousPageID).Result; // ←
+                    if (productCategory == null) // ←
+                        return null; // ←
                     ProductPage productPage = new ProductPage();
                     page = productPage;
-                    productPage.ProductName = model.ProductName;
                     productPage.Price = model.Price;
                     productPage.OldPrice = model.OldPrice;
                     productPage.ShortDescription = model.ShortDescription;
-                    if (model.PreviousPageID.HasValue)
-                        productPage.PreviousPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.PreviousPageID.Value).Result;
-                    page.RequestPathWithoutAlias = productPage.PreviousPage == null ? "/"
-                        : $"{GetUrl(productPage.PreviousPage)}";
+                    productPage.PreviousPage = productCategory;
+                    page.RequestPathWithoutAlias = GetUrl(productPage.PreviousPage);
                     break;
                 default:
                     return null;

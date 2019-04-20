@@ -1,42 +1,19 @@
-﻿table.templatesList {
-    width: 100%;
-    min-width: 100%;
-    max-width: 100%;
-    table-layout: fixed;
-    border: 1px solid;
-    border-spacing: 0px;
-    font-size: 1.4rem;
-}
-
-.templatesList tr:first-child {
-    font-weight: bold;
-    text-align: center;
-}
-
-.templatesList tr:not(:first-child):hover {
-    background-color: #f5f5f5;
-    transition-property: background-color;
-    transition-timing-function: ease;
-    transition-duration: 300ms;
-}
-
-.templatesList td {
-    border: 1px solid;
+﻿td {
     padding: .5%;
 }
 
-    .templatesList td:nth-child(1) {
+    td:nth-child(1) {
         width: 5%;
         overflow-x: auto;
         text-align: center;
     }
 
-    .templatesList td:nth-child(2) {
+    td:nth-child(2) {
         width: 70%;
         overflow-x: auto;
     }
 
-    .templatesList td:nth-child(3) {
+    td:nth-child(3) {
         width: 25%;
         overflow-x: auto;
         text-align: center;
@@ -49,6 +26,7 @@ div.addTemplateButton {
 .addTemplateButton a {
     display: inline-block;
     text-decoration: none;
+    color: #000;
     font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
     font-size: 1.4rem;
     padding: .8vh;

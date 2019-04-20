@@ -56,5 +56,34 @@ namespace Treynessen.Functions
                 db.Remove(page);
             db.SaveChanges();
         }
+
+        public static void DeletePage(CMSDatabase db, Page page)
+        {
+            if (page == null)
+                return;
+            if (page is UsualPage up)
+            {
+                db.Entry(up).Reference(p => p.PreviousPage).Load();
+                List<UsualPage> usualPages = db.UsualPages.Where(p => p.PreviousPageID == up.ID).ToList();
+                List<CategoryPage> categoryPages = db.CategoryPages.Where(p => p.PreviousPageID == up.ID).ToList();
+                db.Remove(page);
+                db.SaveChanges();
+                foreach (var u_page in usualPages)
+                {
+                    u_page.PreviousPage = up.PreviousPage;
+                    db.Update(u_page);
+                    RefreshPageAndDependencies(db, u_page);
+                }
+                foreach (var c_page in categoryPages)
+                {
+                    c_page.PreviousPage = up.PreviousPage;
+                    db.Update(c_page);
+                    RefreshPageAndDependencies(db, c_page);
+                }
+            }
+            else
+                db.Remove(page);
+            db.SaveChanges();
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace Treynessen.Functions
                     break;
                 case ProductPage pp:
                     db.Entry(pp).Reference(p => p.PreviousPage).Load();
-                    pp.RequestPathWithoutAlias = pp.PreviousPage == null ? "/" : OtherFunctions.GetUrl(pp.PreviousPage);
+                    pp.RequestPathWithoutAlias = OtherFunctions.GetUrl(pp.PreviousPage);
                     break;
             }
             OtherFunctions.SetUniqueAliasName(db, page);

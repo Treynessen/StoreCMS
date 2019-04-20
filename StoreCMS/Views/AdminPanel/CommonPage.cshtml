@@ -21,6 +21,10 @@
     {
         pages.Add(AdminPanelPages.Pages, localization.Pages);
     }
+    if (DataCheck.HasAccessTo(AdminPanelPages.Categories, user, Context))
+    {
+        pages.Add(AdminPanelPages.Categories, localization.CategoriesAndProducts);
+    }
     if (DataCheck.HasAccessTo(AdminPanelPages.Templates, user, Context))
     {
         pages.Add(AdminPanelPages.Templates, localization.Templates);

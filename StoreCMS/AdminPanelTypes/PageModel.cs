@@ -15,9 +15,6 @@
         public string PageKeywords { get; set; }
         public bool IsRobotIndex { get; set; }
 
-        public string CategoryName { get; set; }
-
-        public string ProductName { get; set; }
         public uint Price { get; set; }
         public uint OldPrice { get; set; }
         public string ShortDescription { get; set; }

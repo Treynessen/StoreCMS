@@ -21,7 +21,6 @@
         string PreviousPage { get; }
         string WithoutPreviousPage { get; }
         string Alias { get; }
-        string LinkAttributes { get; }
         string IsMainPage { get; }
         string Published { get; }
         string IsRobotIndex { get; }

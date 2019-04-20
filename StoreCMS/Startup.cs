@@ -38,6 +38,7 @@ public class Startup
         services.AddTransient<ILoginFormLocalization>(provider => new RuLoginFormLocalization());
         services.AddTransient<IAdminPanelPageLocalization>(provider => new RuAdminPanelPageLocalization());
         services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
+        services.AddTransient<IProductsLocalization>(provider => new RuProductsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
     }
 

@@ -1,0 +1,88 @@
+﻿@model PageModel
+@inject IProductsLocalization localization
+@inject CMSDatabase db
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/products/workWithProduct.css";
+    var templates = db.Templates.ToList();
+    bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
+}
+@if (incorrect)
+{
+            <span>@Html.Raw(localization.IncorrectInput)</span>
+}
+            <form method="post" class="pageContainer">
+                @*SAVE BUTTON*@
+                <input type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <div class="leftRightBlocks">
+                    <div class="leftBlock">
+                        @*TITLE*@
+                        <label for="Title">@Html.Raw(localization.Title)*</label>
+                        <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
+                        @*BREADCRUMB*@
+                        <label for="BreadcrumbName">@Html.Raw(localization.Breadcrumb)*</label>
+                        <input type="text" id="BreadcrumbName" name="PageModel.BreadcrumbName" required value="@Model?.BreadcrumbName" />
+                        @*PRICE*@
+                        <div class="priceBlock">
+                            <div>
+                                <label for="Price">@Html.Raw(localization.Price)</label>
+                                <input type="number" id="Price" name="PageModel.Price" value="@Model?.Price" />
+                            </div>
+                            <div>
+                                <label for="BreadcrumbName">@Html.Raw(localization.OldPrice)</label>
+                                <input type="number" id="OldPrice" name="PageModel.OldPrice" value="@Model?.OldPrice" />
+                            </div>
+                        </div>
+                        @*SHORT DESCRIPTION*@
+                        <label for="ShortDescription">@Html.Raw(localization.ShortDescription)</label>
+                        <textarea class="shortDescription" rows="3" id="ShortDescription" name="PageModel.ShortDescription">@Model?.ShortDescription</textarea>
+                    </div>
+                    <div class="rightBlock">
+                        @*TEMPLATES LIST*@
+                        <label for="TemplateId">@Html.Raw(localization.Template)</label>
+                        <select id="TemplateId" name="PageModel.TemplateId" required>
+                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                            @foreach (var t in templates)
+                            {
+                            <option value="@t.ID">@Html.Raw(t.Name)</option>
+                            }
+                        </select>
+                        @*ALIAS*@
+                        <label for="Alias">@Html.Raw(localization.Alias)</label>
+                        <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
+                        @*PAGE DESCRIPTION*@
+                        <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
+                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
+                        @*PAGE KEYWORDS*@
+                        <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
+                        <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
+                        @*PUBLISHED?*@
+                        <div class="checkboxBlock">
+                        @if (Model == null || Model.Published)
+                        {
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" />
+                        }
+                            <label for="Published">@Html.Raw(localization.Published)</label>
+                        </div>
+                        @*IS ROBOT INDEX?*@
+                        <div class="checkboxBlock">
+                        @if (Model == null || Model.IsRobotIndex)
+                        {
+                            <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="IsRobotIndex" name="PageModel.IsRobotIndex" value="true" />
+                        }
+                            <label for="IsRobotIndex">@Html.Raw(localization.IsRobotIndex)</label>
+                        </div>
+                    </div>
+                </div>
+                @*CONTENT*@
+                <label for="Content">@Html.Raw(localization.Content)</label>
+                <textarea id="Content" name="PageModel.Content">@Model?.Content</textarea>
+            </form>

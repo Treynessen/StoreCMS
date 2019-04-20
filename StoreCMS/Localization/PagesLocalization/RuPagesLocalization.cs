@@ -12,7 +12,7 @@
         public string Category => "Страница с товаром";
 
         public string SaveButton => "Сохранить";
-        public string Title => "Заголовок";
+        public string Title => "Заголовок(Title) страницы";
         public string Breadcrumb => "Название страницы";
         public string PageDescription => "Description в meta-теге";
         public string PageKeywords => "Keywords в meta-теге";
@@ -21,7 +21,6 @@
         public string PreviousPage => "Страница-родитель";
         public string WithoutPreviousPage => "Независимая страница";
         public string Alias => "Псевдоним страницы";
-        public string LinkAttributes => "Атрибуты страницы";
         public string IsMainPage => "Главная страница";
         public string Published => "Опубликована";
         public string IsRobotIndex => "Доступна для индексации";

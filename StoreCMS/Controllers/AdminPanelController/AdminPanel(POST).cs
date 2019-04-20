@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Functions;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Entities;
@@ -39,6 +40,28 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.DeletePage:
                     ActionsWithDatabase.DeletePage(db, model.PageType, model.itemID);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
+
+                case AdminPanelPages.AddProduct:
+                    model.PageModel.PageType = PageType.Product;
+                    model.PageModel.PreviousPageID = model.itemID;
+                    if (ActionsWithDatabase.AddPage(db, model.PageModel, HttpContext) == false)
+                        return AddProduct(model.PageModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={model.itemID}");
+
+                case AdminPanelPages.EditProduct:
+                    model.PageType = PageType.Product;
+                    if (ActionsWithDatabase.EditPage(db, model, HttpContext) == false)
+                        return EditProduct(model.itemID, model.PageModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditProduct}&itemID={model.itemID}");
+
+                case AdminPanelPages.DeleteProduct:
+                    if (model.itemID.HasValue)
+                    {
+                        ProductPage page = db.ProductPages.FirstOrDefaultAsync(p => p.ID == model.itemID).Result;
+                        ActionsWithDatabase.DeletePage(db, page);
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={page.PreviousPageID}");
+                    }
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
 
                 case AdminPanelPages.AddTemplate:
                     if (ActionsWithDatabase.AddTemplate(db, model.TemplateModel, HttpContext) == false)

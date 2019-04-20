@@ -1,12 +1,9 @@
-﻿@inject IPagesLocalization localization
-@inject CMSDatabase db
+﻿@model List<PageViewModel>
+@inject IPagesLocalization localization
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/index.css";
     User user = Context.Items["User"] as User;
-    var usualPages = db.UsualPages.Select(page => new { page.ID, page.Title, page.RequestPathWithoutAlias, page.Alias, PageType = PageType.Usual });
-    var categoryPages = db.CategoryPages.Select(page => new { page.ID, page.Title, page.RequestPathWithoutAlias, page.Alias, PageType = PageType.Category });
-    var sortedPages = usualPages.Concat(categoryPages).OrderBy(page => page.Title).ToList();
 }
 @if (DataCheck.HasAccessTo(AdminPanelPages.AddPage, user, Context))
 {
@@ -14,7 +11,7 @@
                 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a>
             </div>
 }
-            <table class="pagesList">
+            <table>
                 <tr>
                     <td>ID</td>
                     <td>Title</td>
@@ -22,12 +19,12 @@
                     <td>@Html.Raw(localization.PageType)</td>
                     <td>@Html.Raw(localization.ActionsWithPage)</td>
                 </tr>
-    @foreach (var p in sortedPages)
+    @foreach (var p in Model)
     {
                 <tr>
                     <td>@Html.Raw(p.ID)</td>
                     <td>@Html.Raw(p.Title)</td>
-                    <td>@Html.Raw(OtherFunctions.GetUrl(p.RequestPathWithoutAlias, p.Alias))</td>
+                    <td>@Html.Raw(p.Url)</td>
                     <td>@Html.Raw((p.PageType == PageType.Usual ? localization.Usual : localization.Category))</td>
                     <td>
             @if (DataCheck.HasAccessTo(AdminPanelPages.EditPage, user, Context))

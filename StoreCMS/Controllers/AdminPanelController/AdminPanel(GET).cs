@@ -28,6 +28,14 @@ namespace Treynessen.Controllers
                     return AddPage();
                 case AdminPanelPages.EditPage:
                     return EditPage(model.PageType, model.itemID);
+                case AdminPanelPages.Categories:
+                    return Categories();
+                case AdminPanelPages.ShowCategoryProducts:
+                    return ShowCategoryProducts(model.itemID);
+                case AdminPanelPages.AddProduct:
+                    return AddProduct(model.PageModel);
+                case AdminPanelPages.EditProduct:
+                    return EditProduct(model.itemID, model.PageModel);
                 case AdminPanelPages.Templates:
                     return Templates();
                 case AdminPanelPages.AddTemplate:

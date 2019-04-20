@@ -20,12 +20,10 @@ namespace Treynessen.Functions
                     break;
                 case CategoryPage cp:
                     model.PageType = PageType.Category;
-                    model.CategoryName = cp.CategoryName;
                     model.PreviousPageID = cp.PreviousPageID;
                     break;
                 case ProductPage pp:
                     model.PageType = PageType.Product;
-                    model.ProductName = pp.ProductName;
                     model.Price = pp.Price;
                     model.OldPrice = pp.OldPrice;
                     model.ShortDescription = pp.ShortDescription;

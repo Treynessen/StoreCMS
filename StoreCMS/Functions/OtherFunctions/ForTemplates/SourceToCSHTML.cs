@@ -6,15 +6,15 @@ namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {
-        public static void SourceToCSHTML(CMSDatabase db, string pathToTemplates, string templateName, string source)
+        public static void SourceToCSHTML(CMSDatabase db, string path, string name, string source)
         {
-            if (pathToTemplates[pathToTemplates.Length - 1] == '/')
-                pathToTemplates = pathToTemplates.Substring(0, pathToTemplates.Length - 1);
-            bool isChunk = pathToTemplates.EndsWith("/Views/TemplateChunks");
+            if (path[path.Length - 1] == '/')
+                path = path.Substring(0, path.Length - 1);
+            bool isChunk = path.EndsWith("/Views/TemplateChunks");
 
-            Directory.CreateDirectory(pathToTemplates);
+            Directory.CreateDirectory(path);
 
-            using (StreamWriter sw = new StreamWriter($"{pathToTemplates}/{templateName}.cshtml"))
+            using (StreamWriter sw = new StreamWriter($"{path}/{name}.cshtml"))
             {
                 if (!string.IsNullOrEmpty(source))
                 {
@@ -30,7 +30,7 @@ namespace Treynessen.Functions
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
                     builder.Replace("[Page:IsRobotIndex]", "@(if(Model != null && Model.IsRobotIndex)\n{\n\tindex\n}\nelse\n{\n\tno-index\n})");
 
-                    var chunks = GetChunks(db, source, isChunk ? templateName : null);
+                    var chunks = GetChunks(db, source, isChunk ? name : null);
                     foreach (var c in chunks)
                         builder.Replace($"[#{c.Name}]", $"@(await Html.PartialAsync(\"{c.TemplatePath}\", Model))");
 

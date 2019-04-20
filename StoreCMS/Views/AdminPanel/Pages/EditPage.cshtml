@@ -30,12 +30,6 @@
                         <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model.PageKeywords" />
                     </div>
                     <div class="rightBlock">
-                        @*CATEGORY NAME*@
-                        @if (Model.PageType == PageType.Category)
-                        {
-                        <label for="CategoryName">@Html.Raw(localization.CategoryName)*</label>
-                        <input type="text" id="CategoryName" name="PageModel.CategoryName" required value="@Model.CategoryName" />
-                        }
                         @*TEMPLATE*@
                         <label for="TemplateId">@Html.Raw(localization.Template)</label>
                         <select id="TemplateId" name="PageModel.TemplateId" required>

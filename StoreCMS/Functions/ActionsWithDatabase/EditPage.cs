@@ -31,6 +31,7 @@ namespace Treynessen.Functions
                     ProductPage productPage = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == model.itemID).Result;
                     if (productPage == null)
                         return false;
+                    model.PageModel.PreviousPageID = productPage.PreviousPageID;
                     db.Entry(productPage).State = EntityState.Detached;
                     break;
             }

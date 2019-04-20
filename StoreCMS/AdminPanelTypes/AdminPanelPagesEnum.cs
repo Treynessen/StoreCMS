@@ -4,10 +4,11 @@
     {
         MainPage = 1,
         Pages,
-        Products,
+        Categories,
         Templates,
         TemplateChunks,
         Settings,
+
         AddPage,
         EditPage,
         DeletePage,
