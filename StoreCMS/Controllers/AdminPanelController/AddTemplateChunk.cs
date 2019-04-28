@@ -8,7 +8,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult AddTemplateChunk(TemplateModel model = null)
         {
-            SetRoutes("AddTemplateChunk");
             return View("Templates/AddTemplate", model);
         }
     }

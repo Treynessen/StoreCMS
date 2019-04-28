@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.Extensions;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -21,17 +22,18 @@ namespace Treynessen.Functions
             TemplateChunk changeChunk = db.TemplateChunks.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
             if (changeChunk == null)
                 return false;
+            IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             TemplateChunk chunk = OtherFunctions.TemplateModelToITemplate<TemplateChunk>(model.TemplateModel, context);
             if (chunk != null)
             {
                 if (string.IsNullOrEmpty(chunk.TemplatePath))
-                    chunk.TemplatePath = $"~/Views/TemplateChunks/";
+                    chunk.TemplatePath = env.GetTemplateChunksPath(true);
                 chunk.ID = model.itemID.Value;
             }
             if (!Validator.TryValidateObject(chunk, new ValidationContext(chunk), null))
                 return false;
 
-            string pathToTemplateChunks = $"{context.RequestServices.GetService<IHostingEnvironment>().ContentRootPath}/Views/TemplateChunks";
+            string pathToTemplateChunks = env.GetTemplateChunksPath();
             if (chunk.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
                 chunk.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, chunk);
@@ -46,7 +48,7 @@ namespace Treynessen.Functions
             {
                 try
                 {
-                    File.Move($"{pathToTemplateChunks}/{changeChunk.Name}.cshtml", $"{pathToTemplateChunks}/{chunk.Name}.cshtml");
+                    File.Move($"{pathToTemplateChunks}{changeChunk.Name}.cshtml", $"{pathToTemplateChunks}{chunk.Name}.cshtml");
                 }
                 catch (FileNotFoundException)
                 {
@@ -55,7 +57,7 @@ namespace Treynessen.Functions
             }
             else if (isChangedSource)
             {
-                File.Delete($"{pathToTemplateChunks}/{changeChunk.Name}.cshtml");
+                File.Delete($"{pathToTemplateChunks}{changeChunk.Name}.cshtml");
                 OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource);
             }
 
@@ -78,9 +80,8 @@ namespace Treynessen.Functions
                 {
                     var task = Task.Run(() =>
                     {
-                        string pathToTemplates = $"{pathToTemplateChunks.Substring(0, pathToTemplateChunks.Length - "/TemplateChunks".Length)}/Templates";
                         foreach (var t in templates.Result)
-                            OtherFunctions.SourceToCSHTML(db, pathToTemplates, t.Name, t.TemplateSource);
+                            OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
                     });
                     foreach (var tc in chunks.Result)
                         OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource);

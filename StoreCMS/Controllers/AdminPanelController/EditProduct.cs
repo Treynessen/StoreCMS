@@ -11,7 +11,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult EditProduct(int? itemID, PageModel model = null)
         {
-            SetRoutes("EditProduct");
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
             if (model == null)

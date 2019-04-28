@@ -8,7 +8,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult AddTemplate(TemplateModel model = null)
         {
-            SetRoutes("AddTemplate");
             return View("Templates/AddTemplate", model);
         }
     }

@@ -8,7 +8,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult TemplateChunks()
         {
-            SetRoutes("TemplateChunks");
             return View("Templates/ChunksPage", db.TemplateChunks.ToArray());
         }
     }

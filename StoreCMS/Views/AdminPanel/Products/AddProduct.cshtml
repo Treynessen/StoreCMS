@@ -26,11 +26,11 @@
                         <div class="priceBlock">
                             <div>
                                 <label for="Price">@Html.Raw(localization.Price)</label>
-                                <input type="number" id="Price" name="PageModel.Price" value="@Model?.Price" />
+                                <input type="number" id="Price" name="PageModel.Price" min="0" value="@Model?.Price" />
                             </div>
                             <div>
                                 <label for="BreadcrumbName">@Html.Raw(localization.OldPrice)</label>
-                                <input type="number" id="OldPrice" name="PageModel.OldPrice" value="@Model?.OldPrice" />
+                                <input type="number" id="OldPrice" name="PageModel.OldPrice" min="0" value="@Model?.OldPrice" />
                             </div>
                         </div>
                         @*SHORT DESCRIPTION*@

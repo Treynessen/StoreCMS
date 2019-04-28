@@ -10,7 +10,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult Pages()
         {
-            SetRoutes("Pages");
             var usualPages = db.UsualPages.Select(page => new PageViewModel { ID = page.ID, Title = page.Title, Url = OtherFunctions.GetUrl(page.RequestPathWithoutAlias, page.Alias), PageType = PageType.Usual });
             var categoryPages = db.CategoryPages.Select(page => new PageViewModel { ID = page.ID, Title = page.Title, Url = OtherFunctions.GetUrl(page.RequestPathWithoutAlias, page.Alias), PageType = PageType.Category });
             var sortedPages = usualPages.Concat(categoryPages).OrderBy(page => page.PageType).ThenBy(page => page.ID).ToList();

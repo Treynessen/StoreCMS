@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Extensions;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -18,12 +19,13 @@ namespace Treynessen.Functions
             TemplateChunk chunk = OtherFunctions.TemplateModelToITemplate<TemplateChunk>(model, context);
             if (chunk == null)
                 return false;
+            IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (string.IsNullOrEmpty(chunk.TemplatePath))
-                chunk.TemplatePath = $"~/Views/TemplateChunks/";
+                chunk.TemplatePath = env.GetTemplateChunksPath(true);
             if (!Validator.TryValidateObject(chunk, new ValidationContext(chunk), null))
                 return false;
 
-            string pathToTemplateChunks = $"{context.RequestServices.GetService<IHostingEnvironment>().ContentRootPath}/Views/TemplateChunks";
+            string pathToTemplateChunks = env.GetTemplateChunksPath();
             if (chunk.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
                 chunk.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, chunk);
@@ -37,9 +39,8 @@ namespace Treynessen.Functions
             var chunks = db.TemplateChunks.Where(tc => tc.TemplateSource.Contains($"[#{chunk.Name}]")).ToListAsync();
             var task = Task.Run(() =>
             {
-                string pathToTemplates = $"{pathToTemplateChunks.Substring(0, pathToTemplateChunks.Length - "/TemplateChunks".Length)}/Templates";
                 foreach (var t in templates.Result)
-                    OtherFunctions.SourceToCSHTML(db, pathToTemplates, t.Name, t.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
             });
             foreach (var tc in chunks.Result)
                 OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource);

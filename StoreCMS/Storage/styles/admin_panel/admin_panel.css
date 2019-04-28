@@ -29,10 +29,6 @@ ul.menuBlock {
     border-bottom: 1px solid;
 }
 
-    .menuBlock li:first-child {
-        border-top: 1px solid;
-    }
-
     .menuBlock li > a {
         display: block;
         text-decoration: none;

@@ -6,6 +6,7 @@
         string AddProductInCategory { get; }
         string ActionsWithProduct { get; }
         string EditProduct { get; }
+        string ProductImages { get; }
         string DeleteProduct { get; }
 
         string IncorrectInput { get; }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.Extensions;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -20,17 +21,18 @@ namespace Treynessen.Functions
             Template changeTemplate = db.Templates.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
             if (changeTemplate == null)
                 return false;
+            IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             Template template = OtherFunctions.TemplateModelToITemplate<Template>(model.TemplateModel, context);
             if (template != null)
             {
                 if (string.IsNullOrEmpty(template.TemplatePath))
-                    template.TemplatePath = $"~/Views/Templates/";
+                    template.TemplatePath = env.GetTemplatesPath(true);
                 template.ID = model.itemID.Value;
             }
             if (!Validator.TryValidateObject(template, new ValidationContext(template), null))
                 return false;
 
-            string pathToTemplates = $"{context.RequestServices.GetService<IHostingEnvironment>().ContentRootPath}/Views/Templates";
+            string pathToTemplates = env.GetTemplatesPath();
             if (template.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
                 template.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, template);
@@ -44,7 +46,7 @@ namespace Treynessen.Functions
             {
                 try
                 {
-                    File.Move($"{pathToTemplates}/{changeTemplate.Name}.cshtml", $"{pathToTemplates}/{template.Name}.cshtml");
+                    File.Move($"{pathToTemplates}{changeTemplate.Name}.cshtml", $"{pathToTemplates}{template.Name}.cshtml");
                 }
                 catch (FileNotFoundException)
                 {
@@ -53,7 +55,7 @@ namespace Treynessen.Functions
             }
             else if (isChangedSource)
             {
-                File.Delete($"{pathToTemplates}/{changeTemplate.Name}.cshtml");
+                File.Delete($"{pathToTemplates}{changeTemplate.Name}.cshtml");
                 OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource);
             }
 

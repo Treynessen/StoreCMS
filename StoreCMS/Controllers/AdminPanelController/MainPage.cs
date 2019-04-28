@@ -7,7 +7,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult MainPage()
         {
-            SetRoutes("MainPage");
             return View("MainPage");
         }
     }

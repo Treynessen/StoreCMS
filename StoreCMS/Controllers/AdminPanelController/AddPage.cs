@@ -8,7 +8,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult AddPage(PageModel model = null)
         {
-            SetRoutes("AddPage");
             return View("Pages/AddPage", model);
         }
     }

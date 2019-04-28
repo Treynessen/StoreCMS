@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Extensions;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -19,8 +20,9 @@ namespace Treynessen.Functions
             TemplateChunk deleteChunk = db.TemplateChunks.FirstOrDefaultAsync(tc => tc.ID == itemID).Result;
             if (deleteChunk == null)
                 return;
-            string pathToViews = $"{context.RequestServices.GetRequiredService<IHostingEnvironment>().ContentRootPath}/Views";
-            File.Delete($"{pathToViews}/TemplateChunks/{deleteChunk.Name}.cshtml");
+            IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
+            string templateChunksPath = env.GetTemplateChunksPath();
+            File.Delete($"{templateChunksPath}{deleteChunk.Name}.cshtml");
             db.Remove(deleteChunk);
             db.SaveChanges();
 
@@ -30,11 +32,11 @@ namespace Treynessen.Functions
             var task = Task.Run(() =>
             {
                 foreach (var t in templatesTask.Result)
-                    OtherFunctions.SourceToCSHTML(db, $"{pathToViews}/Templates", t.Name, t.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
                 db.Templates.UpdateRange(templatesTask.Result);
             });
             foreach (var c in chunksTask.Result)
-                OtherFunctions.SourceToCSHTML(db, $"{pathToViews}/TemplateChunks", c.Name, c.TemplateSource);
+                OtherFunctions.SourceToCSHTML(db, templateChunksPath, c.Name, c.TemplateSource);
             task.Wait();
             db.TemplateChunks.UpdateRange(chunksTask.Result);
             db.SaveChanges();

@@ -40,6 +40,7 @@ using Treynessen.Database.Entities;
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"a671fa65017eefff8d157f76147a1f83cd038fc7", @"/Views/AdminPanel/Products/Categories.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"b72ebc596467cb325db31555bef712b3fd90abe7", @"/Views/AdminPanel/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"cd484aca00b6366db4c9613599bf6cd4bf9f84d6", @"/Views/AdminPanel/Products/_ViewImports.cshtml")]
     public class Views_AdminPanel_Products_Categories : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<CategoryPage[]>
     {
         #pragma warning disable 1998

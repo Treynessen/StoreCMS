@@ -10,8 +10,6 @@ namespace Treynessen.Controllers
         [HttpGet]
         public IActionResult AdminPanel(AdminPanelModel model)
         {
-            SetRoutes("AdminPanel(GET)");
-
             User user = DataCheck.CheckCookies(db, HttpContext);
             if(!DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
                 return LoginForm();
@@ -34,6 +32,8 @@ namespace Treynessen.Controllers
                     return ShowCategoryProducts(model.itemID);
                 case AdminPanelPages.AddProduct:
                     return AddProduct(model.PageModel);
+                case AdminPanelPages.ProductImages:
+                    return ProductImages(model.itemID);
                 case AdminPanelPages.EditProduct:
                     return EditProduct(model.itemID, model.PageModel);
                 case AdminPanelPages.Templates:

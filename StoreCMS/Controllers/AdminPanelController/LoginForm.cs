@@ -8,7 +8,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult LoginForm(LoginFormModel model = null)
         {
-            SetRoutes("LoginForm");
             return View("LoginForm", model);
         }
     }

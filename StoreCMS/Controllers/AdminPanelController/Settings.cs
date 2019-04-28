@@ -7,7 +7,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult Settings()
         {
-            SetRoutes("Settings");
             return View("Settings");
         }
     }

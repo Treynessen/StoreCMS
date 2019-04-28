@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Extensions;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -29,7 +30,7 @@ namespace Treynessen.Functions
             db.CategoryPages.UpdateRange(categoryPagesTask.Result);
             foreach (var pp in productPagesTask.Result)
                 pp.Template = null;
-            File.Delete($"{context.RequestServices.GetRequiredService<IHostingEnvironment>().ContentRootPath}/Views/Templates/{template.Name}.cshtml");
+            File.Delete($"{context.RequestServices.GetRequiredService<IHostingEnvironment>().GetTemplatesPath()}{template.Name}.cshtml");
             db.ProductPages.UpdateRange(productPagesTask.Result);
             db.Templates.Remove(template);
             db.SaveChanges();

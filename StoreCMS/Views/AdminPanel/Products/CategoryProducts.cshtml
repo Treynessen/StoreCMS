@@ -28,21 +28,29 @@
                     <td>@Html.Raw(OtherFunctions.GetUrl(p.RequestPathWithoutAlias, p.Alias))</td>
                     <td>
             @if (DataCheck.HasAccessTo(AdminPanelPages.EditPage, user, Context))
-                {
+            {
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditProduct)" />
                             <input type="hidden" name="itemID" value="@p.ID">
                             <input type="submit" class="actionButton" value="@Html.Raw(localization.EditProduct)" />
                         </form>
-                }
+            }
+            @if (DataCheck.HasAccessTo(AdminPanelPages.ProductImages, user, Context))
+            {
+                        <form method="get">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.ProductImages)" />
+                            <input type="hidden" name="itemID" value="@p.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.ProductImages)" />
+                        </form>
+            }
             @if (DataCheck.HasAccessTo(AdminPanelPages.DeletePage, user, Context))
-                {
+            {
             <form method="post">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProduct)" />
                             <input type="hidden" name="itemID" value="@p.ID">
                             <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteProduct)" />
                         </form>
-                }
+            }
                     </td>
                 </tr>
     }

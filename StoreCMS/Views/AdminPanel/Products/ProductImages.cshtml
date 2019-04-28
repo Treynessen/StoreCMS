@@ -1,0 +1,17 @@
+﻿@model string[]
+@inject IProductsLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/products/workWithProduct.css";
+    User user = Context.Items["User"] as User;
+}
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddProductImage)">
+    <input type="file" name="uploadedFile" />
+    <input type="submit" />
+</form>
+
+@foreach(var m in Model)
+{
+<image full-path="@m" width="200" quality="50"></image>
+}

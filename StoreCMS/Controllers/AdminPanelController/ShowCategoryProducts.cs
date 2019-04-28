@@ -10,8 +10,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult ShowCategoryProducts(int? itemID)
         {
-            SetRoutes("ShowCategoryProducts");
-
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
             CategoryPage category = db.CategoryPages.FirstOrDefaultAsync(c => c.ID == itemID).Result;

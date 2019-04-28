@@ -10,8 +10,6 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult EditTemplateChunk(int? itemID, TemplateModel model = null)
         {
-            SetRoutes("EditTemplate");
-
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.TemplateChunks}");
             if (model == null)

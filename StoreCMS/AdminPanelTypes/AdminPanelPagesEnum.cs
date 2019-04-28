@@ -8,7 +8,6 @@
         Templates,
         TemplateChunks,
         Settings,
-
         AddPage,
         EditPage,
         DeletePage,
@@ -16,6 +15,9 @@
         AddProduct,
         EditProduct,
         DeleteProduct,
+        ProductImages,
+        AddProductImage,
+        DeleteProductImage,
         AddTemplate,
         EditTemplate,
         DeleteTemplate,

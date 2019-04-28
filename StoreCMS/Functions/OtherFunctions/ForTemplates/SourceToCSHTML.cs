@@ -8,13 +8,11 @@ namespace Treynessen.Functions
     {
         public static void SourceToCSHTML(CMSDatabase db, string path, string name, string source)
         {
-            if (path[path.Length - 1] == '/')
-                path = path.Substring(0, path.Length - 1);
-            bool isChunk = path.EndsWith("/Views/TemplateChunks");
+            bool isChunk = path.EndsWith(@"\Views\TemplateChunks\");
 
             Directory.CreateDirectory(path);
 
-            using (StreamWriter sw = new StreamWriter($"{path}/{name}.cshtml"))
+            using (StreamWriter sw = new StreamWriter($"{path}{name}.cshtml"))
             {
                 if (!string.IsNullOrEmpty(source))
                 {

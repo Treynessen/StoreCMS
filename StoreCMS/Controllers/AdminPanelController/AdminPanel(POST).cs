@@ -9,10 +9,8 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [HttpPost]
-        public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel)
+        public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel, Microsoft.AspNetCore.Http.IFormFile uploadedFile)
         {
-            SetRoutes("AdminPanel(POST)");
-
             User user = DataCheck.CheckCookies(db, HttpContext);
             if (user == null)
             {
@@ -47,6 +45,10 @@ namespace Treynessen.Controllers
                     if (ActionsWithDatabase.AddPage(db, model.PageModel, HttpContext) == false)
                         return AddProduct(model.PageModel);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={model.itemID}");
+
+                case AdminPanelPages.AddProductImage:
+                    OtherFunctions.AddProductImageToServer(db, uploadedFile, model.itemID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ProductImages}&itemID={model.itemID}");
 
                 case AdminPanelPages.EditProduct:
                     model.PageType = PageType.Product;

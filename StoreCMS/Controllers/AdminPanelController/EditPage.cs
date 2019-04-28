@@ -33,7 +33,6 @@ namespace Treynessen.Controllers
                 HttpContext.Items["IsIncorrect"] = true;
             if (model == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
-            SetRoutes("EditPage");
             return View("Pages/EditPage", model);
         }
     }
