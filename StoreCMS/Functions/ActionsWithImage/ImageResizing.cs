@@ -8,9 +8,9 @@ namespace Treynessen.Functions
 {
     public static partial class ActionsWithImage
     {
-        public static string ImageResizing(string path, int? width = null, int? height = null)
+        public static string ImageResizing(string path, int? width = null, int? height = null, int? maxWidth = null, int? maxHeight = null)
         {
-            if (!width.HasValue && !height.HasValue)
+            if (!width.HasValue && !height.HasValue && !maxWidth.HasValue && !maxHeight.HasValue)
                 throw new ArgumentNullException("width or height", "ImageResizing(line 14): width or height doesn't have a value");
 
             string pathToImageFolder = path.Substring(0, path.LastIndexOf('\\') + 1);
@@ -31,7 +31,7 @@ namespace Treynessen.Functions
             string resultFileName = null;
             if (HasSourceImage(pathToImageFolder, sourceFileName))
             {
-                resultFileName = GetImageNameIfHas(pathToImageFolder, path, width: width, height: height);
+                resultFileName = GetImageNameIfHas(pathToImageFolder, path, width: width, height: height, maxWidth: maxWidth, maxHeight: maxHeight);
                 if (!string.IsNullOrEmpty(resultFileName))
                     return resultFileName;
             }
@@ -41,14 +41,26 @@ namespace Treynessen.Functions
             {
                 int sourceWidth = source.Width;
                 int sourceHeight = source.Height;
-                if (!width.HasValue)
+                if (!width.HasValue && !height.HasValue)
+                {
+                    if (maxWidth.HasValue || maxHeight.HasValue)
+                    {
+                        width = sourceWidth;
+                        height = sourceHeight;
+                    }
+                }
+                else if (!width.HasValue)
                     width = source.Height > height ? Convert.ToInt32(sourceWidth / ((float)sourceHeight / height)) : Convert.ToInt32(sourceWidth * ((float)height / sourceHeight));
                 else if (!height.HasValue)
                     height = source.Width > width ? Convert.ToInt32(sourceHeight / ((float)sourceWidth / width)) : Convert.ToInt32(sourceHeight * ((float)width / sourceWidth));
-                source.Mutate(x => x.Resize(width.Value, height.Value));
-                resultFileName = $"{sourceFileName.Substring(0, sourceFileName.LastIndexOf('.'))}_{width.Value}x{height.Value}{fileNameExtension}";
-                AppendInfoIntoFile(pathToImageFolder, sourceFileName, sourceWidth, sourceHeight);
-                source.Save($"{pathToImageFolder}{resultFileName}");
+                ScaleDimension(ref width, ref height, maxWidth, maxHeight);
+                if (width.HasValue && height.HasValue)
+                {
+                    source.Mutate(x => x.Resize(width.Value, height.Value));
+                    resultFileName = $"{sourceFileName.Substring(0, sourceFileName.LastIndexOf('.'))}_{width.Value}x{height.Value}{fileNameExtension}";
+                    AppendInfoIntoFile(pathToImageFolder, sourceFileName, sourceWidth, sourceHeight);
+                    source.Save($"{pathToImageFolder}{resultFileName}");
+                }
                 return resultFileName;
             }
         }

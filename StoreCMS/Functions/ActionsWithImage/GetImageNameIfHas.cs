@@ -6,7 +6,9 @@ namespace Treynessen.Functions
 {
     public static partial class ActionsWithImage
     {
-        private static string GetImageNameIfHas(string pathToImageFolder, string pathToSourceImage, int? width = null, int? height = null, int? quality = null)
+        private static string GetImageNameIfHas(string pathToImageFolder, string pathToSourceImage,
+            int? width = null, int? height = null, int? maxWidth = null, int? maxHeight = null,
+            int? quality = null)
         {
             string sourceImageName = pathToSourceImage.Substring(pathToImageFolder.Length);
             string pathToImagesInfo = $"{pathToImageFolder}images.info";
@@ -19,7 +21,8 @@ namespace Treynessen.Functions
                     Match match = regex.Match(readToEndTask.Result);
                     if (match.Success)
                     {
-                        if ((width.HasValue || height.HasValue) && (!width.HasValue || !height.HasValue))
+                        if (((width.HasValue || height.HasValue) && (!width.HasValue || !height.HasValue))
+                            || (maxWidth.HasValue || maxHeight.HasValue))
                         {
                             string matchValue = match.Value;
                             string leftSide = "width = ";
@@ -30,10 +33,19 @@ namespace Treynessen.Functions
                             leftSide = "height = ";
                             beginIndex = matchValue.IndexOf(leftSide, endIndex) + leftSide.Length;
                             int sourceImageHeight = Convert.ToInt32(matchValue.Substring(beginIndex, matchValue.Length - beginIndex));
-                            if (!width.HasValue)
+                            if (!width.HasValue && !height.HasValue)
+                            {
+                                if (maxWidth.HasValue || maxHeight.HasValue)
+                                {
+                                    width = sourceImageWidth;
+                                    height = sourceImageHeight;
+                                }
+                            }
+                            else if (!width.HasValue)
                                 width = sourceImageHeight > height ? Convert.ToInt32(sourceImageWidth / ((float)sourceImageHeight / height)) : Convert.ToInt32(sourceImageWidth * ((float)height / sourceImageHeight));
                             else if (!height.HasValue)
                                 height = sourceImageWidth > width ? Convert.ToInt32(sourceImageHeight / ((float)sourceImageWidth / width)) : Convert.ToInt32(sourceImageHeight * ((float)width / sourceImageWidth));
+                            ScaleDimension(ref width, ref height, maxWidth, maxHeight);
                         }
                     }
                     else return null;

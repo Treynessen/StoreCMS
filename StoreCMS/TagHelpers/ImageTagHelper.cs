@@ -1,9 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Treynessen.Functions;
 using Treynessen.Extensions;
@@ -18,6 +14,8 @@ namespace Treynessen.TagHelpers
         public string FullPath { get; set; }
         public int? Width { get; set; }
         public int? Height { get; set; }
+        public int? MaxWidth { get; set; }
+        public int? MaxHeight { get; set; }
         public int? Quality { get; set; }
         public string Alt { get; set; }
         public string Style { get; set; }
@@ -58,15 +56,22 @@ namespace Treynessen.TagHelpers
                 {
                     if ((Width.HasValue || Height.HasValue) && !Quality.HasValue)
                     {
-                        imageFullName = ActionsWithImage.ImageResizing(fullPath, Width, Height);
+                        imageFullName = ActionsWithImage.ImageResizing(fullPath, Width, Height, MaxWidth, MaxHeight);
                     }
                     else if ((!Width.HasValue && !Height.HasValue) && Quality.HasValue)
                     {
-                        imageFullName = ActionsWithImage.ImageComprassion(fullPath, Quality.Value);
+                        if (MaxHeight.HasValue || MaxWidth.HasValue)
+                            imageFullName = ActionsWithImage.ImageResizingAndComprassion(fullPath, Quality.Value, maxWidth: MaxWidth, maxHeight: MaxHeight);
+                        else
+                            imageFullName = ActionsWithImage.ImageComprassion(fullPath, Quality.Value);
                     }
                     else if ((Width.HasValue || Height.HasValue) && Quality.HasValue)
                     {
-                        imageFullName = ActionsWithImage.ImageResizingAndComprassion(fullPath, Quality.Value, Width, Height);
+                        imageFullName = ActionsWithImage.ImageResizingAndComprassion(fullPath, Quality.Value, Width, Height, MaxWidth, MaxHeight);
+                    }
+                    else if(MaxWidth.HasValue || MaxHeight.HasValue)
+                    {
+                        imageFullName = ActionsWithImage.ImageResizing(fullPath, maxWidth: MaxWidth, maxHeight: MaxHeight);
                     }
                     else
                     {
@@ -77,6 +82,8 @@ namespace Treynessen.TagHelpers
                 {
                     return Src;
                 }
+                if (string.IsNullOrEmpty(imageFullName))
+                    return Src;
                 resultSrc += imageFullName;
                 return resultSrc;
             });
