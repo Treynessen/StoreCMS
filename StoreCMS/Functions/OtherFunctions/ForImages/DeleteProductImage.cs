@@ -43,6 +43,10 @@ namespace Treynessen.Functions
                       let imageNameEnding = regex.Match(img).Value.Substring(product.Alias.Length)
                       orderby imageNameEnding.Length == 4 ? 0 : Convert.ToInt32(imageNameEnding.Substring(1, imageNameEnding.IndexOf('.') - 1))
                       select img).Skip(imageID.Value).ToArray();
+            // Список изменений, которые необходимо внести в файл images.info
+            // В key хранится старое имя изображение, в value новое, на которое необходимо заменить
+            LinkedList<KeyValuePair<string, string>> listOfChanges = new LinkedList<KeyValuePair<string, string>>();
+            string imagesInfoPath = $"{imagesPath}images.info";
             for (int i = 0; i < images.Length; ++i)
             {
                 if (i == 0)
@@ -59,25 +63,32 @@ namespace Treynessen.Functions
                     {
                         File.Delete(di);
                     }
-                    string imagesInfoContent = null;
-                    string imagesInfoPath = $"{imagesPath}images.info";
+                    Regex imageInfoStringPattern = new Regex($"name = {originalImageName}.jpg; width = \\d+; height = \\d+\n");
                     using (StreamReader reader = new StreamReader(imagesInfoPath))
                     {
-                        imagesInfoContent = reader.ReadToEnd();
-                    }
-                    Regex imageInfoStringPattern = new Regex($"name = {originalImageName}.jpg; width = \\d+; height = \\d+\n");
-                    using (StreamWriter writer = new StreamWriter(imagesInfoPath))
-                    {
-                        var forReplace = imageInfoStringPattern.Matches(imagesInfoContent);
-                        StringBuilder builder = new StringBuilder(imagesInfoContent);
+                        var forReplace = imageInfoStringPattern.Matches(reader.ReadToEnd());
                         foreach (var fr in forReplace as IEnumerable<Match>)
                         {
-                            builder.Replace(fr.Value, string.Empty);
+                            listOfChanges.AddLast(new KeyValuePair<string, string>(fr.Value, string.Empty));
                         }
-                        writer.Write(builder.ToString());
                     }
                 }
-                else RenameImage(imagesPath, $"{product.Alias}_{i + imageID}", $"{product.Alias}{(i + imageID - 1 == 0 ? string.Empty : $"_{i + imageID - 1}")}");
+                else RenameImage(imagesPath,
+                    $"{product.Alias}_{i + imageID}", $"{product.Alias}{(i + imageID - 1 == 0 ? string.Empty : $"_{i + imageID - 1}")}",
+                    listOfChanges);
+            }
+            StringBuilder builder = null;
+            using (StreamReader reader = new StreamReader(imagesInfoPath))
+            {
+                builder = new StringBuilder(reader.ReadToEnd());
+            }
+            using (StreamWriter writer = new StreamWriter(imagesInfoPath))
+            {
+                foreach (var c in listOfChanges)
+                {
+                    builder.Replace(c.Key, c.Value);
+                }
+                writer.Write(builder.ToString());
             }
         }
     }
