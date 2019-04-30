@@ -25,7 +25,7 @@ namespace Treynessen.Functions
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesPath()}{productPage.PreviousPageID}{productPage.ID}\\";
             Directory.CreateDirectory(imagesPath);
-            string fileName = GetUniqueProductImageName(imagesPath, productPage.Alias);
+            string fileName = GetUniqueProductImageName(imagesPath, GetCorrectName(productPage.BreadcrumbName, context));
             string pathToFile = $"{imagesPath}{fileName}";
             using (Stream stream = file.OpenReadStream())
             {

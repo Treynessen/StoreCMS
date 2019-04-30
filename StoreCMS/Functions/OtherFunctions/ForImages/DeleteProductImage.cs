@@ -26,10 +26,11 @@ namespace Treynessen.Functions
             db.Entry(product).State = EntityState.Detached;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesPath()}{product.PreviousPageID}{product.ID}\\";
+            string imageNameBasis = GetCorrectName(product.BreadcrumbName, context);
             string[] images = null;
             try
             {
-                images = Directory.GetFiles(imagesPath, $"*{product.Alias}*.jpg");
+                images = Directory.GetFiles(imagesPath, $"*{imageNameBasis}*.jpg");
             }
             catch (DirectoryNotFoundException)
             {
@@ -37,10 +38,10 @@ namespace Treynessen.Functions
             }
             if (images == null || images.Length == 0 || images.Length <= imageID)
                 return;
-            Regex regex = new Regex($"{product.Alias}(_\\d+)?.jpg$");
+            Regex regex = new Regex($"{imageNameBasis}(_\\d+)?.jpg$");
             images = (from img in images
                       where regex.IsMatch(img)
-                      let imageNameEnding = regex.Match(img).Value.Substring(product.Alias.Length)
+                      let imageNameEnding = regex.Match(img).Value.Substring(imageNameBasis.Length)
                       orderby imageNameEnding.Length == 4 ? 0 : Convert.ToInt32(imageNameEnding.Substring(1, imageNameEnding.IndexOf('.') - 1))
                       select img).Skip(imageID.Value).ToArray();
             // Список изменений, которые необходимо внести в файл images.info
@@ -74,21 +75,24 @@ namespace Treynessen.Functions
                     }
                 }
                 else RenameImage(imagesPath,
-                    $"{product.Alias}_{i + imageID}", $"{product.Alias}{(i + imageID - 1 == 0 ? string.Empty : $"_{i + imageID - 1}")}",
+                    $"{imageNameBasis}_{i + imageID}", $"{imageNameBasis}{(i + imageID - 1 == 0 ? string.Empty : $"_{i + imageID - 1}")}",
                     listOfChanges);
             }
-            StringBuilder builder = null;
-            using (StreamReader reader = new StreamReader(imagesInfoPath))
+            if (listOfChanges.Count > 0)
             {
-                builder = new StringBuilder(reader.ReadToEnd());
-            }
-            using (StreamWriter writer = new StreamWriter(imagesInfoPath))
-            {
-                foreach (var c in listOfChanges)
+                StringBuilder builder = null;
+                using (StreamReader reader = new StreamReader(imagesInfoPath))
                 {
-                    builder.Replace(c.Key, c.Value);
+                    builder = new StringBuilder(reader.ReadToEnd());
                 }
-                writer.Write(builder.ToString());
+                using (StreamWriter writer = new StreamWriter(imagesInfoPath))
+                {
+                    foreach (var c in listOfChanges)
+                    {
+                        builder.Replace(c.Key, c.Value);
+                    }
+                    writer.Write(builder.ToString());
+                }
             }
         }
     }
