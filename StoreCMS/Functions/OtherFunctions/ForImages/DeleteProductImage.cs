@@ -44,7 +44,7 @@ namespace Treynessen.Functions
                       orderby imageNameEnding.Length == 4 ? 0 : Convert.ToInt32(imageNameEnding.Substring(1, imageNameEnding.IndexOf('.') - 1))
                       select img).Skip(imageID.Value).ToArray();
             // Список изменений, которые необходимо внести в файл images.info
-            // В key хранится старое имя изображение, в value новое, на которое необходимо заменить
+            // В key хранится старое имя изображения, в value новое, на которое необходимо заменить
             LinkedList<KeyValuePair<string, string>> listOfChanges = new LinkedList<KeyValuePair<string, string>>();
             string imagesInfoPath = $"{imagesPath}images.info";
             for (int i = 0; i < images.Length; ++i)

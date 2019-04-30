@@ -36,7 +36,7 @@ namespace Treynessen.Controllers
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditPage}&pageType={(int)model.PageType}&itemID={model.itemID}");
 
                 case AdminPanelPages.DeletePage:
-                    ActionsWithDatabase.DeletePage(db, model.PageType, model.itemID);
+                    ActionsWithDatabase.DeletePage(db, model.PageType, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
 
                 case AdminPanelPages.AddProduct:
@@ -60,7 +60,7 @@ namespace Treynessen.Controllers
                     if (model.itemID.HasValue)
                     {
                         ProductPage page = db.ProductPages.FirstOrDefaultAsync(p => p.ID == model.itemID).Result;
-                        ActionsWithDatabase.DeletePage(db, page);
+                        ActionsWithDatabase.DeletePage(db, page, HttpContext);
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={page.PreviousPageID}");
                     }
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");

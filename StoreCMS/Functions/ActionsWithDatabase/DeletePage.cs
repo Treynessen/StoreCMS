@@ -1,6 +1,11 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Extensions;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -9,7 +14,7 @@ namespace Treynessen.Functions
 {
     public static partial class ActionsWithDatabase
     {
-        public static void DeletePage(CMSDatabase db, PageType? pageType, int? itemID)
+        public static void DeletePage(CMSDatabase db, PageType? pageType, int? itemID, HttpContext context)
         {
             if (!pageType.HasValue)
                 return;
@@ -52,12 +57,32 @@ namespace Treynessen.Functions
                     RefreshPageAndDependencies(db, c_page);
                 }
             }
-            else
+            else if (page is CategoryPage cp)
+            {
+                db.Entry(cp).Collection(p => p.ProductPages).Load();
+                IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
+                string productsImagesPath = env.GetProductsImagesPath();
+                foreach (var pp in cp.ProductPages)
+                {
+                    string pathToImages = $"{productsImagesPath}{cp.ID}{pp.ID}\\";
+                    if (Directory.Exists(pathToImages))
+                        Directory.Delete(pathToImages, true);
+                }
                 db.Remove(page);
+            }
+            else if (page is ProductPage pp)
+            {
+                IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
+                string productsImagesPath = env.GetProductsImagesPath();
+                string pathToImages = $"{productsImagesPath}{pp.PreviousPageID}{pp.ID}\\";
+                if (Directory.Exists(pathToImages))
+                    Directory.Delete(pathToImages, true);
+                db.Remove(page);
+            }
             db.SaveChanges();
         }
 
-        public static void DeletePage(CMSDatabase db, Page page)
+        public static void DeletePage(CMSDatabase db, Page page, HttpContext context)
         {
             if (page == null)
                 return;
@@ -81,8 +106,28 @@ namespace Treynessen.Functions
                     RefreshPageAndDependencies(db, c_page);
                 }
             }
-            else
+            else if (page is CategoryPage cp)
+            {
+                db.Entry(cp).Collection(p => p.ProductPages).Load();
+                IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
+                string productsImagesPath = env.GetProductsImagesPath();
+                foreach (var pp in cp.ProductPages)
+                {
+                    string pathToImages = $"{productsImagesPath}{cp.ID}{pp.ID}\\";
+                    if (Directory.Exists(pathToImages))
+                        Directory.Delete(pathToImages, true);
+                }
                 db.Remove(page);
+            }
+            else if (page is ProductPage pp)
+            {
+                IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
+                string productsImagesPath = env.GetProductsImagesPath();
+                string pathToImages = $"{productsImagesPath}{pp.PreviousPageID}{pp.ID}\\";
+                if (Directory.Exists(pathToImages))
+                    Directory.Delete(pathToImages, true);
+                db.Remove(page);
+            }
             db.SaveChanges();
         }
     }
