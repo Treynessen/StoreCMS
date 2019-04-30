@@ -9,6 +9,9 @@
         public string ProductImages => "Изображения товара";
         public string DeleteProduct => "Удалить товар";
 
+        public string ChooseTheFile => "Выберите файл";
+        public string DeleteProductImage => "Удалить изображение";
+
         public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";
         public string SaveButton => "Сохранить";
         public string Title => "Заголовок(Title) страницы товара";

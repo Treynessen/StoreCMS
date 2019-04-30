@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using Treynessen.Extensions;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -15,17 +17,26 @@ namespace Treynessen.Functions
         {
             if (!itemID.HasValue)
                 return;
+            if (file == null)
+                return;
             ProductPage productPage = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
             if (productPage == null)
                 return;
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsInImagesPath()}{productPage.PreviousPageID}{productPage.ID}\\";
+            string imagesPath = $"{env.GetProductsImagesPath()}{productPage.PreviousPageID}{productPage.ID}\\";
             Directory.CreateDirectory(imagesPath);
             string fileName = GetUniqueProductImageName(imagesPath, productPage.Alias);
             string pathToFile = $"{imagesPath}{fileName}";
-            using (FileStream fs = new FileStream(pathToFile, FileMode.Create))
+            using (Stream stream = file.OpenReadStream())
             {
-                file.CopyTo(fs);
+                try
+                {
+                    using (Image<Rgba32> source = Image.Load(stream))
+                    {
+                        source.Save(pathToFile);
+                    }
+                }
+                catch (System.NotSupportedException) { }
             }
         }
     }

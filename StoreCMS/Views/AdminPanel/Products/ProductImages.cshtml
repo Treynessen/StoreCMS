@@ -2,16 +2,35 @@
 @inject IProductsLocalization localization
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/products/workWithProduct.css";
+    Context.Items["PageStyle"] = "/styles/admin_panel/products/productImages.css";
     User user = Context.Items["User"] as User;
 }
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddProductImage)">
-    <input type="file" name="uploadedFile" />
-    <input type="submit" />
-</form>
-
-@foreach(var m in Model)
+@if (DataCheck.HasAccessTo(AdminPanelPages.AddProductImage, user, Context))
 {
-<image full-path="@m" max-width="400"></image>
+    <form method="post" class="uploadFileForm" enctype="multipart/form-data">
+        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddProductImage)">
+        <div class="inputFileButton">
+            <label for="upload">@Html.Raw(localization.ChooseTheFile)</label>
+            <input type="file" id="upload" name="uploadedFile" accept=".png, .jpg, .jpeg" />
+        </div>
+        <input type="submit" />
+    </form>
 }
+<div class="imagesList">
+    @{ 
+        int imageID = 0;
+    }
+    @foreach (var m in Model)
+    {
+        <div class="imageBlock">
+            <div><image full-path="@m" max-width="290" max-height="175" quality="80"></image></div>
+            <label>@m.Substring(m.LastIndexOf('\\') + 1)</label>
+            <form method="post">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProductImage)" />
+                <input type="hidden" name="imageID" value="@imageID">
+                <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
+            </form>
+        </div>
+        ++imageID;
+    }
+</div>

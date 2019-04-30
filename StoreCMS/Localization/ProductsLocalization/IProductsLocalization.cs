@@ -9,6 +9,9 @@
         string ProductImages { get; }
         string DeleteProduct { get; }
 
+        string ChooseTheFile { get; }
+        string DeleteProductImage { get; }
+        
         string IncorrectInput { get; }
         string SaveButton { get; }
         string Title { get; }

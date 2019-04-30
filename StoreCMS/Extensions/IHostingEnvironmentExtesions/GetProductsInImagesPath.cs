@@ -4,7 +4,7 @@ namespace Treynessen.Extensions
 {
     public static partial class IHostingEnvironmentExtensions
     {
-        public static string GetProductsInImagesPath(this IHostingEnvironment env, bool shortPath = false)
+        public static string GetProductsImagesPath(this IHostingEnvironment env, bool shortPath = false)
         {
             if (!shortPath)
                 return $"{env.GetImagesPath()}products\\";

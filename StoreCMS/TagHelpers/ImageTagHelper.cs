@@ -45,7 +45,7 @@ namespace Treynessen.TagHelpers
                 else if (!string.IsNullOrEmpty(Src))
                 {
                     fullPath = $"{env.GetStoragePath()}{Src.Substring(1).Replace('/', '\\')}";
-                    resultSrc = Src;
+                    resultSrc = Src.Substring(0, Src.LastIndexOf('/') + 1);
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace Treynessen.TagHelpers
                     {
                         imageFullName = ActionsWithImage.ImageResizingAndComprassion(fullPath, Quality.Value, Width, Height, MaxWidth, MaxHeight);
                     }
-                    else if(MaxWidth.HasValue || MaxHeight.HasValue)
+                    else if (MaxWidth.HasValue || MaxHeight.HasValue)
                     {
                         imageFullName = ActionsWithImage.ImageResizing(fullPath, maxWidth: MaxWidth, maxHeight: MaxHeight);
                     }

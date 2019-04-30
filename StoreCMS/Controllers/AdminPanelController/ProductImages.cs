@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,13 @@ namespace Treynessen.Controllers
         {
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
-            ProductPage productPage = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
-            if (productPage == null)
+            ProductPage product = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
+            if (product == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
+            db.Entry(product).State = EntityState.Detached;
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsInImagesPath()}{productPage.PreviousPageID}{productPage.ID}\\";
-            string shortImagesPath = $"{env.GetProductsInImagesPath(true)}{productPage.PreviousPageID}{productPage.ID}/";
+            string imagesPath = $"{env.GetProductsImagesPath()}{product.PreviousPageID}{product.ID}\\";
+            string shortImagesPath = $"{env.GetProductsImagesPath(true)}{product.PreviousPageID}{product.ID}/";
             string[] productImages = null;
             try
             {
@@ -35,10 +37,12 @@ namespace Treynessen.Controllers
             }
             if (productImages.Length > 0)
             {
-                Regex regex = new Regex($"^{imagesPath.Replace(@"\", @"\\")}{productPage.Alias}(_(\\d)+)?.jpg$");
-                productImages = (from image in productImages
-                                 where regex.IsMatch(image)
-                                 select image).ToArray();
+                Regex regex = new Regex($"{product.Alias}(_(\\d)+)?.jpg$");
+                productImages = (from img in productImages
+                                 where regex.IsMatch(img)
+                                 let imageNameEnding = regex.Match(img).Value.Substring(product.Alias.Length)
+                                 orderby imageNameEnding.Length == 4 ? 0 : Convert.ToInt32(imageNameEnding.Substring(1, imageNameEnding.IndexOf('.') - 1))
+                                 select img).ToArray();
             }
             return View("Products/ProductImages", productImages);
         }

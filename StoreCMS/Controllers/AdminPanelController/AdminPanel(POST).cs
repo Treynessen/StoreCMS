@@ -9,7 +9,7 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [HttpPost]
-        public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel, Microsoft.AspNetCore.Http.IFormFile uploadedFile)
+        public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel)
         {
             User user = DataCheck.CheckCookies(db, HttpContext);
             if (user == null)
@@ -47,7 +47,7 @@ namespace Treynessen.Controllers
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={model.itemID}");
 
                 case AdminPanelPages.AddProductImage:
-                    OtherFunctions.AddProductImageToServer(db, uploadedFile, model.itemID, HttpContext);
+                    OtherFunctions.AddProductImageToServer(db, model.uploadedFile, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ProductImages}&itemID={model.itemID}");
 
                 case AdminPanelPages.EditProduct:
@@ -64,6 +64,10 @@ namespace Treynessen.Controllers
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={page.PreviousPageID}");
                     }
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
+
+                case AdminPanelPages.DeleteProductImage:
+                    OtherFunctions.DeleteProductImage(db, model.itemID, model.imageID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ProductImages}&itemID={model.itemID}");
 
                 case AdminPanelPages.AddTemplate:
                     if (ActionsWithDatabase.AddTemplate(db, model.TemplateModel, HttpContext) == false)
