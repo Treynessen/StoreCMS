@@ -6,7 +6,7 @@
         public string AddProductInCategory => "Добавить товар в категорию";
         public string ActionsWithProduct => "Действия";
         public string EditProduct => "Изменить товар";
-        public string ProductImages => "Изображения товара";
+        public string ProductImages => "Изображения";
         public string DeleteProduct => "Удалить товар";
 
         public string ChooseTheFile => "Выберите файл";

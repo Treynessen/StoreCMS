@@ -23,7 +23,7 @@ namespace Treynessen.Functions
             if (productPage == null)
                 return;
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsImagesPath()}{productPage.PreviousPageID}{productPage.ID}\\";
+            string imagesPath = $"{env.GetProductsImagesPath()}{productPage.PreviousPageID.ToString()}{productPage.ID.ToString()}\\";
             Directory.CreateDirectory(imagesPath);
             string fileName = GetUniqueProductImageName(imagesPath, GetCorrectName(productPage.BreadcrumbName, context));
             string pathToFile = $"{imagesPath}{fileName}";

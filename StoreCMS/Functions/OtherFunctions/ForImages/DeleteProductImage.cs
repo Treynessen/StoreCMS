@@ -25,7 +25,7 @@ namespace Treynessen.Functions
                 return;
             db.Entry(product).State = EntityState.Detached;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsImagesPath()}{product.PreviousPageID}{product.ID}\\";
+            string imagesPath = $"{env.GetProductsImagesPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
             string imageNameBasis = GetCorrectName(product.BreadcrumbName, context);
             string[] images = null;
             try
