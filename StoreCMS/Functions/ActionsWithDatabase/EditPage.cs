@@ -22,6 +22,7 @@ namespace Treynessen.Functions
             if (!model.itemID.HasValue || !model.PageType.HasValue || model.PageModel == null)
                 return false;
             ProductPage changedProductPage = null;
+            bool isMainPage = false;
             switch (model.PageType)
             {
                 case PageType.Usual:
@@ -29,6 +30,7 @@ namespace Treynessen.Functions
                     if (usualPage == null)
                         return false;
                     db.Entry(usualPage).State = EntityState.Detached;
+                    isMainPage = !usualPage.PreviousPageID.HasValue && usualPage.Alias.Equals("index");
                     break;
                 case PageType.Category:
                     CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.itemID).Result;
@@ -45,7 +47,7 @@ namespace Treynessen.Functions
                     break;
             }
             model.PageModel.PageType = model.PageType.Value;
-            Page page = OtherFunctions.PageModelToPage(db, model.PageModel, context);
+            Page page = OtherFunctions.PageModelToPage(db, model.PageModel, context, isMainPage);
             if (page != null)
             {
                 page.ID = model.itemID.Value;

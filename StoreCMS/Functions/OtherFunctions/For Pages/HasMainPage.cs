@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.Functions
 {
@@ -7,9 +8,9 @@ namespace Treynessen.Functions
     {
         public static bool HasMainPage(CMSDatabase db)
         {
-            return db.UsualPages.FirstOrDefaultAsync
-                (up => up.RequestPathWithoutAlias.Equals("/") 
-                && up.Alias.Equals("index")).Result == null ? false : true;
+            UsualPage usualPage =db.UsualPages.FirstOrDefaultAsync(up => up.RequestPathWithoutAlias.Equals("/") && up.Alias.Equals("index")).Result;
+            db.Entry(usualPage).State = EntityState.Detached;
+            return usualPage == null ? false : true;
         }
     }
 }

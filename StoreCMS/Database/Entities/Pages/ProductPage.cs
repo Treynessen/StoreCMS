@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Treynessen.Database.Entities
@@ -9,6 +10,7 @@ namespace Treynessen.Database.Entities
         public uint Price { get; set; }
         public uint OldPrice { get; set; }
         public string ShortDescription { get; set; } // Краткое описание товара
+        public DateTime LastUpdate { get; set; }
 
         [Required]
         public CategoryPage PreviousPage { get; set; }

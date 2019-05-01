@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
-using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -11,11 +11,6 @@ namespace Treynessen.RouteConstraints
 {
     public class UrlConstraint : IRouteConstraint
     {
-        private PageType pageType;
-
-        public UrlConstraint(PageType pageType)
-            => this.pageType = pageType;
-
         public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
         {
             CMSDatabase db = httpContext.RequestServices.GetRequiredService<CMSDatabase>();
@@ -23,26 +18,35 @@ namespace Treynessen.RouteConstraints
             string path = httpContext.Request.Path;
             if (path[path.Length - 1] == '/')
                 path = path.Substring(0, path.Length - 1);
-            switch (pageType)
+            if (string.IsNullOrEmpty(path))
             {
-                case PageType.Usual:
-                    page = db.UsualPages.FirstOrDefaultAsync(up => OtherFunctions.GetUrl(up).Equals(path)).Result;
-                    if (page != null)
-                    {
-                        httpContext.Items["PageObject"] = page;
-                        return true;
-                    }
-                    break;
-                case PageType.Category:
-                    page = db.CategoryPages.FirstOrDefaultAsync(cp => OtherFunctions.GetUrl(cp).Equals(path)).Result;
-                    if (page != null)
-                    {
-                        httpContext.Items["PageObject"] = page;
-                        return true;
-                    }
-                    break;
-                case PageType.Product:
-                    break;
+                page = db.UsualPages.FirstOrDefaultAsync(up => !up.PreviousPageID.HasValue && up.Alias.Equals("index")).Result;
+            }
+            else
+            {
+                Task<UsualPage>  usualPageTask = db.UsualPages.FirstOrDefaultAsync(up => OtherFunctions.GetUrl(up).Equals(path));
+                Task<CategoryPage> categoryPageTask = db.CategoryPages.FirstOrDefaultAsync(cp => OtherFunctions.GetUrl(cp).Equals(path));
+                Task<ProductPage> productPageTask = null;
+                if (path.Split('/').Length >= 3)
+                {
+                    productPageTask = db.ProductPages.FirstOrDefaultAsync(pp => OtherFunctions.GetUrl(pp).Equals(path));
+                }
+                Task.WaitAll(usualPageTask, categoryPageTask);
+                if (usualPageTask.Result != null)
+                    page = usualPageTask.Result;
+                else if (categoryPageTask.Result != null)
+                    page = categoryPageTask.Result;
+                else if (productPageTask != null)
+                {
+                    productPageTask.Wait();
+                    if (productPageTask.Result != null)
+                        page = productPageTask.Result;
+                }
+            }
+            if (page != null)
+            {
+                httpContext.Items["PageObject"] = page;
+                return true;
             }
             return false;
         }

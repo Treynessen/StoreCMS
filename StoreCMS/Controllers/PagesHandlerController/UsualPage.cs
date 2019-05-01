@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
 {
     public partial class PagesHandlerController : Controller
     {
-        [HttpGet]
-        public IActionResult UsualPage()
+        [NonAction]
+        public IActionResult UsualPage(UsualPage usualPage)
         {
-            UsualPage page = HttpContext.Items["PageObject"] as UsualPage;
-            db.Entry(page).Reference(up => up.Template).Load();
-            if (page.Template != null)
-                    return View(page.Template.TemplatePath, page);
-            return Content(page.Content);
+            db.Entry(usualPage).Reference(up => up.Template).Load();
+            if (usualPage.Template != null)
+                    return View(usualPage.Template.TemplatePath, usualPage);
+            return Content(usualPage.Content);
         }
     }
 }

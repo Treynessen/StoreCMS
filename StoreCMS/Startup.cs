@@ -60,21 +60,9 @@ public class Startup
             );
             routeBuilder.MapRoute(
                 name: "usual_page",
-                template: "{*aliases}",
-                defaults: new { controller = "PagesHandler", action = "UsualPage" },
-                constraints: new { aliases = new UrlConstraint(PageType.Usual) }
-            );
-            routeBuilder.MapRoute(
-                name: "category_page",
-                template: "{*aliases}",
-                defaults: new { controller = "PagesHandler", action = "CategoryPage" },
-                constraints: new { aliases = new UrlConstraint(PageType.Category) }
-            );
-            routeBuilder.MapRoute(
-                name: "product_page",
-                template: "{*aliases}",
-                defaults: new { controller = "PagesHandler", action = "ProductPage" },
-                constraints: new { aliases = new UrlConstraint(PageType.Product) }
+                template: "{*directory}",
+                defaults: new { controller = "PagesHandler", action = "RequestHandler" },
+                constraints: new { directory = new UrlConstraint() }
             );
         });
     }

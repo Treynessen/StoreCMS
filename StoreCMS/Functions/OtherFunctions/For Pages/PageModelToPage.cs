@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
@@ -8,7 +9,7 @@ namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {
-        public static Page PageModelToPage(CMSDatabase db, PageModel model, HttpContext context)
+        public static Page PageModelToPage(CMSDatabase db, PageModel model, HttpContext context, bool isMainPage = false)
         {
             if (model == null)
                 return null;
@@ -21,7 +22,7 @@ namespace Treynessen.Functions
                 case PageType.Usual:
                     UsualPage usualPage = new UsualPage();
                     page = usualPage;
-                    if (model.IsMainPage && !model.PreviousPageID.HasValue && !HasMainPage(db)) // ←
+                    if (isMainPage || (model.IsMainPage && !model.PreviousPageID.HasValue && !HasMainPage(db))) // ←
                         page.Alias = "index"; // ←
                     else if (model.IsMainPage) // ←
                         return null; // ←
@@ -54,8 +55,9 @@ namespace Treynessen.Functions
                     productPage.Price = model.Price;
                     productPage.OldPrice = model.OldPrice;
                     productPage.ShortDescription = model.ShortDescription;
+                    productPage.LastUpdate = DateTime.Now;
                     productPage.PreviousPage = productCategory;
-                    page.RequestPathWithoutAlias = GetUrl(productPage.PreviousPage);
+                    productPage.RequestPathWithoutAlias = GetUrl(productPage.PreviousPage);
                     break;
                 default:
                     return null;
