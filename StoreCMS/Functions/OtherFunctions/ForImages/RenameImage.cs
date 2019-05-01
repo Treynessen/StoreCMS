@@ -23,10 +23,7 @@ namespace Treynessen.Functions
             string imagesInfoContent = null;
             string imagesInfoPath = $"{pathToImages}images.info";
             Regex imageInfoStringPattern = new Regex($"name = {oldImageName}.jpg; width = \\d+; height = \\d+\n");
-            using (StreamReader reader = new StreamReader(imagesInfoPath))
-            {
-                imagesInfoContent = reader.ReadToEnd();
-            }
+            imagesInfoContent = GetFileContent(imagesInfoPath);
             if (listOfChanges != null)
             {
                 string forReplace = imageInfoStringPattern.Match(imagesInfoContent)?.Value;
@@ -37,14 +34,8 @@ namespace Treynessen.Functions
             }
             else
             {
-                using (StreamWriter writer = new StreamWriter(imagesInfoPath))
-                {
-                    string forReplace = imageInfoStringPattern.Match(imagesInfoContent)?.Value;
-                    if (!string.IsNullOrEmpty(forReplace))
-                    {
-                        writer.Write(imagesInfoContent.Replace(forReplace, forReplace.Replace(oldImageName, newImageName)));
-                    }
-                }
+                string forReplace = imageInfoStringPattern.Match(imagesInfoContent)?.Value;
+                ReplaceContentInFile(imagesInfoPath, forReplace, forReplace.Replace(oldImageName, newImageName), imagesInfoContent);
             }
         }
     }

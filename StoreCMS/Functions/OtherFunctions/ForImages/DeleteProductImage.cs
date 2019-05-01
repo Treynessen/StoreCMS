@@ -65,13 +65,10 @@ namespace Treynessen.Functions
                         File.Delete(di);
                     }
                     Regex imageInfoStringPattern = new Regex($"name = {originalImageName}.jpg; width = \\d+; height = \\d+\n");
-                    using (StreamReader reader = new StreamReader(imagesInfoPath))
+                    var forReplace = imageInfoStringPattern.Matches(GetFileContent(imagesInfoPath));
+                    foreach (var fr in forReplace as IEnumerable<Match>)
                     {
-                        var forReplace = imageInfoStringPattern.Matches(reader.ReadToEnd());
-                        foreach (var fr in forReplace as IEnumerable<Match>)
-                        {
-                            listOfChanges.AddLast(new KeyValuePair<string, string>(fr.Value, string.Empty));
-                        }
+                        listOfChanges.AddLast(new KeyValuePair<string, string>(fr.Value, string.Empty));
                     }
                 }
                 else RenameImage(imagesPath,
@@ -80,20 +77,10 @@ namespace Treynessen.Functions
             }
             if (listOfChanges.Count > 0)
             {
-                StringBuilder builder = null;
-                using (StreamReader reader = new StreamReader(imagesInfoPath))
-                {
-                    builder = new StringBuilder(reader.ReadToEnd());
-                }
-                using (StreamWriter writer = new StreamWriter(imagesInfoPath))
-                {
-                    foreach (var c in listOfChanges)
-                    {
-                        builder.Replace(c.Key, c.Value);
-                    }
-                    writer.Write(builder.ToString());
-                }
+                ReplaceContentInFile(imagesInfoPath, listOfChanges);
             }
+            if (string.IsNullOrEmpty(GetFileContent(imagesInfoPath)) && File.Exists(imagesInfoPath))
+                File.Delete(imagesInfoPath);
         }
     }
 }

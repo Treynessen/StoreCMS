@@ -19,6 +19,7 @@ namespace Treynessen.Functions
             if (!model.itemID.HasValue || model.TemplateModel == null)
                 return false;
             Template changeTemplate = db.Templates.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
+            db.Entry(changeTemplate).State = EntityState.Detached;
             if (changeTemplate == null)
                 return false;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
@@ -59,7 +60,6 @@ namespace Treynessen.Functions
                 OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource);
             }
 
-            db.Entry(changeTemplate).State = EntityState.Detached;
             db.Templates.Update(template);
             db.SaveChanges();
             return true;

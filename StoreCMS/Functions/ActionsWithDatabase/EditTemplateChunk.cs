@@ -20,6 +20,7 @@ namespace Treynessen.Functions
             if (!model.itemID.HasValue || model.TemplateModel == null)
                 return false;
             TemplateChunk changeChunk = db.TemplateChunks.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
+            db.Entry(changeChunk).State = EntityState.Detached;
             if (changeChunk == null)
                 return false;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
@@ -61,37 +62,27 @@ namespace Treynessen.Functions
                 OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource);
             }
 
-            if (isChangedName || isChangedSource)
+            if (isChangedName)
             {
-                var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{changeChunk.Name}]")).ToListAsync();
-                var chunks = db.TemplateChunks.Where(tc => tc.ID != changeChunk.ID && tc.TemplateSource.Contains($"[#{changeChunk.Name}]")).ToListAsync();
-                if (isChangedName)
+                var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{changeChunk.Name}]") || t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();
+                var chunks = db.TemplateChunks.Where(tc => tc.ID != changeChunk.ID
+                && (tc.TemplateSource.Contains($"[#{changeChunk.Name}]") || tc.TemplateSource.Contains($"[#{chunk.Name}]"))).ToList();
+                db.TemplateChunks.Update(chunk);
+                db.SaveChanges();
+                var renderTask = Task.Run(() =>
                 {
-                    var task = Task.Run(() =>
-                    {
-                        foreach (var t in templates.Result)
-                            t.TemplateSource.Replace($"[#{changeChunk.Name}]", $"[#{chunk.Name}]");
-                    });
-                    foreach (var tc in chunks.Result)
-                        tc.TemplateSource.Replace($"[#{changeChunk.Name}]", $"[#{chunk.Name}]");
-                    task.Wait();
-                }
-                if (isChangedSource)
-                {
-                    var task = Task.Run(() =>
-                    {
-                        foreach (var t in templates.Result)
-                            OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
-                    });
-                    foreach (var tc in chunks.Result)
-                        OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource);
-                    task.Wait();
-                }
+                    foreach (var t in templates)
+                        OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
+                });
+                foreach (var tc in chunks)
+                    OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource);
+                renderTask.Wait();
             }
-
-            db.Entry(changeChunk).State = EntityState.Detached;
-            db.TemplateChunks.Update(chunk);
-            db.SaveChanges();
+            else
+            {
+                db.TemplateChunks.Update(chunk);
+                db.SaveChanges();
+            }
             return true;
         }
     }

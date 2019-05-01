@@ -18,7 +18,10 @@ namespace Treynessen.Functions
                 {
                     TemplateChunk chunk = db.TemplateChunks.FirstOrDefaultAsync(tc => tc.Name.Equals(chunkName)).Result;
                     if (chunk != null)
+                    {
+                        db.Entry(chunk).State = EntityState.Detached;
                         chunks.AddLast(chunk);
+                    }
                 }
             }
             return chunks;

@@ -21,6 +21,7 @@ namespace Treynessen.Functions
         {
             if (!model.itemID.HasValue || !model.PageType.HasValue || model.PageModel == null)
                 return false;
+            ProductPage changedProductPage = null;
             switch (model.PageType)
             {
                 case PageType.Usual:
@@ -36,11 +37,11 @@ namespace Treynessen.Functions
                     db.Entry(categoryPage).State = EntityState.Detached;
                     break;
                 case PageType.Product:
-                    ProductPage productPage = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == model.itemID).Result;
-                    if (productPage == null)
+                    changedProductPage = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == model.itemID).Result;
+                    if (changedProductPage == null)
                         return false;
-                    model.PageModel.PreviousPageID = productPage.PreviousPageID;
-                    db.Entry(productPage).State = EntityState.Detached;
+                    db.Entry(changedProductPage).State = EntityState.Detached;
+                    model.PageModel.PreviousPageID = changedProductPage.PreviousPageID;
                     break;
             }
             model.PageModel.PageType = model.PageType.Value;
@@ -60,17 +61,15 @@ namespace Treynessen.Functions
 
             if (page is ProductPage product)
             {
-                var changedProductTask = db.ProductPages.FirstOrDefaultAsync(p => p.ID == product.ID);
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                 string productsImagesPath = env.GetProductsImagesPath();
-                string pathToImages = $"{productsImagesPath}{changedProductTask.Result.PreviousPageID}{changedProductTask.Result.ID}\\";
-                db.Entry(changedProductTask.Result).State = EntityState.Detached;
-                if (!changedProductTask.Result.BreadcrumbName.Equals(product.BreadcrumbName))
+                string pathToImages = $"{productsImagesPath}{changedProductPage.PreviousPageID}{changedProductPage.ID}\\";
+                if (!changedProductPage.BreadcrumbName.Equals(product.BreadcrumbName))
                 {
                     if (Directory.Exists(pathToImages))
                     {
                         LinkedList<KeyValuePair<string, string>> listOfChanges = new LinkedList<KeyValuePair<string, string>>();
-                        string oldName = OtherFunctions.GetCorrectName(changedProductTask.Result.BreadcrumbName, context);
+                        string oldName = OtherFunctions.GetCorrectName(changedProductPage.BreadcrumbName, context);
                         string newName = OtherFunctions.GetCorrectName(product.BreadcrumbName, context);
                         Regex imagesChecker = new Regex($"{oldName}(_\\d+)?.jpg$");
                         string[] oldImagesNames = Directory.GetFiles(pathToImages, $"*{oldName}*.jpg");
@@ -87,19 +86,7 @@ namespace Treynessen.Functions
                         if (listOfChanges.Count > 0)
                         {
                             string imagesInfoPath = $"{pathToImages}images.info";
-                            StringBuilder builder = null;
-                            using (StreamReader reader = new StreamReader(imagesInfoPath))
-                            {
-                                builder = new StringBuilder(reader.ReadToEnd());
-                            }
-                            using (StreamWriter writer = new StreamWriter(imagesInfoPath))
-                            {
-                                foreach (var c in listOfChanges)
-                                {
-                                    builder.Replace(c.Key, c.Value);
-                                }
-                                writer.Write(builder.ToString());
-                            }
+                            OtherFunctions.ReplaceContentInFile(imagesInfoPath, listOfChanges);
                         }
                     }
                 }

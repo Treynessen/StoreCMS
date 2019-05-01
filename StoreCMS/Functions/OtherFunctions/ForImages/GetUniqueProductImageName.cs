@@ -48,34 +48,22 @@ namespace Treynessen.Functions
                     if (index > 0)
                         fileName += $"{index.ToString()}";
                     Regex regex = new Regex($"{fileName}(_\\d+x\\d+)?(_q\\d{{1,3}})?.jpg$");
-                    foreach(var i in images)
+                    foreach (var i in images)
                     {
                         if (regex.IsMatch(i))
                             File.Delete(i);
                     }
                     string pathToImagesInfo = $"{imagesPath}images.info";
-                    if (File.Exists(pathToImagesInfo))
+                    string fileContent = GetFileContent(pathToImagesInfo);
+                    if (!string.IsNullOrEmpty(fileContent))
                     {
-                        MatchCollection matches = null;
-                        string fileContent = null;
-                        using(StreamReader reader = new StreamReader(pathToImagesInfo))
+                        regex = new Regex($"name = {fileName}.jpg; width = \\d+; height = \\d+\n");
+                        LinkedList<KeyValuePair<string, string>> listOfChanges =
+                            new LinkedList<KeyValuePair<string, string>>(from match in regex.Matches(fileContent)
+                                                                         select new KeyValuePair<string, string>(match.Value, string.Empty));
+                        if (listOfChanges.Count > 0)
                         {
-                            var readToEndTask = reader.ReadToEndAsync();
-                            regex = new Regex($"name = {fileName}.jpg; width = \\d+; height = \\d+\n");
-                            fileContent = readToEndTask.Result;
-                            matches = regex.Matches(fileContent);
-                        }
-                        if(matches!=null && matches.Count > 0)
-                        {
-                            using (StreamWriter writer = new StreamWriter(pathToImagesInfo, false))
-                            {
-                                StringBuilder builder = new StringBuilder(fileContent);
-                                foreach(var m in matches as IEnumerable<Match>)
-                                {
-                                    builder.Replace(m.Value, string.Empty);
-                                }
-                                writer.Write(builder.ToString());
-                            }
+                            ReplaceContentInFile(pathToImagesInfo, listOfChanges, fileContent);
                         }
                     }
                     fileName += ".jpg";
