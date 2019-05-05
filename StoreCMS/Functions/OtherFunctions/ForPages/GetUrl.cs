@@ -7,7 +7,7 @@ namespace Treynessen.Functions
     {
         public static string GetUrl(Page page)
         {
-            if (page.RequestPathWithoutAlias.Equals("/") && page.Alias.Equals("index", StringComparison.InvariantCulture))
+            if (page.RequestPathWithoutAlias.Equals("/") && page.Alias.Equals("index", StringComparison.InvariantCultureIgnoreCase))
                 return "/";
             else if (page.RequestPathWithoutAlias.Equals("/"))
                 return $"/{page.Alias}";
@@ -17,7 +17,7 @@ namespace Treynessen.Functions
 
         public static string GetUrl(string requestPathWithoutAlias, string alias)
         {
-            if (requestPathWithoutAlias.Equals("/") && alias.Equals("index", StringComparison.InvariantCulture))
+            if (requestPathWithoutAlias.Equals("/") && alias.Equals("index", StringComparison.InvariantCultureIgnoreCase))
                 return "/";
             else if (requestPathWithoutAlias.Equals("/"))
                 return $"/{alias}";

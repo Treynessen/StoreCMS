@@ -9,7 +9,7 @@ namespace Treynessen.Functions
         public static int GetDatabaseRawID<T>(DbSet<T> table) where T : class, IKeyID
         {
             int ID = 1;
-            foreach (var raw in table)
+            foreach (var raw in table.AsNoTracking().ToArray())
             {
                 if (raw.ID != ID)
                     break;

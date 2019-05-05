@@ -21,11 +21,11 @@ namespace Treynessen.Functions
                 page.Alias = "admin_page";
             }
 
-            var usualPageUrlsTask = db.UsualPages.Where(up => up.GetType() == page.GetType() ? !(up.ID == page.ID) : true)
+            var usualPageUrlsTask = db.UsualPages.AsNoTracking().Where(up => up.GetType() == page.GetType() ? !(up.ID == page.ID) : true)
                 .Select(up => GetUrl(up)).ToListAsync();
-            var categoryPageUrlsTask = db.CategoryPages.Where(cp => cp.GetType() == page.GetType() ? !(cp.ID == page.ID) : true)
+            var categoryPageUrlsTask = db.CategoryPages.AsNoTracking().Where(cp => cp.GetType() == page.GetType() ? !(cp.ID == page.ID) : true)
                 .Select(cp => GetUrl(cp)).ToListAsync();
-            var productPageUrlsTask = db.ProductPages.Where(pp => pp.GetType() == page.GetType() ? !(pp.ID == page.ID) : true)
+            var productPageUrlsTask = db.ProductPages.AsNoTracking().Where(pp => pp.GetType() == page.GetType() ? !(pp.ID == page.ID) : true)
                 .Select(pp => GetUrl(pp)).ToListAsync();
 
             CancellationTokenSource categoryPageTokenSource = new CancellationTokenSource();

@@ -10,7 +10,7 @@ namespace Treynessen.Database.Entities
         [Required]
         public string Title { get; set; }
         [Required]
-        public string BreadcrumbName { get; set; } // Хлебная крошка для навигационного меню
+        public string PageName { get; set; } 
         [Required]
         public string Alias { get; set; } // Url псевдоним страницы: RequestPath/Alias
         [Required]

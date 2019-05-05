@@ -44,7 +44,7 @@ namespace Treynessen.Controllers
                     model.PageModel.PreviousPageID = model.itemID;
                     if (ActionsWithDatabase.AddPage(db, model.PageModel, HttpContext) == false)
                         return AddProduct(model.PageModel);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={model.itemID}");
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.CategoryProducts}&itemID={model.itemID}");
 
                 case AdminPanelPages.AddProductImage:
                     OtherFunctions.AddProductImageToServer(db, model.uploadedFile, model.itemID, HttpContext);
@@ -61,7 +61,7 @@ namespace Treynessen.Controllers
                     {
                         ProductPage page = db.ProductPages.FirstOrDefaultAsync(p => p.ID == model.itemID).Result;
                         ActionsWithDatabase.DeletePage(db, page, HttpContext);
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ShowCategoryProducts}&itemID={page.PreviousPageID}");
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.CategoryProducts}&itemID={page.PreviousPageID}");
                     }
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
 

@@ -10,7 +10,7 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult Categories()
         {
-            var categories = db.CategoryPages.OrderBy(cp => cp.BreadcrumbName).ToArrayAsync().Result;
+            var categories = db.CategoryPages.OrderBy(cp => cp.PageName).ToArrayAsync().Result;
             return View("Products/Categories", categories);
         } 
     }

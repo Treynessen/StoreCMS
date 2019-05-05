@@ -32,6 +32,8 @@ namespace Treynessen.Functions
             // Проверка ip-адреса
             // ...
 
+            string userLoginKey = context.Request.Cookies["loginKey"];
+
             if (!connectedUser.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.InvariantCulture))
                 return null;
 

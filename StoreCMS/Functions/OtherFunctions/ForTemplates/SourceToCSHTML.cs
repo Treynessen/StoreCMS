@@ -22,7 +22,7 @@ namespace Treynessen.Functions
                     /* ИНФОРМАЦИЯ О СТРАНИЦЕ */
                     builder.Insert(0, "@model Page\n");
                     builder.Replace("[Page:Title]", "@(Html.Raw(Model?.Title))");
-                    builder.Replace("[Page:Breadcrumb]", "@(Html.Raw(Model?.BreadcrumbName))");
+                    builder.Replace("[Page:Breadcrumb]", "@(Html.Raw(Model?.PageName))");
                     builder.Replace("[Page:Content]", "@(Html.Raw(Model?.Content))");
                     builder.Replace("[Page:PageDescription]", "@(Html.Raw(Model?.PageDescription))");
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");

@@ -20,8 +20,8 @@
                         <label for="Title">@Html.Raw(localization.Title)*</label>
                         <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
                         @*BREADCRUMB*@
-                        <label for="BreadcrumbName">@Html.Raw(localization.Breadcrumb)*</label>
-                        <input type="text" id="BreadcrumbName" name="PageModel.BreadcrumbName" required value="@Model?.BreadcrumbName" />
+                        <label for="PageName">@Html.Raw(localization.Breadcrumb)*</label>
+                        <input type="text" id="PageName" name="PageModel.PageName" required value="@Model?.PageName" />
                         @*PRICE*@
                         <div class="priceBlock">
                             <div>
@@ -29,7 +29,7 @@
                                 <input type="number" id="Price" name="PageModel.Price" min="0" value="@Model?.Price" />
                             </div>
                             <div>
-                                <label for="BreadcrumbName">@Html.Raw(localization.OldPrice)</label>
+                                <label for="OldPrice">@Html.Raw(localization.OldPrice)</label>
                                 <input type="number" id="OldPrice" name="PageModel.OldPrice" min="0" value="@Model?.OldPrice" />
                             </div>
                         </div>

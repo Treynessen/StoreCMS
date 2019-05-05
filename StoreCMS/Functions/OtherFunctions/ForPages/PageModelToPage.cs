@@ -63,15 +63,17 @@ namespace Treynessen.Functions
                     return null;
             }
             page.Title = model.Title;
-            page.BreadcrumbName = model.BreadcrumbName;
+            page.PageName = model.PageName;
 
             if (string.IsNullOrEmpty(page.Alias))
             {
                 if (string.IsNullOrEmpty(model.Alias)) // ←
-                    page.Alias = GetCorrectName(model.BreadcrumbName, context); // ←
+                    page.Alias = GetCorrectName(model.PageName, context); // ←
                 else 
                     page.Alias = GetCorrectName(model.Alias, context); // ←
             }
+            if (string.IsNullOrEmpty(page.Alias))
+                return null;
             if (page.RequestPathWithoutAlias.Equals("/") && !model.IsMainPage && !string.IsNullOrEmpty(page.Alias) && page.Alias.Equals("index", StringComparison.InvariantCulture))
                 page.Alias = "ind";
 

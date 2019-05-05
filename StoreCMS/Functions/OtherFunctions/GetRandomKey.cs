@@ -8,7 +8,7 @@ namespace Treynessen.Functions
         public static string GetRandomKey(int minLength, int maxLength)
         {
             Random rand = new Random();
-            string symbols = "qwertyuiop[]asdfghjklzxcvbnmQWERTYUIOP{}ASDFGHJKLZXCVBNM<>?1234567890-=!@#$%^&*()_+";
+            string symbols = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890?!@#$%&_~-+=";
             int length = rand.Next(minLength, maxLength + 1);
             StringBuilder builder = new StringBuilder(length);
             for (int i = 0; i < length; ++i)

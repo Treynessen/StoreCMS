@@ -8,11 +8,11 @@
     var templates = db.Templates.ToList();
     bool incorrect = Model == null ? false : true;
 }
-@if (incorrect)
-{
-            <span>@Html.Raw(localization.IncorrectInput)</span>
-}
             <form method="post" class="pageContainer">
+            @if (incorrect)
+            {
+                <span>@Html.Raw(localization.IncorrectInput)</span>
+            }
                 @*SAVE BUTTON*@
                 <input type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="leftRightBlocks">
@@ -21,8 +21,8 @@
                         <label for="Title">@Html.Raw(localization.Title)*</label>
                         <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
                         @*BREADCRUMB*@
-                        <label for="BreadcrumbName">@Html.Raw(localization.Breadcrumb)*</label>
-                        <input type="text" id="BreadcrumbName" name="PageModel.BreadcrumbName" required value="@Model?.BreadcrumbName" />
+                        <label for="PageName">@Html.Raw(localization.Breadcrumb)*</label>
+                        <input type="text" id="PageName" name="PageModel.PageName" required value="@Model?.PageName" />
                         @*PAGE DESCRIPTION*@
                         <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
                         <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">

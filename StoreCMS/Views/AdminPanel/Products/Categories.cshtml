@@ -12,7 +12,7 @@
     @foreach (var category in Model)
     {
     <tr>
-        <td><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.ShowCategoryProducts)&itemID=@category.ID">@Html.Raw(category.BreadcrumbName)<b> (ID@(category.ID))</b></a></td>
+        <td><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@category.ID">@Html.Raw(category.PageName)<b> (ID@(category.ID))</b></a></td>
     </tr>
     }
 </table>

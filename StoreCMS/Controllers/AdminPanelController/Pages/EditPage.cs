@@ -27,6 +27,8 @@ namespace Treynessen.Controllers
                     default:
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
                 }
+                if (page != null)
+                    db.Entry(page).State = EntityState.Detached;
                 model = OtherFunctions.PageToPageModel(page);
             }
             else

@@ -14,7 +14,7 @@
         EditPage,
         DeletePage,
 
-        ShowCategoryProducts,
+        CategoryProducts,
         AddProduct,
         EditProduct,
         DeleteProduct,

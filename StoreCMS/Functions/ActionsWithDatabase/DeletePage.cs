@@ -73,8 +73,7 @@ namespace Treynessen.Functions
             else if (page is ProductPage pp)
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                string productsImagesPath = env.GetProductsImagesPath();
-                string pathToImages = $"{productsImagesPath}{pp.PreviousPageID}{pp.ID}\\";
+                string pathToImages = $"{env.GetProductsImagesPath()}{pp.PreviousPageID}{pp.ID}\\";
                 if (Directory.Exists(pathToImages))
                     Directory.Delete(pathToImages, true);
                 db.Remove(page);
@@ -122,8 +121,7 @@ namespace Treynessen.Functions
             else if (page is ProductPage pp)
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                string productsImagesPath = env.GetProductsImagesPath();
-                string pathToImages = $"{productsImagesPath}{pp.PreviousPageID}{pp.ID}\\";
+                string pathToImages = $"{env.GetProductsImagesPath()}{pp.PreviousPageID}{pp.ID}\\";
                 if (Directory.Exists(pathToImages))
                     Directory.Delete(pathToImages, true);
                 db.Remove(page);

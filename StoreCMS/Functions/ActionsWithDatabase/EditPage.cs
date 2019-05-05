@@ -26,23 +26,20 @@ namespace Treynessen.Functions
             switch (model.PageType)
             {
                 case PageType.Usual:
-                    UsualPage usualPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.itemID).Result;
+                    UsualPage usualPage = db.UsualPages.AsNoTracking().FirstOrDefaultAsync(up => up.ID == model.itemID).Result;
                     if (usualPage == null)
                         return false;
-                    db.Entry(usualPage).State = EntityState.Detached;
                     isMainPage = !usualPage.PreviousPageID.HasValue && usualPage.Alias.Equals("index", StringComparison.InvariantCultureIgnoreCase);
                     break;
                 case PageType.Category:
-                    CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.itemID).Result;
+                    CategoryPage categoryPage = db.CategoryPages.AsNoTracking().FirstOrDefaultAsync(cp => cp.ID == model.itemID).Result;
                     if (categoryPage == null)
                         return false;
-                    db.Entry(categoryPage).State = EntityState.Detached;
                     break;
                 case PageType.Product:
-                    changedProductPage = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == model.itemID).Result;
+                    changedProductPage = db.ProductPages.AsNoTracking().FirstOrDefaultAsync(pp => pp.ID == model.itemID).Result;
                     if (changedProductPage == null)
                         return false;
-                    db.Entry(changedProductPage).State = EntityState.Detached;
                     model.PageModel.PreviousPageID = changedProductPage.PreviousPageID;
                     break;
             }
@@ -57,22 +54,22 @@ namespace Treynessen.Functions
                         return false;
                 }
             }
+            else return false;
             if (!Validator.TryValidateObject(page, new ValidationContext(page), null))
                 return false;
             OtherFunctions.SetUniqueAliasName(db, page);
 
             if (page is ProductPage product)
             {
-                IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                string productsImagesPath = env.GetProductsImagesPath();
-                string pathToImages = $"{productsImagesPath}{changedProductPage.PreviousPageID}{changedProductPage.ID}\\";
-                if (!changedProductPage.BreadcrumbName.Equals(product.BreadcrumbName, StringComparison.InvariantCulture))
+                if (!changedProductPage.PageName.Equals(product.PageName, StringComparison.InvariantCulture))
                 {
+                    IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
+                    string pathToImages = $"{env.GetProductsImagesPath()}{changedProductPage.PreviousPageID}{changedProductPage.ID}\\";
                     if (Directory.Exists(pathToImages))
                     {
                         LinkedList<KeyValuePair<string, string>> listOfChanges = new LinkedList<KeyValuePair<string, string>>();
-                        string oldName = OtherFunctions.GetCorrectName(changedProductPage.BreadcrumbName, context);
-                        string newName = OtherFunctions.GetCorrectName(product.BreadcrumbName, context);
+                        string oldName = OtherFunctions.GetCorrectName(changedProductPage.PageName, context);
+                        string newName = OtherFunctions.GetCorrectName(product.PageName, context);
                         Regex imagesChecker = new Regex($"{oldName}(_\\d+)?.jpg$");
                         string[] oldImagesNames = Directory.GetFiles(pathToImages, $"*{oldName}*.jpg");
                         oldImagesNames = (from img in oldImagesNames
@@ -80,10 +77,12 @@ namespace Treynessen.Functions
                                           select img).ToArray();
                         for (int i = 0; i < oldImagesNames.Length; ++i)
                         {
-                            OtherFunctions.RenameImage(pathToImages,
-                                $"{oldName}{(i == 0 ? string.Empty : $"_{i}")}",
-                                $"{newName}{(i == 0 ? string.Empty : $"_{i}")}",
-                                listOfChanges);
+                            OtherFunctions.RenameImage(
+                                pathToImages: pathToImages,
+                                oldImageName: $"{oldName}{(i == 0 ? string.Empty : $"_{i}")}",
+                                newImageName: $"{newName}{(i == 0 ? string.Empty : $"_{i}")}",
+                                listOfChanges: listOfChanges
+                            );
                         }
                         if (listOfChanges.Count > 0)
                         {

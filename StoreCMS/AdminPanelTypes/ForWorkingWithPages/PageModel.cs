@@ -4,7 +4,7 @@
     {
         public PageType? PageType { get; set; }
         public string Title { get; set; }
-        public string BreadcrumbName { get; set; }
+        public string PageName { get; set; }
         public string Alias { get; set; }
         public int? PreviousPageID { get; set; }
 

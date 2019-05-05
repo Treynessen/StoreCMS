@@ -8,7 +8,7 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult ShowCategoryProducts(int? itemID)
+        public IActionResult CategoryProducts(int? itemID)
         {
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
@@ -17,7 +17,7 @@ namespace Treynessen.Controllers
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
             db.Entry(category).Collection(c => c.ProductPages).Load();
             HttpContext.Items["itemID"] = itemID.Value;
-            HttpContext.Items["categoryName"] = category.BreadcrumbName.ToLower();
+            HttpContext.Items["categoryName"] = category.PageName.ToLower();
             return View("Products/CategoryProducts", category.ProductPages);
         }
     }
