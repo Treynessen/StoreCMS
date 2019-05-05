@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
@@ -35,15 +36,15 @@ namespace Treynessen.Functions
                 return false;
 
             string pathToTemplateChunks = env.GetTemplateChunksPath();
-            if (chunk.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
+            if (chunk.Name.Equals("_ViewImports", StringComparison.InvariantCultureIgnoreCase))
                 chunk.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, chunk);
             chunk.TemplatePath += $"{chunk.Name}.cshtml";
 
-            bool isChangedName = !changeChunk.Name.Equals(chunk.Name);
+            bool isChangedName = !changeChunk.Name.Equals(chunk.Name, StringComparison.InvariantCulture);
             bool isChangedSource = string.IsNullOrEmpty(changeChunk.TemplateSource) ?
                 !string.IsNullOrEmpty(chunk.TemplateSource) :
-                !changeChunk.TemplateSource.Equals(chunk.TemplateSource);
+                !changeChunk.TemplateSource.Equals(chunk.TemplateSource, StringComparison.InvariantCulture);
 
             if (isChangedName && !isChangedSource)
             {

@@ -21,7 +21,7 @@ namespace Treynessen.Functions
             {
                 has = false;
                 string name = $"{template.Name}{(index == 0 ? "" : index.ToString())}";
-                has = rawsIdAndName.FirstOrDefault(t => t.Name.Equals(name)) != null;
+                has = rawsIdAndName.FirstOrDefault(t => t.Name.Equals(name, StringComparison.InvariantCulture)) != null;
                 if (has && index == 0)
                 {
                     template.Name = GetNameWithUnderscore(template.Name);

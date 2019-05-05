@@ -1,4 +1,5 @@
-﻿using Treynessen.AdminPanelTypes;
+﻿using System;
+using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Entities;
 
 namespace Treynessen.Functions
@@ -13,7 +14,7 @@ namespace Treynessen.Functions
             switch (page)
             {
                 case UsualPage up:
-                    if (!up.PreviousPageID.HasValue && page.Alias.Equals("index"))
+                    if (!up.PreviousPageID.HasValue && page.Alias.Equals("index", StringComparison.InvariantCulture))
                         model.IsMainPage = true;
                     model.PageType = PageType.Usual;
                     model.PreviousPageID = up.PreviousPageID;

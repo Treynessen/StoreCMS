@@ -41,6 +41,7 @@ public class Startup
         services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
         services.AddTransient<IProductsLocalization>(provider => new RuProductsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
+        services.AddTransient<IFilesPageLocalization>(provider => new RuFilesPageLocalization());
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -59,7 +60,7 @@ public class Startup
                 defaults: new { controller = "AdminPanel", action = "AdminPanel" }
             );
             routeBuilder.MapRoute(
-                name: "usual_page",
+                name: "some_page",
                 template: "{*directory}",
                 defaults: new { controller = "PagesHandler", action = "RequestHandler" },
                 constraints: new { directory = new UrlConstraint() }

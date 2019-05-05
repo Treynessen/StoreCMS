@@ -16,7 +16,7 @@ namespace Treynessen.Functions
             if (string.IsNullOrEmpty(userName))
                 return null;
 
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefaultAsync(cu => cu.UserName.Equals(userName, StringComparison.CurrentCulture)).Result;
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefaultAsync(cu => cu.UserName.Equals(userName, StringComparison.InvariantCulture)).Result;
 
             if (connectedUser == null)
                 return null;
@@ -32,10 +32,10 @@ namespace Treynessen.Functions
             // Проверка ip-адреса
             // ...
 
-            if (!connectedUser.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.CurrentCulture))
+            if (!connectedUser.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.InvariantCulture))
                 return null;
 
-            if (!connectedUser.UserAgent.Equals(context.Request.Headers["User-Agent"], StringComparison.CurrentCulture))
+            if (!connectedUser.UserAgent.Equals(context.Request.Headers["User-Agent"], StringComparison.InvariantCulture))
                 return null;
 
             connectedUser.LastActionTime = DateTime.Now;

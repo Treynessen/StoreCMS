@@ -76,7 +76,7 @@
                         }
                         @foreach (var p in pages)
                         {
-                            if (Model.PreviousPageID == p.PreviousPageID && Model.Alias.Equals(p.Alias))
+                            if (Model.PreviousPageID == p.PreviousPageID && Model.Alias.Equals(p.Alias, StringComparison.InvariantCulture))
                             {
                                 continue;
                             }

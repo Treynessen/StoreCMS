@@ -19,7 +19,7 @@ namespace Treynessen.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path.Value.Trim('/').Equals(path, StringComparison.CurrentCulture))
+            if (context.Request.Path.Value.Trim('/').Equals(path, StringComparison.InvariantCulture))
                 context.Items["AccessLevelConfiguration"] = context.RequestServices.GetRequiredService<AccessLevelConfiguration>();
             await next.Invoke(context);
         }

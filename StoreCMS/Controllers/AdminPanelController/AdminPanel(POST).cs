@@ -97,6 +97,38 @@ namespace Treynessen.Controllers
                     ActionsWithDatabase.DeleteTemplateChunk(db, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.TemplateChunks}");
 
+                case AdminPanelPages.UploadFile:
+                    OtherFunctions.UploadFileToServer(model.Path, model.uploadedFile, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}&path={model.Path}");
+
+                case AdminPanelPages.CreateFolder:
+                    OtherFunctions.CreateFolder(model.Path, model.Name, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}&path={model.Path}");
+
+                case AdminPanelPages.CreateStyle:
+                    OtherFunctions.CreateCssFile(model.Path, model.Name, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}&path={model.Path}");
+
+                case AdminPanelPages.EditStyle:
+                    if (OtherFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out string newPath) == false)
+                    {
+                        HttpContext.Items["IsIncorrect"] = true;
+                        return View("Files/EditCss", model.StyleModel);
+                    }
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditStyle}&path={newPath}");
+
+                case AdminPanelPages.DeleteFileOrFolder:
+                    string redirectAttribute = null;
+                    if (model.Path.Length > 1 && model.Path[model.Path.Length - 1].Equals('/'))
+                        redirectAttribute = model.Path.Substring(0, model.Path.LastIndexOf('/', model.Path.Length - 2) + 1);
+                    else if (model.Path.Length > 1 && !model.Path[model.Path.Length - 1].Equals('/'))
+                        redirectAttribute = model.Path.Substring(0, model.Path.LastIndexOf('/') + 1);
+                    if (string.IsNullOrEmpty(redirectAttribute))
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}");
+                    else
+                        OtherFunctions.DeleteFileOrFolder(model.Path, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}&path={redirectAttribute}");
+
                 default:
                     return RedirectToAction(nameof(AdminPanel));
             }

@@ -16,7 +16,7 @@ namespace Treynessen.Functions
             if (page == null)
                 throw new ArgumentException();
 
-            if (GetUrl(page).Equals("/admin"))
+            if (GetUrl(page).Equals("/admin", StringComparison.InvariantCultureIgnoreCase))
             {
                 page.Alias = "admin_page";
             }
@@ -40,7 +40,7 @@ namespace Treynessen.Functions
                     {
                         foreach (var c in collection)
                             if (!token.HasValue || !token.Value.IsCancellationRequested)
-                                if (c.Equals(url))
+                                if (c.Equals(url, StringComparison.InvariantCultureIgnoreCase))
                                     return true;
                         return false;
                     });

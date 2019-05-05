@@ -22,7 +22,7 @@ namespace Treynessen.Functions
             if (!Validator.TryValidateObject(template, new ValidationContext(template), null))
                 return false;
 
-            if (template.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
+            if (template.Name.Equals("_ViewImports", System.StringComparison.InvariantCultureIgnoreCase))
                 template.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";

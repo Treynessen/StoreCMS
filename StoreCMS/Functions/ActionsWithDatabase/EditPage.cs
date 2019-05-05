@@ -1,7 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +30,7 @@ namespace Treynessen.Functions
                     if (usualPage == null)
                         return false;
                     db.Entry(usualPage).State = EntityState.Detached;
-                    isMainPage = !usualPage.PreviousPageID.HasValue && usualPage.Alias.Equals("index");
+                    isMainPage = !usualPage.PreviousPageID.HasValue && usualPage.Alias.Equals("index", StringComparison.InvariantCultureIgnoreCase);
                     break;
                 case PageType.Category:
                     CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.itemID).Result;
@@ -66,7 +66,7 @@ namespace Treynessen.Functions
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                 string productsImagesPath = env.GetProductsImagesPath();
                 string pathToImages = $"{productsImagesPath}{changedProductPage.PreviousPageID}{changedProductPage.ID}\\";
-                if (!changedProductPage.BreadcrumbName.Equals(product.BreadcrumbName))
+                if (!changedProductPage.BreadcrumbName.Equals(product.BreadcrumbName, StringComparison.InvariantCulture))
                 {
                     if (Directory.Exists(pathToImages))
                     {

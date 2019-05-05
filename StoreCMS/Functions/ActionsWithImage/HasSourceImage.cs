@@ -26,7 +26,7 @@ namespace Treynessen.Functions
                                                                      select new KeyValuePair<string, string>(match.Value, string.Empty));
                     OtherFunctions.ReplaceContentInFile(pathToImagesInfo, listOfChanges, fileContent);
                 }
-                DeleteCreatedImages(pathToImageFolder, imageFullName);
+                OtherFunctions.DeleteCreatedImages(pathToImageFolder, imageFullName);
                 return false;
             }
             return true;

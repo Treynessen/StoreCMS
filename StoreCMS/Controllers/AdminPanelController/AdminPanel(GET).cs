@@ -20,6 +20,8 @@ namespace Treynessen.Controllers
 
             switch (model.PageId.Value)
             {
+                case AdminPanelPages.MainPage:
+                    return MainPage();
                 case AdminPanelPages.Pages:
                     return Pages();
                 case AdminPanelPages.AddPage:
@@ -48,10 +50,14 @@ namespace Treynessen.Controllers
                     return AddTemplateChunk();
                 case AdminPanelPages.EditTemplateChunk:
                     return EditTemplateChunk(model.itemID);
+                case AdminPanelPages.Files:
+                    return Files(model.Path);
+                case AdminPanelPages.EditStyle:
+                    return EditCssFile(model.Path);
                 case AdminPanelPages.Settings:
                     return Settings();
                 default:
-                    return MainPage();
+                    return RedirectToAction(nameof(AdminPanel));
             }
         }
     }

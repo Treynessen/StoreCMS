@@ -72,7 +72,7 @@ namespace Treynessen.Functions
                 else 
                     page.Alias = GetCorrectName(model.Alias, context); // ←
             }
-            if (page.RequestPathWithoutAlias.Equals("/") && !model.IsMainPage && !string.IsNullOrEmpty(page.Alias) && page.Alias.Equals("index"))
+            if (page.RequestPathWithoutAlias.Equals("/") && !model.IsMainPage && !string.IsNullOrEmpty(page.Alias) && page.Alias.Equals("index", StringComparison.InvariantCulture))
                 page.Alias = "ind";
 
             page.Content = model.Content;

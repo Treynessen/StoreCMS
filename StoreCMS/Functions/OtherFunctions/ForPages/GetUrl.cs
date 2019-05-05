@@ -1,4 +1,5 @@
-﻿using Treynessen.Database.Entities;
+﻿using System;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.Functions
 {
@@ -6,7 +7,7 @@ namespace Treynessen.Functions
     {
         public static string GetUrl(Page page)
         {
-            if (page.RequestPathWithoutAlias.Equals("/") && page.Alias.Equals("index"))
+            if (page.RequestPathWithoutAlias.Equals("/") && page.Alias.Equals("index", StringComparison.InvariantCulture))
                 return "/";
             else if (page.RequestPathWithoutAlias.Equals("/"))
                 return $"/{page.Alias}";
@@ -16,7 +17,7 @@ namespace Treynessen.Functions
 
         public static string GetUrl(string requestPathWithoutAlias, string alias)
         {
-            if (requestPathWithoutAlias.Equals("/") && alias.Equals("index"))
+            if (requestPathWithoutAlias.Equals("/") && alias.Equals("index", StringComparison.InvariantCulture))
                 return "/";
             else if (requestPathWithoutAlias.Equals("/"))
                 return $"/{alias}";

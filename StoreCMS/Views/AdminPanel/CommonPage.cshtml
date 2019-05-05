@@ -33,6 +33,10 @@
     {
         pages.Add(AdminPanelPages.TemplateChunks, localization.TemplateChunks);
     }
+    if(DataCheck.HasAccessTo(AdminPanelPages.Files, user, Context))
+    {
+        pages.Add(AdminPanelPages.Files, localization.Files);
+    }
     if (DataCheck.HasAccessTo(AdminPanelPages.Settings, user, Context))
     {
         pages.Add(AdminPanelPages.Settings, localization.Settings);

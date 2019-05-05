@@ -26,7 +26,7 @@ namespace Treynessen.Functions
                 return false;
 
             string pathToTemplateChunks = env.GetTemplateChunksPath();
-            if (chunk.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
+            if (chunk.Name.Equals("_ViewImports", System.StringComparison.InvariantCultureIgnoreCase))
                 chunk.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, chunk);
             chunk.TemplatePath += $"{chunk.Name}.cshtml";

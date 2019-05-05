@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -14,9 +15,9 @@ namespace Treynessen.Functions
             while (pointer != -1)
             {
                 pointer = GetNextChunk(pointer, source, out string chunkName);
-                if (!string.IsNullOrEmpty(chunkName) && !chunkName.Equals(currentChunkName))
+                if (!string.IsNullOrEmpty(chunkName) && !chunkName.Equals(currentChunkName, StringComparison.InvariantCulture))
                 {
-                    TemplateChunk chunk = db.TemplateChunks.FirstOrDefaultAsync(tc => tc.Name.Equals(chunkName)).Result;
+                    TemplateChunk chunk = db.TemplateChunks.FirstOrDefaultAsync(tc => tc.Name.Equals(chunkName, StringComparison.InvariantCulture)).Result;
                     if (chunk != null)
                     {
                         db.Entry(chunk).State = EntityState.Detached;

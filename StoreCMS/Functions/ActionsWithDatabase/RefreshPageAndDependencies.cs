@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -18,13 +19,13 @@ namespace Treynessen.Functions
                     db.Entry(up).Reference(p => p.PreviousPage).Load();
                     string temp = up.RequestPathWithoutAlias;
                     up.RequestPathWithoutAlias = up.PreviousPage == null ? "/" : OtherFunctions.GetUrl(up.PreviousPage);
-                    if (!temp.Equals("/") && up.RequestPathWithoutAlias.Equals("/") && up.Alias.Equals("index"))
+                    if (!temp.Equals("/") && up.RequestPathWithoutAlias.Equals("/") && up.Alias.Equals("index", StringComparison.InvariantCulture))
                         up.Alias = "ind";
                     break;
                 case CategoryPage cp:
                     db.Entry(cp).Reference(p => p.PreviousPage).Load();
                     cp.RequestPathWithoutAlias = cp.PreviousPage == null ? "/" : OtherFunctions.GetUrl(cp.PreviousPage);
-                    if (cp.RequestPathWithoutAlias.Equals("/") && cp.Alias.Equals("index"))
+                    if (cp.RequestPathWithoutAlias.Equals("/") && cp.Alias.Equals("index", StringComparison.InvariantCulture))
                         cp.Alias = "ind";
                     break;
                 case ProductPage pp:

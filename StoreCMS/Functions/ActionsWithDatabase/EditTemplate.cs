@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
@@ -34,15 +34,15 @@ namespace Treynessen.Functions
                 return false;
 
             string pathToTemplates = env.GetTemplatesPath();
-            if (template.Name.Equals("_ViewImports", System.StringComparison.CurrentCultureIgnoreCase))
+            if (template.Name.Equals("_ViewImports", StringComparison.InvariantCultureIgnoreCase))
                 template.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
 
-            bool isChangedName = !changeTemplate.Name.Equals(template.Name);
+            bool isChangedName = !changeTemplate.Name.Equals(template.Name, StringComparison.InvariantCulture);
             bool isChangedSource = string.IsNullOrEmpty(changeTemplate.TemplateSource) ? 
                 !string.IsNullOrEmpty(template.TemplateSource) :
-                !changeTemplate.TemplateSource.Equals(template.TemplateSource);
+                !changeTemplate.TemplateSource.Equals(template.TemplateSource, StringComparison.InvariantCulture);
             if (isChangedName && !isChangedSource)
             {
                 try

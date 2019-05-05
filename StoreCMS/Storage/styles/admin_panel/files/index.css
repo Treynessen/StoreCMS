@@ -1,0 +1,189 @@
+﻿div.breadcrumbList {
+    width: 100%;
+    max-width: 100%;
+    text-wrap: none;
+    overflow-x: auto;
+    font-size: 0;
+    margin-bottom: 1vh;
+}
+
+.breadcrumbList > a {
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid;
+    color: #000;
+    font-size: 2.3vh;
+    text-decoration: none;
+    padding: .5vh;
+    margin: 0;
+    background-color: #00c0ff;
+}
+
+    .breadcrumbList > a:not(:first-child) {
+        border-left: 0;
+    }
+
+    .breadcrumbList > a:hover {
+        background-color: #00a8ff;
+    }
+
+.breadcrumbList > div {
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid;
+    color: #000;
+    font-size: 2.3vh;
+    padding: .5vh;
+    margin: 0;
+    background-color: #00a8ff;
+}
+
+    .breadcrumbList > div:not(:first-child) {
+        border-left: 0;
+    }
+
+div.actionList {
+    width: 100%;
+    max-width: 100%;
+}
+
+form.marginLeft{
+    margin-left: 4%;
+}
+
+form.createFolerOrStyle {
+    display: inline-flex;
+    margin-bottom: 1vh;
+    width: 30%;
+    max-width: 30%;
+}
+
+.createFolerOrStyle > input[type=submit] {
+    box-sizing: border-box;
+    border: 2px solid #000;
+    background-color: #ebebeb;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1rem;
+    height: 3.5vh;
+    max-height: 3.5vh;
+}
+
+    .createFolerOrStyle > input[type=submit]:hover {
+        cursor: pointer;
+        background-color: #dadada;
+    }
+
+.createFolerOrStyle > input[type=text] {
+    flex-grow: 1;
+    border-left: 0;
+    border-color: #000;
+}
+
+
+div.inputFileButton {
+    display: inline-block;
+    border: none;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.4rem;
+    border-radius: 5px;
+    background-color: #00c0ff;
+}
+
+    div.inputFileButton:hover {
+        background: #00a8ff;
+        cursor: pointer;
+    }
+
+    div.inputFileButton > label {
+        display: block;
+        padding: .8vh;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    div.inputFileButton > input[type=file] {
+        display: none;
+        position: absolute;
+        z-index: -1;
+    }
+
+form.uploadFileForm {
+    margin-bottom: 1vh;
+}
+
+.uploadFileForm > input[type=submit] {
+    display: inline-block;
+    margin-left: .5%;
+    border: none;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    padding: .8vh;
+    font-size: 1.4rem;
+    border-radius: 5px;
+    background-color: #00c0ff;
+}
+
+    .uploadFileForm > input[type=submit]:hover {
+        background: #00a8ff;
+        cursor: pointer;
+    }
+
+tr:nth-child(1) > td:nth-child(1) {
+    padding: .7vh;
+}
+
+td:nth-child(1) {
+    width: 75%;
+    max-width: 75%;
+    padding: 0;
+}
+
+
+td:nth-child(2) {
+    width: 25%;
+    max-width: 25%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+td:nth-child(1) > span {
+    display: block;
+    color: #000;
+    padding: .7vh;
+}
+
+td:nth-child(1) > a {
+    display: block;
+    text-decoration: none;
+    color: #000;
+    padding: .7vh;
+}
+
+input.deleteButton {
+    display: block;
+    border-style: none;
+    position: absolute;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.4rem;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #00c0ff;
+}
+
+.deleteButton:hover {
+    background-color: #00a8ff;
+    cursor: pointer;
+}
+
+input.disabledDeleteButton {
+    display: block;
+    border-style: none;
+    position: absolute;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.4rem;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #00c0ff;
+}

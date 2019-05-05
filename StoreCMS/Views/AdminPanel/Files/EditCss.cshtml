@@ -1,0 +1,21 @@
+﻿@model StyleModel
+@inject IFilesPageLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/files/editCss.css";
+    User user = Context.Items["User"] as User;
+    bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
+}
+<form method="post" class="pageContainer">
+    @if (incorrect)
+    {
+        <span>@Html.Raw(localization.IncorrectInput)</span>
+    }
+    <div class="nameBlock">
+        <label for="Name">@Html.Raw(localization.Name)</label>
+        <input type="text" id="Name" name="StyleModel.FileName" value="@Model?.FileName" required />
+    </div>
+    <label for="TemplateSource">@Html.Raw(localization.StyleFileContent)</label>
+    <textarea id="TemplateSource" name="StyleModel.FileContent">@Model?.FileContent</textarea>
+    <input type="submit" value="@Html.Raw(localization.SaveButton)" />
+</form>

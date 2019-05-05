@@ -17,7 +17,7 @@ namespace Treynessen.Functions
 
             string pathToImageFolder = path.Substring(0, path.LastIndexOf('\\') + 1);
             string sourceFileName = path.Substring(path.LastIndexOf('\\') + 1);
-            if (!sourceFileName.Equals(sourceFileName.ToLower()))
+            if (!sourceFileName.Equals(sourceFileName.ToLower(), StringComparison.InvariantCulture))
             {
                 sourceFileName = sourceFileName.ToLower();
                 File.Move(path, $"{pathToImageFolder}{sourceFileName}");
@@ -25,9 +25,9 @@ namespace Treynessen.Functions
 
             string fileNameExtension = path.Substring(path.LastIndexOf('.'));
             if (string.IsNullOrEmpty(fileNameExtension) ||
-                (!fileNameExtension.Equals(".jpg", StringComparison.CurrentCultureIgnoreCase)
-                && !fileNameExtension.Equals(".jpeg", StringComparison.CurrentCultureIgnoreCase)
-                && !fileNameExtension.Equals(".png", StringComparison.CurrentCultureIgnoreCase)))
+                (!fileNameExtension.Equals(".jpg", StringComparison.InvariantCultureIgnoreCase)
+                && !fileNameExtension.Equals(".jpeg", StringComparison.InvariantCultureIgnoreCase)
+                && !fileNameExtension.Equals(".png", StringComparison.InvariantCultureIgnoreCase)))
                 throw new ArgumentException("ImageComprassion(line 31): image has an unsupported extension");
 
             string resultFileName = null;
