@@ -6,7 +6,7 @@
         Pages,
         Categories,
         Templates,
-        TemplateChunks,
+        Chunks,
         Files,
         Settings,
 
@@ -27,9 +27,9 @@
         EditTemplate,
         DeleteTemplate,
 
-        AddTemplateChunk,
-        EditTemplateChunk,
-        DeleteTemplateChunk,
+        AddChunk,
+        EditChunk,
+        DeleteChunk,
 
         UploadFile,
         CreateFolder,

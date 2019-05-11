@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 using Treynessen.Database.Interfaces;
@@ -10,8 +11,9 @@ namespace Treynessen.Functions
     {
         public static void SetUniqueITemplateName(CMSDatabase db, ITemplate template)
         {
-            var rawsIdAndName = template is Template ? db.Templates.Where(t => t.ID != template.ID).Select(t => new { t.ID, t.Name }).ToList()
-                : db.TemplateChunks.Where(tc => tc.ID != template.ID).Select(tc => new { tc.ID, tc.Name }).ToList();
+            var rawsIdAndName = template is Template 
+                ? db.Templates.Where(t => t.ID != template.ID).AsNoTracking().Select(t => new { t.ID, t.Name }).ToList()
+                : db.Chunks.Where(tc => tc.ID != template.ID).AsNoTracking().Select(tc => new { tc.ID, tc.Name }).ToList();
             if (rawsIdAndName == null)
                 throw new ArgumentException();
 

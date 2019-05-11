@@ -12,6 +12,8 @@ namespace Treynessen.Functions
                 return null;
             T template = new T();
             template.Name = GetCorrectName(model.Name, context);
+            if (string.IsNullOrEmpty(template.Name))
+                return null;
             template.TemplatePath = model.TemplatePath;
             template.TemplateSource = model.TemplateSource;
             return template;

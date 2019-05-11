@@ -14,9 +14,9 @@ namespace Treynessen.Functions
 {
     public static partial class ActionsWithDatabase
     {
-        public static bool AddTemplateChunk(CMSDatabase db, TemplateModel model, HttpContext context)
+        public static bool AddChunk(CMSDatabase db, TemplateModel model, HttpContext context)
         {
-            TemplateChunk chunk = OtherFunctions.TemplateModelToITemplate<TemplateChunk>(model, context);
+            Chunk chunk = OtherFunctions.TemplateModelToITemplate<Chunk>(model, context);
             if (chunk == null)
                 return false;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
@@ -31,12 +31,12 @@ namespace Treynessen.Functions
             OtherFunctions.SetUniqueITemplateName(db, chunk);
             chunk.TemplatePath += $"{chunk.Name}.cshtml";
             OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource);
-            chunk.ID = OtherFunctions.GetDatabaseRawID(db.TemplateChunks);
-            db.TemplateChunks.Add(chunk);
+            chunk.ID = OtherFunctions.GetDatabaseRawID(db.Chunks);
+            db.Chunks.Add(chunk);
             db.SaveChanges();
 
-            var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).ToListAsync();
-            var chunks = db.TemplateChunks.Where(tc => tc.TemplateSource.Contains($"[#{chunk.Name}]")).ToListAsync();
+            var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).AsNoTracking().ToListAsync();
+            var chunks = db.Chunks.Where(tc => tc.TemplateSource.Contains($"[#{chunk.Name}]")).AsNoTracking().ToListAsync();
             var task = Task.Run(() =>
             {
                 foreach (var t in templates.Result)

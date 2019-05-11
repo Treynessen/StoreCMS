@@ -30,6 +30,7 @@ namespace Treynessen.Functions
                     template.TemplatePath = env.GetTemplatesPath(true);
                 template.ID = model.itemID.Value;
             }
+            else return false;
             if (!Validator.TryValidateObject(template, new ValidationContext(template), null))
                 return false;
 

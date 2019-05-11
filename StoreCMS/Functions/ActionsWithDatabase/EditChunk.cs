@@ -16,22 +16,23 @@ namespace Treynessen.Functions
 {
     public static partial class ActionsWithDatabase
     {
-        public static bool EditTemplateChunk(CMSDatabase db, AdminPanelModel model, HttpContext context)
+        public static bool EditChunk(CMSDatabase db, AdminPanelModel model, HttpContext context)
         {
             if (!model.itemID.HasValue || model.TemplateModel == null)
                 return false;
-            TemplateChunk changeChunk = db.TemplateChunks.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
+            Chunk changeChunk = db.Chunks.FirstOrDefaultAsync(t => t.ID == model.itemID).Result;
             db.Entry(changeChunk).State = EntityState.Detached;
             if (changeChunk == null)
                 return false;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            TemplateChunk chunk = OtherFunctions.TemplateModelToITemplate<TemplateChunk>(model.TemplateModel, context);
+            Chunk chunk = OtherFunctions.TemplateModelToITemplate<Chunk>(model.TemplateModel, context);
             if (chunk != null)
             {
                 if (string.IsNullOrEmpty(chunk.TemplatePath))
                     chunk.TemplatePath = env.GetTemplateChunksPath(true);
                 chunk.ID = model.itemID.Value;
             }
+            else return false;
             if (!Validator.TryValidateObject(chunk, new ValidationContext(chunk), null))
                 return false;
 
@@ -65,10 +66,14 @@ namespace Treynessen.Functions
 
             if (isChangedName)
             {
-                var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{changeChunk.Name}]") || t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();
-                var chunks = db.TemplateChunks.Where(tc => tc.ID != changeChunk.ID
-                && (tc.TemplateSource.Contains($"[#{changeChunk.Name}]") || tc.TemplateSource.Contains($"[#{chunk.Name}]"))).ToList();
-                db.TemplateChunks.Update(chunk);
+                var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{changeChunk.Name}]") || t.TemplateSource.Contains($"[#{chunk.Name}]"))
+                .AsNoTracking()
+                .ToList();
+                var chunks = db.Chunks.Where(tc => tc.ID != changeChunk.ID
+                && (tc.TemplateSource.Contains($"[#{changeChunk.Name}]") || tc.TemplateSource.Contains($"[#{chunk.Name}]")))
+                .AsNoTracking()
+                .ToList();
+                db.Chunks.Update(chunk);
                 db.SaveChanges();
                 var renderTask = Task.Run(() =>
                 {
@@ -81,7 +86,7 @@ namespace Treynessen.Functions
             }
             else
             {
-                db.TemplateChunks.Update(chunk);
+                db.Chunks.Update(chunk);
                 db.SaveChanges();
             }
             return true;

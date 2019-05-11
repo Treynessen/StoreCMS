@@ -28,8 +28,6 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS.Views.pdb
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.Views.pdb
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.csprojAssemblyReference.cache
-D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\AddTemplate.g.cshtml.cs
-D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\EditTemplate.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\ChunksPage.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\TemplatesPage.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\TemplateChunks\_ViewImports.g.cshtml.cs
@@ -42,3 +40,4 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Vi
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Products\_ViewImports.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Files\Index.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Files\EditCss.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Templates\AddOrEditTemplate.g.cshtml.cs

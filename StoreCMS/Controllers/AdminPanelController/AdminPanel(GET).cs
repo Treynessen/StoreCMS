@@ -44,12 +44,12 @@ namespace Treynessen.Controllers
                     return AddTemplate();
                 case AdminPanelPages.EditTemplate:
                     return EditTemplate(model.itemID);
-                case AdminPanelPages.TemplateChunks:
-                    return TemplateChunks();
-                case AdminPanelPages.AddTemplateChunk:
-                    return AddTemplateChunk();
-                case AdminPanelPages.EditTemplateChunk:
-                    return EditTemplateChunk(model.itemID);
+                case AdminPanelPages.Chunks:
+                    return Chunks();
+                case AdminPanelPages.AddChunk:
+                    return AddChunk();
+                case AdminPanelPages.EditChunk:
+                    return EditChunk(model.itemID);
                 case AdminPanelPages.Files:
                     return Files(model.Path);
                 case AdminPanelPages.EditStyle:

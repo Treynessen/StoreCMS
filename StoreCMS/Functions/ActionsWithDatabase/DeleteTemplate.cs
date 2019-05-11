@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,16 +23,21 @@ namespace Treynessen.Functions
             var usualPagesTask = db.UsualPages.Where(up => up.TemplateId == template.ID).ToListAsync();
             var categoryPagesTask = db.CategoryPages.Where(cp => cp.TemplateId == template.ID).ToListAsync();
             var productPagesTask = db.ProductPages.Where(pp => pp.TemplateId == template.ID).ToListAsync();
-            foreach (var up in usualPagesTask.Result)
-                up.Template = null;
-            db.UsualPages.UpdateRange(usualPagesTask.Result);
-            foreach (var cp in categoryPagesTask.Result)
-                cp.Template = null;
-            db.CategoryPages.UpdateRange(categoryPagesTask.Result);
+            var usualPagesChangeTask = Task.Run(() =>
+            {
+                foreach (var up in usualPagesTask.Result)
+                    up.Template = null;
+            });
+            var categoryPagesChangeTask = Task.Run(() =>
+            {
+                foreach (var cp in categoryPagesTask.Result)
+                    cp.Template = null;
+            });
             foreach (var pp in productPagesTask.Result)
                 pp.Template = null;
             File.Delete($"{context.RequestServices.GetRequiredService<IHostingEnvironment>().GetTemplatesPath()}{template.Name}.cshtml");
-            db.ProductPages.UpdateRange(productPagesTask.Result);
+            usualPagesChangeTask.Wait();
+            categoryPagesChangeTask.Wait();
             db.Templates.Remove(template);
             db.SaveChanges();
         }

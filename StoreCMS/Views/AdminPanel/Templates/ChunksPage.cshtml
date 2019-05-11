@@ -1,13 +1,13 @@
-﻿@model TemplateChunk[]
+﻿@model Chunk[]
 @inject ITemplatesLocalization localization
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/index.css";
     User user = Context.Items["User"] as User;
 }
-@if (DataCheck.HasAccessTo(AdminPanelPages.AddTemplateChunk, user, Context))
+@if (DataCheck.HasAccessTo(AdminPanelPages.AddChunk, user, Context))
 {
-            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplateChunk)">@Html.Raw(localization.AddTemplateChunk)</a></div>
+            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddChunk)">@Html.Raw(localization.AddTemplateChunk)</a></div>
 }
             <table>
                 <tr>
@@ -21,18 +21,18 @@
                     <td>@Html.Raw(t.ID)</td>
                     <td>@Html.Raw(t.Name)</td>
                     <td>
-                    @if (DataCheck.HasAccessTo(AdminPanelPages.EditTemplateChunk, user, Context))
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.EditChunk, user, Context))
                     {
                         <form method="get">
-                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplateChunk)" />
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditChunk)" />
                             <input type="hidden" name="itemID" value="@t.ID">
                             <input type="submit" class="actionButton" value="@Html.Raw(localization.EditTemplateChunk)" />
                         </form>
                     }
-                    @if (DataCheck.HasAccessTo(AdminPanelPages.DeleteTemplateChunk, user, Context))
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.DeleteChunk, user, Context))
                     {
                         <form method="post">
-                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplateChunk)" />
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteChunk)" />
                             <input type="hidden" name="itemID" value="@t.ID">
                             <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteTemplateChunk)" />
                         </form>

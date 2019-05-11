@@ -8,7 +8,9 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult AddTemplate(TemplateModel model = null)
         {
-            return View("Templates/AddTemplate", model);
+            if(model!=null)
+                HttpContext.Items["IsIncorrect"] = true;
+            return View("Templates/AddOrEditTemplate", model);
         }
     }
 }

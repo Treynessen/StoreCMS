@@ -30,7 +30,7 @@ namespace Treynessen.Controllers
             string[] productImages = null;
             if (Directory.Exists(imagesPath))
             {
-                string imageNameBasis = OtherFunctions.GetCorrectName(product.PageName, HttpContext);
+                string imageNameBasis = product.Alias;
                 productImages = Directory.GetFiles(imagesPath, $"*{imageNameBasis}*.jpg");
                 if (productImages.Length > 0)
                 {

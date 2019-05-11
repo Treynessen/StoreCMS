@@ -6,9 +6,11 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult AddTemplateChunk(TemplateModel model = null)
+        public IActionResult AddChunk(TemplateModel model = null)
         {
-            return View("Templates/AddTemplate", model);
+            if (model != null)
+                HttpContext.Items["IsIncorrect"] = true;
+            return View("Templates/AddOrEditTemplate", model);
         }
     }
 }

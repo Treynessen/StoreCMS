@@ -83,19 +83,19 @@ namespace Treynessen.Controllers
                     ActionsWithDatabase.DeleteTemplate(db, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
 
-                case AdminPanelPages.AddTemplateChunk:
-                    if (ActionsWithDatabase.AddTemplateChunk(db, model.TemplateModel, HttpContext) == false)
-                        return AddTemplateChunk(model.TemplateModel);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.TemplateChunks}");
+                case AdminPanelPages.AddChunk:
+                    if (ActionsWithDatabase.AddChunk(db, model.TemplateModel, HttpContext) == false)
+                        return AddChunk(model.TemplateModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
 
-                case AdminPanelPages.EditTemplateChunk:
-                    if (ActionsWithDatabase.EditTemplateChunk(db, model, HttpContext) == false)
-                        return EditTemplateChunk(model.itemID, model.TemplateModel);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditTemplateChunk}&itemID={model.itemID}");
+                case AdminPanelPages.EditChunk:
+                    if (ActionsWithDatabase.EditChunk(db, model, HttpContext) == false)
+                        return EditChunk(model.itemID, model.TemplateModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditChunk}&itemID={model.itemID}");
 
-                case AdminPanelPages.DeleteTemplateChunk:
-                    ActionsWithDatabase.DeleteTemplateChunk(db, model.itemID, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.TemplateChunks}");
+                case AdminPanelPages.DeleteChunk:
+                    ActionsWithDatabase.DeleteChunk(db, model.itemID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
 
                 case AdminPanelPages.UploadFile:
                     OtherFunctions.UploadFileToServer(model.Path, model.uploadedFile, HttpContext);

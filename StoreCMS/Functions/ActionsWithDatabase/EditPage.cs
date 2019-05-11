@@ -61,15 +61,15 @@ namespace Treynessen.Functions
 
             if (page is ProductPage product)
             {
-                if (!changedProductPage.PageName.Equals(product.PageName, StringComparison.InvariantCulture))
+                if (!changedProductPage.Alias.Equals(product.Alias, StringComparison.InvariantCulture))
                 {
                     IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                     string pathToImages = $"{env.GetProductsImagesPath()}{changedProductPage.PreviousPageID}{changedProductPage.ID}\\";
                     if (Directory.Exists(pathToImages))
                     {
                         LinkedList<KeyValuePair<string, string>> listOfChanges = new LinkedList<KeyValuePair<string, string>>();
-                        string oldName = OtherFunctions.GetCorrectName(changedProductPage.PageName, context);
-                        string newName = OtherFunctions.GetCorrectName(product.PageName, context);
+                        string oldName = changedProductPage.Alias;
+                        string newName = product.Alias;
                         Regex imagesChecker = new Regex($"{oldName}(_\\d+)?.jpg$");
                         string[] oldImagesNames = Directory.GetFiles(pathToImages, $"*{oldName}*.jpg");
                         oldImagesNames = (from img in oldImagesNames

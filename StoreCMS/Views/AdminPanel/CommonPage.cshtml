@@ -29,9 +29,9 @@
     {
         pages.Add(AdminPanelPages.Templates, localization.Templates);
     }
-    if (DataCheck.HasAccessTo(AdminPanelPages.TemplateChunks, user, Context))
+    if (DataCheck.HasAccessTo(AdminPanelPages.Chunks, user, Context))
     {
-        pages.Add(AdminPanelPages.TemplateChunks, localization.TemplateChunks);
+        pages.Add(AdminPanelPages.Chunks, localization.TemplateChunks);
     }
     if(DataCheck.HasAccessTo(AdminPanelPages.Files, user, Context))
     {

@@ -16,7 +16,7 @@ namespace Treynessen.Database.Context
         public DbSet<ProductPage> ProductPages { get; set; }
 
         public DbSet<Template> Templates { get; set; }
-        public DbSet<TemplateChunk> TemplateChunks { get; set; }
+        public DbSet<Chunk> Chunks { get; set; }
 
         public CMSDatabase(DbContextOptions<CMSDatabase> options)
             : base(options)

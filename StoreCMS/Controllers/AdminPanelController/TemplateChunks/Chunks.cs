@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Treynessen.Controllers
 {
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult TemplateChunks()
+        public IActionResult Chunks()
         {
-            return View("Templates/ChunksPage", db.TemplateChunks.ToArray());
+            return View("Templates/ChunksPage", db.Chunks.AsNoTracking().ToArray());
         }
     }
 }

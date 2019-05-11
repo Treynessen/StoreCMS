@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Treynessen.Controllers
 {
@@ -8,7 +9,7 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult Templates()
         {
-            return View("Templates/TemplatesPage", db.Templates.ToArray());
+            return View("Templates/TemplatesPage", db.Templates.AsNoTracking().ToArray());
         }
     }
 }
