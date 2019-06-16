@@ -21,18 +21,24 @@ namespace Treynessen.Functions
                 && !fileExtension.Equals(".png", StringComparison.InvariantCultureIgnoreCase)
                 && !fileExtension.Equals(".bmp", StringComparison.InvariantCultureIgnoreCase)
                 && !fileExtension.Equals(".gif", StringComparison.InvariantCultureIgnoreCase)
-                && !fileExtension.Equals(".css", StringComparison.InvariantCultureIgnoreCase))
+                && !fileExtension.Equals(".css", StringComparison.InvariantCultureIgnoreCase)
+                && !fileExtension.Equals(".ico", StringComparison.InvariantCultureIgnoreCase))
                 return;
             string fileName = fullFileName.Substring(0, index);
             fileName = GetCorrectName(fileName, context);
             fullFileName = $"{fileName}{fileExtension}";
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            path = path.Replace('/', '\\');
-            if (path[0].Equals('\\'))
-                path = path.Remove(0, 1);
-            path = $"{env.GetStoragePath()}{path}";
+            if (string.IsNullOrEmpty(path))
+                path = env.GetStoragePath();
+            else
+            {
+                path = path.Replace('@', '\\');
+                if (!path[path.Length - 1].Equals('\\'))
+                    path = path.Insert(path.Length, "\\");
+                path = $"{env.GetStoragePath()}{path}";
+            }
             path = $"{path}{GetUniqueFileOrFolderName(path, fileName, fileExtension)}";
-            using(FileStream fs = new FileStream(path, FileMode.Create))
+            using (FileStream fs = new FileStream(path, FileMode.Create))
             {
                 file.CopyTo(fs);
             }

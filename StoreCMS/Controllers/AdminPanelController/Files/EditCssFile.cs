@@ -15,13 +15,11 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult EditCssFile(string path)
         {
-            Regex regex = new Regex(@"^/((\w|-|_)+/)*((\w|-|_)+\.\w+)?$");
+            Regex regex = new Regex(@"^((\w|-|_)+)(@(\w|-|_)+)*(\w|-|_)+.css$");
             if (!regex.IsMatch(path))
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}");
-            if (!path.EndsWith(".css", StringComparison.InvariantCultureIgnoreCase))
-                return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}");
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
-            string pathToFile = $"{env.GetStoragePath()}{path.Remove(0, 1).Replace('/', '\\')}";
+            string pathToFile = $"{env.GetStoragePath()}{path.Replace('@', '\\')}";
             if (System.IO.File.Exists(pathToFile))
             {
                 string fileName = pathToFile.Substring(pathToFile.LastIndexOf('\\') + 1);

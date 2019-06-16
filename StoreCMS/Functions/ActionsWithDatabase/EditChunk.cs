@@ -66,10 +66,12 @@ namespace Treynessen.Functions
 
             if (isChangedName)
             {
-                var templates = db.Templates.Where(t => t.TemplateSource.Contains($"[#{changeChunk.Name}]") || t.TemplateSource.Contains($"[#{chunk.Name}]"))
+                var templates = db.Templates
+                .Where(t => t.TemplateSource.Contains($"[#{changeChunk.Name}]") || t.TemplateSource.Contains($"[#{chunk.Name}]"))
                 .AsNoTracking()
                 .ToList();
-                var chunks = db.Chunks.Where(tc => tc.ID != changeChunk.ID
+                var chunks = db.Chunks
+                .Where(tc => tc.ID != changeChunk.ID
                 && (tc.TemplateSource.Contains($"[#{changeChunk.Name}]") || tc.TemplateSource.Contains($"[#{chunk.Name}]")))
                 .AsNoTracking()
                 .ToList();

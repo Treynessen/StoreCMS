@@ -11,11 +11,16 @@ namespace Treynessen.Functions
     {
         public static void CreateFolder(string path, string folderName, HttpContext context)
         {
-            Regex regex = new Regex(@"^/((\w|-|_)+/)*$");
-            if (!regex.IsMatch(path))
+            Regex regex = new Regex(@"^(((\w|-|_)+)(@(\w|-|_)+)*)?((\w|-|_)+)*$");
+            if (!string.IsNullOrEmpty(path) && !regex.IsMatch(path))
                 return;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            path = $"{env.GetStoragePath()}{path.Remove(0, 1).Replace('/', '\\')}";
+            if (string.IsNullOrEmpty(path))
+                path = env.GetStoragePath();
+            else
+                path = $"{env.GetStoragePath()}{path.Replace('@', '\\')}";
+            if (!path[path.Length - 1].Equals('\\'))
+                path = path.Insert(path.Length, "\\");
             if (!Directory.Exists(path))
                 return;
             folderName = GetCorrectName(folderName, context);

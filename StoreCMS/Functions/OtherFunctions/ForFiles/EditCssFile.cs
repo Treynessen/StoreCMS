@@ -14,14 +14,12 @@ namespace Treynessen.Functions
         public static bool EditCssFile(string path, StyleModel model, HttpContext context, out string newPath)
         {
             newPath = null;
-            Regex regex = new Regex(@"^/((\w|-|_)+/)*((\w|-|_)+\.\w+)?$");
+            Regex regex = new Regex(@"^((\w|-|_)+)(@(\w|-|_)+)*(\w|-|_)+.css$");
             if (!regex.IsMatch(path))
                 return false;
-            if (!path.EndsWith(".css", StringComparison.InvariantCultureIgnoreCase))
-                return false;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            string pathToFile = $"{env.GetStoragePath()}{path.Remove(0, 1).Replace('/', '\\')}";
-            string oldFullFileName = path.Substring(path.LastIndexOf('/') + 1);
+            string pathToFile = $"{env.GetStoragePath()}{path.Replace('@', '\\')}";
+            string oldFullFileName = path.Substring(path.LastIndexOf('@') + 1);
             model.FileName = GetCorrectName(model.FileName, context);
             if (string.IsNullOrEmpty(model.FileName))
                 return false;

@@ -12,15 +12,15 @@ namespace Treynessen.Functions
     {
         public static void DeleteFileOrFolder(string path, HttpContext context)
         {
-            Regex regex = new Regex(@"^/((\w|-|_)+/)*((\w|-|_)+\.\w+)?$");
+            Regex regex = new Regex(@"^(((\w|-|_)+)(@(\w|-|_)+)*)?((\w|-|_)+)*(\.\w+)?$");
             if (!regex.IsMatch(path))
                 return;
             bool isFolder = false;
-            path = path.Replace('/', '\\');
-            if (path[0].Equals('\\'))
-                path = path.Remove(0, 1);
-            if (path[path.Length - 1].Equals('\\'))
+            path = path.Replace('@', '\\');
+            if (!path.Contains('.'))
                 isFolder = true;
+            if (isFolder && !path[path.Length - 1].Equals("\\"))
+                path = path.Insert(path.Length, "\\");
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             string storagePath = env.GetStoragePath();
             path = $"{storagePath}{path}";

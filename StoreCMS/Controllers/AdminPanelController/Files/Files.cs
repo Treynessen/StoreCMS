@@ -5,37 +5,38 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Treynessen.Functions;
 using Treynessen.Extensions;
 using Treynessen.Localization;
 using Treynessen.AdminPanelTypes;
-using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
 {
     public partial class AdminPanelController : Controller
     {
+        // Если directory == string.Empty, тогда считать, что сделан запрос к корневой папке
         [NonAction]
         public IActionResult Files(string directory = null)
         {
-            Regex regex = new Regex(@"^/((\w|-|_)+/)*$");
+            Regex regex = new Regex(@"^((\w|-|_)+)(@(\w|-|_)+)*$");
             if (!string.IsNullOrEmpty(directory) && !regex.IsMatch(directory))
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}");
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
+            // Получение полного пути до хранилища
             string storagePath = env.GetStoragePath();
             if (string.IsNullOrEmpty(directory) || directory.Equals("/", StringComparison.InvariantCulture))
                 directory = storagePath;
             else
             {
-                directory = directory.Substring(1);
-                directory = directory.Replace('/', '\\');
+                directory = directory.Replace('@', '\\');
                 directory = $"{storagePath}{directory}";
+                if (!directory[directory.Length - 1].Equals('\\'))
+                    directory = directory.Insert(directory.Length, "\\");
             }
             if (!Directory.Exists(directory))
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}");
             string availableSymbols = "qwertyuiopasdfghjklzxcvbnm1234567890-_";
+            // Список директорий, к которым нельзя получить доступ из админ-панели
             string[] forbiddenDirectories = new string[]
             {
                 $"{storagePath}images\\products\\",
@@ -51,6 +52,8 @@ namespace Treynessen.Controllers
                 int startIndex = storagePath.Length;
                 int endIndex = directory.Length - 1;
                 string[] folderNames = directory.Substring(startIndex, endIndex - startIndex).Split('\\');
+                // Проверяем путь до текущей директории. Если встречаются недопустимые символы, то делаем редирект
+                // в корень хранилища
                 foreach (var fn in folderNames)
                 {
                     for (int i = 0; i < fn.Length; ++i)
@@ -67,6 +70,14 @@ namespace Treynessen.Controllers
             IEnumerable<FilesViewModel> files = Directory.GetFiles(directory)
             .Where(f =>
             {
+                if (!f.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase)
+                && !f.EndsWith(".jpeg", StringComparison.InvariantCultureIgnoreCase)
+                && !f.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase)
+                && !f.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase)
+                && !f.EndsWith(".gif", StringComparison.InvariantCultureIgnoreCase)
+                && !f.EndsWith(".css", StringComparison.InvariantCultureIgnoreCase)
+                && !f.EndsWith(".ico", StringComparison.InvariantCultureIgnoreCase))
+                    return false;
                 bool wasPoint = false;
                 int startIndex = directory.Length;
                 int endIndex = f.Length - 1;
@@ -77,30 +88,26 @@ namespace Treynessen.Controllers
                     else if (!availableSymbols.Contains(f[i], StringComparison.InvariantCultureIgnoreCase))
                         return false;
                 }
-                if (f.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase)
-                || f.EndsWith(".jpeg", StringComparison.InvariantCultureIgnoreCase)
-                || f.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase)
-                || f.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase)
-                || f.EndsWith(".gif", StringComparison.InvariantCultureIgnoreCase)
-                || f.EndsWith(".css", StringComparison.InvariantCultureIgnoreCase))
-                    return true;
-                return false;
+                return true;
             })
             .Select(f =>
             {
                 FilesViewModel fvm = new FilesViewModel
                 {
                     Name = f.Substring(directory.Length),
-                    Url = f.Substring(storagePath.Length - 1).Replace('\\', '/'),
                     CanDelete = true
                 };
                 if (f.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase)
                 || f.EndsWith(".jpeg", StringComparison.InvariantCultureIgnoreCase)
                 || f.EndsWith(".png", StringComparison.InvariantCultureIgnoreCase)
                 || f.EndsWith(".bmp", StringComparison.InvariantCultureIgnoreCase)
-                || f.EndsWith(".gif", StringComparison.InvariantCultureIgnoreCase))
+                || f.EndsWith(".gif", StringComparison.InvariantCultureIgnoreCase)
+                || f.EndsWith(".ico", StringComparison.InvariantCultureIgnoreCase))
                     fvm.FileType = FileTypeEnum.image;
                 else fvm.FileType = FileTypeEnum.style;
+                if (fvm.FileType == FileTypeEnum.image)
+                    fvm.Url = f.Substring(storagePath.Length).Replace('\\', '/');
+                else fvm.Url = f.Substring(storagePath.Length).Replace('\\', '@');
                 return fvm;
             });
 
@@ -127,16 +134,17 @@ namespace Treynessen.Controllers
             })
             .Select(d =>
             {
-                if (!d[d.Length - 1].Equals('\\'))
-                    d = d.Insert(d.Length, "\\");
-                string url = d.Substring(storagePath.Length - 1).Replace('\\', '/');
-                int index = url.LastIndexOf('/', url.Length - 2) + 1;
-                string name = url.Substring(index, url.Length - index - 1);
+                if (d[d.Length - 1].Equals('\\'))
+                    d = d.Substring(0, d.Length - 1);
+                string url = d.Substring(storagePath.Length).Replace('\\', '@');
+                int index = url.LastIndexOf('@', url.Length - 1) + 1;
+                string name = url.Substring(index, url.Length - index);
                 FilesViewModel fvm = new FilesViewModel
                 {
                     Name = name,
                     Url = url
                 };
+                d = d.Insert(d.Length, "\\");
                 foreach (var cbd in cannotBeDeleted)
                 {
                     if (d.Equals(cbd.Directory, StringComparison.InvariantCulture))
@@ -155,9 +163,9 @@ namespace Treynessen.Controllers
             for (int i = 0; i < folders.Length; ++i)
             {
                 if (i == 0)
-                    breadcrumbs.AddLast(new FilesViewModel { Name = "/", Url = "/" });
+                    breadcrumbs.AddLast(new FilesViewModel { Name = "/", Url = "" });
                 else
-                    breadcrumbs.AddLast(new FilesViewModel { Name = folders[i], Url = $"/{folders[i - 1]}{folders[i]}/" });
+                    breadcrumbs.AddLast(new FilesViewModel { Name = folders[i], Url = $"{(!string.IsNullOrEmpty(folders[i - 1]) ? $"{folders[i-1]}@" : string.Empty)}{folders[i]}" });
             }
             HttpContext.Items["FilesPageBreadcrumbs"] = breadcrumbs;
 

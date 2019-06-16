@@ -1,0 +1,207 @@
+div.menuContainer{
+	display: flex;
+	justify-content: space-between;
+	width: 1000px;
+	margin: 0 auto;
+}
+
+div.menuContainer > div.catalog{
+	width: 240px;
+	margin-right: 5px;
+}
+
+div.menuContainer > div.catalog > div.button{
+	box-sizing: border-box;
+	background: linear-gradient(to bottom, #f9eb73, #f7941d);
+	border: 1px solid #1d1d1d;
+	border-top: 0px;
+	border-radius: 0 0 3px 3px;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: bold;
+	color: #1d1d1d;
+	text-align: center;
+	padding: 8px 0;
+}
+
+div.menuContainer > div.catalog.open > div.button{
+	color: #f8c34c;
+	background: linear-gradient(to bottom, #1d1d1d, #1d1d1d);
+	border-radius: 0;
+}
+
+div.menuContainer > div.catalog > div.button > div.downTriangle{
+	display: inline-block;
+	content: " ";
+	position: relative;
+	top: 6px;
+	margin-right: 6px;
+	border: 8px solid transparent;	
+	border-top: 10px solid #1d1d1d;
+}
+
+div.menuContainer > div.catalog.open > div.button  > div.downTriangle{
+	border-top-color: #fff;
+	transition-property: border-top-color;
+	transition-timing-function: ease;
+	transition-duration: 250ms;
+}
+
+div.menuContainer > div.catalog > ul{
+	display: none;
+	min-width: 240px;
+	max-width: 500px;
+	list-style-type: none;
+	position: absolute;
+	margin-top: 0;
+	padding: 0;
+}
+
+div.menuContainer > div.catalog.open > ul{
+	display: block;
+}
+
+div.menuContainer > div.catalog > ul > li{
+	box-sizing: border-box;
+	border-bottom: 1px solid;
+	position: relative;
+}
+
+div.menuContainer > div.catalog > ul > li > a{
+	display: block;
+	text-decoration: none;
+	color: #1d1d1d;
+	font-size: 18px;
+	padding: 8px;
+	font-weight: bold;
+	background-color: #f8bc45;
+}
+
+div.menuContainer > div.catalog > ul > li:hover > a{
+	color: #f8bc45;
+	background-color: #1d1d1d;
+}
+
+div.menuContainer > div.catalog > ul > li > a > div.rightTriangle{
+	display: inline-block;
+	content: " ";
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	right: 0;
+	border: 8px solid transparent;	
+	border-left: 10px solid #1d1d1d;
+}
+
+div.menuContainer > div.catalog > ul > li:hover > a > div.rightTriangle{
+	border-left-color: #fff;
+	transition-property: border-left-color;
+	transition-timing-function: ease;
+	transition-duration: 250ms;
+}
+
+div.menuContainer > div.catalog > ul > li > ul{
+	display: none;
+	max-width: 500px;
+	list-style-type: none;
+	position: absolute;
+	padding: 0;
+	top: -1px;
+	left: 100%;
+}
+
+div.menuContainer > div.catalog > ul > li:hover > ul{
+	display: table;
+}
+
+div.menuContainer > div.catalog > ul > li > ul > li{
+	display: block;
+	box-sizing: border-box;
+	border-bottom: 1px solid;
+}
+
+div.menuContainer > div.catalog > ul > li > ul > li:first-child{
+	border-top: 1px solid;
+}
+
+div.menuContainer > div.catalog > ul > li > ul > li > a{
+	display: block;
+	text-decoration: none;
+	color: #1d1d1d;
+	font-size: 18px;
+	padding: 8px;
+	font-weight: bold;
+	background-color: #ff9806;
+}
+
+div.menuContainer > div.catalog > ul > li > ul > li:hover > a{
+	color: #ff9806;
+	background-color: #1d1d1d;
+}
+
+div.menuContainer > div.mainMenu{
+	display: flex;
+	box-sizing: border-box;
+	flex: 1;
+	background: linear-gradient(to bottom, #f9eb73, #f7941d);
+	border: 1px solid #1d1d1d;
+	border-top: 0px;
+	border-radius: 0 0 3px 3px;
+	text-align: center;
+}
+
+div.menuContainer > div.mainMenu > a{
+	display: block;
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: bold;
+	color: #1d1d1d;
+	padding: 8px 7px;
+}
+
+div.menuContainer > div.mainMenu > a:hover{
+	background-color: #1d1d1d;
+	color: #f8c34c;
+}
+
+div.menuContainer > div.searchBlock{
+	display: flex;
+	box-sizing: border-box;
+	width: 240px;
+	background: linear-gradient(to bottom, #f9eb73, #f7941d);
+	border: 1px solid #1d1d1d;
+	border-top: 0px;
+	border-radius: 0 0 3px 3px;
+	margin-left: 5px;
+	padding: 6px;
+}
+
+div.menuContainer > div.searchBlock > input[type=text]{
+	box-sizing: border-box;
+	outline: none;
+	width: 200px;
+	background-color: #efefef;
+	border: 0;
+	border-radius: 3px 0 0 3px;
+	box-shadow: inset 1px 2px 4px 0 #6d6d6d;
+	font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+	font-size: 15px;
+	padding: 2px 0 0 6px;
+}
+
+div.menuContainer > div.searchBlock > input[type=submit]{
+	cursor: pointer;
+	outline: none;
+	width: 28px;
+	background-color: #d1d1d1;
+	background-image: url(https://lh4.googleusercontent.com/-b-5aBxcxarY/UAfFW9lVyjI/AAAAAAAABUg/gQtEXuPuIds/s13/go.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	border: 0;
+	border-radius: 0 3px 3px 0;
+	box-shadow: inset -1px 2px 4px 0 #6d6d6d;
+}
+
+div.menuContainer > div.searchBlock > input[type=submit]:hover{
+	background-color: #b4b4b4;
+}

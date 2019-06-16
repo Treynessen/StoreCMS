@@ -11,7 +11,7 @@
     {
         if (node.Next != null)
         {
-            <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.Files)&path=@node.Value.Url">@Html.Raw(node.Value.Name)</a>
+            <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.Files)@(!string.IsNullOrEmpty(node.Value.Url) ? $"&path={node.Value.Url}" : string.Empty)">@Html.Raw(node.Value.Name)</a>
         }
         else
         {
@@ -27,7 +27,7 @@
             <input type="hidden" name="path" value="@breadcrumbs.Last.Value.Url">
             <div class="inputFileButton">
                 <label for="upload">@Html.Raw(localization.ChooseTheFile)</label>
-                <input type="file" id="upload" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .css" />
+                <input type="file" id="upload" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .css, .ico" />
             </div>
             <input type="submit" />
         </form>

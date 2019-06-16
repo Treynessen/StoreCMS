@@ -119,15 +119,29 @@ namespace Treynessen.Controllers
 
                 case AdminPanelPages.DeleteFileOrFolder:
                     string redirectAttribute = null;
-                    if (model.Path.Length > 1 && model.Path[model.Path.Length - 1].Equals('/'))
-                        redirectAttribute = model.Path.Substring(0, model.Path.LastIndexOf('/', model.Path.Length - 2) + 1);
-                    else if (model.Path.Length > 1 && !model.Path[model.Path.Length - 1].Equals('/'))
-                        redirectAttribute = model.Path.Substring(0, model.Path.LastIndexOf('/') + 1);
-                    if (string.IsNullOrEmpty(redirectAttribute))
+                    if (!string.IsNullOrEmpty(model.Path))
+                        model.Path = model.Path.Replace('/', '@');
+                    if (model.Path.Length > 1 && model.Path.Contains('.'))
+                    {
+                        int endPoint = model.Path.LastIndexOf('@', model.Path.Length - 1);
+                        if (endPoint < 0)
+                            redirectAttribute = string.Empty;
+                        else
+                            redirectAttribute = model.Path.Substring(0, endPoint);
+                    }
+                    else if (model.Path.Length > 1 && !model.Path.Contains('.'))
+                    {
+                        int endPoint = model.Path.LastIndexOf('@');
+                        if (endPoint < 0)
+                            redirectAttribute = string.Empty;
+                        else
+                            redirectAttribute = model.Path.Substring(0, endPoint);
+                    }
+                    if (redirectAttribute == null)
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}");
                     else
                         OtherFunctions.DeleteFileOrFolder(model.Path, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}&path={redirectAttribute}");
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}{(!string.IsNullOrEmpty(redirectAttribute) ? $"&path={redirectAttribute}" : string.Empty)}");
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

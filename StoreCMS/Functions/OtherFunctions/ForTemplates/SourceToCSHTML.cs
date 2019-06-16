@@ -26,7 +26,7 @@ namespace Treynessen.Functions
                     builder.Replace("[Page:Content]", "@(Html.Raw(Model?.Content))");
                     builder.Replace("[Page:PageDescription]", "@(Html.Raw(Model?.PageDescription))");
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
-                    builder.Replace("[Page:IsRobotIndex]", "@(if(Model != null && Model.IsRobotIndex)\n{\n\tindex\n}\nelse\n{\n\tno-index\n})");
+                    builder.Replace("[Page:IsRobotIndex]", "@(Model != null ? (Model.IsRobotIndex? \"index\" : \"noindex\") : string.Empty)");
 
                     var chunks = GetChunks(db, source, isChunk ? name : null);
                     foreach (var c in chunks)

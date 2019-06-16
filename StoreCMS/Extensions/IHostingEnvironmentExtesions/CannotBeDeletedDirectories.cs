@@ -25,7 +25,7 @@ namespace Treynessen.Extensions
                 new FolderInfo($"{storagePath}images\\", true),
                 new FolderInfo($"{storagePath}images\\products\\", false),
                 new FolderInfo($"{storagePath}styles\\", true),
-                new FolderInfo($"{storagePath}styles\\admin_panel", false),
+                new FolderInfo($"{storagePath}styles\\admin_panel\\", false),
                 new FolderInfo($"{storagePath}styles\\admin_panel\\files\\", false),
                 new FolderInfo($"{storagePath}styles\\admin_panel\\pages\\", false),
                 new FolderInfo($"{storagePath}styles\\admin_panel\\products\\", false),

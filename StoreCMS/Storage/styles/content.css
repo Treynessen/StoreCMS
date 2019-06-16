@@ -1,0 +1,9 @@
+div.contentBlock{
+	box-sizing: border-box;
+	width: 1000px;
+	margin: 5px auto 0;
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow: 0px 0px 3px 0 #6d6d6d;
+	padding: 5px;
+}

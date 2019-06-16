@@ -26,8 +26,6 @@ namespace Treynessen.Functions
                 connectedUser.LastActionTime = DateTime.Now;
                 connectedUser.UserAgent = context.Request.Headers["User-Agent"];
                 connectedUser.LoginKey = OtherFunctions.GetRandomKey(7, 13);
-
-                db.ConnectedUsers.Update(connectedUser);
                 db.SaveChanges();
             }
 
@@ -42,7 +40,6 @@ namespace Treynessen.Functions
                     User = user,
                     LoginKey = OtherFunctions.GetRandomKey(7, 13)
                 };
-
                 db.ConnectedUsers.Add(connectedUser);
                 db.SaveChanges();
             }
