@@ -1,6 +1,8 @@
 div.noticeBlock{
-	width: 1000px;
+	box-sizing: border-box;
+	width: 998px;
 	margin: 5px auto 0;
+	padding: 10px;
 	background-color: #fff;
 	border-radius: 3px;
 	box-shadow: 0px 0px 3px 0 #6d6d6d;
@@ -14,8 +16,4 @@ div.noticeBlock > p{
 
 .redColor{
 	color: #FF0000;
-}
-
-.boldText{
-	font-weight: bold;
 }

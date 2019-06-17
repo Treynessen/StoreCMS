@@ -14,10 +14,11 @@ div.headerFullWidth > div.headerContainer{
 
 div.headerContainer > a.logoBlock{
 	display: block;
-	background-image: url(/images/instrumentshop39_380x85.png);
-	width: 380px;
-	height: 85px;
+	background-image: url(/images/logo.png);
+	width: 410px;
+	height: 92px;
 	align-self: center;
+	margin-right: 5px;
 }
 
 div.headerContainer > div.headerContainer_leftBlock{
@@ -42,12 +43,14 @@ div.headerContainer_leftBlock > span:last-child{
 }
 
 div.headerContainer > div.headerContainer_rightBlock{
-	
+	margin-left: 5px;
 }
 
 div.headerContainer_rightBlock > span{
+	display: block;
 	font-weight: normal;
 	color: #deff00;
+	margin-bottom: 3px;
 }
 
 div.headerContainer_rightBlock > a{

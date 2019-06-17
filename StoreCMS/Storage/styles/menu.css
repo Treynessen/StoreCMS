@@ -35,9 +35,9 @@ div.menuContainer > div.catalog > div.button > div.downTriangle{
 	content: " ";
 	position: relative;
 	top: 6px;
-	margin-right: 6px;
+	margin-right: 5px;
 	border: 8px solid transparent;	
-	border-top: 10px solid #1d1d1d;
+	border-top: 9px solid #1d1d1d;
 }
 
 div.menuContainer > div.catalog.open > div.button  > div.downTriangle{
@@ -55,6 +55,7 @@ div.menuContainer > div.catalog > ul{
 	position: absolute;
 	margin-top: 0;
 	padding: 0;
+	z-index: 3;
 }
 
 div.menuContainer > div.catalog.open > ul{
@@ -67,12 +68,16 @@ div.menuContainer > div.catalog > ul > li{
 	position: relative;
 }
 
+div.menuContainer > div.catalog > ul > li:last-child{
+	border-bottom: 0;
+}
+
 div.menuContainer > div.catalog > ul > li > a{
 	display: block;
 	text-decoration: none;
 	color: #1d1d1d;
-	font-size: 18px;
-	padding: 8px;
+	font-size: 16px;
+	padding: 8px 7px;
 	font-weight: bold;
 	background-color: #f8bc45;
 }
@@ -124,12 +129,16 @@ div.menuContainer > div.catalog > ul > li > ul > li:first-child{
 	border-top: 1px solid;
 }
 
+div.menuContainer > div.catalog > ul > li > ul > li:last-child{
+	border-bottom: 0;
+}
+
 div.menuContainer > div.catalog > ul > li > ul > li > a{
 	display: block;
 	text-decoration: none;
 	color: #1d1d1d;
-	font-size: 18px;
-	padding: 8px;
+	font-size: 16px;
+	padding: 8px 7px;
 	font-weight: bold;
 	background-color: #ff9806;
 }
@@ -147,16 +156,16 @@ div.menuContainer > div.mainMenu{
 	border: 1px solid #1d1d1d;
 	border-top: 0px;
 	border-radius: 0 0 3px 3px;
+	font-size: 18px;
+	font-weight: bold;
 	text-align: center;
 }
 
 div.menuContainer > div.mainMenu > a{
 	display: block;
-	text-decoration: none;
-	font-size: 18px;
-	font-weight: bold;
 	color: #1d1d1d;
-	padding: 8px 7px;
+	text-decoration: none;
+	padding: 8px 10px;
 }
 
 div.menuContainer > div.mainMenu > a:hover{
@@ -179,12 +188,12 @@ div.menuContainer > div.searchBlock{
 div.menuContainer > div.searchBlock > input[type=text]{
 	box-sizing: border-box;
 	outline: none;
-	width: 200px;
+	width: 195px;
 	background-color: #efefef;
 	border: 0;
 	border-radius: 3px 0 0 3px;
 	box-shadow: inset 1px 2px 4px 0 #6d6d6d;
-	font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+	font-family: Tahoma, Arial, 'Times New Roman', sans-serif;
 	font-size: 15px;
 	padding: 2px 0 0 6px;
 }
@@ -192,7 +201,7 @@ div.menuContainer > div.searchBlock > input[type=text]{
 div.menuContainer > div.searchBlock > input[type=submit]{
 	cursor: pointer;
 	outline: none;
-	width: 28px;
+	flex-grow: 1;
 	background-color: #d1d1d1;
 	background-image: url(https://lh4.googleusercontent.com/-b-5aBxcxarY/UAfFW9lVyjI/AAAAAAAABUg/gQtEXuPuIds/s13/go.png);
 	background-position: center center;

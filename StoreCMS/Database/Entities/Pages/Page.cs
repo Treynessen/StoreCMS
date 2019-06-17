@@ -15,6 +15,7 @@ namespace Treynessen.Database.Entities
         public string Alias { get; set; } // Url псевдоним страницы: RequestPath/Alias
         [Required]
         public string RequestPathWithoutAlias { get; set; } // Путь запроса без псевдонима: localhost/...previousPages...
+        public string BreadcrumbsHtml { get; set; } // Навигационное меню в виде html кода без названия текущей страницы
         public int? TemplateId { get; set; }
         public Template Template { get; set; } // Шаблон страницы
         public string Content { get; set; } // Содержимое страницы

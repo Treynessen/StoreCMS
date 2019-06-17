@@ -20,18 +20,21 @@ namespace Treynessen.Functions
                     db.Entry(up).Reference(p => p.PreviousPage).Load();
                     string temp = up.RequestPathWithoutAlias;
                     up.RequestPathWithoutAlias = up.PreviousPage == null ? "/" : OtherFunctions.GetUrl(up.PreviousPage);
+                    up.BreadcrumbsHtml = OtherFunctions.GetBreadcrumbs(up);
                     if (!temp.Equals("/") && up.RequestPathWithoutAlias.Equals("/") && up.Alias.Equals("index", StringComparison.InvariantCulture))
                         up.Alias = "ind";
                     break;
                 case CategoryPage cp:
                     db.Entry(cp).Reference(p => p.PreviousPage).Load();
                     cp.RequestPathWithoutAlias = cp.PreviousPage == null ? "/" : OtherFunctions.GetUrl(cp.PreviousPage);
+                    cp.BreadcrumbsHtml = OtherFunctions.GetBreadcrumbs(cp);
                     if (cp.RequestPathWithoutAlias.Equals("/") && cp.Alias.Equals("index", StringComparison.InvariantCulture))
                         cp.Alias = "ind";
                     break;
                 case ProductPage pp:
                     db.Entry(pp).Reference(p => p.PreviousPage).Load();
                     pp.RequestPathWithoutAlias = OtherFunctions.GetUrl(pp.PreviousPage);
+                    pp.BreadcrumbsHtml = OtherFunctions.GetBreadcrumbs(pp);
                     break;
             }
             OtherFunctions.SetUniqueAliasName(db, page);

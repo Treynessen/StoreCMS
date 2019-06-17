@@ -30,6 +30,7 @@ namespace Treynessen.Functions
                         usualPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
                     page.RequestPathWithoutAlias = usualPage.PreviousPage == null ? "/"
                         : GetUrl(usualPage.PreviousPage);
+                    page.BreadcrumbsHtml = GetBreadcrumbs(page);
                     break;
                 case PageType.Category:
                     if (model.IsMainPage) // ←
@@ -40,6 +41,7 @@ namespace Treynessen.Functions
                         categoryPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
                     page.RequestPathWithoutAlias = categoryPage.PreviousPage == null ? "/"
                         : GetUrl(categoryPage.PreviousPage);
+                    page.BreadcrumbsHtml = GetBreadcrumbs(page);
                     break;
                 case PageType.Product:
                     if (model.IsMainPage) // ←
@@ -58,6 +60,7 @@ namespace Treynessen.Functions
                     productPage.LastUpdate = DateTime.Now;
                     productPage.PreviousPage = productCategory;
                     productPage.RequestPathWithoutAlias = GetUrl(productPage.PreviousPage);
+                    page.BreadcrumbsHtml = GetBreadcrumbs(page);
                     break;
                 default:
                     return null;

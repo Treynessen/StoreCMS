@@ -4,9 +4,9 @@ namespace Treynessen.Middlewares
 {
     public static class MiddlewareRecorder
     {
-        public static IApplicationBuilder AddAccessLevelConfigInItemWhen(this IApplicationBuilder app, string adminPanelPath)
+        public static IApplicationBuilder AddAccessLevelConfigInItemWhen(this IApplicationBuilder app, string path)
         {
-            return app.UseMiddleware<AddAccessLevelConfigInItem>(adminPanelPath);
+            return app.UseMiddleware<AddAccessLevelConfigInItem>(path);
         }
     }
 }

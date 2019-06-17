@@ -22,11 +22,14 @@ namespace Treynessen.Functions
                     /* ИНФОРМАЦИЯ О СТРАНИЦЕ */
                     builder.Insert(0, "@model Page\n");
                     builder.Replace("[Page:Title]", "@(Html.Raw(Model?.Title))");
-                    builder.Replace("[Page:Breadcrumb]", "@(Html.Raw(Model?.PageName))");
+                    builder.Replace("[Page:Name]", "@(Html.Raw(Model?.PageName))");
+                    builder.Replace("[Page:Breadcrumbs]", "@(Html.Raw(Model?.BreadcrumbsHtml))");
                     builder.Replace("[Page:Content]", "@(Html.Raw(Model?.Content))");
                     builder.Replace("[Page:PageDescription]", "@(Html.Raw(Model?.PageDescription))");
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
                     builder.Replace("[Page:IsRobotIndex]", "@(Model != null ? (Model.IsRobotIndex? \"index\" : \"noindex\") : string.Empty)");
+
+                    builder.Replace("[YEAR]", "@(DateTime.Now.Year)");
 
                     var chunks = GetChunks(db, source, isChunk ? name : null);
                     foreach (var c in chunks)

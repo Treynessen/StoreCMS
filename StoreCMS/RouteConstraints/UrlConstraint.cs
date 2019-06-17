@@ -25,7 +25,7 @@ namespace Treynessen.RouteConstraints
             }
             else
             {
-                Task<UsualPage>  usualPageTask = db.UsualPages.FirstOrDefaultAsync(up => OtherFunctions.GetUrl(up).Equals(path, StringComparison.InvariantCulture));
+                Task<UsualPage> usualPageTask = db.UsualPages.FirstOrDefaultAsync(up => OtherFunctions.GetUrl(up).Equals(path, StringComparison.InvariantCulture));
                 Task<CategoryPage> categoryPageTask = db.CategoryPages.FirstOrDefaultAsync(cp => OtherFunctions.GetUrl(cp).Equals(path, StringComparison.InvariantCulture));
                 Task<ProductPage> productPageTask = null;
                 if (path.Split('/').Length >= 3)
@@ -33,16 +33,15 @@ namespace Treynessen.RouteConstraints
                     productPageTask = db.ProductPages.FirstOrDefaultAsync(pp => OtherFunctions.GetUrl(pp).Equals(path, StringComparison.InvariantCulture));
                 }
                 Task.WaitAll(usualPageTask, categoryPageTask);
-                if (usualPageTask.Result != null)
-                    page = usualPageTask.Result;
-                else if (categoryPageTask.Result != null)
-                    page = categoryPageTask.Result;
-                else if (productPageTask != null)
+                if (productPageTask != null)
                 {
-                    productPageTask.Wait();
                     if (productPageTask.Result != null)
                         page = productPageTask.Result;
                 }
+                if (page == null && categoryPageTask.Result != null)
+                    page = categoryPageTask.Result;
+                else if (page == null && usualPageTask.Result != null)
+                    page = usualPageTask.Result;
             }
             if (page != null)
             {
