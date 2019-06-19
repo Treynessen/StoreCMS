@@ -5,9 +5,9 @@
         Blocked = -1,
         Without = 0,
         VeryLow = 1,
-        Low = 1,
-        Middle = 2,
-        High = 3,
-        VeryHigh = 4
+        Low = 2,
+        Middle = 3,
+        High = 4,
+        VeryHigh = 5
     }
 }

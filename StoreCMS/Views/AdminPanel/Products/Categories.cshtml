@@ -12,7 +12,16 @@
     @foreach (var category in Model)
     {
     <tr>
-        <td><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@category.ID">@Html.Raw(category.PageName)<b> (ID@(category.ID))</b></a></td>
+        <td>
+            @if (DataCheck.HasAccessTo(AdminPanelPages.CategoryProducts, user, Context))
+            {
+            <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@category.ID">@Html.Raw(category.PageName)<b> (ID@(category.ID))</b></a>
+            }
+            else
+            {
+            <span>@Html.Raw(category.PageName)<b> (ID@(category.ID))</b></span>
+            }
+        </td>
     </tr>
     }
 </table>

@@ -35,6 +35,8 @@
         CreateFolder,
         CreateStyle,
         EditStyle,
-        DeleteFileOrFolder
+        DeleteFileOrFolder,
+
+        EditSettings
     }
 }

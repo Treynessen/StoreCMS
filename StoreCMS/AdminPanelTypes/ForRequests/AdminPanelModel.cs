@@ -15,5 +15,6 @@
         public PageModel PageModel { get; set; }
         public TemplateModel TemplateModel { get; set; }
         public StyleModel StyleModel { get; set; }
+        public SettingsModel SettingsModel { get; set; }
     }
 }

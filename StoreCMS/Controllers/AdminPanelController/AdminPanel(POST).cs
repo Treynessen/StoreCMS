@@ -12,7 +12,7 @@ namespace Treynessen.Controllers
         public IActionResult AdminPanel(AdminPanelModel model, LoginFormModel lfModel)
         {
             User user = DataCheck.CheckCookies(db, HttpContext);
-            if (user == null)
+            if (user == null || !model.PageId.HasValue)
             {
                 if (!DataCheck.IsValidLoginFormData(db, lfModel, HttpContext))
                     return LoginForm(lfModel);
@@ -142,6 +142,10 @@ namespace Treynessen.Controllers
                     else
                         OtherFunctions.DeleteFileOrFolder(model.Path, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Files}{(!string.IsNullOrEmpty(redirectAttribute) ? $"&path={redirectAttribute}" : string.Empty)}");
+
+                case AdminPanelPages.EditSettings:
+                    EditSettings(model.SettingsModel);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Settings}");
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

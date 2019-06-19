@@ -1,4 +1,84 @@
-﻿@{
+﻿@using Treynessen.Security;
+@using Microsoft.AspNetCore.Html;
+@inject ISettingsLocalization localization
+@{
     Layout = "CommonPage";
+    User user = Context.Items["User"] as User;
+    AccessLevelConfiguration accessLevelConfiguration = Context.Items["AccessLevelConfiguration"] as AccessLevelConfiguration;
+    Context.Items["PageStyle"] = "/styles/admin_panel/settings.css";
+    List<KeyValuePair<AdminPanelPages, IHtmlContent>> settingList = new List<KeyValuePair<AdminPanelPages, IHtmlContent>>()
+{
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.MainPage, Html.Raw(localization.AccessLevelToAdminPanel)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Pages, Html.Raw(localization.AccessLevelToPages)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddPage, Html.Raw(localization.AccessLevelToAddPage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditPage, Html.Raw(localization.AccessLevelToEditPage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeletePage, Html.Raw(localization.AccessLevelToDeletePage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Categories, Html.Raw(localization.AccessLevelToCategories)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CategoryProducts, Html.Raw(localization.AccessLevelToCategoryProducts)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddProduct, Html.Raw(localization.AccessLevelToAddProduct)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditProduct, Html.Raw(localization.AccessLevelToEditProduct)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteProduct, Html.Raw(localization.AccessLevelToDeleteProduct)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.ProductImages, Html.Raw(localization.AccessLevelToProductImages)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddProductImage, Html.Raw(localization.AccessLevelToAddProductImage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteProductImage, Html.Raw(localization.AccessLevelToDeleteProductImage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Templates, Html.Raw(localization.AccessLevelToTemplates)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddTemplate, Html.Raw(localization.AccessLevelToAddTemplate)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditTemplate, Html.Raw(localization.AccessLevelToEditTemplate)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteTemplate, Html.Raw(localization.AccessLevelToDeleteTemplate)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Chunks, Html.Raw(localization.AccessLevelToChunks)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddChunk, Html.Raw(localization.AccessLevelToAddChunk)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditChunk, Html.Raw(localization.AccessLevelToEditChunk)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteChunk, Html.Raw(localization.AccessLevelToDeleteChunk)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Files, Html.Raw(localization.AccessLevelToFiles)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.UploadFile, Html.Raw(localization.AccessLevelToUploadFile)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CreateFolder, Html.Raw(localization.AccessLevelToCreateFolder)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CreateStyle, Html.Raw(localization.AccessLevelToCreateStyle)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditStyle, Html.Raw(localization.AccessLevelToEditStyle)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteFileOrFolder, Html.Raw(localization.AccessLevelToDeleteFileOrFolder)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Settings, Html.Raw(localization.AccessLevelToSettings)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditSettings, Html.Raw(localization.AccessLevelToEditSettings))
+};
+    List<IHtmlContent> accessLevels = new List<IHtmlContent>()
+{
+Html.Raw($"1 - {localization.VeryLowAccessLevel}"),
+Html.Raw($"2 - {localization.LowAccessLevel}"),
+Html.Raw($"3 - {localization.MiddleAccessLevel}"),
+Html.Raw($"4 - {localization.HighAccessLevel}"),
+Html.Raw($"5 - {localization.VeryHighAccessLevel}")
+};
 }
-Settings
+<form method="post" action="/admin?pageID=@((int)AdminPanelPages.EditSettings)">
+    <input type="submit">
+    <table>
+        <tr><td colspan="2">@Html.Raw(localization.AccessLevelSettings)</td></tr>
+        @foreach (var s in settingList)
+        {
+            int settingAccessLevel = (int)accessLevelConfiguration.GetAccessLevelInfoTo(s.Key.ToString());
+            <tr>
+                <td>@s.Value</td>
+                <td>
+                    @if (DataCheck.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                    {
+                        <select name="SettingsModel.@s.Key.ToString()">
+                            @for (int i = 1; i <= accessLevels.Count; ++i)
+                            {
+                                if (i == settingAccessLevel)
+                                {
+                                    <option value="@i" selected>@accessLevels[i - 1]</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@accessLevels[i - 1]</option>
+                                }
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        @accessLevels[settingAccessLevel - 1];
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</form>

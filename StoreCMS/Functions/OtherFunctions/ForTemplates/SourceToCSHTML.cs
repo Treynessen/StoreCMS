@@ -19,6 +19,9 @@ namespace Treynessen.Functions
                     StringBuilder builder = new StringBuilder(source);
                     builder.Replace("@", "@@");
 
+                    if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture))
+                        builder.Insert(0, "@{\n\tList<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>;\n}\n");
+
                     /* ИНФОРМАЦИЯ О СТРАНИЦЕ */
                     builder.Insert(0, "@model Page\n");
                     builder.Replace("[Page:Title]", "@(Html.Raw(Model?.Title))");
@@ -28,6 +31,8 @@ namespace Treynessen.Functions
                     builder.Replace("[Page:PageDescription]", "@(Html.Raw(Model?.PageDescription))");
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
                     builder.Replace("[Page:IsRobotIndex]", "@(Model != null ? (Model.IsRobotIndex? \"index\" : \"noindex\") : string.Empty)");
+
+                    builder.Replace("[Category:Products]", " @if(products != null) { foreach(var p in products) {@Html.Raw(p?.PageName)} }\n");
 
                     builder.Replace("[YEAR]", "@(DateTime.Now.Year)");
 

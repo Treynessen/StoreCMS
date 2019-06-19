@@ -31,7 +31,7 @@
                     <td>@Html.Raw($"{p.PageName} <b>(ID{p.ID.ToString()})</b>")</td>
                     <td>@Html.Raw(OtherFunctions.GetUrl(p.RequestPathWithoutAlias, p.Alias))</td>
                     <td>
-            @if (DataCheck.HasAccessTo(AdminPanelPages.EditPage, user, Context))
+            @if (DataCheck.HasAccessTo(AdminPanelPages.EditProduct, user, Context))
             {
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditProduct)" />
@@ -47,7 +47,7 @@
                             <input type="submit" class="actionButton" value="@Html.Raw(localization.ProductImages)" />
                         </form>
             }
-            @if (DataCheck.HasAccessTo(AdminPanelPages.DeletePage, user, Context))
+            @if (DataCheck.HasAccessTo(AdminPanelPages.DeleteProduct, user, Context))
             {
             <form method="post">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProduct)" />

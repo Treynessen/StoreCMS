@@ -42,6 +42,7 @@ public class Startup
         services.AddTransient<IProductsLocalization>(provider => new RuProductsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
         services.AddTransient<IFilesPageLocalization>(provider => new RuFilesPageLocalization());
+        services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)

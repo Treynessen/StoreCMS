@@ -1,0 +1,32 @@
+@model Page
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<title>@(Html.Raw(Model?.Title))</title> 
+<link rel="stylesheet" href="/styles/common.css">
+<link rel="stylesheet" href="/styles/header.css">
+<link rel="stylesheet" href="/styles/menu.css">
+<link rel="stylesheet" href="/styles/notice.css">
+<link rel="stylesheet" href="/styles/content.css">
+<link rel="stylesheet" href="/styles/footer.css">
+<link rel="icon" href="favicon.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="@(Html.Raw(Model?.PageDescription))">
+<meta name="keywords" content="@(Html.Raw(Model?.PageKeywords))">
+<meta name="robots" content="@(Model != null ? (Model.IsRobotIndex? "index" : "noindex") : string.Empty)">
+</head>
+<body>
+@(await Html.PartialAsync("~/Views/TemplateChunks/header.cshtml", Model))
+@(await Html.PartialAsync("~/Views/TemplateChunks/menu.cshtml", Model))
+<script>
+	var catalog = document.getElementById('catalog');
+	var button = catalog.querySelector('.button');
+	button.onclick = function() {
+		catalog.classList.toggle('open');
+	};
+</script>
+@(await Html.PartialAsync("~/Views/TemplateChunks/notice.cshtml", Model))
+@(await Html.PartialAsync("~/Views/TemplateChunks/products_page_content.cshtml", Model))
+@(await Html.PartialAsync("~/Views/TemplateChunks/footer.cshtml", Model))
+</body>
+</html>
