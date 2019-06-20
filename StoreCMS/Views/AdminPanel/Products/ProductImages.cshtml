@@ -28,7 +28,14 @@
             <form method="post">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProductImage)" />
                 <input type="hidden" name="imageID" value="@imageID">
+                @if(DataCheck.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+                {
                 <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
+                }
+                else
+                {
+                <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" disabled />
+                }
             </form>
         </div>
         ++imageID;

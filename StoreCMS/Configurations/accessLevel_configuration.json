@@ -1,11 +1,11 @@
 {
-	"MainPage": "1",
+	"MainPage": "5",
 	"Pages": "5",
 	"Categories": "5",
-	"Templates": "1",
+	"Templates": "5",
 	"Chunks": "5",
 	"Files": "5",
-	"Settings": "1",
+	"Settings": "5",
 	"AddPage": "5",
 	"EditPage": "5",
 	"DeletePage": "5",
@@ -27,5 +27,5 @@
 	"CreateStyle": "5",
 	"EditStyle": "5",
 	"DeleteFileOrFolder": "5",
-	"EditSettings": "1"
+	"EditSettings": "5"
 }

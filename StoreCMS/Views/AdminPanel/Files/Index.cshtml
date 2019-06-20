@@ -41,9 +41,9 @@
             <input type="text" name="name" placeholder="@Html.Raw(localization.FolderName)" />
         </form>
     }
-    @if (DataCheck.HasAccessTo(AdminPanelPages.CreateFolder, user, Context))
+    @if (DataCheck.HasAccessTo(AdminPanelPages.CreateStyle, user, Context))
     {
-        <form method="post" class="createFolerOrStyle marginLeft">
+        <form method="post" class="createFolerOrStyle">
             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateStyle)">
             <input type="hidden" name="path" value="@breadcrumbs.Last.Value.Url" />
             <input type="submit" value="@Html.Raw(localization.Create)" />
