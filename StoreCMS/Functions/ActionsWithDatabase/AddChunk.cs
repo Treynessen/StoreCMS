@@ -30,7 +30,7 @@ namespace Treynessen.Functions
                 chunk.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, chunk);
             chunk.TemplatePath += $"{chunk.Name}.cshtml";
-            OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource);
+            OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource, env);
             chunk.ID = OtherFunctions.GetDatabaseRawID(db.Chunks);
             db.Chunks.Add(chunk);
             db.SaveChanges();
@@ -40,10 +40,10 @@ namespace Treynessen.Functions
             var task = Task.Run(() =>
             {
                 foreach (var t in templates.Result)
-                    OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource, env);
             });
             foreach (var tc in chunks.Result)
-                OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource);
+                OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource, env);
             task.Wait();
             return true;
         }

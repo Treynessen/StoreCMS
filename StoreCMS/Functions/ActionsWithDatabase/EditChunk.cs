@@ -55,13 +55,13 @@ namespace Treynessen.Functions
                 }
                 catch (FileNotFoundException)
                 {
-                    OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource, env);
                 }
             }
             else if (isChangedSource)
             {
                 File.Delete($"{pathToTemplateChunks}{changeChunk.Name}.cshtml");
-                OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource);
+                OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, chunk.Name, chunk.TemplateSource, env);
             }
 
             if (isChangedName)
@@ -80,10 +80,10 @@ namespace Treynessen.Functions
                 var renderTask = Task.Run(() =>
                 {
                     foreach (var t in templates)
-                        OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
+                        OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource, env);
                 });
                 foreach (var tc in chunks)
-                    OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, pathToTemplateChunks, tc.Name, tc.TemplateSource, env);
                 renderTask.Wait();
             }
             else

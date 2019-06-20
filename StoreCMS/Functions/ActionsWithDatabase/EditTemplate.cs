@@ -52,13 +52,13 @@ namespace Treynessen.Functions
                 }
                 catch (FileNotFoundException)
                 {
-                    OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource, env);
                 }
             }
             else if (isChangedSource)
             {
                 File.Delete($"{pathToTemplates}{changeTemplate.Name}.cshtml");
-                OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource);
+                OtherFunctions.SourceToCSHTML(db, pathToTemplates, template.Name, template.TemplateSource, env);
             }
 
             db.Templates.Update(template);

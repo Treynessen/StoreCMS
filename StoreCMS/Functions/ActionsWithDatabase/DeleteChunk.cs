@@ -32,10 +32,10 @@ namespace Treynessen.Functions
             var task = Task.Run(() =>
             {
                 foreach (var t in templatesTask.Result)
-                    OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource);
+                    OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), t.Name, t.TemplateSource, env);
             });
             foreach (var c in chunksTask.Result)
-                OtherFunctions.SourceToCSHTML(db, templateChunksPath, c.Name, c.TemplateSource);
+                OtherFunctions.SourceToCSHTML(db, templateChunksPath, c.Name, c.TemplateSource, env);
             task.Wait();
         }
     }

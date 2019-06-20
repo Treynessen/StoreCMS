@@ -38,5 +38,7 @@
         string MiddleAccessLevel { get; }
         string HighAccessLevel { get; }
         string VeryHighAccessLevel { get; }
+
+        string ProductTemplate { get; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
+using Treynessen.Functions;
 using Treynessen.AdminPanelTypes;
 
 namespace Treynessen.Controllers
@@ -10,7 +13,9 @@ namespace Treynessen.Controllers
         public void EditSettings(SettingsModel settingsModel)
         {
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.Items["AccessLevelConfiguration"] as AccessLevelConfiguration;
-            accessLevelConfiguration.ReplaceJsonWithSettingModel(settingsModel);
+            accessLevelConfiguration.ReplaceJsonWithSettingModel(settingsModel.AccessSettingsModel);
+            IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
+            OtherFunctions.SaveProductTemplate(settingsModel.ProductTemplate, env);
         }
     }
 }

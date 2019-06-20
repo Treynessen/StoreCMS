@@ -1,12 +1,14 @@
 ﻿using System.IO;
 using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using Treynessen.Extensions;
 using Treynessen.Database.Context;
 
 namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {
-        public static void SourceToCSHTML(CMSDatabase db, string path, string name, string source)
+        public static void SourceToCSHTML(CMSDatabase db, string path, string name, string source, IHostingEnvironment env)
         {
             bool isChunk = path.EndsWith(@"\Views\TemplateChunks\");
 
@@ -32,7 +34,7 @@ namespace Treynessen.Functions
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
                     builder.Replace("[Page:IsRobotIndex]", "@(Model != null ? (Model.IsRobotIndex? \"index\" : \"noindex\") : string.Empty)");
 
-                    builder.Replace("[Category:Products]", " @if(products != null) { foreach(var p in products) {@Html.Raw(p?.PageName)} }\n");
+                    builder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigurationsPath(true)}" + "product_template.cshtml\", p); } }\n");
 
                     builder.Replace("[YEAR]", "@(DateTime.Now.Year)");
 

@@ -38,5 +38,7 @@
         public string MiddleAccessLevel => "Средний уровень доступа";
         public string HighAccessLevel => "Высокий уровень доступа";
         public string VeryHighAccessLevel => "Очень высокий уровень доступа";
+
+        public string ProductTemplate => "HTML шаблон товара в списке";
     }
 }

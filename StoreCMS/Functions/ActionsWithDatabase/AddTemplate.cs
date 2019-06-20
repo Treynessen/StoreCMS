@@ -26,7 +26,7 @@ namespace Treynessen.Functions
                 template.Name = "view_imports";
             OtherFunctions.SetUniqueITemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
-            OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), template.Name, template.TemplateSource);
+            OtherFunctions.SourceToCSHTML(db, env.GetTemplatesPath(), template.Name, template.TemplateSource, env);
             template.ID = OtherFunctions.GetDatabaseRawID(db.Templates);
             db.Templates.Add(template);
             db.SaveChanges();

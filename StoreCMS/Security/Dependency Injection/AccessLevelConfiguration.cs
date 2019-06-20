@@ -31,7 +31,7 @@ namespace Treynessen.Security
             return accessLevel;
         }
 
-        public void ReplaceJsonWithSettingModel(SettingsModel model)
+        public void ReplaceJsonWithSettingModel(AccessSettingsModel model)
         {
             StringBuilder configContentBuilder = new StringBuilder();
             configContentBuilder.Append("{\n");

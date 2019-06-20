@@ -1,6 +1,8 @@
 ﻿@using Treynessen.Security;
+@using Treynessen.Extensions;
 @using Microsoft.AspNetCore.Html;
 @inject ISettingsLocalization localization
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @{
     Layout = "CommonPage";
     User user = Context.Items["User"] as User;
@@ -48,7 +50,14 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
 };
 }
 <form method="post" action="/admin?pageID=@((int)AdminPanelPages.EditSettings)">
+    @if (DataCheck.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+    {
     <input type="submit">
+    }
+    <table>
+        <tr><td>@Html.Raw(localization.ProductTemplate)</td></tr>
+            <tr><td class="textarea"><textarea name="SettingsModel.ProductTemplate">@Html.Raw(OtherFunctions.GetProductTemplateSource($"{env.GetConfigurationsPath()}\\product_template.source"))</textarea></td></tr>
+    </table>
     <table>
         <tr><td colspan="2">@Html.Raw(localization.AccessLevelSettings)</td></tr>
         @foreach (var s in settingList)
@@ -59,7 +68,7 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                 <td>
                     @if (DataCheck.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                     {
-                        <select name="SettingsModel.@s.Key.ToString()">
+                        <select name="SettingsModel.AccessSettingsModel.@s.Key.ToString()">
                             @for (int i = 1; i <= accessLevels.Count; ++i)
                             {
                                 if (i == settingAccessLevel)
