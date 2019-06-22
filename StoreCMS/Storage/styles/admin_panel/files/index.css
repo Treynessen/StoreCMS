@@ -54,9 +54,9 @@ form.createFolerOrStyle {
     max-width: 30%;
 }
 
-    form.createFolerOrStyle:nth-child(2) {
-        margin-left: 4%;
-    }
+div.actionList > form.createFolerOrStyle:nth-child(n+3) {
+    margin-left: 4%;
+}
 
 .createFolerOrStyle > input[type=submit] {
     box-sizing: border-box;

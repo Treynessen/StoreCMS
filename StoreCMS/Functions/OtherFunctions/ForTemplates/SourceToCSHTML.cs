@@ -32,7 +32,7 @@ namespace Treynessen.Functions
                     builder.Replace("[Page:Content]", "@(Html.Raw(Model?.Content))");
                     builder.Replace("[Page:PageDescription]", "@(Html.Raw(Model?.PageDescription))");
                     builder.Replace("[Page:PageKeywords]", "@(Html.Raw(Model?.PageKeywords))");
-                    builder.Replace("[Page:IsRobotIndex]", "@(Model != null ? (Model.IsRobotIndex? \"index\" : \"noindex\") : string.Empty)");
+                    builder.Replace("[Page:IsRobotIndex]", "@(Model != null ? (Model.IsRobotIndex ? \"index\" : \"noindex\") : string.Empty)");
 
                     builder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigurationsPath(true)}" + "product_template.cshtml\", p); } }\n");
 

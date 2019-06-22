@@ -40,5 +40,7 @@
         public string VeryHighAccessLevel => "Очень высокий уровень доступа";
 
         public string ProductTemplate => "HTML шаблон товара в списке";
+
+        public string SaveButton => "Сохранить";
     }
 }

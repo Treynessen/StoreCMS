@@ -40,5 +40,7 @@
         string VeryHighAccessLevel { get; }
 
         string ProductTemplate { get; }
+
+        string SaveButton { get; }
     }
 }

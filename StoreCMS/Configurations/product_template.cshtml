@@ -1,5 +1,12 @@
 @addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS
+@using Treynessen.Functions;
 @using Treynessen.Database.Entities;
 @model ProductPage
-<br>@(Html.Raw(Model?.PageName))<br>
-<img src="/images/products/@(Model?.PreviousPageID)@(Model?.ID)/@(Model?.Alias).jpg">
+<a class="product" href="@(Html.Raw(OtherFunctions.GetUrl(Model)))">
+	<image src="/images/products/@(Model?.PreviousPageID)@(Model?.ID)/@(Model?.Alias).jpg" width="150" height="115" quality="90"></image>
+	<div class="productInfo">
+		<span class="productName">@(Html.Raw(Model?.PageName))</span>
+		<div class="shortDescription"><span>@(Html.Raw(Model?.ShortDescription))</span></div>
+	</div>
+	<span class="productPrice">@(Html.Raw(Model?.Price))</span>
+</a>

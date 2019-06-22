@@ -52,11 +52,18 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
 <form method="post" action="/admin?pageID=@((int)AdminPanelPages.EditSettings)">
     @if (DataCheck.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
     {
-    <input type="submit">
+    <input type="submit" value="@Html.Raw(localization.SaveButton)">
     }
     <table>
         <tr><td>@Html.Raw(localization.ProductTemplate)</td></tr>
-            <tr><td class="textarea"><textarea name="SettingsModel.ProductTemplate">@Html.Raw(OtherFunctions.GetProductTemplateSource($"{env.GetConfigurationsPath()}\\product_template.source"))</textarea></td></tr>
+        @if (DataCheck.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+        {
+        <tr><td class="textarea"><textarea name="SettingsModel.ProductTemplate">@Html.Raw(OtherFunctions.GetProductTemplateSource($"{env.GetConfigurationsPath()}\\product_template.source"))</textarea></td></tr>
+        }
+        else
+        {
+        <tr><td>@Html.Raw(OtherFunctions.GetProductTemplateSource($"{env.GetConfigurationsPath()}\\product_template.source"))</td></tr>
+        }
     </table>
     <table>
         <tr><td colspan="2">@Html.Raw(localization.AccessLevelSettings)</td></tr>

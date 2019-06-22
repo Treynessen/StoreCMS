@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="/styles/common.css">
 <link rel="stylesheet" href="/styles/header.css">
 <link rel="stylesheet" href="/styles/menu.css">
-<link rel="stylesheet" href="/styles/notice.css">
 <link rel="stylesheet" href="/styles/content.css">
+<link rel="stylesheet" href="/styles/category.css">
 <link rel="stylesheet" href="/styles/footer.css">
 <link rel="icon" href="favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -25,7 +25,6 @@
 		catalog.classList.toggle('open');
 	};
 </script>
-@(await Html.PartialAsync("~/Views/TemplateChunks/notice.cshtml", Model))
 @(await Html.PartialAsync("~/Views/TemplateChunks/products_page_content.cshtml", Model))
 @(await Html.PartialAsync("~/Views/TemplateChunks/footer.cshtml", Model))
 </body>
