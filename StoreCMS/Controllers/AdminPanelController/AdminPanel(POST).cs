@@ -87,6 +87,22 @@ namespace Treynessen.Controllers
                     DatabaseInteraction.DeleteTemplate(db, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
 
+                case AdminPanelPages.AddChunk:
+                    DatabaseInteraction.AddChunk(db, model.TemplateModel, HttpContext, out bool chunkAdded);
+                    if (chunkAdded)
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
+                    else return AddChunk(model.TemplateModel);
+
+                case AdminPanelPages.EditChunk:
+                    DatabaseInteraction.EditChunk(db, model.itemID, model.TemplateModel, HttpContext, out bool chunkEdited);
+                    if (chunkEdited)
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditChunk}&itemID={model.itemID}");
+                    else return EditChunk(model.itemID, model.TemplateModel);
+
+                case AdminPanelPages.DeleteChunk:
+                    DatabaseInteraction.DeleteChunk(db, model.itemID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
+
                 default:
                     return RedirectToAction(nameof(AdminPanel));
             }

@@ -8,7 +8,7 @@
         string Pages { get; }
         string CategoriesAndProducts { get; }
         string Templates { get; }
-        string TemplateChunks { get; }
+        string Chunks { get; }
         string Files { get; }
         string Settings { get; }
     }

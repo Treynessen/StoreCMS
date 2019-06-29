@@ -22,8 +22,7 @@ namespace Treynessen.Database
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (template.Name.Equals("_ViewImports", System.StringComparison.InvariantCultureIgnoreCase))
                 template.Name = "view_imports";
-            if (string.IsNullOrEmpty(template.TemplatePath))
-                template.TemplatePath = env.GetTemplatesFolderShortPath();
+            template.TemplatePath = env.GetTemplatesFolderShortPath();
             TemplatesManagementFunctions.SetUniqueITemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
             string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(

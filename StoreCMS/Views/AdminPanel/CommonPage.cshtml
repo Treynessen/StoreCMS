@@ -20,6 +20,10 @@
     {
         pages.Add(AdminPanelPages.Templates, localization.Templates);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Chunks, user, Context))
+    {
+        pages.Add(AdminPanelPages.Chunks, localization.Chunks);
+    }
 }
 <!doctype html>
 <html>

@@ -5,10 +5,10 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/workWithTemplate.css";
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }
-            <form method="post" class="pageContainer">
+<form method="post" class="pageContainer">
             @if (incorrect)
             {
-                <span>@Html.Raw(localization.IncorrectInput)</span>
+                <span class="incorrect">@Html.Raw(localization.IncorrectInput)</span>
             }
                 <div class="nameBlock">
                     <label for="Name">@Html.Raw(localization.Name)</label>
