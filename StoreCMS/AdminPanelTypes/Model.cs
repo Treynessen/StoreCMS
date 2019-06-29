@@ -12,6 +12,7 @@ namespace Treynessen.AdminPanelTypes
         public int? imageID { get; set; }
 
         public PageModel PageModel { get; set; }
+        public TemplateModel TemplateModel { get; set; }
         public AccessSettingsModel AccessSettingsModel { get; set; }
     }
 }

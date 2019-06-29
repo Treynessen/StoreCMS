@@ -1,0 +1,43 @@
+﻿@model Template[]
+@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/index.css";
+    User user = Context.Items["User"] as User;
+}
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddTemplate, user, Context))
+{
+            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplate)">@Html.Raw(localization.AddTemplate)</a></div>
+}
+            <table>
+                <tr>
+                    <td>ID</td>
+                    <td>@Html.Raw(localization.TemplateName)</td>
+                    <td>@Html.Raw(localization.Actions)</td>
+                </tr>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(t.ID)</td>
+                    <td>@Html.Raw(t.Name)</td>
+                    <td>
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditTemplate, user, Context))
+                    {
+                        <form method="get">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditTemplate)" />
+                        </form>
+                    }
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteTemplate, user, Context))
+                    {
+                        <form method="post">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplate)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteTemplate)" />
+                        </form>
+                    }
+                    </td>
+                </tr>
+            }
+            </table>

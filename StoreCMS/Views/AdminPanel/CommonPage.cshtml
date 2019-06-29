@@ -12,9 +12,13 @@
     {
         pages.Add(AdminPanelPages.Pages, localization.Pages);
     }
-        if (SecurityFunctions.HasAccessTo(AdminPanelPages.Categories, user, Context))
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Categories, user, Context))
     {
         pages.Add(AdminPanelPages.Categories, localization.CategoriesAndProducts);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Templates, user, Context))
+    {
+        pages.Add(AdminPanelPages.Templates, localization.Templates);
     }
 }
 <!doctype html>

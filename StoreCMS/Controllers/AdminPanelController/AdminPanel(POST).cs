@@ -59,7 +59,7 @@ namespace Treynessen.Controllers
 
                 case AdminPanelPages.DeleteProduct:
                     DatabaseInteraction.DeleteProduct(db, model.itemID, HttpContext, out int? categoryID);
-                    if(categoryID.HasValue)
+                    if (categoryID.HasValue)
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.CategoryProducts}&itemID={categoryID.Value}");
                     else return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
 
@@ -70,6 +70,22 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.DeleteProductImage:
                     ImagesManagementFunctions.DeleteProductImage(db, model.itemID, model.imageID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ProductImages}&itemID={model.itemID}");
+
+                case AdminPanelPages.AddTemplate:
+                    DatabaseInteraction.AddTemplate(db, model.TemplateModel, HttpContext, out bool templateAdded);
+                    if (templateAdded)
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
+                    else return AddTemplate(model.TemplateModel);
+
+                case AdminPanelPages.EditTemplate:
+                    DatabaseInteraction.EditTemplate(db, model.itemID, model.TemplateModel, HttpContext, out bool templateEdited);
+                    if (templateEdited)
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditTemplate}&itemID={model.itemID}");
+                    else return EditTemplate(model.itemID, model.TemplateModel);
+
+                case AdminPanelPages.DeleteTemplate:
+                    DatabaseInteraction.DeleteTemplate(db, model.itemID, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

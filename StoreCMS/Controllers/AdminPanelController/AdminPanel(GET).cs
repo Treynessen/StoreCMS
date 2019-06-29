@@ -48,6 +48,12 @@ namespace Treynessen.Controllers
                     return EditProduct(model.itemID);
                 case AdminPanelPages.ProductImages:
                     return ProductImages(model.itemID);
+                case AdminPanelPages.Templates:
+                    return Templates();
+                case AdminPanelPages.AddTemplate:
+                    return AddTemplate();
+                case AdminPanelPages.EditTemplate:
+                    return EditTemplate(model.itemID);
                 default:
                     return MainPage();
             }
