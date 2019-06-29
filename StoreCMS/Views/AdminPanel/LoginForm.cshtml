@@ -8,15 +8,14 @@
 <head>
     <title>@Html.Raw(localization.Title)</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/common.css" />
-    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/login_form.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/login_form.css" />
 </head>
 <body>
-    @Context.Items["Routes"]
     <form method="post" class="loginFormBlock">
         @if (incorrect)
         {
-        <span class="errorMsg">@Html.Raw(localization.IncorrectInput)</span>
+            <span class="errorMsg">@Html.Raw(localization.IncorrectInput)</span>
         }
         <label for="Login">@Html.Raw(localization.UserName)</label>
         <input type="text" id="Login" name="Login" autocomplete="off" required value="@Model?.Login">

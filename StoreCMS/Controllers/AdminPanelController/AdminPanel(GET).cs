@@ -1,27 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Treynessen.Database.Entities;
+using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Security;
 using Treynessen.AdminPanelTypes;
-using Treynessen.Functions;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
 {
     public partial class AdminPanelController : Controller
     {
         [HttpGet]
-        public IActionResult AdminPanel(AdminPanelModel model)
+        public IActionResult AdminPanel(Model model)
         {
-            User user = DataCheck.CheckCookies(db, HttpContext);
-            if(!DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
+            // Проверяем кукисы пользователя на наличие информации о предыдущем входе
+            // Если кукисы некорректны, либо вышло время возможного бездействия, то
+            // отправляем пользователя на логин форму
+            User user = SecurityFunctions.CheckCookies(db, HttpContext);
+            if (user == null)
                 return LoginForm();
-            if (!DataCheck.HasAccessTo(model.PageId, user, HttpContext))
+            // Создаем объект для проверки уровней доступа и передаем его в контейнер Items
+            // Объект AccessLevelConfiguration используется в методе HasAccessTo(...)
+            // Передача в контейнер обязательна, т.к. эти методы вызываются не только внутри контроллера,
+            // но и внутри представлений
+            AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
+            HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
+            if (!SecurityFunctions.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
+                return LoginForm();
+            if (!SecurityFunctions.HasAccessTo(model.PageId, user, HttpContext))
                 model.PageId = AdminPanelPages.MainPage;
 
             HttpContext.Items["User"] = user;
 
-            switch (model.PageId.Value)
+            switch (model.PageId)
             {
-                case AdminPanelPages.MainPage:
-                    return MainPage();
                 case AdminPanelPages.Pages:
                     return Pages();
                 case AdminPanelPages.AddPage:
@@ -33,31 +43,13 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.CategoryProducts:
                     return CategoryProducts(model.itemID);
                 case AdminPanelPages.AddProduct:
-                    return AddProduct(model.PageModel);
+                    return AddProduct();
+                case AdminPanelPages.EditProduct:
+                    return EditProduct(model.itemID);
                 case AdminPanelPages.ProductImages:
                     return ProductImages(model.itemID);
-                case AdminPanelPages.EditProduct:
-                    return EditProduct(model.itemID, model.PageModel);
-                case AdminPanelPages.Templates:
-                    return Templates();
-                case AdminPanelPages.AddTemplate:
-                    return AddTemplate();
-                case AdminPanelPages.EditTemplate:
-                    return EditTemplate(model.itemID);
-                case AdminPanelPages.Chunks:
-                    return Chunks();
-                case AdminPanelPages.AddChunk:
-                    return AddChunk();
-                case AdminPanelPages.EditChunk:
-                    return EditChunk(model.itemID);
-                case AdminPanelPages.Files:
-                    return Files(model.Path);
-                case AdminPanelPages.EditStyle:
-                    return EditCssFile(model.Path);
-                case AdminPanelPages.Settings:
-                    return Settings();
                 default:
-                    return RedirectToAction(nameof(AdminPanel));
+                    return MainPage();
             }
         }
     }

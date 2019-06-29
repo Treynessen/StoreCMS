@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Treynessen.Functions;
-using Treynessen.Extensions;
+using Treynessen.ImagesManagement;
 
 namespace Treynessen.TagHelpers
 {
@@ -30,61 +29,17 @@ namespace Treynessen.TagHelpers
         {
             string src = await Task.Run(() =>
             {
-                string fullPath = null;
                 string resultSrc = null;
+                ImageHandler imageHandler = null;
                 if (!string.IsNullOrEmpty(FullPath))
-                {
-                    fullPath = FullPath;
-                    string storagePath = env.GetStoragePath();
-                    if (fullPath.Contains(storagePath))
-                    {
-                        resultSrc = fullPath.Substring(storagePath.Length - 1).Replace('\\', '/');
-                        resultSrc = resultSrc.Substring(0, resultSrc.LastIndexOf('/') + 1);
-                    }
-                }
+                    imageHandler = new ImageHandler(FullPath, true, env);
                 else if (!string.IsNullOrEmpty(Src))
-                {
-                    fullPath = $"{env.GetStoragePath()}{Src.Substring(1).Replace('/', '\\')}";
-                    resultSrc = Src.Substring(0, Src.LastIndexOf('/') + 1);
-                }
-                else
-                {
-                    return Src;
-                }
-                string imageFullName = null;
-                try
-                {
-                    if ((Width.HasValue || Height.HasValue) && !Quality.HasValue)
-                    {
-                        imageFullName = ActionsWithImage.ImageResizing(fullPath, Width, Height, MaxWidth, MaxHeight);
-                    }
-                    else if ((!Width.HasValue && !Height.HasValue) && Quality.HasValue)
-                    {
-                        if (MaxHeight.HasValue || MaxWidth.HasValue)
-                            imageFullName = ActionsWithImage.ImageResizingAndComprassion(fullPath, Quality.Value, maxWidth: MaxWidth, maxHeight: MaxHeight);
-                        else
-                            imageFullName = ActionsWithImage.ImageComprassion(fullPath, Quality.Value);
-                    }
-                    else if ((Width.HasValue || Height.HasValue) && Quality.HasValue)
-                    {
-                        imageFullName = ActionsWithImage.ImageResizingAndComprassion(fullPath, Quality.Value, Width, Height, MaxWidth, MaxHeight);
-                    }
-                    else if (MaxWidth.HasValue || MaxHeight.HasValue)
-                    {
-                        imageFullName = ActionsWithImage.ImageResizing(fullPath, maxWidth: MaxWidth, maxHeight: MaxHeight);
-                    }
-                    else
-                    {
-                        imageFullName = FullPath.Substring(FullPath.LastIndexOf('\\') + 1);
-                    }
-                }
-                catch
-                {
-                    return Src;
-                }
-                if (string.IsNullOrEmpty(imageFullName))
-                    return Src;
-                resultSrc += imageFullName;
+                    imageHandler = new ImageHandler(Src, false, env);
+                else return null;
+                if (Quality.HasValue)
+                    imageHandler.ImageComprassion(Quality.Value);
+                imageHandler.ImageResizing(Width, Height, MaxWidth, MaxHeight).ApplySettings();
+                resultSrc = imageHandler.CreatedImageSrc;
                 return resultSrc;
             });
             output.TagName = "img";

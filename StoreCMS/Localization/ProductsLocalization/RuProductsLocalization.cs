@@ -25,7 +25,8 @@
         public string WithoutTemplate => "Без шаблона";
         public string Alias => "Псевдоним страницы";
         public string Published => "Опубликована";
-        public string IsRobotIndex => "Доступна для индексации";
+        public string IsIndex => "Поисковым системам доступна индексация страницы";
+        public string IsFollow => "Поисковым системам доступен переход по ссылкам";
         public string Content => "Содержимое страницы";
     }
 }

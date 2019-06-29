@@ -8,6 +8,7 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult AddPage(PageModel model = null)
         {
+            HttpContext.Items["pageID"] = AdminPanelPages.AddPage;
             return View("Pages/AddPage", model);
         }
     }

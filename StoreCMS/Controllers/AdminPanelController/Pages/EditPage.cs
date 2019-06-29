@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Treynessen.Functions;
+using Microsoft.EntityFrameworkCore;
+using Treynessen.PagesManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Entities;
 
@@ -11,6 +12,8 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult EditPage(PageType? pageType, int? itemID, PageModel model = null)
         {
+            HttpContext.Items["pageID"] = AdminPanelPages.EditPage;
+
             if (!pageType.HasValue || !itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
             if (model == null)
@@ -28,8 +31,12 @@ namespace Treynessen.Controllers
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
                 }
                 if (page != null)
+                {
+                    // Для блокировки выбора страницы-родителя в представлении
+                    HttpContext.Items["isMainPage"] = PagesManagementFunctions.GetUrl(page).Equals("/", StringComparison.InvariantCulture);
                     db.Entry(page).State = EntityState.Detached;
-                model = OtherFunctions.PageToPageModel(page);
+                    model = PagesManagementFunctions.PageToPageModel(page);
+                }
             }
             else
                 HttpContext.Items["IsIncorrect"] = true;

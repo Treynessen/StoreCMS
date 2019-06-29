@@ -66,3 +66,7 @@ input[type="submit"] {
         background: #00a8ff;
         cursor: pointer;
     }
+
+span.incorrect {
+    color: #ff0000;
+}

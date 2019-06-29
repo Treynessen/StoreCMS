@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "3f87157a94d6c1c66db5384fe149c0cdb39ede0b"
+    "signature": "8e1964bda593870ccb348ef916c5e9946b7fd99e"
   },
   "compilationOptions": {
     "defines": [
@@ -27,8 +27,7 @@
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
           "Microsoft.NETCore.App": "2.1.0",
-          "SixLabors.ImageSharp": "1.0.0-beta0006",
-          "SixLabors.ImageSharp.Drawing": "1.0.0-beta0006"
+          "SixLabors.ImageSharp": "1.0.0-beta0006"
         },
         "runtime": {
           "StoreCMS.dll": {}
@@ -223,20 +222,6 @@
           "lib/netcoreapp2.1/SixLabors.Core.dll": {}
         }
       },
-      "SixLabors.Fonts/1.0.0-beta0008": {
-        "dependencies": {
-          "SixLabors.Core": "1.0.0-beta0007"
-        },
-        "runtime": {
-          "lib/netstandard2.0/SixLabors.Fonts.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/SixLabors.Fonts.dll": {}
-        }
-      },
       "SixLabors.ImageSharp/1.0.0-beta0006": {
         "dependencies": {
           "SixLabors.Core": "1.0.0-beta0007",
@@ -250,36 +235,6 @@
         },
         "compile": {
           "lib/netcoreapp2.1/SixLabors.ImageSharp.dll": {}
-        }
-      },
-      "SixLabors.ImageSharp.Drawing/1.0.0-beta0006": {
-        "dependencies": {
-          "SixLabors.Fonts": "1.0.0-beta0008",
-          "SixLabors.ImageSharp": "1.0.0-beta0006",
-          "SixLabors.Shapes": "1.0.0-beta0008"
-        },
-        "runtime": {
-          "lib/netstandard2.0/SixLabors.ImageSharp.Drawing.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/SixLabors.ImageSharp.Drawing.dll": {}
-        }
-      },
-      "SixLabors.Shapes/1.0.0-beta0008": {
-        "dependencies": {
-          "SixLabors.Core": "1.0.0-beta0007"
-        },
-        "runtime": {
-          "lib/netstandard2.0/SixLabors.Shapes.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/SixLabors.Shapes.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3293,33 +3248,12 @@
       "path": "sixlabors.core/1.0.0-beta0007",
       "hashPath": "sixlabors.core.1.0.0-beta0007.nupkg.sha512"
     },
-    "SixLabors.Fonts/1.0.0-beta0008": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-rxOe1b0XdxD3CNNUFMmFf15YL6vwx/jjR45gV/tGNcO04M40QuGPvoIwRkJlKQXGruV42TcMqEPnAGqCvlFBVw==",
-      "path": "sixlabors.fonts/1.0.0-beta0008",
-      "hashPath": "sixlabors.fonts.1.0.0-beta0008.nupkg.sha512"
-    },
     "SixLabors.ImageSharp/1.0.0-beta0006": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-VHDX00uAzPWj5qFYE5xJZyr5Cx4Jtd3p2dfX7swSrzlQoPEZPXXwQ+O3Fc4hNWvaNvR1NAiXSb27Ts6yv3lMDw==",
       "path": "sixlabors.imagesharp/1.0.0-beta0006",
       "hashPath": "sixlabors.imagesharp.1.0.0-beta0006.nupkg.sha512"
-    },
-    "SixLabors.ImageSharp.Drawing/1.0.0-beta0006": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-gVSughdCm0dndDYoMmiTfNP2ins7s4GqQecvr0tIpgAFFw0Q/hy8+XbVEuauQIe8T2TEXoNnqHEBFk8xuqseOg==",
-      "path": "sixlabors.imagesharp.drawing/1.0.0-beta0006",
-      "hashPath": "sixlabors.imagesharp.drawing.1.0.0-beta0006.nupkg.sha512"
-    },
-    "SixLabors.Shapes/1.0.0-beta0008": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-qGouMMBI2EIMvXXWMBxAWRGg1iI8Z1AYvgww+P5pXVJoixCO1IEwil6SlYZ7XR+eppCjQzfenVtXHH3BDT/Eww==",
-      "path": "sixlabors.shapes/1.0.0-beta0008",
-      "hashPath": "sixlabors.shapes.1.0.0-beta0008.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

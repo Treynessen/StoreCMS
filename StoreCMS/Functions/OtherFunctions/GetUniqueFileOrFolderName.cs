@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Treynessen.Functions
 {
@@ -42,7 +39,7 @@ namespace Treynessen.Functions
                 }
                 if (index == 0 && has)
                 {
-                    fileName = $"{GetNameWithUnderscore(fileName)}";
+                    fileName += "_";
                 }
                 if (!has)
                 {

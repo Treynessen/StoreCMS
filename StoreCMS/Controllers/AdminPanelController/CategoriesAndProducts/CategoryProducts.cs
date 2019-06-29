@@ -10,6 +10,7 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult CategoryProducts(int? itemID)
         {
+            HttpContext.Items["pageID"] = AdminPanelPages.CategoryProducts;
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
             CategoryPage category = db.CategoryPages.FirstOrDefaultAsync(c => c.ID == itemID).Result;
@@ -18,7 +19,7 @@ namespace Treynessen.Controllers
             db.Entry(category).Collection(c => c.ProductPages).Load();
             HttpContext.Items["itemID"] = itemID.Value;
             HttpContext.Items["categoryName"] = category.PageName.ToLower();
-            return View("Products/CategoryProducts", category.ProductPages);
+            return View("CategoriesAndProducts/CategoryProducts", category.ProductPages);
         }
     }
 }

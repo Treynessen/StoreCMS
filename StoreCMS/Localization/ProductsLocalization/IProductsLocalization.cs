@@ -11,7 +11,7 @@
 
         string ChooseTheFile { get; }
         string DeleteProductImage { get; }
-        
+
         string IncorrectInput { get; }
         string SaveButton { get; }
         string Title { get; }
@@ -25,7 +25,8 @@
         string WithoutTemplate { get; }
         string Alias { get; }
         string Published { get; }
-        string IsRobotIndex { get; }
+        string IsIndex { get; }
+        string IsFollow { get; }
         string Content { get; }
     }
 }

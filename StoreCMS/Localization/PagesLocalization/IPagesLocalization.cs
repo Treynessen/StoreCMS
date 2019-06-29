@@ -3,6 +3,7 @@
     public interface IPagesLocalization
     {
         string AddPage { get; }
+        string Name { get; }
         string ActionsWithPage { get; }
         string EditPage { get; }
         string DeletePage { get; }
@@ -23,7 +24,8 @@
         string Alias { get; }
         string IsMainPage { get; }
         string Published { get; }
-        string IsRobotIndex { get; }
+        string IsIndex { get; }
+        string IsFollow { get; }
         string IncorrectInput { get; }
         string Content { get; }
 

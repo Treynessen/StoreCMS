@@ -1,18 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Translit;
 using Treynessen.Security;
-using Treynessen.OtherTypes;
-using Treynessen.Middlewares;
+using Treynessen.Extensions;
 using Treynessen.Localization;
-using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
-using Treynessen.RouteConstraints;
-
-using System;
-using Microsoft.AspNetCore.Http;
 
 public class Startup
 {
@@ -22,27 +22,24 @@ public class Startup
         {
             var builder = new ConfigurationBuilder()
             .SetBasePath(services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>().ContentRootPath)
-            .AddJsonFile("Configurations/core_configuration.json");
+            .AddJsonFile("Configs/core_configuration.json");
             options.UseSqlServer(builder.Build().GetConnectionString("DefaultConnection"));
         });
-
-        services.AddMvc();
-
+        
         services.AddTransient(provider =>
         {
-            string rootPath = provider.GetRequiredService<IHostingEnvironment>().ContentRootPath;
-            return new AccessLevelConfiguration(rootPath, "Configurations/accessLevel_configuration.json");
+            string pathToAccessConfig = $"{provider.GetRequiredService<IHostingEnvironment>().GetConfigsFolderFullPath()}accessLevel_configuration.json";
+            return new AccessLevelConfiguration(pathToAccessConfig);
         });
 
-        services.AddSingleton<Translit>();
+        services.AddSingleton<EnRuTranslit>();
 
         services.AddTransient<ILoginFormLocalization>(provider => new RuLoginFormLocalization());
         services.AddTransient<IAdminPanelPageLocalization>(provider => new RuAdminPanelPageLocalization());
         services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
         services.AddTransient<IProductsLocalization>(provider => new RuProductsLocalization());
-        services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
-        services.AddTransient<IFilesPageLocalization>(provider => new RuFilesPageLocalization());
-        services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
+
+        services.AddMvc();
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -52,19 +49,13 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
         app.UseStaticFiles();
-        app.AddAccessLevelConfigInItemWhen("/admin");
         app.UseMvc(routeBuilder =>
         {
+            // Страницы
             routeBuilder.MapRoute(
                 name: "admin_panel",
                 template: "~/admin",
                 defaults: new { controller = "AdminPanel", action = "AdminPanel" }
-            );
-            routeBuilder.MapRoute(
-                name: "some_page",
-                template: "{*directory}",
-                defaults: new { controller = "PagesHandler", action = "RequestHandler" },
-                constraints: new { directory = new UrlConstraint() }
             );
         });
     }

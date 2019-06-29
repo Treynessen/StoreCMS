@@ -2,7 +2,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Treynessen.OtherTypes;
+using Treynessen.Translit;
 
 namespace Treynessen.Functions
 {
@@ -13,7 +13,7 @@ namespace Treynessen.Functions
             if (string.IsNullOrEmpty(basis))
                 return null;
 
-            Translit translit = context.RequestServices.GetService<Translit>();
+            EnRuTranslit translit = context.RequestServices.GetService<EnRuTranslit>();
 
             StringBuilder builder = new StringBuilder();
             string availableSymbols = "qwertyuiopasdfghjklzxcvbnm1234567890-_";
@@ -23,11 +23,13 @@ namespace Treynessen.Functions
                 {
                     if (symbol == ' ')
                         builder.Append('_');
+                    else if (symbol == '/' || symbol == '\\')
+                        builder.Append('-');
                     else
                     {
                         try
                         {
-                            builder.Append(translit.Translate(symbol));
+                            builder.Append(translit.Translit(symbol));
                         }
                         catch (ArgumentException)
                         {

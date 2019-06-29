@@ -1,45 +1,20 @@
 ﻿@inject IAdminPanelPageLocalization localization
 @{
     User user = Context.Items["User"] as User;
-    AdminPanelPages pageID;
-    try
-    {
-        pageID = (AdminPanelPages)Convert.ToInt32(Context.Request.Query["pageID"]);
-        pageID = DataCheck.HasAccessTo(pageID, user, Context) == false ? AdminPanelPages.MainPage : pageID;
-    }
-    catch
-    {
-        pageID = AdminPanelPages.MainPage;
-    }
+    AdminPanelPages pageID = (AdminPanelPages)Context.Items["pageID"];
 
     Dictionary<AdminPanelPages, string> pages = new Dictionary<AdminPanelPages, string>();
-    if (DataCheck.HasAccessTo(AdminPanelPages.MainPage, user, Context))
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.MainPage, user, Context))
     {
         pages.Add(AdminPanelPages.MainPage, localization.MainPage);
     }
-    if (DataCheck.HasAccessTo(AdminPanelPages.Pages, user, Context))
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Pages, user, Context))
     {
         pages.Add(AdminPanelPages.Pages, localization.Pages);
     }
-    if (DataCheck.HasAccessTo(AdminPanelPages.Categories, user, Context))
+        if (SecurityFunctions.HasAccessTo(AdminPanelPages.Categories, user, Context))
     {
         pages.Add(AdminPanelPages.Categories, localization.CategoriesAndProducts);
-    }
-    if (DataCheck.HasAccessTo(AdminPanelPages.Templates, user, Context))
-    {
-        pages.Add(AdminPanelPages.Templates, localization.Templates);
-    }
-    if (DataCheck.HasAccessTo(AdminPanelPages.Chunks, user, Context))
-    {
-        pages.Add(AdminPanelPages.Chunks, localization.TemplateChunks);
-    }
-    if(DataCheck.HasAccessTo(AdminPanelPages.Files, user, Context))
-    {
-        pages.Add(AdminPanelPages.Files, localization.Files);
-    }
-    if (DataCheck.HasAccessTo(AdminPanelPages.Settings, user, Context))
-    {
-        pages.Add(AdminPanelPages.Settings, localization.Settings);
     }
 }
 <!doctype html>
@@ -47,11 +22,11 @@
 <head>
     <title>@Html.Raw(localization.Title)</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/common.css" />
-    <link rel="stylesheet" type="text/css" href="~/styles/admin_panel/admin_panel.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/admin_panel.css" />
     @if (Context.Items["PageStyle"] != null)
     {
-        <link rel="stylesheet" type="text/css" href="@Html.Raw(Context.Items["PageStyle"])" />
+    <link rel="stylesheet" type="text/css" href="@Html.Raw(Context.Items["PageStyle"])" />
     }
     <meta name="viewport" content="width=device-width">
 </head>
@@ -62,16 +37,16 @@
             {
                 if (pageID == p.Key)
                 {
-                    <li class="withPadding">@Html.Raw(p.Value)</li>
+            <li class="withPadding">@Html.Raw(p.Value)</li>
                 }
                 else
                 {
-                    <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="withPadding">@Html.Raw(p.Value)</a></li>
+            <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="withPadding">@Html.Raw(p.Value)</a></li>
                 }
             }
         </ul>
         <content>
-@RenderBody()
+            @RenderBody()
         </content>
     </div>
 </body>

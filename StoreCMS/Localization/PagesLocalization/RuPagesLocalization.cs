@@ -3,6 +3,7 @@
     public class RuPagesLocalization : IPagesLocalization
     {
         public string AddPage => "Добавить страницу";
+        public string Name => "Название";
         public string ActionsWithPage => "Действия";
         public string EditPage => "Изменить страницу";
         public string DeletePage => "Удалить страницу";
@@ -23,7 +24,8 @@
         public string Alias => "Псевдоним страницы";
         public string IsMainPage => "Главная страница";
         public string Published => "Опубликована";
-        public string IsRobotIndex => "Доступна для индексации";
+        public string IsIndex => "Поисковым системам доступна индексация страницы";
+        public string IsFollow => "Поисковым системам доступен переход по ссылкам";
         public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";
         public string Content => "Содержимое страницы";
 

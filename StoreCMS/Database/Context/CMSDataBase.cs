@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Entities;
-using Treynessen.Security;
 
 namespace Treynessen.Database.Context
 {
@@ -22,17 +21,6 @@ namespace Treynessen.Database.Context
             : base(options)
         {
             Database.EnsureCreated();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserType>().HasData(new UserType
-            {
-                ID = 1,
-                Name = "Admin",
-                AccessLevel = AccessLevel.VeryHigh
-            });
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

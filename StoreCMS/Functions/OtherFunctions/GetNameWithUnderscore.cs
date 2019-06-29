@@ -9,7 +9,7 @@ namespace Treynessen.Functions
             try
             {
                 int lastUnderscore = name.LastIndexOf('_');
-                if (lastUnderscore + 1 != name.Length)
+                if (lastUnderscore < name.Length)
                 {
                     if (lastUnderscore == -1)
                         throw new FormatException();

@@ -1,8 +1,0 @@
-<a class="product" href="[Product:Url]">
-	<image src="[Product:MainImage]" width="150" height="115" quality="90"></image>
-	<div class="productInfo">
-		<span class="productName">[Product:Name]</span>
-		<div class="shortDescription"><span>[Product:ShortDescription]</span></div>
-	</div>
-	<span class="productPrice">[Product:Price]</span>
-</a>

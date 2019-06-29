@@ -10,7 +10,7 @@ namespace Treynessen.Database.Entities
         [Required]
         public string Title { get; set; }
         [Required]
-        public string PageName { get; set; } 
+        public string PageName { get; set; }
         [Required]
         public string Alias { get; set; } // Url псевдоним страницы: RequestPath/Alias
         [Required]
@@ -22,6 +22,7 @@ namespace Treynessen.Database.Entities
         public bool Published { get; set; } // true, если страница опубликована (является видимой для пользователей)
         public string PageDescription { get; set; } // Описание для мета тега description
         public string PageKeywords { get; set; } // Ключевые слова для мета тега keywords
-        public bool IsRobotIndex { get; set; } // Доступна для индексации
+        public bool IsIndex { get; set; } // Доступна для индексации
+        public bool IsFollow { get; set; } // Доступны переходы по ссылкам, расположенным на странице
     }
 }
