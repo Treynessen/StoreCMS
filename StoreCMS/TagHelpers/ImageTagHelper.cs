@@ -29,18 +29,17 @@ namespace Treynessen.TagHelpers
         {
             string src = await Task.Run(() =>
             {
-                string resultSrc = null;
                 ImageHandler imageHandler = null;
                 if (!string.IsNullOrEmpty(FullPath))
                     imageHandler = new ImageHandler(FullPath, true, env);
                 else if (!string.IsNullOrEmpty(Src))
                     imageHandler = new ImageHandler(Src, false, env);
                 else return null;
+
                 if (Quality.HasValue)
                     imageHandler.ImageComprassion(Quality.Value);
                 imageHandler.ImageResizing(Width, Height, MaxWidth, MaxHeight).ApplySettings();
-                resultSrc = imageHandler.CreatedImageSrc;
-                return resultSrc;
+                return imageHandler.CreatedImageSrc;
             });
             output.TagName = "img";
             output.Attributes.SetAttribute("src", src);

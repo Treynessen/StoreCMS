@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
@@ -63,14 +64,41 @@ namespace Treynessen.Database
                     // проблема в том, что путь до папки с изображениями может содержать старое название
                     // изображения. В итоге замена имени через File.Move(старый_путь, старый_путь.Replace(oldName, newName))
                     // может привести к переносу изображений в другую директорию.
+                    LinkedList<KeyValuePair<string, string>> renameErrors = new LinkedList<KeyValuePair<string, string>>();
                     for (int i = 0; i < numOfImages; ++i)
                     {
-                        ImagesManagementFunctions.RenameImageAndDependencies(
-                            pathToImages: pathToImages,
-                            oldImageName: $"{oldName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}",
-                            newImageName: $"{newName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}",
-                            editImagesInfoFile: false
-                        );
+                        string oldImageName = $"{oldName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
+                        string newImageName = $"{newName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
+                        try
+                        {
+                            ImagesManagementFunctions.RenameImageAndDependencies(
+                                pathToImages: pathToImages,
+                                oldImageName: oldImageName,
+                                newImageName: newImageName,
+                                editImagesInfoFile: false
+                            );
+                        }
+                        catch (IOException)
+                        {
+                            // Добавляем все ошибки переименования в список для второй попытки. Например, старое название было
+                            // "Название" и мы переименовали страницу на "Название_2", но у товара было несколько картинок, 
+                            // соответственно при ренейминге будет попытка присвоить первой картинке название Название_2, что приведет
+                            // к ошибке, т.к. картинка с таким названием уже существует. Поэтому после первого прохода сделаем второй,
+                            // что поможет избежать этих ошибок переименования
+                            renameErrors.AddLast(new KeyValuePair<string, string>(oldImageName, newImageName));
+                        }
+                    }
+                    if (renameErrors.Count > 0)
+                    {
+                        foreach(var e in renameErrors)
+                        {
+                            ImagesManagementFunctions.RenameImageAndDependencies(
+                                pathToImages: pathToImages,
+                                oldImageName: e.Key,
+                                newImageName: e.Value,
+                                editImagesInfoFile: false
+                            );
+                        }
                     }
                     OtherFunctions.ReplaceContentInFile($"{pathToImages}images.info", oldName, newName);
                 }
