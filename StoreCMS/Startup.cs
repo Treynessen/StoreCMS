@@ -39,6 +39,7 @@ public class Startup
         services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
         services.AddTransient<IProductsLocalization>(provider => new RuProductsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
+        services.AddTransient<IFileManagerLocalization>(provider => new RuFileManagerLocalization());
 
         services.AddMvc();
     }

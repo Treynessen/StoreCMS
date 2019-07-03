@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using Treynessen.Functions;
 using Treynessen.Extensions;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
+using Treynessen.FileManagerManagement;
 
 namespace Treynessen.ImagesManagement
 {
@@ -25,7 +25,7 @@ namespace Treynessen.ImagesManagement
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
             Directory.CreateDirectory(imagesPath);
-            string fullImageName = OtherFunctions.GetUniqueFileOrFolderName(imagesPath, product.Alias, ".jpg");
+            string fullImageName = FileManagerManagementFunctions.GetUniqueFileOrFolderName(imagesPath, product.Alias, ".jpg");
             string pathToFile = $"{imagesPath}{fullImageName}";
             using (Stream stream = file.OpenReadStream())
             {

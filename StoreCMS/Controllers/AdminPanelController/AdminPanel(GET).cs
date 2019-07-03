@@ -60,6 +60,10 @@ namespace Treynessen.Controllers
                     return AddChunk();
                 case AdminPanelPages.EditChunk:
                     return EditChunk(model.itemID);
+                case AdminPanelPages.FileManager:
+                    return FileManager(model.Path);
+                case AdminPanelPages.EditStyle:
+                    return EditCssFile(model.Path);
                 default:
                     return MainPage();
             }

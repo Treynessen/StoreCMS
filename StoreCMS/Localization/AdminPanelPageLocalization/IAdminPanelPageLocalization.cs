@@ -9,7 +9,7 @@
         string CategoriesAndProducts { get; }
         string Templates { get; }
         string Chunks { get; }
-        string Files { get; }
+        string FileManager { get; }
         string Settings { get; }
     }
 }

@@ -24,6 +24,10 @@
     {
         pages.Add(AdminPanelPages.Chunks, localization.Chunks);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.FileManager, user, Context))
+    {
+        pages.Add(AdminPanelPages.FileManager, localization.FileManager);
+    }
 }
 <!doctype html>
 <html>

@@ -7,7 +7,7 @@
         Categories,
         Templates,
         Chunks,
-        Files,
+        FileManager,
         Settings,
 
         AddPage,

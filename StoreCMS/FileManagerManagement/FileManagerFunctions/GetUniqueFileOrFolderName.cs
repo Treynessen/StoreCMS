@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace Treynessen.Functions
+namespace Treynessen.FileManagerManagement
 {
-    public static partial class OtherFunctions
+    public static partial class FileManagerManagementFunctions
     {
         public static string GetUniqueFileOrFolderName(string path, string fileName, string fileExtension = null)
         {

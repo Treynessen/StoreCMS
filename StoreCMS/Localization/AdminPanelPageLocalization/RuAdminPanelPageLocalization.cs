@@ -9,7 +9,7 @@
         public string CategoriesAndProducts => "Категории и товары";
         public string Templates => "Шаблоны";
         public string Chunks => "Части шаблонов";
-        public string Files => "Файлы";
+        public string FileManager => "Файлы";
         public string Settings => "Настройки";
     }
 }

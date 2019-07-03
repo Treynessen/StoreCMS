@@ -5,6 +5,7 @@ using Treynessen.Database;
 using Treynessen.AdminPanelTypes;
 using Treynessen.ImagesManagement;
 using Treynessen.Database.Entities;
+using Treynessen.FileManagerManagement;
 
 namespace Treynessen.Controllers
 {
@@ -102,6 +103,34 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.DeleteChunk:
                     DatabaseInteraction.DeleteChunk(db, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
+
+                case AdminPanelPages.UploadFile:
+                    FileManagerManagementFunctions.UploadFileToServer(model.Path, model.uploadedFile, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+
+                case AdminPanelPages.CreateFolder:
+                    FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+
+                case AdminPanelPages.CreateStyle:
+                    FileManagerManagementFunctions.CreateCssFile(model.Path, model.Name, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+
+                case AdminPanelPages.EditStyle:
+                    FileManagerManagementFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out bool cssFileEdited);
+                    if (!cssFileEdited)
+                    {
+                        HttpContext.Items["pageID"] = AdminPanelPages.EditStyle;
+                        HttpContext.Items["IsIncorrect"] = true;
+                        return View("FileManager/EditCssFile", model.StyleModel);
+                    }
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditStyle}&path={model.Path.Substring(0, model.Path.LastIndexOf('>') + 1)}{model.StyleModel.FileName}.css");
+
+                case AdminPanelPages.DeleteFileOrFolder:
+                    FileManagerManagementFunctions.DeleteFileOrFolder(model.Path, HttpContext, out string redirectPath);
+                    if (string.IsNullOrEmpty(redirectPath))
+                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}");
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={redirectPath}");
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

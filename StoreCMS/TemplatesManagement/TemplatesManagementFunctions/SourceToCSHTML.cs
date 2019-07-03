@@ -48,10 +48,10 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_template.cshtml\", p); } }\n");
 
-            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? (Html.Raw(Model?.PageName)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? (Html.Raw(Model?.ShortDescription)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? (Html.Raw(Model?.Price)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? (Html.Raw(Model?.OldPrice)) : string.Empty)");
+            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? (Html.Raw(Model.PageName)) : string.Empty)");
+            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? (Html.Raw(Model.ShortDescription)) : string.Empty)");
+            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? (Html.Raw(Model.Price)) : string.Empty)");
+            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? (Html.Raw(Model.OldPrice)) : string.Empty)");
             cshtmlContentBuilder.Replace("[Product:MainImage]", $"@(Model is ProductPage ? {env.GetProductsImagesFolderSrc()} + Model.PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)");
 
             cshtmlContentBuilder.Replace("[YEAR]", "@(DateTime.Now.Year)");
