@@ -28,7 +28,6 @@ namespace Treynessen.Database
                     successfullyCompleted = false;
                     return;
             }
-            PagesManagementFunctions.SetUniqueAliasName(db, page);
             db.Add(page);
             db.SaveChanges();
             successfullyCompleted = true;

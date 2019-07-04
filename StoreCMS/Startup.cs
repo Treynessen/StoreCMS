@@ -1,35 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Translit;
 using Treynessen.Security;
-using Treynessen.Extensions;
 using Treynessen.Localization;
 using Treynessen.Database.Context;
+using Treynessen.SettingsManagement;
 
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddScoped(provider => 
+        new ConfigurationHandler("Settings/config.json", 
+        services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>()));
+
         services.AddDbContext<CMSDatabase>(options =>
         {
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>().ContentRootPath)
-            .AddJsonFile("Configs/core_configuration.json");
-            options.UseSqlServer(builder.Build().GetConnectionString("DefaultConnection"));
+            ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
+            options.UseSqlServer(configHandler.Configuration["DBSettings:ConnectionString"]);
         });
         
         services.AddTransient(provider =>
         {
-            string pathToAccessConfig = $"{provider.GetRequiredService<IHostingEnvironment>().GetConfigsFolderFullPath()}accessLevel_configuration.json";
-            return new AccessLevelConfiguration(pathToAccessConfig);
+            ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
+            return new AccessLevelConfiguration(configHandler);
         });
 
         services.AddSingleton<EnRuTranslit>();

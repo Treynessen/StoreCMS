@@ -24,7 +24,6 @@ namespace Treynessen.Database
                 return;
             }
             productPage.ID = GetDatabaseRawID(db.ProductPages);
-            PagesManagementFunctions.SetUniqueAliasName(db, productPage);
             db.ProductPages.Add(productPage);
             db.SaveChanges();
             successfullyCompleted = true;

@@ -38,7 +38,7 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("[Page:Title]", "@(Model != null ? Html.Raw(Model.Title)) : string.Empty)");
             cshtmlContentBuilder.Replace("[Page:Name]", "@(Model != null ? Html.Raw(Model.PageName)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:Url]", "@(Model != null ? PagesManagementFunctions.GetUrl(Model)) : string.Empty");
+            cshtmlContentBuilder.Replace("[Page:Url]", "@(Model != null ? Html.Raw(Model.RequestPath)) : string.Empty");
             cshtmlContentBuilder.Replace("[Page:Breadcrumbs]", "@(Model != null ? Html.Raw(Model.BreadcrumbsHtml)) : string.Empty)");
             cshtmlContentBuilder.Replace("[Page:Content]", "@(Model != null ? Html.Raw(Model.Content)) : string.Empty)");
             cshtmlContentBuilder.Replace("[Page:PageDescription]", "@(Model != null ? Html.Raw(Model.PageDescription)) : string.Empty)");

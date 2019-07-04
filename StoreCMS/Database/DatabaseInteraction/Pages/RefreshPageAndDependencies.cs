@@ -18,22 +18,21 @@ namespace Treynessen.Database
             {
                 case UsualPage up:
                     db.Entry(up).Reference(p => p.PreviousPage).Load();
-                    string temp = up.RequestPathWithoutAlias;
-                    up.RequestPathWithoutAlias = up.PreviousPage == null ? "/" : PagesManagementFunctions.GetUrl(up.PreviousPage);
-                    up.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(up);
-                    if (!temp.Equals("/") && up.RequestPathWithoutAlias.Equals("/") && up.Alias.Equals("index", StringComparison.InvariantCulture))
+                    if (up.PreviousPage == null && up.Alias.Equals("index", StringComparison.InvariantCulture))
                         up.Alias = "ind";
+                    up.RequestPath = up.PreviousPage == null ? $"/{up.Alias}" : $"{up.PreviousPage.RequestPath}/{up.Alias}";
+                    up.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(up);
                     break;
                 case CategoryPage cp:
                     db.Entry(cp).Reference(p => p.PreviousPage).Load();
-                    cp.RequestPathWithoutAlias = cp.PreviousPage == null ? "/" : PagesManagementFunctions.GetUrl(cp.PreviousPage);
-                    cp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(cp);
-                    if (cp.RequestPathWithoutAlias.Equals("/") && cp.Alias.Equals("index", StringComparison.InvariantCulture))
+                    if (cp.PreviousPage == null && cp.Alias.Equals("index", StringComparison.InvariantCulture))
                         cp.Alias = "ind";
+                    cp.RequestPath = cp.PreviousPage == null ? $"/{cp.Alias}" : $"{cp.PreviousPage.RequestPath}/{cp.Alias}";
+                    cp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(cp);
                     break;
                 case ProductPage pp:
                     db.Entry(pp).Reference(p => p.PreviousPage).Load();
-                    pp.RequestPathWithoutAlias = PagesManagementFunctions.GetUrl(pp.PreviousPage);
+                    pp.RequestPath = $"{pp.PreviousPage.RequestPath}/{pp.Alias}";
                     pp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(pp);
                     break;
             }

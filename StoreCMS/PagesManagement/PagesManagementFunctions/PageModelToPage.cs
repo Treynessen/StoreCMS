@@ -39,8 +39,12 @@ namespace Treynessen.PagesManagement
                     else if (model.IsMainPage)
                         return null;
                     if (model.PreviousPageID.HasValue)
+                    {
                         usualPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
-                    page.RequestPathWithoutAlias = usualPage.PreviousPage == null ? "/" : GetUrl(usualPage.PreviousPage);
+                        if (usualPage.PreviousPage == null)
+                            usualPage.PreviousPageID = null;
+                    }
+                    usualPage.RequestPath = usualPage.PreviousPage == null ? "/" : $"{usualPage.PreviousPage.RequestPath}/";
                     break;
 
                 case PageType.Category:
@@ -50,8 +54,12 @@ namespace Treynessen.PagesManagement
                     CategoryPage categoryPage = new CategoryPage();
                     page = categoryPage;
                     if (model.PreviousPageID.HasValue)
+                    {
                         categoryPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
-                    page.RequestPathWithoutAlias = categoryPage.PreviousPage == null ? "/" : GetUrl(categoryPage.PreviousPage);
+                        if (categoryPage.PreviousPage == null)
+                            categoryPage.PreviousPageID = null;
+                    }
+                    categoryPage.RequestPath = categoryPage.PreviousPage == null ? "/" : $"{categoryPage.PreviousPage.RequestPath}/";
                     break;
 
                 case PageType.Product:
@@ -70,7 +78,7 @@ namespace Treynessen.PagesManagement
                     productPage.OldPrice = model.OldPrice;
                     productPage.ShortDescription = model.ShortDescription;
                     productPage.SpecialProduct = model.SpecialProduct;
-                    productPage.RequestPathWithoutAlias = GetUrl(productPage.PreviousPage);
+                    productPage.RequestPath = $"{productPage.PreviousPage.RequestPath}/";
                     productPage.LastUpdate = DateTime.Now;
                     break;
 
@@ -91,13 +99,22 @@ namespace Treynessen.PagesManagement
             if (string.IsNullOrEmpty(page.Alias))
                 return null;
 
-            if (page.RequestPathWithoutAlias.Equals("/") && page.Alias.Equals("index", StringComparison.InvariantCulture) && !model.IsMainPage)
+            if (page.RequestPath.Equals("/") && page.Alias.Equals("index", StringComparison.InvariantCulture) && !model.IsMainPage)
                 page.Alias = "ind";
+
+            if (model.ID.HasValue)
+                page.ID = model.ID.Value;
+
+            if (!model.IsMainPage)
+            {
+                page.RequestPath += page.Alias;
+                SetUniqueAliasName(db, page);
+            }
 
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             for (LinkedListNode<string> it = env.GetForbiddenUrls().First; it != null; it = it.Next)
             {
-                if (GetUrl(page).Equals(it.Value, StringComparison.InvariantCulture))
+                if (page.RequestPath.Equals(it.Value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     page.Alias += "_page";
                     it = env.GetForbiddenUrls().First;

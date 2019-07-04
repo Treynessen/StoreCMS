@@ -33,7 +33,7 @@ namespace Treynessen.Controllers
                 if (page != null)
                 {
                     // Для блокировки выбора страницы-родителя в представлении
-                    HttpContext.Items["isMainPage"] = PagesManagementFunctions.GetUrl(page).Equals("/", StringComparison.InvariantCulture);
+                    HttpContext.Items["isMainPage"] = page.RequestPath.Equals("/", StringComparison.InvariantCulture);
                     db.Entry(page).State = EntityState.Detached;
                     model = PagesManagementFunctions.PageToPageModel(page);
                 }

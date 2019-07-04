@@ -19,6 +19,7 @@ namespace Treynessen.Database
             }
             model.PageModel.PageType = model.PageType;
             bool isMainPage = false;
+            model.PageModel.IsMainPage = false;
             switch (model.PageModel.PageType)
             {
                 case PageType.Usual:
@@ -29,7 +30,8 @@ namespace Treynessen.Database
                         successfullyCompleted = false;
                         return;
                     }
-                    isMainPage = PagesManagementFunctions.GetUrl(usualPage).Equals("/", StringComparison.InvariantCulture);
+                    model.PageModel.ID = usualPage.ID;
+                    isMainPage = usualPage.RequestPath.Equals("/", StringComparison.InvariantCulture);
                     break;
                 case PageType.Category:
                     CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.itemID).Result;
@@ -39,18 +41,18 @@ namespace Treynessen.Database
                         successfullyCompleted = false;
                         return;
                     }
+                    model.PageModel.ID = categoryPage.ID;
                     break;
                 default:
                     successfullyCompleted = false;
                     return;
             }
             // Для блокировки выбора страницы-родителя в представлении
-            context.Items["isMainPage"] = isMainPage;
+            context.Items["isMainPage"] = model.PageModel.IsMainPage;
             model.PageModel.PageType = model.PageModel.PageType.Value;
             Page page = PagesManagementFunctions.PageModelToPage(db, model.PageModel, context);
             if (page != null)
             {
-                page.ID = model.itemID.Value;
                 if (page is UsualPage up)
                 {
                     if (isMainPage)
@@ -71,7 +73,6 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            PagesManagementFunctions.SetUniqueAliasName(db, page);
             db.Update(page);
 
             RefreshPageAndDependencies(db, page);

@@ -4,6 +4,7 @@ namespace Treynessen.AdminPanelTypes
 {
     public class PageModel
     {
+        public int? ID { get; set; }
         public PageType? PageType { get; set; }
         public string Title { get; set; }
         public string PageName { get; set; }

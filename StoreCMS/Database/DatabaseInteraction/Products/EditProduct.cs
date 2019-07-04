@@ -34,6 +34,7 @@ namespace Treynessen.Database
                 return;
             }
             db.Entry(changeableProduct).State = EntityState.Detached;
+            model.ID = changeableProduct.ID;
             model.PreviousPageID = changeableProduct.PreviousPageID;
             ProductPage editedProduct = PagesManagementFunctions.PageModelToPage(db, model, context) as ProductPage;
             if (editedProduct == null)
@@ -41,8 +42,6 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            editedProduct.ID = changeableProduct.ID;
-            PagesManagementFunctions.SetUniqueAliasName(db, editedProduct);
             db.ProductPages.Update(editedProduct);
             db.SaveChanges();
 

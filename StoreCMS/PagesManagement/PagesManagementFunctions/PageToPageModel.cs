@@ -15,7 +15,7 @@ namespace Treynessen.PagesManagement
             {
                 case UsualPage up:
                     model.PageType = PageType.Usual;
-                    if (GetUrl(up).Equals("/", StringComparison.InvariantCulture))
+                    if (up.RequestPath.Equals("/", StringComparison.InvariantCulture))
                         model.IsMainPage = true;
                     model.PreviousPageID = up.PreviousPageID;
                     break;

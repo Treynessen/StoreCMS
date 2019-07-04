@@ -12,9 +12,9 @@ namespace Treynessen.Database.Entities
         [Required]
         public string PageName { get; set; }
         [Required]
-        public string Alias { get; set; } // Url псевдоним страницы: RequestPath/Alias
+        public string Alias { get; set; } // Url псевдоним страницы
         [Required]
-        public string RequestPathWithoutAlias { get; set; } // Путь запроса без псевдонима: localhost/...previousPages...
+        public string RequestPath { get; set; } // Путь запроса: /.../Alias
         public string BreadcrumbsHtml { get; set; } // Навигационное меню в виде html кода без названия текущей страницы
         public int? TemplateId { get; set; }
         public Template Template { get; set; } // Шаблон страницы

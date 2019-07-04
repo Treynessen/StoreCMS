@@ -13,8 +13,8 @@ namespace Treynessen.Controllers
         {
             HttpContext.Items["pageID"] = AdminPanelPages.Pages;
 
-            var usualPages = db.UsualPages.AsNoTracking().Select(page => new PageViewModel { ID = page.ID, Name = page.PageName, Url = PagesManagementFunctions.GetUrl(page.RequestPathWithoutAlias, page.Alias), PageType = PageType.Usual });
-            var categoryPages = db.CategoryPages.AsNoTracking().Select(page => new PageViewModel { ID = page.ID, Name = page.PageName, Url = PagesManagementFunctions.GetUrl(page.RequestPathWithoutAlias, page.Alias), PageType = PageType.Category });
+            var usualPages = db.UsualPages.AsNoTracking().Select(page => new PageViewModel { ID = page.ID, Name = page.PageName, Url = page.RequestPath, PageType = PageType.Usual });
+            var categoryPages = db.CategoryPages.AsNoTracking().Select(page => new PageViewModel { ID = page.ID, Name = page.PageName, Url = page.RequestPath, PageType = PageType.Category });
             var sortedPages = usualPages.Concat(categoryPages).OrderBy(page => page.PageType).ThenBy(page => page.ID).ToArray();
             return View("Pages/Index", sortedPages);
         }
