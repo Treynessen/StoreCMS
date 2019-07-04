@@ -44,7 +44,9 @@ namespace Treynessen.PagesManagement
                         if (usualPage.PreviousPage == null)
                             usualPage.PreviousPageID = null;
                     }
-                    usualPage.RequestPath = usualPage.PreviousPage == null ? "/" : $"{usualPage.PreviousPage.RequestPath}/";
+                    if (usualPage.PreviousPage == null || usualPage.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                        usualPage.RequestPath = "/";
+                    else usualPage.RequestPath = $"{usualPage.PreviousPage.RequestPath}/";
                     break;
 
                 case PageType.Category:
@@ -59,7 +61,9 @@ namespace Treynessen.PagesManagement
                         if (categoryPage.PreviousPage == null)
                             categoryPage.PreviousPageID = null;
                     }
-                    categoryPage.RequestPath = categoryPage.PreviousPage == null ? "/" : $"{categoryPage.PreviousPage.RequestPath}/";
+                    if (categoryPage.PreviousPage == null || categoryPage.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                        categoryPage.RequestPath = "/";
+                    else categoryPage.RequestPath = $"{categoryPage.PreviousPage.RequestPath}/";
                     break;
 
                 case PageType.Product:
