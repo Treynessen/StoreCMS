@@ -40,3 +40,10 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Vi
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\_ViewImports.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\FileManager\Index.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\FileManager\EditCssFile.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\footer.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\content.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\header.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\menu.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\notice.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\products_page_content.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Templates\main_page_template.g.cshtml.cs

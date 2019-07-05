@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
+using Treynessen.ImagesManagement;
 
 namespace Treynessen.FileManagerManagement
 {
@@ -71,7 +72,13 @@ namespace Treynessen.FileManagerManagement
             {
                 string pathToFile = $"{path}{fileOrFolderFullName}";
                 if (File.Exists(pathToFile))
-                    File.Delete(pathToFile);
+                {
+                    if (type == FileManagerObjectType.Image)
+                    {
+                        ImagesManagementFunctions.DeleteImage(path, fileOrFolderFullName, context);
+                    }
+                    else File.Delete(pathToFile);
+                }
             }
             else
             {

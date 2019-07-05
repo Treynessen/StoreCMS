@@ -6,6 +6,7 @@ using Treynessen.Translit;
 using Treynessen.Security;
 using Treynessen.Localization;
 using Treynessen.Database.Context;
+using Treynessen.RequestManagement;
 using Treynessen.SettingsManagement;
 
 public class Startup
@@ -49,7 +50,12 @@ public class Startup
         app.UseStaticFiles();
         app.UseMvc(routeBuilder =>
         {
-            // Страницы
+            routeBuilder.MapRoute(
+                name: "some_page",
+                template: "{*requestString}",
+                defaults: new { controller = "Page", action = "RequestHandler" },
+                constraints: new { requestString = new RequestConstraint() }
+            );
             routeBuilder.MapRoute(
                 name: "admin_panel",
                 template: "~/admin",

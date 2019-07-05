@@ -36,22 +36,22 @@ namespace Treynessen.TemplatesManagement
                     cshtmlContentBuilder.Insert(0, addition);
             }
 
-            cshtmlContentBuilder.Replace("[Page:Title]", "@(Model != null ? Html.Raw(Model.Title)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:Name]", "@(Model != null ? Html.Raw(Model.PageName)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:Url]", "@(Model != null ? Html.Raw(Model.RequestPath)) : string.Empty");
-            cshtmlContentBuilder.Replace("[Page:Breadcrumbs]", "@(Model != null ? Html.Raw(Model.BreadcrumbsHtml)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:Content]", "@(Model != null ? Html.Raw(Model.Content)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:PageDescription]", "@(Model != null ? Html.Raw(Model.PageDescription)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:PageKeywords]", "@(Model != null ? Html.Raw(Model.PageKeywords)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:IsIndex]", "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : string.Empty)");
-            cshtmlContentBuilder.Replace("[Page:IsFollow]", "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : string.Empty)");
+            cshtmlContentBuilder.Replace("[Page:Title]", "@(Model != null ? Html.Raw(Model.Title) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:Name]", "@(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:Url]", "@(Model != null ? Html.Raw(Model.RequestPath) : Html.Raw(string.Empty)");
+            cshtmlContentBuilder.Replace("[Page:Breadcrumbs]", "@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:Content]", "@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:PageDescription]", "@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:PageKeywords]", "@(Model != null ? Html.Raw(Model.PageKeywords) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:IsIndex]", "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Page:IsFollow]", "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))");
 
             cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_template.cshtml\", p); } }\n");
 
-            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? (Html.Raw(Model.PageName)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? (Html.Raw(Model.ShortDescription)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? (Html.Raw(Model.Price)) : string.Empty)");
-            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? (Html.Raw(Model.OldPrice)) : string.Empty)");
+            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? (Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? (Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? (Html.Raw(Model.Price) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? (Html.Raw(Model.OldPrice) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Product:MainImage]", $"@(Model is ProductPage ? {env.GetProductsImagesFolderSrc()} + Model.PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)");
 
             cshtmlContentBuilder.Replace("[YEAR]", "@(DateTime.Now.Year)");

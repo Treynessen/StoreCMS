@@ -1,0 +1,57 @@
+a.product{
+	display: flex;
+	margin-top: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	height: 115px;
+}
+
+a.product:hover{
+	color: #000;
+	border-color: #f7951f;
+	box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+a.product > img{
+	width: 150px;
+}
+
+a.product > div.productInfo{
+	display: flex;
+	flex-direction: column;
+	width: 650px;
+	margin: 0 10px;
+}
+
+a.product > div.productInfo > span.productName{
+	display: block;
+	box-sizing: border-box;
+	font-size: 20px;
+	max-height: 55px;
+	padding: 5px 0;
+	overflow: hidden;
+}
+
+a.product > div.productInfo > div.shortDescription{
+	display: flex;
+	flex-grow: 1;
+	align-items: center;
+	margin: 5px 0;
+	font-size: 16px;
+	overflow: hidden;
+}
+
+a.product > span.productPrice{
+	display: block;
+	flex-grow: 1;
+	padding: 5px 10px;
+	text-align: right;
+	font-size: 30px;
+	overflow: hidden;
+}
+
+a.product > span.productPrice:after{
+	content: "₽";
+	font-size: 18px;
+	color: #7a7a7a;
+}

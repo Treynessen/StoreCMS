@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.PagesManagement;
@@ -48,7 +50,7 @@ namespace Treynessen.Database
                     return;
             }
             // Для блокировки выбора страницы-родителя в представлении
-            context.Items["isMainPage"] = model.PageModel.IsMainPage;
+            context.Items["isMainPage"] = isMainPage;
             model.PageModel.PageType = model.PageModel.PageType.Value;
             Page page = PagesManagementFunctions.PageModelToPage(db, model.PageModel, context);
             if (page != null)
@@ -58,6 +60,7 @@ namespace Treynessen.Database
                     if (isMainPage)
                     {
                         up.Alias = "index";
+                        up.RequestPath = "/";
                         up.PreviousPage = null;
                     }
                     // Если родителем страницы является сама страница, то возвращаем сообщение об ошибке
@@ -75,7 +78,23 @@ namespace Treynessen.Database
             }
             db.Update(page);
 
-            RefreshPageAndDependencies(db, page);
+            // Обновляем все зависимые страницы
+            if (page is UsualPage)
+            {
+                List<UsualPage> usualPages = db.UsualPages.Where(p => p.PreviousPageID == page.ID).ToListAsync().Result;
+                List<CategoryPage> categoryPages = db.CategoryPages.Where(p => p.PreviousPageID == page.ID).ToListAsync().Result;
+                foreach (var u_page in usualPages)
+                    RefreshPageAndDependencies(db, u_page);
+                foreach (var c_page in categoryPages)
+                    RefreshPageAndDependencies(db, c_page);
+            }
+            if (page is CategoryPage)
+            {
+                List<ProductPage> productPages = db.ProductPages.Where(p => p.PreviousPageID == page.ID).ToListAsync().Result;
+                foreach (var p_page in productPages)
+                    RefreshPageAndDependencies(db, p_page);
+            }
+
             db.SaveChanges();
             successfullyCompleted = true;
         }

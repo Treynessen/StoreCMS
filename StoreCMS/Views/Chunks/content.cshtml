@@ -1,0 +1,4 @@
+@model Page
+<div class="contentBlock">
+@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
+</div>

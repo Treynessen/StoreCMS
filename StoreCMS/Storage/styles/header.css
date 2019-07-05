@@ -1,0 +1,71 @@
+div.headerFullWidth{
+	width: 100%;
+	background: linear-gradient(to bottom, #4b4b4b, #1d1d1d);
+}
+
+div.headerFullWidth > div.headerContainer{
+	display: flex;
+	justify-content: center;
+	width: 1000px;
+	margin: 0 auto;
+	padding: 10px 0;
+	font-size: 20px;
+}
+
+div.headerContainer > a.logoBlock{
+	display: block;
+	background-image: url(/images/logo.png);
+	width: 410px;
+	height: 92px;
+	align-self: center;
+	margin-right: 5px;
+}
+
+div.headerContainer > div.headerContainer_leftBlock{
+	flex-grow: 1;
+}
+
+div.headerContainer_leftBlock > span{
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+	margin-bottom: 3px;
+}
+
+div.headerContainer_leftBlock > span:first-child{
+	font-weight: normal;
+	color: #deff00;
+}
+
+div.headerContainer_leftBlock > span:last-child{
+	margin-bottom: 0;
+}
+
+div.headerContainer > div.headerContainer_rightBlock{
+	margin-left: 5px;
+}
+
+div.headerContainer_rightBlock > span{
+	display: block;
+	font-weight: normal;
+	color: #deff00;
+	margin-bottom: 3px;
+}
+
+div.headerContainer_rightBlock > a{
+	display: block;
+	text-decoration: none;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+	margin-bottom: 3px;
+}
+
+div.headerContainer_rightBlock > a:last-child{
+	margin-bottom: 0;
+}
+
+div.headerContainer_rightBlock > a:hover{
+	color: #ffd200;
+}

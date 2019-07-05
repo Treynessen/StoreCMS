@@ -29,27 +29,13 @@ namespace Treynessen.PagesManagement
                 .Where(pp => pp.GetType() == page.GetType() ? pp.ID != page.ID : true)
                 .Select(pp => pp.RequestPath).ToListAsync();
 
-            Func<string, List<string>, CancellationToken?, Task<bool>> hasSimilarUrlInCollection =
-                async (url, collection, token) =>
-                {
-                    if (collection == null || collection.Count == 0)
-                        return false;
-                    return await Task.Run(() =>
-                    {
-                        foreach (var c in collection)
-                            if (!token.HasValue || !token.Value.IsCancellationRequested)
-                                if (c.Equals(url, StringComparison.InvariantCultureIgnoreCase))
-                                    return true;
-                        return false;
-                    });
-                };
-
             int index = 0;
             bool has = false;
             string currentPath = page.RequestPath;
 
             do
             {
+                CancellationTokenSource usualPageTokenSource = new CancellationTokenSource();
                 CancellationTokenSource categoryPageTokenSource = new CancellationTokenSource();
                 CancellationTokenSource productPageTokenSource = new CancellationTokenSource();
 
@@ -62,21 +48,12 @@ namespace Treynessen.PagesManagement
                     index = 1;
                 }
 
-                var hasInUsualPagesTask = hasSimilarUrlInCollection(checkPath, usualPageUrlsTask.Result, null);
-                var hasInCategoryPagesTask = hasSimilarUrlInCollection(checkPath, categoryPageUrlsTask.Result, categoryPageTokenSource.Token);
-                var hasInProductPagesTask = hasSimilarUrlInCollection(checkPath, productPageUrlsTask.Result, productPageTokenSource.Token);
-                if (hasInUsualPagesTask.Result)
-                {
+                var hasInUsualPagesTask = ContainedInCollection(usualPageUrlsTask.Result, checkPath, usualPageTokenSource, categoryPageTokenSource, productPageTokenSource);
+                var hasInCategoryPagesTask = ContainedInCollection(categoryPageUrlsTask.Result, checkPath, categoryPageTokenSource, usualPageTokenSource, productPageTokenSource);
+                var hasInProductPagesTask = ContainedInCollection(productPageUrlsTask.Result, checkPath, productPageTokenSource, usualPageTokenSource, categoryPageTokenSource);
+
+                if (hasInUsualPagesTask.Result || hasInCategoryPagesTask.Result || hasInProductPagesTask.Result)
                     has = true;
-                    categoryPageTokenSource.Cancel();
-                    productPageTokenSource.Cancel();
-                }
-                else if (hasInCategoryPagesTask.Result)
-                {
-                    has = true;
-                    productPageTokenSource.Cancel();
-                }
-                else if (hasInProductPagesTask.Result) has = true;
 
                 if (has && index == 0)
                 {
@@ -91,6 +68,7 @@ namespace Treynessen.PagesManagement
                     page.RequestPath = currentPath + index.ToString();
                 }
                 ++index;
+                usualPageTokenSource.Dispose();
                 categoryPageTokenSource.Dispose();
                 productPageTokenSource.Dispose();
             } while (has);
