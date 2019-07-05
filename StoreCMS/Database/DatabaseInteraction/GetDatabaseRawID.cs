@@ -8,7 +8,7 @@ namespace Treynessen.Database
         public static int GetDatabaseRawID<T>(DbSet<T> table) where T : class, Interfaces.IKeyID
         {
             int ID = 1;
-            foreach (var id in table.AsNoTracking().Select(t => t.ID).ToArray())
+            foreach (var id in table.AsNoTracking().Select(t => t.ID).OrderBy(t => t).ToArray())
             {
                 if (id != ID)
                     break;

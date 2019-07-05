@@ -21,6 +21,9 @@ namespace Treynessen.Database
                     db.Entry(up).Reference(p => p.PreviousPage).Load();
                     if (up.PreviousPage == null && up.Alias.Equals("index", StringComparison.InvariantCulture))
                         up.Alias = "ind";
+                    if (up.PreviousPage == null || up.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                        up.RequestPath = $"/{up.Alias}";
+                    else up.RequestPath = $"{up.PreviousPage.RequestPath}/{up.Alias}";
                     up.RequestPath = up.PreviousPage == null ? $"/{up.Alias}" : $"{up.PreviousPage.RequestPath}/{up.Alias}";
                     up.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(up);
                     break;
@@ -28,7 +31,9 @@ namespace Treynessen.Database
                     db.Entry(cp).Reference(p => p.PreviousPage).Load();
                     if (cp.PreviousPage == null && cp.Alias.Equals("index", StringComparison.InvariantCulture))
                         cp.Alias = "ind";
-                    cp.RequestPath = cp.PreviousPage == null ? $"/{cp.Alias}" : $"{cp.PreviousPage.RequestPath}/{cp.Alias}";
+                    if (cp.PreviousPage == null || cp.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                        cp.RequestPath = $"/{cp.Alias}";
+                    else cp.RequestPath = $"{cp.PreviousPage.RequestPath}/{cp.Alias}";
                     cp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(cp);
                     break;
                 case ProductPage pp:
