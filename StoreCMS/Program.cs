@@ -52,7 +52,7 @@ public class Program
             createUser = true;
             foreach(var user in db.Users.ToArray())
             {
-                db.Entry(user).Reference(u => u.UserType).Load();
+                db.Entry(user).Reference(u => u.UserType).LoadAsync().Wait();
                 db.Entry(user).State = EntityState.Detached;
                 db.Entry(user.UserType).State = EntityState.Detached;
                 if(user.UserType.AccessLevel == AccessLevel.VeryHigh)

@@ -34,7 +34,7 @@ namespace Treynessen.Database
                 return;
             if (page is UsualPage up)
             {
-                db.Entry(up).Reference(p => p.PreviousPage).Load();
+                db.Entry(up).Reference(p => p.PreviousPage).LoadAsync().Wait();
                 // Получаем все зависимые страницы
                 List<UsualPage> usualPages = db.UsualPages.Where(p => p.PreviousPageID == up.ID).ToList();
                 List<CategoryPage> categoryPages = db.CategoryPages.Where(p => p.PreviousPageID == up.ID).ToList();
@@ -55,8 +55,8 @@ namespace Treynessen.Database
             else if (page is CategoryPage cp)
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                db.Entry(cp).Collection(p => p.ProductPages).Load();
-                foreach(var p in cp.ProductPages)
+                db.Entry(cp).Collection(p => p.ProductPages).LoadAsync().Wait();
+                foreach (var p in cp.ProductPages)
                 {
                     string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{p.PreviousPageID}{p.ID}\\";
                     if (Directory.Exists(pathToImages))

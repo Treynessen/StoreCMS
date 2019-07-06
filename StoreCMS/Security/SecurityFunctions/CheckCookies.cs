@@ -46,8 +46,8 @@ namespace Treynessen.Security
             db.Update(connectedUser);
             db.SaveChanges();
 
-            db.Entry(connectedUser).Reference(cu => cu.User).Load();
-            db.Entry(connectedUser.User).Reference(u => u.UserType).Load();
+            db.Entry(connectedUser).Reference(cu => cu.User).LoadAsync().Wait();
+            db.Entry(connectedUser.User).Reference(u => u.UserType).LoadAsync().Wait();
 
             db.Entry(connectedUser).State = EntityState.Detached;
             db.Entry(connectedUser.User).State = EntityState.Detached;

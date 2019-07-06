@@ -40,7 +40,7 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("[Page:Title]", "@(Model != null ? Html.Raw(Model.Title) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Page:Name]", "@(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Page:Url]", "@(Model != null ? Html.Raw(Model.RequestPath) : Html.Raw(string.Empty)");
+            cshtmlContentBuilder.Replace("[Page:Url]", "@(Model != null ? Html.Raw(Model.RequestPath) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Page:Breadcrumbs]", "@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Page:Content]", "@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Page:PageDescription]", "@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))");
@@ -50,11 +50,11 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_block.cshtml\", p); } }\n");
 
-            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? (Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? (Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? (Html.Raw(Model.Price) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? (Html.Raw(Model.OldPrice) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:MainImage]", $"@(Model is ProductPage ? {env.GetProductsImagesFolderSrc()} + Model.PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)");
+            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? Html.Raw(Model.Price) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? Html.Raw(Model.OldPrice) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:MainImage]", $"@(Model is ProductPage ? \"{env.GetProductsImagesFolderSrc()}\" + Model.PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)");
 
             cshtmlContentBuilder.Replace("[YEAR]", "@(DateTime.Now.Year)");
 

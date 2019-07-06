@@ -5,6 +5,6 @@
 <div class="contentBlock">
 @(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))
 @(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
- @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@"~/Configs/product_template.cshtml", p); } }
+ @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@"~/Settings/product_block.cshtml", p); } }
 
 </div>

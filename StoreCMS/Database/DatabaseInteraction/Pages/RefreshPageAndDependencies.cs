@@ -18,7 +18,7 @@ namespace Treynessen.Database
             switch (page)
             {
                 case UsualPage up:
-                    db.Entry(up).Reference(p => p.PreviousPage).Load();
+                    db.Entry(up).Reference(p => p.PreviousPage).LoadAsync().Wait();
                     if (up.PreviousPage == null && up.Alias.Equals("index", StringComparison.InvariantCulture))
                         up.Alias = "ind";
                     if (up.PreviousPage == null || up.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
@@ -28,7 +28,7 @@ namespace Treynessen.Database
                     up.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(up);
                     break;
                 case CategoryPage cp:
-                    db.Entry(cp).Reference(p => p.PreviousPage).Load();
+                    db.Entry(cp).Reference(p => p.PreviousPage).LoadAsync().Wait();
                     if (cp.PreviousPage == null && cp.Alias.Equals("index", StringComparison.InvariantCulture))
                         cp.Alias = "ind";
                     if (cp.PreviousPage == null || cp.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
@@ -37,7 +37,7 @@ namespace Treynessen.Database
                     cp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(cp);
                     break;
                 case ProductPage pp:
-                    db.Entry(pp).Reference(p => p.PreviousPage).Load();
+                    db.Entry(pp).Reference(p => p.PreviousPage).LoadAsync().Wait();
                     pp.RequestPath = $"{pp.PreviousPage.RequestPath}/{pp.Alias}";
                     pp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(pp);
                     break;
