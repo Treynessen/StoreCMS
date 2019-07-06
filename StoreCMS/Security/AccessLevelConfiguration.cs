@@ -1,30 +1,35 @@
 ﻿using System;
-using System.IO;
-using System.Text;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using Treynessen.AdminPanelTypes;
-using Treynessen.SettingsManagement;
 
 namespace Treynessen.Security
 {
     public class AccessLevelConfiguration
     {
-        private ConfigurationHandler configurationHandler;
+        private IConfigurationSection accessConfiguration;
 
-        public AccessLevelConfiguration(ConfigurationHandler configurationHandler)
+        public AccessLevelConfiguration(IConfigurationSection accessConfiguration)
         {
-            this.configurationHandler = configurationHandler;
+            this.accessConfiguration = accessConfiguration;
         }
 
         public AccessLevel GetAccessLevelInfoTo(string pageName)
         {
             AccessLevel accessLevel;
-            string value = configurationHandler.Configuration[$"AdminPanelAccessSettings:{pageName}"];
+            string value = accessConfiguration[pageName];
             // Если настройка не определена в конфигурации, то выставляем ей максимальный уровень доступа
             if (string.IsNullOrEmpty(value))
                 return AccessLevel.VeryHigh;
-            accessLevel = (AccessLevel)Convert.ToInt32(value);
+            try
+            {
+                accessLevel = (AccessLevel)Convert.ToInt32(value);
+            }
+            catch (FormatException)
+            {
+                accessLevel = AccessLevel.VeryHigh;
+            }
+            // Если настройке присвоено неверное значение, то выставляем максимальный уровень
+            if (!Enum.IsDefined(typeof(AccessLevel), accessLevel))
+                accessLevel = AccessLevel.VeryHigh;
             return accessLevel;
         }
     }

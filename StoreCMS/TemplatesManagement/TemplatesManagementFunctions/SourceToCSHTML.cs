@@ -7,13 +7,13 @@ namespace Treynessen.TemplatesManagement
 {
     public static partial class TemplatesManagementFunctions
     {
-        public static string SourceWithChunksToCSHTML(CMSDatabase db, string source, string modelType, 
+        public static string SourceWithChunksToCSHTML(CMSDatabase db, string source, string modelType,
             IHostingEnvironment env, bool itsChunk = false, string chunkName = null, params string[] additions)
         {
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
             StringBuilder cshtmlContentBuilder = new StringBuilder(SourceToCSHTML(source, modelType, env, additions));
-            foreach (var c in GetChunks(db, source, itsChunk ? chunkName: null))
+            foreach (var c in GetChunks(db, source, itsChunk ? chunkName : null))
                 cshtmlContentBuilder.Replace($"[#{c.Name}]", $"@(await Html.PartialAsync(\"{c.TemplatePath}\", Model))");
             return cshtmlContentBuilder.ToString();
         }
@@ -30,10 +30,12 @@ namespace Treynessen.TemplatesManagement
                 cshtmlContentBuilder.Insert(0, "@{\n\tList<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>;\n}\n");
 
             cshtmlContentBuilder.Insert(0, $"@model {modelType}\n");
-            if (additions != null)
+            if (additions != null && additions.Length > 0)
             {
-                foreach (var addition in additions)
-                    cshtmlContentBuilder.Insert(0, addition);
+                for (int i = additions.Length - 1; i >= 0; --i)
+                {
+                    cshtmlContentBuilder.Insert(0, $"{additions[i]}\n");
+                }   
             }
 
             cshtmlContentBuilder.Replace("[Page:Title]", "@(Model != null ? Html.Raw(Model.Title) : Html.Raw(string.Empty))");
@@ -46,7 +48,7 @@ namespace Treynessen.TemplatesManagement
             cshtmlContentBuilder.Replace("[Page:IsIndex]", "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Page:IsFollow]", "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))");
 
-            cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_template.cshtml\", p); } }\n");
+            cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_block.cshtml\", p); } }\n");
 
             cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? (Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? (Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");

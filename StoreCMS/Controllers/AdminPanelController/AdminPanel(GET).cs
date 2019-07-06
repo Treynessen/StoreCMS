@@ -64,6 +64,8 @@ namespace Treynessen.Controllers
                     return FileManager(model.Path);
                 case AdminPanelPages.EditStyle:
                     return EditCssFile(model.Path);
+                case AdminPanelPages.Settings:
+                    return Settings();
                 default:
                     return MainPage();
             }

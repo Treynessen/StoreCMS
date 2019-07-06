@@ -20,13 +20,13 @@ public class Startup
         services.AddDbContext<CMSDatabase>(options =>
         {
             ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
-            options.UseSqlServer(configHandler.Configuration["DBSettings:ConnectionString"]);
+            options.UseSqlServer(configHandler.DbConfiguration["ConnectionString"]);
         });
         
         services.AddTransient(provider =>
         {
             ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
-            return new AccessLevelConfiguration(configHandler);
+            return new AccessLevelConfiguration(configHandler.AccessConfiguration);
         });
 
         services.AddSingleton<EnRuTranslit>();
@@ -37,6 +37,7 @@ public class Startup
         services.AddTransient<IProductsLocalization>(provider => new RuProductsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
         services.AddTransient<IFileManagerLocalization>(provider => new RuFileManagerLocalization());
+        services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
 
         services.AddMvc();
     }

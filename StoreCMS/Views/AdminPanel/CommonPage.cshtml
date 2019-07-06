@@ -28,6 +28,10 @@
     {
         pages.Add(AdminPanelPages.FileManager, localization.FileManager);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Settings, user, Context))
+    {
+        pages.Add(AdminPanelPages.Settings, localization.Settings);
+    }
 }
 <!doctype html>
 <html>

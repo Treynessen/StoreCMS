@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetConfigsFolderShortPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(configsFolderShortPath))
-                configsFolderShortPath = "~/Configs/";
+                configsFolderShortPath = "~/Settings/";
             return configsFolderShortPath;
         }
     }

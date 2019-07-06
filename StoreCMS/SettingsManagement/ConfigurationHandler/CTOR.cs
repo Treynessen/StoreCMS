@@ -5,15 +5,18 @@ namespace Treynessen.SettingsManagement
 {
     public partial class ConfigurationHandler
     {
-        public string Path { get; private set; }
-        public IConfiguration Configuration { get; private set; }
+        private string path;
+        private IConfiguration configuration;
+
+        public IConfigurationSection DbConfiguration => configuration.GetSection("DBSettings");
+        public IConfigurationSection AccessConfiguration => configuration.GetSection("AdminPanelAccessSettings");
 
         public ConfigurationHandler(string path, IHostingEnvironment env)
         {
-            Configuration = new ConfigurationBuilder()
+            configuration = new ConfigurationBuilder()
             .SetBasePath(env.ContentRootPath)
             .AddJsonFile(path).Build();
-            Path = path;
+            this.path = path;
         }
     }
 }

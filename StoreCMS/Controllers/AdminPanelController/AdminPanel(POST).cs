@@ -132,6 +132,9 @@ namespace Treynessen.Controllers
                         return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}");
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={redirectPath}");
 
+                case AdminPanelPages.EditSettings:
+                    return EditSettings(model.SettingsModel, HttpContext);
+
                 default:
                     return RedirectToAction(nameof(AdminPanel));
             }
