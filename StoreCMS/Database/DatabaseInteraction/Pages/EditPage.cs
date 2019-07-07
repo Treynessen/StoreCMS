@@ -61,6 +61,7 @@ namespace Treynessen.Database
                     {
                         up.Alias = "index";
                         up.RequestPath = "/";
+                        up.RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(up.RequestPath);
                         up.PreviousPage = null;
                     }
                     // Если родителем страницы является сама страница, то возвращаем сообщение об ошибке

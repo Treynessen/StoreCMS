@@ -22,5 +22,12 @@ namespace Treynessen.Database.Context
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UsualPage>().HasIndex(up => up.RequestPathHash);
+            modelBuilder.Entity<CategoryPage>().HasIndex(cp => cp.RequestPathHash);
+            modelBuilder.Entity<ProductPage>().HasIndex(pp => pp.RequestPathHash);
+        }
     }
 }

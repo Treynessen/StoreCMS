@@ -7,6 +7,7 @@ namespace Treynessen.Database.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
+        public int RequestPathHash { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

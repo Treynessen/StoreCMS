@@ -115,6 +115,8 @@ namespace Treynessen.PagesManagement
                 SetUniqueAliasName(db, page);
             }
 
+            page.RequestPathHash = GetHashFromRequestPath(page.RequestPath);
+
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             for (LinkedListNode<string> it = env.GetForbiddenUrls().First; it != null; it = it.Next)
             {

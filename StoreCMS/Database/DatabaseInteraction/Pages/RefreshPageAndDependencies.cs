@@ -43,6 +43,7 @@ namespace Treynessen.Database
                     break;
             }
             PagesManagementFunctions.SetUniqueAliasName(db, page);
+            page.RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(page.RequestPath);
             db.Update(page);
             switch (page)
             {
