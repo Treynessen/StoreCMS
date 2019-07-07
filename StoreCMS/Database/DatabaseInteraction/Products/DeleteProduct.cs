@@ -24,6 +24,8 @@ namespace Treynessen.Database
             string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{deletedProduct.PreviousPageID}{deletedProduct.ID}\\";
             if (Directory.Exists(pathToImages))
                 Directory.Delete(pathToImages, true);
+            CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == deletedProduct.PreviousPageID).Result;
+            --categoryPage.ProductsCount;
             db.ProductPages.Remove(deletedProduct);
             db.SaveChanges();
         }
