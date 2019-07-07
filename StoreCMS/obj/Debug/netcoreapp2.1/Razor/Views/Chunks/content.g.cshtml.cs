@@ -14,22 +14,27 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #line 1 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
-using Treynessen.PagesManagement;
+using Treynessen.Controllers;
 
 #line default
 #line hidden
 #line 2 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
-using Treynessen.Database.Context;
+using Treynessen.PagesManagement;
 
 #line default
 #line hidden
 #line 3 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
+using Treynessen.Database.Context;
+
+#line default
+#line hidden
+#line 4 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
 using Treynessen.Database.Entities;
 
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0b75c2fc4ba3542b8ed7598e81d202e28a5ba1d0", @"/Views/Chunks/content.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0f171c8736a056a2cb5053592ce15da782087f9b", @"/Views/Chunks/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"e8ae996ab09bebaacf8d3b89942904d62e47ad99", @"/Views/Chunks/_ViewImports.cshtml")]
     public class Views_Chunks_content : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Page>
     {
         #pragma warning disable 1998

@@ -111,7 +111,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<!doctype html>\r\n<html>\r\n");
             EndContext();
             BeginContext(1458, 479, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7902156a9dd24b53b7a059691571427f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "abb9cdfebcd4431f9c7dceeb4645923f", async() => {
                 BeginContext(1464, 13, true);
                 WriteLiteral("\r\n    <title>");
                 EndContext();
@@ -168,7 +168,7 @@ WriteAttributeValue("", 1823, Html.Raw(Context.Items["PageStyle"]), 1823, 37, fa
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(1939, 559, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7df65ac3615e4fc68f57f06b0b0aba97", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3623bf24e148491194635baef2f56501", async() => {
                 BeginContext(1945, 69, true);
                 WriteLiteral("\r\n    <div class=\"commonContainer\">\r\n        <ul class=\"menuBlock\">\r\n");
                 EndContext();

@@ -14,7 +14,7 @@ namespace Treynessen.Controllers
         }
 
         [HttpGet]
-        public IActionResult RequestHandler()
+        public IActionResult RequestHandler(PageControllerModel model)
         {
             Page page = HttpContext.Items["RequestedPage"] as Page;
             switch (page)
@@ -22,7 +22,7 @@ namespace Treynessen.Controllers
                 case UsualPage up:
                     return UsualPage(up);
                 case CategoryPage cp:
-                    return CategoryPage(cp);
+                    return CategoryPage(cp, model);
                 case ProductPage pp:
                     return ProductPage(pp);
                 default:

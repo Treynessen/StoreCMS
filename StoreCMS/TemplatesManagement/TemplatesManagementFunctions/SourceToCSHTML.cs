@@ -48,8 +48,9 @@ namespace Treynessen.TemplatesManagement
             cshtmlContentBuilder.Replace("[Page:IsIndex]", "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Page:IsFollow]", "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))");
 
-            cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_block.cshtml\", p); } }\n");
-
+            cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_block.cshtml\", p); } }");
+            cshtmlContentBuilder.Replace("[Category:PageButtons]", " @if (products != null) { <page-buttons class=\"@Context.Items[\"PaginationStyleName\"]\" current-path=\"@Context.Request.Path\" order-by=\"@(Context.Items[\"OrderBy\"] == null ? null : (OrderBy?)Context.Items[\"OrderBy\"])\" current-page=\"@(Context.Items[\"CurrentPage\"] == null ? null : (int?)Context.Items[\"CurrentPage\"])\" pages-count=\"@(Context.Items[\"PagesCount\"] == null ? null : (int?)Context.Items[\"PagesCount\"])\"></page-buttons> }");
+            
             cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? Html.Raw(Model.Price) : Html.Raw(string.Empty))");

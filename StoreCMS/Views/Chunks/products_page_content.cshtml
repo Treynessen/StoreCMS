@@ -7,4 +7,5 @@
 @(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
  @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@"~/Settings/product_block.cshtml", p); } }
 
+ @if (products != null) { <page-buttons class="@Context.Items["PaginationStyleName"]" current-path="@Context.Request.Path" order-by="@(Context.Items["OrderBy"] == null ? null : (OrderBy?)Context.Items["OrderBy"])" current-page="@(Context.Items["CurrentPage"] == null ? null : (int?)Context.Items["CurrentPage"])" pages-count="@(Context.Items["PagesCount"] == null ? null : (int?)Context.Items["PagesCount"])"></page-buttons> }
 </div>

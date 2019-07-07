@@ -14,22 +14,27 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #line 1 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Templates\_ViewImports.cshtml"
-using Treynessen.PagesManagement;
+using Treynessen.Controllers;
 
 #line default
 #line hidden
 #line 2 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Templates\_ViewImports.cshtml"
-using Treynessen.Database.Context;
+using Treynessen.PagesManagement;
 
 #line default
 #line hidden
 #line 3 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Templates\_ViewImports.cshtml"
+using Treynessen.Database.Context;
+
+#line default
+#line hidden
+#line 4 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Templates\_ViewImports.cshtml"
 using Treynessen.Database.Entities;
 
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7faf4eede885e5cd81170bdf24d629866884deae", @"/Views/Templates/category_page_template.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0f171c8736a056a2cb5053592ce15da782087f9b", @"/Views/Templates/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"e8ae996ab09bebaacf8d3b89942904d62e47ad99", @"/Views/Templates/_ViewImports.cshtml")]
     public class Views_Templates_category_page_template : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Page>
     {
         #line hidden
@@ -59,7 +64,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<!DOCTYPE html>\r\n<html lang=\"ru\">\r\n");
             EndContext();
             BeginContext(47, 784, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "0e048c842dfe44feaa870ba9d5b55ae3", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "af0b76cbf7224326af7a530ea1a959c6", async() => {
                 BeginContext(53, 9, true);
                 WriteLiteral("\r\n<title>");
                 EndContext();
@@ -118,7 +123,7 @@ WriteAttributeValue("", 696, Model != null ? Html.Raw(Model.PageKeywords) : Html
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(833, 492, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c7e70194fb7d43b9bf217edf2e084292", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "dc266babbff44b4cbb0a2121d7566f3a", async() => {
                 BeginContext(839, 2, true);
                 WriteLiteral("\r\n");
                 EndContext();
