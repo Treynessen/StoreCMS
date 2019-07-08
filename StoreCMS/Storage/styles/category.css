@@ -21,6 +21,10 @@ div.contentBlock{
 	margin-top: 0px;
 }
 
+div.navigationMenu{
+	margin-bottom: 10px;
+}
+
 a.product{
 	display: flex;
 	margin-top: 5px;
@@ -74,7 +78,7 @@ a.product > span.productPrice{
 }
 
 a.product > span.productPrice:after{
-	content: "₽";
+	content: " ₽";
 	font-size: 18px;
 	color: #7a7a7a;
 }

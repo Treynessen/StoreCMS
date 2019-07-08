@@ -48,7 +48,7 @@ namespace Treynessen.ImagesManagement
                     else sourceImage.Save(CreatedImageFullPath);
                 }
             }
-            CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '/');
+            CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length - 1).Replace('\\', '/');
             if (writeSourceImageInfo)
             {
                 ImagesManagementFunctions.AddImageInfoInInfoFile(pathToImageFolder, sourceImageFullName, sourceImageWidth.Value, sourceImageHeight.Value);

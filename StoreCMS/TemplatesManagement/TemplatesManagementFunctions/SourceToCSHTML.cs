@@ -53,8 +53,8 @@ namespace Treynessen.TemplatesManagement
             
             cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? Html.Raw(Model.Price) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? Html.Raw(Model.OldPrice) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice(Model.Price)) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice(Model.OldPrice)) : Html.Raw(string.Empty))");
             cshtmlContentBuilder.Replace("[Product:MainImage]", $"@(Model is ProductPage ? \"{env.GetProductsImagesFolderSrc()}\" + Model.PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)");
 
             cshtmlContentBuilder.Replace("[YEAR]", "@(DateTime.Now.Year)");

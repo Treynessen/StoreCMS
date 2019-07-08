@@ -4,7 +4,7 @@
 }
 <div class="sortPanel"><span>Сортировать цену по: <b class="sortMenu"><cost-sort ascending-price-text="по возрастанию" descending-price-text="по убыванию"></cost-sort></b></span></div>
 <div class="contentBlock">
-@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))
+<div class="navigationMenu">@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</div>
 @(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
  @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@"~/Settings/product_block.cshtml", p); } }
 

@@ -8,5 +8,5 @@
 		<span class="productName">@(Model is ProductPage ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</span>
 		<div class="shortDescription"><span>@(Model is ProductPage ? Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))</span></div>
 	</div>
-	<span class="productPrice">@(Model is ProductPage ? Html.Raw(Model.Price) : Html.Raw(string.Empty))</span>
+	<span class="productPrice">@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice(Model.Price)) : Html.Raw(string.Empty))</span>
 </a>
