@@ -1,3 +1,26 @@
+div.sortPanel{
+	display: flex;
+	width: 998px;
+	margin: 5px auto 0;
+	background: linear-gradient(to bottom, #f9eb73, #f8c65b);
+	box-shadow: 0px 0px 3px 0 #6d6d6d;
+	border-radius: 3px 3px 0 0;
+}
+
+div.sortPanel > span{
+	display: block;
+	padding: 5px 10px;
+}
+
+b.sortMenu > a:hover{
+	color: #000;
+}
+
+div.contentBlock{
+	border-radius: 0 0 3px 3px;
+	margin-top: 0px;
+}
+
 a.product{
 	display: flex;
 	margin-top: 5px;
@@ -54,4 +77,37 @@ a.product > span.productPrice:after{
 	content: "₽";
 	font-size: 18px;
 	color: #7a7a7a;
+}
+
+ul.pagination{
+	display: flex;
+	justify-content: center;
+	list-style-type: none;
+	padding: 0;
+	margin: 10px 0 0 0;
+	font-size: 17px;
+}
+
+ul.pagination > li:not(:first-child){
+	margin-left: 1px;
+}
+
+ul.pagination > li > span{
+	display: block;
+	border: 1px solid #f7951f;
+	background-color: #ececec;
+	padding: 7px 9px 7px 9px;
+}
+
+ul.pagination > li > a{
+	display: block;
+	border: 1px solid #ccc;
+	background-color: #f3f3f3;
+	padding: 7px 9px 7px 9px;
+}
+
+ul.pagination > li > a:hover{
+	border-color: #f7951f;
+	background-color: #ececec;
+	color: #000;
 }

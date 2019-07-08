@@ -33,8 +33,7 @@ namespace Treynessen.Controllers
                     string[] addictions = {
                         "@using Treynessen.Functions;",
                         "@using Treynessen.Database.Entities;",
-                        "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS",
-                        "@addTagHelper Treynessen.TagHelpers.PageButtonsTagHelper, StoreCMS"
+                        "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
                     };
                     string cshtmlTemplate = TemplatesManagementFunctions.SourceToCSHTML(
                         source: model.ProductBlockTemplate,
