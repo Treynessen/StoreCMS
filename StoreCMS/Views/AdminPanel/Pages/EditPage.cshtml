@@ -4,6 +4,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/workWithPage.css";
+    Context.Items["PageName"] = localization.EditPage_PageName;
     var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})", p.PreviousPageID, p.Alias });
     var templates = db.Templates.ToList();
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];

@@ -2,6 +2,12 @@
 {
     public interface IProductsLocalization
     {
+        string CategoriesPageName { get; }
+        string CategoryProductsPageName { get; }
+        string AddProductPageName { get; }
+        string EditProductPageName { get; }
+        string ProductImagesPageName { get; }
+
         string Name { get; }
         string AddProductInCategory { get; }
         string ActionsWithProduct { get; }
@@ -19,6 +25,8 @@
         string Price { get; }
         string OldPrice { get; }
         string ShortDescription { get; }
+        string SpecialProduct { get; }
+        string AddParagraphTag { get; }
         string PageDescription { get; }
         string PageKeywords { get; }
         string Template { get; }

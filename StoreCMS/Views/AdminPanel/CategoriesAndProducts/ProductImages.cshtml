@@ -3,6 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/products/productImages.css";
+    Context.Items["PageName"] = localization.ProductImagesPageName;
     User user = Context.Items["User"] as User;
 }
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProductImage, user, Context))

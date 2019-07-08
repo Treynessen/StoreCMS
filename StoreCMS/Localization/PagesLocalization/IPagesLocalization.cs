@@ -2,6 +2,10 @@
 {
     public interface IPagesLocalization
     {
+        string Pages_PageName { get; }
+        string AddPage_PageName { get; }
+        string EditPage_PageName { get; }
+
         string AddPage { get; }
         string Name { get; }
         string ActionsWithPage { get; }

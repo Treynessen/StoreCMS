@@ -3,6 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/pages/index.css";
+    Context.Items["PageName"] = localization.Pages_PageName;
     User user = Context.Items["User"] as User;
 }
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddPage, user, Context))

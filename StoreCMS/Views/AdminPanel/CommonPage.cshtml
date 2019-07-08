@@ -2,6 +2,7 @@
 @{
     User user = Context.Items["User"] as User;
     AdminPanelPages pageID = (AdminPanelPages)Context.Items["pageID"];
+    string pageName = Context.Items["PageName"] as string;
 
     Dictionary<AdminPanelPages, string> pages = new Dictionary<AdminPanelPages, string>();
     if (SecurityFunctions.HasAccessTo(AdminPanelPages.MainPage, user, Context))
@@ -36,7 +37,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>@Html.Raw(localization.Title)</title>
+    <title>@Html.Raw(pageName == null ? string.Empty : $"{pageName} - ")@Html.Raw(localization.Title)</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
     <link rel="stylesheet" type="text/css" href="/styles/admin_panel/admin_panel.css" />

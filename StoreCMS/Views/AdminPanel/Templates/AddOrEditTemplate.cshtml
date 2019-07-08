@@ -3,6 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/workWithTemplate.css";
+    Context.Items["PageName"] = localization.WorkWithTemplatePageName;
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }
 <form method="post" class="pageContainer">

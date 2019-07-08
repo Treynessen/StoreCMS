@@ -2,6 +2,8 @@
 {
     public class RuSettingsLocalization : ISettingsLocalization
     {
+        public string PageName => "Настройки";
+
         public string AccessLevelSettings => "Настройка уровней доступа";
         public string AccessLevelToAdminPanel => "Уровень доступа к панели администратора";
         public string AccessLevelToPages => "Уровень доступа к списку страниц";

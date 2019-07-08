@@ -3,6 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/index.css";
+    Context.Items["PageName"] = localization.TemplatesPageName;
     User user = Context.Items["User"] as User;
 }
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddChunk, user, Context))

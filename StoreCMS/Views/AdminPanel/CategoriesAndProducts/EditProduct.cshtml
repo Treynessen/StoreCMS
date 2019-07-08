@@ -4,6 +4,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/products/workWithProduct.css";
+    Context.Items["PageName"] = localization.EditProductPageName;
     var templates = db.Templates.ToList();
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }
@@ -36,6 +37,23 @@
                         @*SHORT DESCRIPTION*@
                         <label for="ShortDescription">@Html.Raw(localization.ShortDescription)</label>
                         <textarea class="shortDescription" rows="3" id="ShortDescription" name="PageModel.ShortDescription">@Model?.ShortDescription</textarea>
+                        @*IS SPECIAL PRODUCT?*@
+                        <div class="checkboxBlock">
+                            @if (Model == null || !Model.SpecialProduct)
+                            {
+                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="true" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="true" checked/>
+                            }
+                            <label for="SpecialProduct">@Html.Raw(localization.SpecialProduct)</label>
+                        </div>
+                        @*ADD PARAGRAPH TAG?*@
+                        <div class="checkboxBlock">
+                            <input type="checkbox" id="AddParagraphTag" name="PageModel.AddParagraphTag" value="true" />
+                            <label for="AddParagraphTag">@Html.Raw(localization.AddParagraphTag)</label>
+                        </div>
                     </div>
                     <div class="rightBlock">
                         @*TEMPLATES LIST*@

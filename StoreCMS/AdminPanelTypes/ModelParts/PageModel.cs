@@ -23,6 +23,7 @@ namespace Treynessen.AdminPanelTypes
         public uint OldPrice { get; set; }
         public string ShortDescription { get; set; }
         public bool SpecialProduct { get; set; }
+        public bool AddParagraphTag { get; set; }
 
         public bool IsMainPage { get; set; }
     }

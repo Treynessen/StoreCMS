@@ -27,6 +27,7 @@ div.navigationMenu{
 
 a.product{
 	display: flex;
+	position: relative;
 	margin-top: 5px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
@@ -53,9 +54,11 @@ a.product > div.productInfo{
 a.product > div.productInfo > span.productName{
 	display: block;
 	box-sizing: border-box;
+	font-weight: bold;
 	font-size: 20px;
-	max-height: 55px;
-	padding: 5px 0;
+	height: 53px;
+	max-height: 53px;
+	padding: 2px 0 0;
 	overflow: hidden;
 }
 
@@ -63,24 +66,55 @@ a.product > div.productInfo > div.shortDescription{
 	display: flex;
 	flex-grow: 1;
 	align-items: center;
-	margin: 5px 0;
+	margin-bottom: 5px;
 	font-size: 16px;
+}
+
+a.product > div.productInfo > div.shortDescription > span{
+	align-self: flex-end;
+	max-height: 57px;
 	overflow: hidden;
 }
 
-a.product > span.productPrice{
-	display: block;
+a.product > div.productInfo > div.shortDescription > span > p {
+	margin: 0;
+}
+
+a.product > div.productPrice{
 	flex-grow: 1;
 	padding: 5px 10px;
 	text-align: right;
-	font-size: 30px;
+}
+
+a.product > div.productPrice > span:first-child{
+	display: block;
+        font-size: 28px;
+        white-space: nowrap;
 	overflow: hidden;
 }
 
-a.product > span.productPrice:after{
+a.product > div.productPrice > span:first-child:after{
 	content: " ₽";
 	font-size: 18px;
 	color: #7a7a7a;
+}
+
+a.product > div.productPrice > span:not(:first-child){
+	display: inline-block;
+        font-size: 28px;
+        text-decoration: line-through;
+        color: #c0c0c0;
+        white-space: nowrap;
+	overflow: hidden;
+}
+
+a.product > div.productPrice > span:not(:first-child):after{
+	display: inline-block;	
+	content: "₽";
+        text-decoration: none;
+        margin-left: 6px;
+	font-size: 18px;
+	color: #c0c0c0;
 }
 
 ul.pagination{
@@ -114,4 +148,22 @@ ul.pagination > li > a:hover{
 	border-color: #f7951f;
 	background-color: #ececec;
 	color: #000;
+}
+
+div.stock{
+	position: absolute;
+	width: 80px;
+	height: 78px;
+	background-image: url(/images/sale.png);
+	margin-left: -1px;
+	margin-top: -1px;
+}
+
+div.best{
+	position: absolute;
+	width: 163px;
+	height: 47px;
+	background-image: url(/images/best.png);
+	right: -1px;
+	bottom: 1px;
 }

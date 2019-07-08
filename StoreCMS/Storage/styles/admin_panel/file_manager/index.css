@@ -135,6 +135,8 @@ td:nth-child(1) {
     width: 75%;
     max-width: 75%;
     padding: 0;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 
 

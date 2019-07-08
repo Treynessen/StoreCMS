@@ -2,6 +2,9 @@
 {
     public interface IFileManagerLocalization
     {
+        string FileManagerPageName { get; }
+        string EditStylePageName { get; }
+
         string ChooseTheFile { get; }
         string FolderName { get; }
         string CssFileName { get; }

@@ -2,6 +2,8 @@
 {
     public interface ISettingsLocalization
     {
+        string PageName { get; }
+
         string AccessLevelSettings { get; }
         string AccessLevelToAdminPanel { get; }
         string AccessLevelToPages { get; }

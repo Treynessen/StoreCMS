@@ -2,6 +2,9 @@
 {
     public interface ITemplatesLocalization
     {
+        string TemplatesPageName { get; }
+        string WorkWithTemplatePageName { get; }
+
         string AddTemplate { get; }
         string AddChunk { get; }
         string EditTemplate { get; }

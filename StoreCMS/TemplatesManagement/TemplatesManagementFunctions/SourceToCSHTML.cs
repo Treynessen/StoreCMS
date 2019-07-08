@@ -13,8 +13,11 @@ namespace Treynessen.TemplatesManagement
             if (string.IsNullOrEmpty(source))
                 return string.Empty;
             StringBuilder cshtmlContentBuilder = new StringBuilder(SourceToCSHTML(source, modelType, env, additions));
+
             foreach (var c in GetChunks(db, source, itsChunk ? chunkName : null))
+            {
                 cshtmlContentBuilder.Replace($"[#{c.Name}]", $"@(await Html.PartialAsync(\"{c.TemplatePath}\", Model))");
+            }
             return cshtmlContentBuilder.ToString();
         }
 
@@ -35,7 +38,7 @@ namespace Treynessen.TemplatesManagement
                 for (int i = additions.Length - 1; i >= 0; --i)
                 {
                     cshtmlContentBuilder.Insert(0, $"{additions[i]}\n");
-                }   
+                }
             }
 
             cshtmlContentBuilder.Replace("[Page:Title]", "@(Model != null ? Html.Raw(Model.Title) : Html.Raw(string.Empty))");
@@ -50,12 +53,31 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("[Category:Products]", " @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_block.cshtml\", p); } }");
             cshtmlContentBuilder.Replace("[Category:PageButtons]", " @if (products != null) { <page-buttons class=\"@Context.Items[\"PaginationStyleName\"]\" current-path=\"@Context.Request.Path\" order-by=\"@(Context.Items[\"OrderBy\"] == null ? null : (OrderBy?)Context.Items[\"OrderBy\"])\" current-page=\"@(Context.Items[\"CurrentPage\"] == null ? null : (int?)Context.Items[\"CurrentPage\"])\" pages-count=\"@(Context.Items[\"PagesCount\"] == null ? null : (int?)Context.Items[\"PagesCount\"])\"></page-buttons> }");
-            
-            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? Html.Raw(Model.ShortDescription) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice(Model.Price)) : Html.Raw(string.Empty))");
-            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice(Model.OldPrice)) : Html.Raw(string.Empty))");
+
+            cshtmlContentBuilder.Replace("[Product:Name]", "@(Model is ProductPage ? Html.Raw((Model as ProductPage).PageName) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:ShortDescription]", "@(Model is ProductPage ? Html.Raw((Model as ProductPage).ShortDescription) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:Price]", "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice((Model as ProductPage).Price)) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:OldPrice]", "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice((Model as ProductPage).OldPrice)) : Html.Raw(string.Empty))");
+            cshtmlContentBuilder.Replace("[Product:CurrentPrice]", "@(Model is ProductPage && (Model as ProductPage).OldPrice != 0 ? Html.Raw(\"<span>\" + OtherFunctions.FormatPrice((Model as ProductPage).Price) + \"</span><span>\" + OtherFunctions.FormatPrice((Model as ProductPage).OldPrice) + \"</span>\") : Html.Raw(\"<span>\" + OtherFunctions.FormatPrice((Model as ProductPage).Price) + \"</span>\"))");
             cshtmlContentBuilder.Replace("[Product:MainImage]", $"@(Model is ProductPage ? \"{env.GetProductsImagesFolderSrc()}\" + Model.PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)");
+
+            var specialProductValues = GetValueBetweenSides(cshtmlContentBuilder.ToString(), "[Product:IfSpecial(", ")]");
+            if (specialProductValues.Count > 0)
+            {
+                foreach (var v in specialProductValues)
+                {
+                    cshtmlContentBuilder.Replace($"[Product:IfSpecial({v})]", $"@(Model is ProductPage && (Model as ProductPage).SpecialProduct ? Html.Raw(\"{v.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("@@", "@")}\") : Html.Raw(string.Empty))");
+                }
+            }
+
+            var stockProductValues = GetValueBetweenSides(cshtmlContentBuilder.ToString(), "[Product:IfStock(", ")]");
+            if (stockProductValues.Count > 0)
+            {
+                foreach (var v in stockProductValues)
+                {
+                    cshtmlContentBuilder.Replace($"[Product:IfStock({v})]", $"@(Model is ProductPage && (Model as ProductPage).Price > 0 && (Model as ProductPage).OldPrice > 0 ? Html.Raw(\"{v.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("@@", "@")}\") : Html.Raw(string.Empty))");
+                }
+            }
 
             cshtmlContentBuilder.Replace("[YEAR]", "@(DateTime.Now.Year)");
 

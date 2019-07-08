@@ -2,6 +2,9 @@
 {
     public class RuFileManagerLocalization : IFileManagerLocalization
     {
+        public string FileManagerPageName => "Файловый менеджер";
+        public string EditStylePageName => "Редактирование стиля";
+
         public string ChooseTheFile => "Выберите файл";
         public string FolderName => "Название папки";
         public string CssFileName => "Название .css файла";

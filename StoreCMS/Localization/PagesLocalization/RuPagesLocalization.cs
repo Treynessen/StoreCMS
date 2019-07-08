@@ -2,6 +2,10 @@
 {
     public class RuPagesLocalization : IPagesLocalization
     {
+        public string Pages_PageName => "Страницы";
+        public string AddPage_PageName => "Добавить страницу";
+        public string EditPage_PageName => "Изменить страницу";
+
         public string AddPage => "Добавить страницу";
         public string Name => "Название";
         public string ActionsWithPage => "Действия";

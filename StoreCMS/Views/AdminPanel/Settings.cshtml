@@ -8,6 +8,7 @@
 @{
     Layout = "CommonPage";
     User user = Context.Items["User"] as User;
+    Context.Items["PageName"] = localization.PageName;
     AccessLevelConfiguration accessLevelConfiguration = Context.Items["AccessLevelConfiguration"] as AccessLevelConfiguration;
     Context.Items["PageStyle"] = "/styles/admin_panel/settings.css";
     List<KeyValuePair<AdminPanelPages, IHtmlContent>> settingList = new List<KeyValuePair<AdminPanelPages, IHtmlContent>>()

@@ -115,17 +115,20 @@ namespace Treynessen.PagesManagement
                 SetUniqueAliasName(db, page);
             }
 
-            page.RequestPathHash = GetHashFromRequestPath(page.RequestPath);
-
+            // Проверка на то, не присвоен ли запрещенный url текущей странице
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             for (LinkedListNode<string> it = env.GetForbiddenUrls().First; it != null; it = it.Next)
             {
                 if (page.RequestPath.Equals(it.Value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     page.Alias += "_page";
+                    page.RequestPath += "_page";
+                    SetUniqueAliasName(db, page);
                     it = env.GetForbiddenUrls().First;
                 }
             }
+
+            page.RequestPathHash = GetHashFromRequestPath(page.RequestPath);
 
             page.BreadcrumbsHtml = GetBreadcrumbsHTML(page);
 
@@ -137,6 +140,14 @@ namespace Treynessen.PagesManagement
             page.PageKeywords = model.PageKeywords;
             page.IsIndex = model.IsIndex;
             page.IsFollow = model.IsFollow;
+
+            // Вставляем тег <p>, если стоит галка
+            if (page is ProductPage pp && model.AddParagraphTag)
+            {
+                pp.Content = GetContentWithParagraphTag(pp.Content);
+                pp.ShortDescription = GetContentWithParagraphTag(pp.ShortDescription);
+            }
+
             return page;
         }
     }

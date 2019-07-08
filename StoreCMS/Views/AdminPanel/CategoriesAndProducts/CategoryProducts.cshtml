@@ -8,6 +8,7 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/products/categoryProducts.css";
     int categoryID = (int)Context.Items["itemID"];
     string categoryName = Context.Items["categoryName"] as string;
+    Context.Items["PageName"] = $"{localization.CategoryProductsPageName} {categoryName}";
     User user = Context.Items["User"] as User;
 }
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProduct, user, Context))

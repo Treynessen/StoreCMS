@@ -2,6 +2,9 @@
 {
     public class RuTemplatesLocalization : ITemplatesLocalization
     {
+        public string TemplatesPageName => "Шаблоны";
+        public string WorkWithTemplatePageName => "Работа с шаблоном";
+
         public string AddTemplate => "Добавить шаблон";
         public string AddChunk => "Добавить часть шаблона";
         public string EditTemplate => "Изменить шаблон";

@@ -11,17 +11,20 @@
     td:nth-child(2) {
         width: 30%;
         overflow-x: auto;
+        white-space: nowrap;
     }
 
     td:nth-child(3) {
         width: 30%;
         overflow-x: auto;
+        white-space: nowrap;
     }
 
     td:nth-child(4) {
         width: 20%;
         overflow-x: auto;
         text-align: center;
+        white-space: nowrap;
     }
 
     td:nth-child(5) {

@@ -24,11 +24,13 @@
     td:nth-child(2) {
         width: 35%;
         overflow-x: auto;
+        white-space: nowrap;
     }
 
     td:nth-child(3) {
         width: 40%;
         overflow-x: auto;
+        white-space: nowrap;
     }
 
     td:nth-child(4) {
