@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Treynessen.TemplatesManagement
+namespace Treynessen.Functions
 {
-    public static partial class TemplatesManagementFunctions
+    public static partial class OtherFunctions
     {
-        private static LinkedList<string> GetValueBetweenSides(string source, string leftSide, string rightSide)
+        public static LinkedList<string> GetValuesBetweenSides(string source, string leftSide, string rightSide)
         {
             LinkedList<string> result = new LinkedList<string>();
             if (!string.IsNullOrEmpty(source))

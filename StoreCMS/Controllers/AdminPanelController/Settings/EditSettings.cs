@@ -36,9 +36,11 @@ namespace Treynessen.Controllers
                         "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
                     };
                     string cshtmlTemplate = TemplatesManagementFunctions.SourceToCSHTML(
+                        db: db,
                         source: model.ProductBlockTemplate,
                         modelType: "ProductPage",
                         env: env,
+                        skipChunkName: null,
                         additions: addictions
                     );
                     using (StreamWriter writer = new StreamWriter($"{env.GetConfigsFolderFullPath()}product_block.cshtml"))

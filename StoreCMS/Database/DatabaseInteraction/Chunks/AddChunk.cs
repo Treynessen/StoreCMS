@@ -28,13 +28,12 @@ namespace Treynessen.Database
             chunk.TemplatePath = env.GetChunksFolderShortPath();
             TemplatesManagementFunctions.SetUniqueITemplateName(db, chunk);
             chunk.TemplatePath += $"{chunk.Name}.cshtml";
-            string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+            string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                 db: db,
                 source: chunk.TemplateSource,
                 modelType: "Page",
                 env: env,
-                itsChunk: true,
-                chunkName: chunk.Name
+                skipChunkName: chunk.Name
             );
             TemplatesManagementFunctions.WriteCshtmlContentToFile(
                 pathToTemplatesFolder: env.GetChunksFolderFullPath(),
@@ -59,24 +58,24 @@ namespace Treynessen.Database
             {
                 foreach (var t in templates)
                 {
-                    string _cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                    string _cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                         db: db,
                         source: t.TemplateSource,
                         modelType: "Page",
-                        env: env
+                        env: env,
+                        skipChunkName: null
                     );
                     TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), t.Name, _cshtmlContent);
                 }
             });
             foreach (var c in chunks)
             {
-                string _cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                string _cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                 db: db,
                 source: c.TemplateSource,
                 modelType: "Page",
                 env: env,
-                itsChunk: true,
-                chunkName: c.Name
+                skipChunkName: c.Name
             );
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), c.Name, _cshtmlContent);
             }

@@ -1,4 +1,4 @@
-@model Page
+﻿@model Page
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -17,8 +17,8 @@
 <meta name="robots" content="[Page:IsRobotIndex]">
 </head>
 <body>
-@(await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model))
+@{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
 <script>
 	var catalog = document.getElementById('catalog');
 	var button = catalog.querySelector('.button');
@@ -26,8 +26,8 @@
 		catalog.classList.toggle('open');
 	};
 </script>
-@(await Html.PartialAsync("~/Views/Chunks/notice.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/content.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model))
+@{ try { @await Html.PartialAsync("~/Views/Chunks/notice.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/content.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
 </body>
 </html>

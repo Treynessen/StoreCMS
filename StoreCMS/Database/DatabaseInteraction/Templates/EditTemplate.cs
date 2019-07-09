@@ -53,11 +53,12 @@ namespace Treynessen.Database
                 string pathToOldFileName = $"{env.GetTemplatesFolderFullPath()}{changebleTemplate.Name}.cshtml";
                 if (File.Exists(pathToOldFileName))
                     File.Delete(pathToOldFileName);
-                string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: editedTemplate.TemplateSource,
                     modelType: "Page",
-                    env: env
+                    env: env,
+                    skipChunkName: null
                 );
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), editedTemplate.Name, cshtmlContent);
             }
@@ -68,22 +69,24 @@ namespace Treynessen.Database
                     File.Move(pathToOldFileName, $"{env.GetTemplatesFolderFullPath()}{editedTemplate.Name}.cshtml");
                 else
                 {
-                    string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                    string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                         db: db,
                         source: editedTemplate.TemplateSource,
                         modelType: "Page",
-                        env: env
+                        env: env,
+                        skipChunkName: null
                     );
                     TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), editedTemplate.Name, cshtmlContent);
                 }
             }
             else if (changedTemplateSource)
             {
-                string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: editedTemplate.TemplateSource,
                     modelType: "Page",
-                    env: env
+                    env: env,
+                    skipChunkName: null
                 );
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), editedTemplate.Name, cshtmlContent);
             }

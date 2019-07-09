@@ -55,13 +55,12 @@ namespace Treynessen.Database
                 string pathToOldFileName = $"{env.GetChunksFolderFullPath()}{changebleChunk.Name}.cshtml";
                 if (File.Exists(pathToOldFileName))
                     File.Delete(pathToOldFileName);
-                string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: editedChunk.TemplateSource,
                     modelType: "Page",
                     env: env,
-                    itsChunk: true,
-                    chunkName: editedChunk.Name
+                    skipChunkName: editedChunk.Name
                 );
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), editedChunk.Name, cshtmlContent);
             }
@@ -72,26 +71,24 @@ namespace Treynessen.Database
                     File.Move(pathToOldFileName, $"{env.GetChunksFolderFullPath()}{editedChunk.Name}.cshtml");
                 else
                 {
-                    string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                    string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                         db: db,
                         source: editedChunk.TemplateSource,
                         modelType: "Page",
                         env: env,
-                        itsChunk: true,
-                        chunkName: editedChunk.Name
+                        skipChunkName: editedChunk.Name
                     );
                     TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), editedChunk.Name, cshtmlContent);
                 }
             }
             else if (changedTemplateSource)
             {
-                string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: editedChunk.TemplateSource,
                     modelType: "Page",
                     env: env,
-                    itsChunk: true,
-                    chunkName: editedChunk.Name
+                    skipChunkName: editedChunk.Name
                 );
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), editedChunk.Name, cshtmlContent);
             }
@@ -112,24 +109,24 @@ namespace Treynessen.Database
                 {
                     foreach (var t in templates)
                     {
-                        string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                        string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                             db: db,
                             source: t.TemplateSource,
                             modelType: "Page",
-                            env: env
+                            env: env,
+                            skipChunkName: null
                         );
                         TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), t.Name, cshtmlContent);
                     }
                 });
                 foreach (var c in chunks)
                 {
-                    string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+                    string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: c.TemplateSource,
                     modelType: "Page",
                     env: env,
-                    itsChunk: true,
-                    chunkName: c.Name
+                    skipChunkName: c.Name
                 );
                     TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), c.Name, cshtmlContent);
                 }

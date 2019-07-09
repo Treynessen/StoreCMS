@@ -1,12 +1,12 @@
 @model Page
 @{
-	List<ProductPage> products = Context.Items["products"] as List<ProductPage>;
+    List<ProductPage> products = Context.Items["products"] as List<ProductPage>;
 }
-<div class="sortPanel"><span>Сортировать цену по: <b class="sortMenu"><cost-sort ascending-price-text="по возрастанию" descending-price-text="по убыванию"></cost-sort></b></span></div>
+<div class="sortPanel"><span>Сортировать цены по: <b class="sortMenu"><cost-sort ascending-price-text="по возрастанию" descending-price-text="по убыванию"></cost-sort></b></span></div>
 <div class="contentBlock">
 <div class="navigationMenu">@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</div>
-@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
- @if (products != null) { foreach (var p in products) { @await Html.PartialAsync(@"~/Settings/product_block.cshtml", p); } }
 
- @if (products != null) { <page-buttons class="@Context.Items["PaginationStyleName"]" current-path="@Context.Request.Path" order-by="@(Context.Items["OrderBy"] == null ? null : (OrderBy?)Context.Items["OrderBy"])" current-page="@(Context.Items["CurrentPage"] == null ? null : (int?)Context.Items["CurrentPage"])" pages-count="@(Context.Items["PagesCount"] == null ? null : (int?)Context.Items["PagesCount"])"></page-buttons> }
+@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@"~/Settings/product_block.cshtml", p); } catch { } } } }
+
+@{ if (products != null) { <page-buttons class="@Context.Items["PaginationStyleName"]" current-path="@Context.Request.Path" order-by="@(Context.Items["OrderBy"] as OrderBy?)" current-page="@(Context.Items["CurrentPage"] as int?)" pages-count="@(Context.Items["PagesCount"] as int?)"></page-buttons> } }
 </div>

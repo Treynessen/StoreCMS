@@ -25,11 +25,12 @@ namespace Treynessen.Database
             template.TemplatePath = env.GetTemplatesFolderShortPath();
             TemplatesManagementFunctions.SetUniqueITemplateName(db, template);
             template.TemplatePath += $"{template.Name}.cshtml";
-            string cshtmlContent = TemplatesManagementFunctions.SourceWithChunksToCSHTML(
+            string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
                 db: db,
                 source: template.TemplateSource,
                 modelType: "Page",
-                env: env
+                env: env,
+                skipChunkName: null
             );
             TemplatesManagementFunctions.WriteCshtmlContentToFile(
                 pathToTemplatesFolder: env.GetTemplatesFolderFullPath(),
