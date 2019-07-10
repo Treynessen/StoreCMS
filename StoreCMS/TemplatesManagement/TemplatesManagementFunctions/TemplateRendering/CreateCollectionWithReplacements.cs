@@ -11,6 +11,8 @@ namespace Treynessen.TemplatesManagement
 
         private static void CreateCollectionWithReplacements(CMSDatabase db, string source, string skipChunkName, IHostingEnvironment env)
         {
+            if (replacements.Count > 0)
+                replacements.Clear();
             foreach (var c in GetChunks(db, source, skipChunkName))
             {
                 // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
@@ -27,7 +29,7 @@ namespace Treynessen.TemplatesManagement
             replacements.AddLast(new KeyValuePair<string, string>("[Page:IsIndex]", "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))"));
             replacements.AddLast(new KeyValuePair<string, string>("[Page:IsFollow]", "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))"));
             // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
-            replacements.AddLast(new KeyValuePair<string, string>("[Category:Products]", "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetConfigsFolderShortPath()}" + "product_block.cshtml\", p); } catch { } } } }"));
+            replacements.AddLast(new KeyValuePair<string, string>("[Category:Products]", "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlFullPath()}" + "\", p); } catch { } } } }"));
             replacements.AddLast(new KeyValuePair<string, string>(
                 "[Category:PageButtons]",
                 "@{ if (products != null) { " +

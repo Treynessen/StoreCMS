@@ -22,7 +22,7 @@ namespace Treynessen.Controllers
             if (!string.IsNullOrEmpty(model.ProductBlockTemplate))
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                string pathToTemplate = $"{env.GetConfigsFolderFullPath()}product_block.template";
+                string pathToTemplate = env.GetProductBlockTemplateFullPath();
                 string oldTemplate = OtherFunctions.GetFileContent(pathToTemplate);
                 if (!model.ProductBlockTemplate.Equals(oldTemplate, StringComparison.InvariantCulture))
                 {
@@ -43,7 +43,7 @@ namespace Treynessen.Controllers
                         skipChunkName: null,
                         additions: addictions
                     );
-                    using (StreamWriter writer = new StreamWriter($"{env.GetConfigsFolderFullPath()}product_block.cshtml"))
+                    using (StreamWriter writer = new StreamWriter(env.GetProductBlockCshtmlFullPath()))
                     {
                         writer.Write(cshtmlTemplate);
                     }

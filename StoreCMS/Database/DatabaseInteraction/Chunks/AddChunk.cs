@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Functions;
 using Treynessen.Extensions;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
@@ -71,14 +73,37 @@ namespace Treynessen.Database
             foreach (var c in chunks)
             {
                 string _cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
-                db: db,
-                source: c.TemplateSource,
-                modelType: "Page",
-                env: env,
-                skipChunkName: c.Name
-            );
+                    db: db,
+                    source: c.TemplateSource,
+                    modelType: "Page",
+                    env: env,
+                    skipChunkName: c.Name
+                );
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), c.Name, _cshtmlContent);
             }
+
+            string productBlockFileContent = OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath());
+            if (productBlockFileContent.Contains($"[#{chunk.Name}]"))
+            {
+                string[] addictions = {
+                        "@using Treynessen.Functions;",
+                        "@using Treynessen.Database.Entities;",
+                        "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
+                    };
+                string productBlockCshtmlTemplate = TemplatesManagementFunctions.SourceToCSHTML(
+                    db: db,
+                    source: productBlockFileContent,
+                    modelType: "ProductPage",
+                    env: env,
+                    skipChunkName: null,
+                    additions: addictions
+                );
+                using (StreamWriter writer = new StreamWriter(env.GetProductBlockCshtmlFullPath()))
+                {
+                    writer.Write(productBlockCshtmlTemplate);
+                }
+            }
+
             renderTask.Wait();
         }
     }

@@ -77,11 +77,11 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     <tr><td>@Html.Raw(localization.ProductTemplate)</td></tr>
                     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                     {
-                    <tr><td class="withoutPadding"><textarea name="SettingsModel.ProductBlockTemplate">@Html.Raw(OtherFunctions.GetFileContent($"{env.GetConfigsFolderFullPath()}product_block.template"))</textarea></td></tr>
+                    <tr><td class="withoutPadding"><textarea name="SettingsModel.ProductBlockTemplate">@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
                     }
                     else
                     {
-                    <tr><td class="withoutPadding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent($"{env.GetConfigsFolderFullPath()}product_block.template"))</textarea></td></tr>
+                    <tr><td class="withoutPadding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
                     }
                 </table>
                 @*CATEGORY PAGE SETTINGS*@
