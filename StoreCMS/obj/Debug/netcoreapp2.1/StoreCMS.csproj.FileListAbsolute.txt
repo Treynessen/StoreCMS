@@ -53,4 +53,3 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Vi
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Settings\product_block.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Templates\contacts_template.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Templates\products_page_template.g.cshtml.cs
-D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\hello_1.g.cshtml.cs

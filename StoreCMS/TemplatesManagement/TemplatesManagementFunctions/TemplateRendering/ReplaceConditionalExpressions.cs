@@ -70,7 +70,7 @@ namespace Treynessen.TemplatesManagement
                         // 2 - значение в скобках условного выражения
                         // 3 - правая часть после условного выражения
                         int leftSideIndex = value.IndexOf(ce.LeftSide);
-                        int rightSideIndex = value.IndexOf(ce.RightSide, leftSideIndex);
+                        int rightSideIndex = value.LastIndexOf(ce.RightSide);
                         string leftSubvalue = value.Substring(0, leftSideIndex);
                         // Центральное подзначение - это и есть сама условная конструкция
                         // Нам нужна не вся условная конструкция, а только значение в скобках
