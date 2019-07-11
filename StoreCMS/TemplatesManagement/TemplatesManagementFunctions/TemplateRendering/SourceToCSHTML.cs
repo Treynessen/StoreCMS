@@ -15,7 +15,7 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("@", "@@");
 
-            CreateCollectionWithReplacements(db, source, skipChunkName, env);
+            CreateInsertionReplacementsCollection(db, source, skipChunkName, env);
 
             if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture) || source.Contains("[Category:PageButtons]", System.StringComparison.InvariantCulture))
                 cshtmlContentBuilder.Insert(0, "@{ List<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>; }\n");
@@ -31,7 +31,7 @@ namespace Treynessen.TemplatesManagement
                 }
             }
            
-            foreach(var r in replacements)
+            foreach(var r in insertionReplacements)
             {
                 cshtmlContentBuilder.Replace(r.Key, r.Value);
             }

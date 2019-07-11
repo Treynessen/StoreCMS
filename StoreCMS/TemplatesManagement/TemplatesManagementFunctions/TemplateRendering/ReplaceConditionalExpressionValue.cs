@@ -35,7 +35,7 @@ namespace Treynessen.TemplatesManagement
             bool replaceReplacementCollectionValues = false;
             if (!replaceConditionalExpression && !replaceTagHelpers)
             {
-                foreach (var r in replacements)
+                foreach (var r in insertionReplacements)
                 {
                     if (value.Contains(r.Key))
                     {
@@ -86,7 +86,7 @@ namespace Treynessen.TemplatesManagement
             // Обычные замены из коллекции
             else if (replaceReplacementCollectionValues)
             {
-                foreach (var r in replacements)
+                foreach (var r in insertionReplacements)
                 {
                     if (value.Contains(r.Key))
                     {

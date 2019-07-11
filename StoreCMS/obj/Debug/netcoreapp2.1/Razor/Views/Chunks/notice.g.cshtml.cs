@@ -29,17 +29,22 @@ using Treynessen.PagesManagement;
 #line default
 #line hidden
 #line 4 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
-using Treynessen.Database.Context;
+using Treynessen.ImagesManagement;
 
 #line default
 #line hidden
 #line 5 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
+using Treynessen.Database.Context;
+
+#line default
+#line hidden
+#line 6 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
 using Treynessen.Database.Entities;
 
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"c442f0a7ab5c69ba785b7132e50cbceddd5f9728", @"/Views/Chunks/notice.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0a42ce9270c8a27dacdd0dd3158b88f27c392c2c", @"/Views/Chunks/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"4ea0ac9dd8e29f1d582e77aa90a16654937768a3", @"/Views/Chunks/_ViewImports.cshtml")]
     public class Views_Chunks_notice : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Page>
     {
         #pragma warning disable 1998

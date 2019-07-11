@@ -24,8 +24,8 @@
     @foreach (var m in Model)
     {
                 <div class="imageBlock">
-                    <div><image full-path="@m" max-width="290" max-height="175" quality="80"></image></div>
-                    <label>@m.Substring(m.LastIndexOf('\\') + 1)</label>
+                    <div><image src="@m" max-width="290" max-height="175" quality="80"></image></div>
+                    <label>@m.Substring(m.LastIndexOf('/') + 1)</label>
                     <form method="post">
                         <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProductImage)" />
                         <input type="hidden" name="imageID" value="@imageID">

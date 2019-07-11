@@ -29,17 +29,22 @@ using Treynessen.PagesManagement;
 #line default
 #line hidden
 #line 4 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
-using Treynessen.Database.Context;
+using Treynessen.ImagesManagement;
 
 #line default
 #line hidden
 #line 5 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
+using Treynessen.Database.Context;
+
+#line default
+#line hidden
+#line 6 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\_ViewImports.cshtml"
 using Treynessen.Database.Entities;
 
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"33d3ba6861168d32f0e396fa06d108f828d28588", @"/Views/Chunks/products_page_content.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"0a42ce9270c8a27dacdd0dd3158b88f27c392c2c", @"/Views/Chunks/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"4ea0ac9dd8e29f1d582e77aa90a16654937768a3", @"/Views/Chunks/_ViewImports.cshtml")]
     public class Views_Chunks_products_page_content : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Page>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("ascending-price-text", "по возрастанию", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -77,7 +82,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<div class=\"sortPanel\"><span>Сортировать цены по: <b class=\"sortMenu\">");
             EndContext();
             BeginContext(168, 97, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("cost-sort", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4daa08b8d9294cbba66347a751916624", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("cost-sort", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "feb40b30acfd41928760a2536f4f435b", async() => {
             }
             );
             __Treynessen_TagHelpers_CostSortTagHelper = CreateTagHelper<global::Treynessen.TagHelpers.CostSortTagHelper>();
@@ -146,7 +151,7 @@ using Treynessen.Database.Entities;
             WriteLiteral(" ");
             EndContext();
             BeginContext(672, 271, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("page-buttons", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1badcbe2999d44d8bcdadfcca1dab61c", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("page-buttons", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "77c43d255cf0483fa21b2f50fa10ba18", async() => {
             }
             );
             __Treynessen_TagHelpers_PageButtonsTagHelper = CreateTagHelper<global::Treynessen.TagHelpers.PageButtonsTagHelper>();
