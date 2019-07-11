@@ -17,7 +17,7 @@ namespace Treynessen.TemplatesManagement
 
             CreateCollectionWithReplacements(db, source, skipChunkName, env);
 
-            if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture))
+            if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture) || source.Contains("[Category:PageButtons]", System.StringComparison.InvariantCulture))
                 cshtmlContentBuilder.Insert(0, "@{ List<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>; }\n");
 
             ReplaceConditionalExpressions(cshtmlContentBuilder);
