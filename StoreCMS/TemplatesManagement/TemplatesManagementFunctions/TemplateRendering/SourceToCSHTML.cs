@@ -25,8 +25,8 @@ namespace Treynessen.TemplatesManagement
             {
                 cshtmlContentBuilder.Replace(r.Insertion, r.Replacement);
             }
-
-            Regex parser = new Regex(@"\[Counter for id=(?<Type1>\d+)\]");
+            
+            Regex parser = new Regex(@"\[Counter id=(?<Type1>\d+)\]");
             if (parser.IsMatch(source))
             {
                 cshtmlContentBuilder.Insert(0, "@{ Dictionary<int, int> counters = new Dictionary<int, int>(); }");

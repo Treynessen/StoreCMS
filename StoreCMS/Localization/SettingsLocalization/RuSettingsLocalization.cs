@@ -30,7 +30,9 @@
         public string AccessLevelToUploadFile => "Уровень доступа к загрузке файла";
         public string AccessLevelToCreateFolder => "Уровень доступа к созданию директории";
         public string AccessLevelToCreateStyle => "Уровень доступа к созданию стиля css";
+        public string AccessLevelToCreateScript => "Уровень доступа к созданию скрипта js";
         public string AccessLevelToEditStyle => "Уровень доступа к изменению стиля css";
+        public string AccessLevelToEditScript => "Уровень доступа к изменению скрипта js";
         public string AccessLevelToDeleteFileOrFolder => "Уровень доступа к удалению директории или файла";
         public string AccessLevelToSettings => "Уровень доступа к настройкам";
         public string AccessLevelToEditSettings => "Уровень доступа к изменению настроек";

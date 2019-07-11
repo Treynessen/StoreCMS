@@ -116,6 +116,10 @@ namespace Treynessen.Controllers
                     FileManagerManagementFunctions.CreateCssFile(model.Path, model.Name, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
 
+                case AdminPanelPages.CreateScript:
+                    FileManagerManagementFunctions.CreateScriptFile(model.Path, model.Name, HttpContext);
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+
                 case AdminPanelPages.EditStyle:
                     FileManagerManagementFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out bool cssFileEdited);
                     if (!cssFileEdited)
@@ -125,6 +129,16 @@ namespace Treynessen.Controllers
                         return View("FileManager/EditCssFile", model.StyleModel);
                     }
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditStyle}&path={model.Path.Substring(0, model.Path.LastIndexOf('>') + 1)}{model.StyleModel.FileName}.css");
+
+                case AdminPanelPages.EditScript:
+                    FileManagerManagementFunctions.EditScriptFile(model.Path, model.StyleModel, HttpContext, out bool scriptFileEdited);
+                    if (!scriptFileEdited)
+                    {
+                        HttpContext.Items["pageID"] = AdminPanelPages.EditScript;
+                        HttpContext.Items["IsIncorrect"] = true;
+                        return View("FileManager/EditScriptFile", model.StyleModel);
+                    }
+                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditScript}&path={model.Path.Substring(0, model.Path.LastIndexOf('>') + 1)}{model.StyleModel.FileName}.js");
 
                 case AdminPanelPages.DeleteFileOrFolder:
                     FileManagerManagementFunctions.DeleteFileOrFolder(model.Path, HttpContext, out string redirectPath);

@@ -43,7 +43,9 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.UploadFile}\": \"{(model.AccessSettings.UploadFile.HasValue ? (int)model.AccessSettings.UploadFile.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.CreateFolder}\": \"{(model.AccessSettings.CreateFolder.HasValue ? (int)model.AccessSettings.CreateFolder.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.CreateStyle}\": \"{(model.AccessSettings.CreateStyle.HasValue ? (int)model.AccessSettings.CreateStyle.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.CreateScript}\": \"{(model.AccessSettings.CreateScript.HasValue ? (int)model.AccessSettings.CreateScript.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditStyle}\": \"{(model.AccessSettings.EditStyle.HasValue ? (int)model.AccessSettings.EditStyle.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditScript}\": \"{(model.AccessSettings.EditScript.HasValue ? (int)model.AccessSettings.EditScript.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.DeleteFileOrFolder}\": \"{(model.AccessSettings.DeleteFileOrFolder.HasValue ? (int)model.AccessSettings.DeleteFileOrFolder.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.Settings}\": \"{(model.AccessSettings.Settings.HasValue ? (int)model.AccessSettings.Settings.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditSettings}\": \"{(model.AccessSettings.EditSettings.HasValue ? (int)model.AccessSettings.EditSettings.Value : (int)AccessLevel.VeryHigh)}\"\n");

@@ -4,6 +4,7 @@
     {
         Folder,
         Image, 
-        Style
+        Style,
+        Script
     }
 }

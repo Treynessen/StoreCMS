@@ -82,7 +82,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<div class=\"sortPanel\"><span>Сортировать цены по: <b class=\"sortMenu\">");
             EndContext();
             BeginContext(168, 97, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("cost-sort", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ccf458116f904ae88ffb62ff7d9fb57f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("cost-sort", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "14ea1a078fea460f931af62fb834645c", async() => {
             }
             );
             __Treynessen_TagHelpers_CostSortTagHelper = CreateTagHelper<global::Treynessen.TagHelpers.CostSortTagHelper>();
@@ -151,7 +151,7 @@ using Treynessen.Database.Entities;
             WriteLiteral(" ");
             EndContext();
             BeginContext(672, 271, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("page-buttons", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "177d38d088ee4a9f92fad7e66114167c", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("page-buttons", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f3da3d3c6e0347cdbac0c0c34870b4a7", async() => {
             }
             );
             __Treynessen_TagHelpers_PageButtonsTagHelper = CreateTagHelper<global::Treynessen.TagHelpers.PageButtonsTagHelper>();

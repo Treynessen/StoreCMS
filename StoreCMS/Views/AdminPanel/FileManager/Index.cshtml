@@ -30,14 +30,14 @@
                     <input type="hidden" name="path" value="@breadcrumbs.Last.Value.Value">
                     <div class="inputFileButton">
                         <label for="upload">@Html.Raw(localization.ChooseTheFile)</label>
-                        <input type="file" id="upload" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .css, .ico" />
+                        <input type="file" id="upload" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .css, .js, .ico" />
                     </div>
                     <input type="submit" />
                 </form>
     }
     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateFolder, user, Context))
     {
-                <form method="post" class="createFolerOrStyle">
+                <form method="post" class="createFolerOrTemplateFile">
                     <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateFolder)">
                     <input type="hidden" name="path" value="@breadcrumbs.Last.Value.Value" />
                     <input type="submit" value="@Html.Raw(localization.Create)" />
@@ -46,11 +46,20 @@
     }
     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateStyle, user, Context))
     {
-                <form method="post" class="createFolerOrStyle">
+                <form method="post" class="createFolerOrTemplateFile">
                     <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateStyle)">
                     <input type="hidden" name="path" value="@breadcrumbs.Last.Value.Value" />
                     <input type="submit" value="@Html.Raw(localization.Create)" />
                     <input type="text" name="name" placeholder="@Html.Raw(localization.CssFileName)" />
+                </form>
+    }
+    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateScript, user, Context))
+    {
+                <form method="post" class="createFolerOrTemplateFile">
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateScript)">
+                    <input type="hidden" name="path" value="@breadcrumbs.Last.Value.Value" />
+                    <input type="submit" value="@Html.Raw(localization.Create)" />
+                    <input type="text" name="name" placeholder="@Html.Raw(localization.ScriptFileName)" />
                 </form>
     }
             </div>
@@ -69,6 +78,17 @@
             else if (f.Type == FileManagerObjectType.Image)
             {
                     <td><a href="/@f.ShortPath.Replace('>', '/')">@Html.Raw(localization.Image): <b>@Html.Raw(f.Name)</b></a></td>
+            }
+            else if (f.Type == FileManagerObjectType.Script)
+            {
+                if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditScript, user, Context))
+                {
+                    <td><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.EditScript)&path=@f.ShortPath">@Html.Raw(localization.Script): <b>@Html.Raw(f.Name)</b></a></td>
+                }
+                else
+                {
+                    <td><a href="/@f.ShortPath.Replace('>', '/')">@Html.Raw(localization.Script): <b>@Html.Raw(f.Name)</b></a></td>
+                }
             }
             else
             {

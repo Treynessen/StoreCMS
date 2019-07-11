@@ -30,7 +30,9 @@
         string AccessLevelToUploadFile { get; }
         string AccessLevelToCreateFolder { get; }
         string AccessLevelToCreateStyle { get; }
+        string AccessLevelToCreateScript { get; }
         string AccessLevelToEditStyle { get; }
+        string AccessLevelToEditScript { get; }
         string AccessLevelToDeleteFileOrFolder { get; }
         string AccessLevelToSettings { get; }
         string AccessLevelToEditSettings { get; }

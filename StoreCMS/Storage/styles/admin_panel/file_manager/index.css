@@ -47,18 +47,18 @@ div.actionList {
     max-width: 100%;
 }
 
-form.createFolerOrStyle {
+form.createFolerOrTemplateFile {
     display: inline-flex;
     margin-bottom: 1vh;
     width: 30%;
     max-width: 30%;
 }
 
-div.actionList > form.createFolerOrStyle:nth-child(n+3) {
-    margin-left: 4%;
+div.actionList > form.createFolerOrTemplateFile:nth-child(n+3) {
+    margin-left: 1%;
 }
 
-.createFolerOrStyle > input[type=submit] {
+.createFolerOrTemplateFile > input[type=submit] {
     box-sizing: border-box;
     border: 2px solid #000;
     background-color: #ebebeb;
@@ -68,12 +68,12 @@ div.actionList > form.createFolerOrStyle:nth-child(n+3) {
     max-height: 3.5vh;
 }
 
-    .createFolerOrStyle > input[type=submit]:hover {
+    .createFolerOrTemplateFile > input[type=submit]:hover {
         cursor: pointer;
         background-color: #dadada;
     }
 
-.createFolerOrStyle > input[type=text] {
+.createFolerOrTemplateFile > input[type=text] {
     flex-grow: 1;
     border-left: 0;
     border-color: #000;

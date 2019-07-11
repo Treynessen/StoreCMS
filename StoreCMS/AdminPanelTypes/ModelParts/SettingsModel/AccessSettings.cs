@@ -36,7 +36,9 @@ namespace Treynessen.AdminPanelTypes
         public AccessLevel? UploadFile { get; set; }
         public AccessLevel? CreateFolder { get; set; }
         public AccessLevel? CreateStyle { get; set; }
+        public AccessLevel? CreateScript { get; set; }
         public AccessLevel? EditStyle { get; set; }
+        public AccessLevel? EditScript { get; set; }
         public AccessLevel? DeleteFileOrFolder { get; set; }
 
         public AccessLevel? EditSettings { get; set; }

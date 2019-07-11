@@ -1,5 +1,5 @@
 @model Page
-@{ Dictionary<int, int> counters = new Dictionary<int, int>(); }<div class="contentBlock">
+<div class="contentBlock">
 <div class="navigationMenu">@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</div>
-@{ if(Model is ProductPage && (Model as ProductPage).SpecialProduct) {  var env = Context.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment; foreach (var imgUrl in ImagesManagementFunctions.GetProductImagesUrl(Model as ProductPage, env, 0)) { <text>@{ if(!counters.ContainsKey(10)) { counters.Add(10, 0); } <text>@(++counters[10])</text> }@(imgUrl)<br></text> } } }
+
 </div>

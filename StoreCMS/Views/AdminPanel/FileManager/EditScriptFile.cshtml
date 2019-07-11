@@ -3,7 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/file_manager/editTemplate.css";
-    Context.Items["PageName"] = localization.EditStylePageName;
+    Context.Items["PageName"] = localization.EditScriptPageName;
     User user = Context.Items["User"] as User;
     bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
 }

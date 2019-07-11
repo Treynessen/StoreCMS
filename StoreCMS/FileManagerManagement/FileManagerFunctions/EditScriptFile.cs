@@ -12,17 +12,17 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void EditCssFile(string path, StyleModel model, HttpContext context, out bool successfullyCompleted)
+        public static void EditScriptFile(string path, StyleModel model, HttpContext context, out bool successfullyCompleted)
         {
-            Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.css$");
+            Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.js$");
             if (!regex.IsMatch(path))
             {
                 successfullyCompleted = false;
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            string cssFileFullName = path.Substring(path.LastIndexOf('>') + 1);
-            path = path.Substring(0, path.Length - cssFileFullName.Length);
+            string scriptFileFullName = path.Substring(path.LastIndexOf('>') + 1);
+            path = path.Substring(0, path.Length - scriptFileFullName.Length);
             if (!string.IsNullOrEmpty(path))
             {
                 path = path.Replace('>', '\\');
@@ -30,7 +30,7 @@ namespace Treynessen.FileManagerManagement
                     path = path.Insert(path.Length, "\\");
             }
             path = $"{env.GetStorageFolderFullPath()}{path}";
-            string pathToFile = path + cssFileFullName;
+            string pathToFile = path + scriptFileFullName;
             if (!File.Exists(pathToFile) || !HasAccessToFolder(path, env))
             {
                 successfullyCompleted = false;
@@ -42,13 +42,13 @@ namespace Treynessen.FileManagerManagement
                 successfullyCompleted = false;
                 return;
             }
-            string oldCssFileName = cssFileFullName.Substring(0, cssFileFullName.Length - 4);
-            string cssFileFullPath = $"{path}{model.FileName}.css";
-            if (!oldCssFileName.Equals(model.FileName, StringComparison.InvariantCulture))
+            string oldScriptFileName = scriptFileFullName.Substring(0, scriptFileFullName.Length - 3);
+            string scriptFileFullPath = $"{path}{model.FileName}.js";
+            if (!oldScriptFileName.Equals(model.FileName, StringComparison.InvariantCulture))
             {
-                File.Move($"{path}{cssFileFullName}", cssFileFullPath);
+                File.Move($"{path}{scriptFileFullName}", scriptFileFullPath);
             }
-            using(StreamWriter writer = new StreamWriter(cssFileFullPath))
+            using (StreamWriter writer = new StreamWriter(scriptFileFullPath))
             {
                 writer.Write(model.FileContent);
             }

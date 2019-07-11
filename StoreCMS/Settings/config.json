@@ -32,7 +32,9 @@
 		"UploadFile": "5",
 		"CreateFolder": "5",
 		"CreateStyle": "5",
+		"CreateScript": "5",
 		"EditStyle": "5",
+		"EditScript": "5",
 		"DeleteFileOrFolder": "5",
 		"Settings": "5",
 		"EditSettings": "5"

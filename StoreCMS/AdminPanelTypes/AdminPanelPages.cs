@@ -34,7 +34,9 @@
         UploadFile,
         CreateFolder,
         CreateStyle,
+        CreateScript,
         EditStyle,
+        EditScript,
         DeleteFileOrFolder,
 
         EditSettings
