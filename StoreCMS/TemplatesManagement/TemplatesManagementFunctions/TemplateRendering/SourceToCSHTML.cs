@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
 using Treynessen.Database.Context;
 
@@ -17,10 +19,25 @@ namespace Treynessen.TemplatesManagement
 
             CreateInsertionReplacementsCollection(db, source, skipChunkName, env);
 
+            ReplaceConditionalExpressions(cshtmlContentBuilder);
+
+            foreach (var r in insertionReplacements)
+            {
+                cshtmlContentBuilder.Replace(r.Insertion, r.Replacement);
+            }
+
+            Regex parser = new Regex(@"\[Counter for id=(?<Type1>\d+)\]");
+            if (parser.IsMatch(source))
+            {
+                cshtmlContentBuilder.Insert(0, "@{ Dictionary<int, int> counters = new Dictionary<int, int>(); }");
+                foreach (var m in parser.Matches(source) as IEnumerable<Match>)
+                {
+                    cshtmlContentBuilder.Replace(m.Value, "@{ if(!counters.ContainsKey(" + $"{m.Groups[1]}" + ")) { counters.Add(" + $"{m.Groups[1]}" + ", 0); } <text>@(++counters[" + $"{m.Groups[1]}" + "])</text> }");
+                }
+            }
+
             if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture) || source.Contains("[Category:PageButtons]", System.StringComparison.InvariantCulture))
                 cshtmlContentBuilder.Insert(0, "@{ List<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>; }\n");
-
-            ReplaceConditionalExpressions(cshtmlContentBuilder);
 
             cshtmlContentBuilder.Insert(0, $"@model {modelType}\n");
             if (additions != null && additions.Length > 0)
@@ -31,11 +48,6 @@ namespace Treynessen.TemplatesManagement
                 }
             }
            
-            foreach(var r in insertionReplacements)
-            {
-                cshtmlContentBuilder.Replace(r.Key, r.Value);
-            }
-
             return cshtmlContentBuilder.ToString();
         }
     }

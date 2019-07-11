@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace Treynessen.TemplatesManagement
 {
@@ -27,7 +26,17 @@ namespace Treynessen.TemplatesManagement
                     // Делаем рендер этого значения
                     string newValue = ReplaceConditionalExpressionValue(value);
                     // Заменяем
-                    cshtmlContentBuilder.Replace($"{currentConditionalExpression.LeftSide}{value}{currentConditionalExpression.RightSide}", "@{ if(" + $"{currentConditionalExpression.Checker}" + ") { " + $"{newValue}" + " } }");
+                    string conditionalExpressionInsertion = $"{currentConditionalExpression.LeftSide}{value}{currentConditionalExpression.RightSide}";
+                    string conditionalExpressionReplacement = "@{ if(" + $"{currentConditionalExpression.Checker}" + ") { " + $"{newValue}" + " } }";
+                    foreach (var ir in insertionReplacements)
+                    {
+                        if (ir.Insertion.Contains(conditionalExpressionInsertion))
+                        {
+                            ir.Insertion = ir.Insertion.Replace(conditionalExpressionInsertion, conditionalExpressionReplacement);
+                            ir.Replacement = ir.Replacement.Replace(conditionalExpressionInsertion, conditionalExpressionReplacement);
+                        }
+                    }
+                    cshtmlContentBuilder.Replace(conditionalExpressionInsertion, conditionalExpressionReplacement);
                     source = cshtmlContentBuilder.ToString();
                 }
             }

@@ -37,7 +37,7 @@ namespace Treynessen.TemplatesManagement
             {
                 foreach (var r in insertionReplacements)
                 {
-                    if (value.Contains(r.Key))
+                    if (value.Contains(r.Insertion))
                     {
                         replaceReplacementCollectionValues = true;
                         break;
@@ -88,13 +88,13 @@ namespace Treynessen.TemplatesManagement
             {
                 foreach (var r in insertionReplacements)
                 {
-                    if (value.Contains(r.Key))
+                    if (value.Contains(r.Insertion))
                     {
                         // Тоже самое, как и в предыдущем условии
-                        int leftSideIndex = value.IndexOf(r.Key);
-                        int rightSideIndex = leftSideIndex + r.Key.Length;
+                        int leftSideIndex = value.IndexOf(r.Insertion);
+                        int rightSideIndex = leftSideIndex + r.Insertion.Length;
                         string leftSubvalue = value.Substring(0, leftSideIndex);
-                        string middleSubvalue = r.Value;
+                        string middleSubvalue = r.Replacement;
                         if (middleSubvalue.StartsWith("@{"))
                             middleSubvalue = middleSubvalue.Substring(2);
                         if (middleSubvalue.EndsWith(" }"))

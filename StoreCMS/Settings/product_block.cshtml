@@ -4,7 +4,7 @@
 @addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS
 @model ProductPage
 <a class="product" href="@(Model != null ? Html.Raw(Model.RequestPath) : Html.Raw(string.Empty))">@{ if(Model is ProductPage && (Model as ProductPage).Price > 0 && (Model as ProductPage).OldPrice > 0) { @Html.Raw("<div class=\"stock\"></div>") } }@{ if(Model is ProductPage && (Model as ProductPage).SpecialProduct) { @Html.Raw("<div class=\"best\"></div>") } }
-	<image src="@(Model is ProductPage ? "/images/products/" + Model.PreviousPageID.ToString() + Model.ID.ToString() + "/" + Model.Alias + ".jpg" : string.Empty)" width="150" height="115" quality="90"></image>
+	<image src="@(Model is ProductPage ? "/images/products/" + (Model as ProductPage).PreviousPageID.ToString() + Model.ID.ToString() + "/" + Model.Alias + ".jpg" : string.Empty)" width="150" height="115" quality="90"></image>
 	<div class="productInfo">
 		<span class="productName">@(Model is ProductPage ? Html.Raw((Model as ProductPage).PageName) : Html.Raw(string.Empty))</span>
 		<div class="shortDescription"><span>@(Model is ProductPage ? Html.Raw((Model as ProductPage).ShortDescription) : Html.Raw(string.Empty))</span></div>
