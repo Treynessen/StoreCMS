@@ -1,5 +1,9 @@
 @model Page
 <div class="contentBlock">
-<div class="navigationMenu">@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</div>
-
+	<div class="navigationMenu">@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</div>
+	<div class="slider">
+		<div class="jSlider">
+			@{ var env = Context.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment; foreach (var imgUrl in ImagesManagementFunctions.GetProductImagesUrl(Model as ProductPage, env, 0)) { <text><div><image src="@(imgUrl)"></image></div></text> } }
+		</div>
+	</div>
 </div>

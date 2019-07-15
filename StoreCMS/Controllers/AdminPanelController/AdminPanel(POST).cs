@@ -14,12 +14,13 @@ namespace Treynessen.Controllers
         [HttpPost]
         public IActionResult AdminPanel(Model model, LoginFormModel loginFormModel)
         {
-            if (loginFormModel.HasData)
+            if (model.PageId == AdminPanelPages.LoginForm)
             {
                 if (SecurityFunctions.IsValidLoginFormData(db, loginFormModel, HttpContext))
-                    return RedirectToAction(nameof(AdminPanel));
-                return LoginForm(loginFormModel);
+                    return StatusCode(200);
+                else return StatusCode(401);
             }
+
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
             User user = SecurityFunctions.CheckCookies(db, HttpContext);

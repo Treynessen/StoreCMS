@@ -9,15 +9,15 @@
 <link rel="stylesheet" href="/styles/content.css">
 <link rel="stylesheet" href="/styles/category.css">
 <link rel="stylesheet" href="/styles/footer.css">
-<link rel="icon" href="favicon.ico">
+<link rel="icon" href="/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))">
 <meta name="keywords" content="@(Model != null ? Html.Raw(Model.PageKeywords) : Html.Raw(string.Empty))">
 <meta name="robots" content="[Page:IsRobotIndex]">
 </head>
 <body>
-@(await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model))
+@{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
 <script>
 	var catalog = document.getElementById('catalog');
 	var button = catalog.querySelector('.button');
@@ -25,7 +25,7 @@
 		catalog.classList.toggle('open');
 	};
 </script>
-@(await Html.PartialAsync("~/Views/Chunks/products_page_content.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model))
+@{ try { @await Html.PartialAsync("~/Views/Chunks/category_page_content.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
 </body>
 </html>

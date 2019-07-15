@@ -6,7 +6,8 @@
 <link rel="stylesheet" href="/styles/common.css">
 <link rel="stylesheet" href="/styles/header.css">
 <link rel="stylesheet" href="/styles/menu.css">
-<link rel="stylesheet" href="/styles/content.css">
+<link rel="stylesheet" href="/styles/product_page_slider.css">
+<link rel="stylesheet" href="/styles/product_page_content.css">
 <link rel="stylesheet" href="/styles/footer.css">
 <link rel="icon" href="/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -24,6 +25,8 @@
 		catalog.classList.toggle('open');
 	};
 </script>
+<script src="/styles/jquery-2-min.js"></script>
+<script src="/styles/jslider-min.js"></script>
 @{ try { @await Html.PartialAsync("~/Views/Chunks/product_page_content.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
 </body>

@@ -6,9 +6,9 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult LoginForm(LoginFormModel model = null)
+        public IActionResult LoginForm()
         {
-            return View("LoginForm", model);
+            return View("LoginForm");
         }
     }
 }

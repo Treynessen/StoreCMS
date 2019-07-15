@@ -39,6 +39,8 @@
         EditScript,
         DeleteFileOrFolder,
 
-        EditSettings
+        EditSettings,
+
+        LoginForm
     }
 }

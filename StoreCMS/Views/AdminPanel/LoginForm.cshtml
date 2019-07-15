@@ -1,8 +1,4 @@
-﻿@model LoginFormModel
-@inject ILoginFormLocalization localization
-@{
-    bool incorrect = Model == null ? false : true;
-}
+﻿@inject ILoginFormLocalization localization
 <!doctype html>
 <html>
 <head>
@@ -12,16 +8,44 @@
     <link rel="stylesheet" type="text/css" href="/styles/admin_panel/login_form.css" />
 </head>
 <body>
-    <form method="post" class="loginFormBlock">
-        @if (incorrect)
-        {
-            <span class="errorMsg">@Html.Raw(localization.IncorrectInput)</span>
-        }
+    <form name="login-form" class="login-form-block">
         <label for="Login">@Html.Raw(localization.UserName)</label>
         <input type="text" id="Login" name="Login" autocomplete="off" required value="@Model?.Login">
         <label for="Password">@Html.Raw(localization.Password)</label>
         <input type="password" id="Password" name="Password" required value="@Model?.Password">
-        <input type="submit" value="@Html.Raw(localization.Enter)" />
+        <input type="submit" name="submit-button" value="@Html.Raw(localization.Enter)" />
     </form>
+    <script>
+        var errorMsgWritten = false;
+        function getRequestString() {
+            let requestString = location.href;
+            if (location.search != '')
+                requestString = requestString.substring(0, requestString.indexOf(location.search));
+            requestString += '?pageID=@((int)AdminPanelPages.LoginForm)';
+            return requestString;
+        }
+        function sendData(e) {
+            let formElement = document.forms['login-form'];
+            let formData = new FormData();
+            for (let element of formElement.elements) {
+                formData.append(element.name, element.value);
+            }
+            let request = new XMLHttpRequest();
+            request.open('POST', getRequestString(), false);
+            request.send(formData);
+            if (request.status == 200)
+                location.reload();
+            else if(!this.errorMsgWritten) {
+                let errorMsg = document.createElement('span');
+                errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
+                errorMsg.setAttribute('id', 'error-msg');
+                formElement.insertBefore(errorMsg, formElement.firstChild);
+                this.errorMsgWritten = true;
+            }
+            e.preventDefault();
+        }
+        let submitButton = document.forms['login-form'].elements['submit-button'];
+        submitButton.addEventListener('click', sendData);
+    </script>
 </body>
 </html>
