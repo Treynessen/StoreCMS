@@ -6,9 +6,10 @@
     Context.Items["PageName"] = localization.TemplatesPageName;
     User user = Context.Items["User"] as User;
 }
+<script src="/scripts/admin_panel/send_data.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddTemplate, user, Context))
 {
-            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplate)">@Html.Raw(localization.AddTemplate)</a></div>
+            <div class="add-template-button"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplate)">@Html.Raw(localization.AddTemplate)</a></div>
 }
             <table>
                 <tr>
@@ -27,16 +28,19 @@
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)" />
                             <input type="hidden" name="itemID" value="@t.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditTemplate)" />
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.EditTemplate)" />
                         </form>
                     }
                     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteTemplate, user, Context))
                     {
-                        <form method="post">
-                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplate)" />
+        <form id="delete-template-form-@t.ID">
                             <input type="hidden" name="itemID" value="@t.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteTemplate)" />
+                            <input id="delete-template-button-@t.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteTemplate)" />
                         </form>
+                        <script>
+                            let deleteTemplateButton_@(t.ID) = document.getElementById('delete-template-button-@t.ID');
+                            deleteTemplateButton_@(t.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteTemplate)', 'delete-template-form-@t.ID', () => { alert('@Html.Raw(localization.TemplateDeleted)'); location.reload(); }));
+                        </script>
                     }
                     </td>
                 </tr>

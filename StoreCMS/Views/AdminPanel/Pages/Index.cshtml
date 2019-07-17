@@ -37,13 +37,13 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeletePage, user, Context))
                 {
-            <form id="delete-page-@p.ID">
+            <form id="delete-page-form-@p.ID">
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input id="delete-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeletePage)" />
+                            <input id="delete-page-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeletePage)" />
                         </form>
                         <script>
-                            let deleteButton_@p.ID = document.getElementById('delete-button-@p.ID');
-                            deleteButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeletePage)', 'delete-page-@p.ID', () => { alert('@Html.Raw(localization.PageDeleted)'); location.reload(); }))
+                            let deletePageButton_@p.ID = document.getElementById('delete-page-button-@p.ID');
+                            deletePageButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeletePage)', 'delete-page-form-@p.ID', () => { alert('@Html.Raw(localization.PageDeleted)'); location.reload(); }))
                         </script>
                 }
                     </td>

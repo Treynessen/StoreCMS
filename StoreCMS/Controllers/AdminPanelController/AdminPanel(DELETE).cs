@@ -19,6 +19,7 @@ namespace Treynessen.Controllers
             User user = SecurityFunctions.CheckCookies(db, HttpContext);
             if (!SecurityFunctions.HasAccessTo(pageID, user, HttpContext))
                 return RedirectToAction(nameof(AdminPanel));
+
             switch (pageID)
             {
                 case AdminPanelPages.DeletePage:
@@ -35,6 +36,14 @@ namespace Treynessen.Controllers
 
                 case AdminPanelPages.DeleteProductImage:
                     ImagesManagementFunctions.DeleteProductImage(db, itemID, imageID, HttpContext);
+                    return StatusCode(200);
+
+                case AdminPanelPages.DeleteTemplate:
+                    DatabaseInteraction.DeleteTemplate(db, itemID, HttpContext);
+                    return StatusCode(200);
+
+                case AdminPanelPages.DeleteChunk:
+                    DatabaseInteraction.DeleteChunk(db, itemID, HttpContext);
                     return StatusCode(200);
 
                 default:

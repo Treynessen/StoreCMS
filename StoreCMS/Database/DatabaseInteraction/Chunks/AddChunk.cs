@@ -45,6 +45,7 @@ namespace Treynessen.Database
             chunk.ID = GetDatabaseRawID(db.Chunks);
             db.Chunks.Add(chunk);
             db.SaveChanges();
+            model.ID = chunk.ID;
             successfullyCompleted = true;
 
             // Получаем список шаблонов и чанков, которые содержат данный чанк

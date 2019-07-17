@@ -39,11 +39,11 @@
                 <div class="image-block">
                     <div><image src="@m" max-width="290" max-height="175" quality="80"></image></div>
                     <label>@m.Substring(m.LastIndexOf('/') + 1)</label>
-                    <form id="image-@(imageID + 1)-form">
+                    <form id="delete-image-form-@(imageID + 1)">
                         <input type="hidden" name="imageID" value="@imageID">
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
                 {
-                        <input id="submit-button-@(imageID + 1)" type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
+                        <input id="delete-image-button-@(imageID + 1)" type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
                 }
                 else
                 {
@@ -53,8 +53,8 @@
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
                 {
                     <script>
-                        let submitButton_@(imageID + 1) = document.getElementById('submit-button-@(imageID + 1)');
-                        submitButton_@(imageID + 1).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProductImage)&itemID=@product?.ID', 'image-@(imageID + 1)-form', () => { alert('@Html.Raw(localization.ImageDeleted)'); location.reload(); }));
+                        let deleteImageButton_@(imageID + 1) = document.getElementById('delete-image-button-@(imageID + 1)');
+                        deleteImageButton_@(imageID + 1).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProductImage)&itemID=@product?.ID', 'delete-image-form-@(imageID + 1)', () => { alert('@Html.Raw(localization.ImageDeleted)'); location.reload(); }));
                     </script>
                 }
                 </div>

@@ -11,6 +11,7 @@ namespace Treynessen.TemplatesManagement
                 return null;
             TemplateModel model = new TemplateModel
             {
+                ID = template.ID,
                 Name = template.Name,
                 TemplateSource = template.TemplateSource,
                 TemplatePath = template.TemplatePath

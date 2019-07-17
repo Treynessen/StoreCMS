@@ -3,7 +3,11 @@
     public interface ITemplatesLocalization
     {
         string TemplatesPageName { get; }
-        string WorkWithTemplatePageName { get; }
+        string AddTemplatePageName { get; }
+        string EditTemplatePageName { get; }
+        string ChunksPageName { get; }
+        string AddChunkPageName { get; }
+        string EditChunkPageName { get; }
 
         string AddTemplate { get; }
         string AddChunk { get; }
@@ -18,6 +22,13 @@
 
         string SaveButton { get; }
         string TemplateCode { get; }
+
+        string TemplateCreated { get; }
+        string TemplateEdited { get; }
+        string TemplateDeleted { get; }
+        string ChunkCreated { get; }
+        string ChunkEdited { get; }
+        string ChunkDeleted { get; }
 
         string IncorrectInput { get; }
     }

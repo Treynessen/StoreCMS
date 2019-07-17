@@ -40,6 +40,7 @@ namespace Treynessen.Database
             template.ID = GetDatabaseRawID(db.Templates);
             db.Templates.Add(template);
             db.SaveChanges();
+            model.ID = template.ID;
             successfullyCompleted = true;
         }
     }

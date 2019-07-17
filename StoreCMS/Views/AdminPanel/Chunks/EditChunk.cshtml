@@ -1,0 +1,34 @@
+﻿@model TemplateModel
+@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/work_with_template.css";
+    Context.Items["PageName"] = $"{localization.EditChunkPageName} {Model?.Name}";
+}
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="edit-chunk-form" class="page-container">
+                <div class="name-block">
+                    <label for="Name">@Html.Raw(localization.Name)</label>
+                    <input type="text" id="Name" name="TemplateModel.Name" value="@Html.Raw(Model?.Name)" required />
+                </div>
+                <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
+                <textarea id="TemplateSource" name="TemplateModel.TemplateSource">@Html.Raw(Model?.TemplateSource)</textarea>
+                <input id="edit-chunk-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+            </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsg = document.createElement('span');
+                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
+                    errorMsg.setAttribute('id', 'error-msg');
+                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                }
+                function successRequestHandler() {
+                    alert('@Html.Raw(localization.ChunkEdited)');
+                    location.reload();
+                }
+                let editChunkButton = document.getElementById('edit-chunk-button');
+                editChunkButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditChunk)&itemID=@Model.ID', 'edit-chunk-form', successRequestHandler, errorHandler));
+                let textarea = document.getElementById('TemplateSource');
+                textarea.addEventListener('keydown', insertTabEventHandler);
+            </script>

@@ -82,34 +82,32 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.AddTemplate:
                     DatabaseInteraction.AddTemplate(db, model.TemplateModel, HttpContext, out bool templateAdded);
                     if (templateAdded)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
-                    else return AddTemplate(model.TemplateModel);
+                    {
+                        string createdTemplateUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditTemplate}&itemID={model.TemplateModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdTemplateUrl);
+                        return StatusCode(201);
+                    }
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditTemplate:
                     DatabaseInteraction.EditTemplate(db, model.itemID, model.TemplateModel, HttpContext, out bool templateEdited);
-                    if (templateEdited)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditTemplate}&itemID={model.itemID}");
-                    else return EditTemplate(model.itemID, model.TemplateModel);
-
-                case AdminPanelPages.DeleteTemplate:
-                    DatabaseInteraction.DeleteTemplate(db, model.itemID, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Templates}");
+                    if (templateEdited) return StatusCode(200);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.AddChunk:
                     DatabaseInteraction.AddChunk(db, model.TemplateModel, HttpContext, out bool chunkAdded);
                     if (chunkAdded)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
-                    else return AddChunk(model.TemplateModel);
+                    {
+                        string createdTemplateUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditChunk}&itemID={model.TemplateModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdTemplateUrl);
+                        return StatusCode(201);
+                    }
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditChunk:
                     DatabaseInteraction.EditChunk(db, model.itemID, model.TemplateModel, HttpContext, out bool chunkEdited);
-                    if (chunkEdited)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditChunk}&itemID={model.itemID}");
-                    else return EditChunk(model.itemID, model.TemplateModel);
-
-                case AdminPanelPages.DeleteChunk:
-                    DatabaseInteraction.DeleteChunk(db, model.itemID, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
+                    if (chunkEdited) return StatusCode(200);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.CreateFolder:
                     FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext);

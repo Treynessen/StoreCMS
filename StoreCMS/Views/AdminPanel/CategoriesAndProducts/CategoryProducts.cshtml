@@ -50,13 +50,13 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProduct, user, Context))
                 {
-            <form id="delete-product-@p.ID">
+            <form id="delete-product-form-@p.ID">
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input id="delete-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteProduct)" />
+                            <input id="delete-product-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteProduct)" />
                         </form>
                         <script>
-                            let deleteButton_@p.ID = document.getElementById('delete-button-@p.ID');
-                            deleteButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProduct)', 'delete-product-@p.ID', () => { alert('@Html.Raw(localization.ProductDeleted)'); location.reload(); }))
+                            let deleteProductButton_@p.ID = document.getElementById('delete-product-button-@p.ID');
+                            deleteProductButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProduct)', 'delete-product-form-@p.ID', () => { alert('@Html.Raw(localization.ProductDeleted)'); location.reload(); }))
                         </script>
                 }
                     </td>

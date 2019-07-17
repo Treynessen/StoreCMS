@@ -10,7 +10,6 @@ namespace Treynessen.AdminPanelTypes
 
         public string Name { get; set; }
         public string Path { get; set; }
-        public int? imageID { get; set; }
 
         public PageModel PageModel { get; set; }
         public TemplateModel TemplateModel { get; set; }

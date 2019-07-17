@@ -38,13 +38,13 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteCategory, user, Context))
                 {
-                <form id="delete-category-@c.ID">
+                <form id="delete-category-form-@c.ID">
                                 <input type="hidden" name="itemID" value="@c.ID">
-                                <input id="delete-button-@c.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteCategory)" />
+                                <input id="delete-category-button-@c.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteCategory)" />
                             </form>
                             <script>
-                                let deleteButton_@c.ID = document.getElementById('delete-button-@c.ID');
-                                deleteButton_@(c.ID).addEventListener('click', createSendDataEventHandler('DELETE' ,'?pageID=@((int)AdminPanelPages.DeleteCategory)', 'delete-category-@c.ID', () => { alert('@Html.Raw(localization.CategoryDeleted)'); location.reload(); }))
+                                let deleteCategoryButton_@c.ID = document.getElementById('delete-category-button-@c.ID');
+                                deleteCategoryButton_@(c.ID).addEventListener('click', createSendDataEventHandler('DELETE' ,'?pageID=@((int)AdminPanelPages.DeleteCategory)', 'delete-category-form-@c.ID', () => { alert('@Html.Raw(localization.CategoryDeleted)'); location.reload(); }))
                             </script>
                 }
                         </td>

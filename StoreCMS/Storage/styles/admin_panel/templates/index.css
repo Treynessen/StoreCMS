@@ -20,26 +20,26 @@
         text-align: center;
     }
 
-div.addTemplateButton {
+div.add-template-button {
     margin-bottom: 1vh;
 }
 
-.addTemplateButton a {
-    display: inline-block;
-    text-decoration: none;
-    color: #000;
-    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-    font-size: 1.4rem;
-    padding: .8vh;
-    border-radius: 5px;
-    background-color: #00c0ff;
-}
-
-    .addTemplateButton a:hover {
-        background: #00a8ff;
+    div.add-template-button a {
+        display: inline-block;
+        text-decoration: none;
+        color: #000;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        font-size: 1.4rem;
+        padding: .8vh;
+        border-radius: 5px;
+        background-color: #00c0ff;
     }
 
-input.actionButton {
+        div.add-template-button a:hover {
+            background: #00a8ff;
+        }
+
+input.action-button {
     display: inline;
     border-style: none;
     background-color: transparent;
@@ -48,7 +48,7 @@ input.actionButton {
     font-weight: bold;
 }
 
-.actionButton:hover {
-    color: #00599e;
-    cursor: pointer;
-}
+    input.action-button:hover {
+        color: #00599e;
+        cursor: pointer;
+    }

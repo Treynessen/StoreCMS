@@ -8,10 +8,11 @@
     Template[] templates = Context.Items["Templates"] as Template[];
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="edit-product-form" class="page-container">
                 @*SAVE BUTTON*@
-                <input id="submit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="edit-product-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -154,11 +155,15 @@
                     errorMsg.setAttribute('id', 'error-msg');
                     formElement.insertBefore(errorMsg, formElement.firstChild);
                 }
-                function successRequestHandler(request) {
+                function successfulRequestHandler() {
                     alert('@Html.Raw(localization.CategoryEdited)');
                     location.reload();
                 }
                 let searchString = '?pageID=@((int)AdminPanelPages.EditProduct)&itemID=@Model.ID';
-                let submitButton = document.getElementById('submit-button');
-                submitButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-product-form', successRequestHandler, errorHandler));
+                let editProductButton = document.getElementById('edit-product-button');
+                editProductButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-product-form', successfulRequestHandler, errorHandler));
+                let textareaShortDescription = document.getElementById('ShortDescription');
+                textareaShortDescription.addEventListener('keydown', insertTabEventHandler);
+                let textareaContent = document.getElementById('Content');
+                textareaContent.addEventListener('keydown', insertTabEventHandler);
             </script>

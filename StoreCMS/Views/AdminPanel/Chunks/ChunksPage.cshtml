@@ -3,12 +3,13 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/index.css";
-    Context.Items["PageName"] = localization.TemplatesPageName;
+    Context.Items["PageName"] = localization.ChunksPageName;
     User user = Context.Items["User"] as User;
 }
+<script src="/scripts/admin_panel/send_data.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddChunk, user, Context))
 {
-            <div class="addTemplateButton"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddChunk)">@Html.Raw(localization.AddChunk)</a></div>
+            <div class="add-template-button"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddChunk)">@Html.Raw(localization.AddChunk)</a></div>
 }
             <table>
                 <tr>
@@ -27,16 +28,19 @@
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditChunk)" />
                             <input type="hidden" name="itemID" value="@t.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditChunk)" />
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.EditChunk)" />
                         </form>
                     }
                     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteChunk, user, Context))
                     {
-                        <form method="post">
-                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteChunk)" />
+        <form id="delete-chunk-form-@t.ID">
                             <input type="hidden" name="itemID" value="@t.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteChunk)" />
+                            <input id="delete-chunk-button-@t.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteChunk)" />
                         </form>
+                        <script>
+                            let deleteChunkButton_@(t.ID) = document.getElementById('delete-chunk-button-@t.ID');
+                            deleteChunkButton_@(t.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteChunk)', 'delete-chunk-form-@t.ID', () => { alert('@Html.Raw(localization.ChunkDeleted)'); location.reload(); }));
+                        </script>
                     }
                     </td>
                 </tr>

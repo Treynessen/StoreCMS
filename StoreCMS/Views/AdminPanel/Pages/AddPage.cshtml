@@ -6,27 +6,27 @@
     Context.Items["PageName"] = localization.AddPage_PageName;
     UsualPage[] pages = Context.Items["UsualPages"] as UsualPage[];
     Template[] templates = Context.Items["Templates"] as Template[];
-    bool incorrect = Model == null ? false : true;
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="add-page-form" class="page-container">
                 @*SAVE BUTTON*@
-                <input id="submit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="add-page-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
                         <label for="Title">@Html.Raw(localization.Title)*</label>
-                        <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
+                        <input type="text" id="Title" name="PageModel.Title" required />
                         @*BREADCRUMB*@
                         <label for="PageName">@Html.Raw(localization.Breadcrumb)*</label>
-                        <input type="text" id="PageName" name="PageModel.PageName" required value="@Model?.PageName" />
+                        <input type="text" id="PageName" name="PageModel.PageName" required />
                         @*PAGE DESCRIPTION*@
                         <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
-                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
+                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160">
                         @*PAGE KEYWORDS*@
                         <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
-                        <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
+                        <input type="text" id="PageKeywords" name="PageModel.PageKeywords" />
                     </div>
                     <div class="right-block">
                         @*TEMPLATES LIST*@
@@ -41,41 +41,20 @@
                         @*PREVIOUS PAGE*@
                         <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
                         <select id="PreviousPage" name="PageModel.PreviousPageID">
-                        @if (Model == null || !Model.PreviousPageID.HasValue)
-                        {
                             <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
-                        }
-                        else
-                        {
-                            <option>@Html.Raw(localization.WithoutPreviousPage)</option>
-                        }
                         @foreach (var p in pages)
                         {
-                            if (Model != null && Model.PreviousPageID.HasValue && Model.PreviousPageID.Value == p.ID)
-                            {
-                            <option value="@p.ID" selected>@Html.Raw(p.PageName)</option>
-                            }
-                            else
-                            {
                             <option value="@p.ID">@Html.Raw(p.PageName)</option>
-                            }
                         }
                         </select>
                         @*ALIAS*@
                         <label for="Alias">@Html.Raw(localization.Alias)</label>
-                        <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
+                        <input type="text" id="Alias" name="PageModel.Alias" />
                         @*IS MAIN PAGE?*@
                         @if (!PagesManagementFunctions.HasMainPage(db))
                         {
                         <div class="checkbox-block">
-                            @if (Model == null || !Model.IsMainPage)
-                            {
                             <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="false" />
-                            }
-                            else
-                            {
-                            <input type="checkbox" id="IsMainPage" name="PageModel.IsMainPage" value="true" checked />
-                            }
                             <script>
                                 let isMainPageCheckbox = document.getElementById('IsMainPage');
                                 isMainPageCheckbox.addEventListener('click', checkboxEventHandler);
@@ -85,14 +64,7 @@
                         }
                         @*PUBLISHED?*@
                         <div class="checkbox-block">
-                        @if (Model == null || Model.Published)
-                        {
                             <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="Published" name="PageModel.Published" value="false" />
-                        }
                             <script>
                                 let publishedCheckbox = document.getElementById('Published');
                                 publishedCheckbox.addEventListener('click', checkboxEventHandler);
@@ -101,14 +73,7 @@
                         </div>
                         @*IS INDEX?*@
                         <div class="checkbox-block">
-                        @if (Model == null || Model.IsIndex)
-                        {
                             <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="false" />
-                        }
                             <script>
                                 let isIndexCheckbox = document.getElementById('IsIndex');
                                 isIndexCheckbox.addEventListener('click', checkboxEventHandler);
@@ -117,14 +82,7 @@
                         </div>
                         @*IS FOLLOW?*@
                         <div class="checkbox-block">
-                        @if (Model == null || Model.IsFollow)
-                        {
                             <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="false" />
-                        }
                             <script>
                                 let isFollowCheckbox = document.getElementById('IsFollow');
                                 isFollowCheckbox.addEventListener('click', checkboxEventHandler);
@@ -135,7 +93,7 @@
                 </div>
                 @*CONTENT*@
                 <label for="Content">@Html.Raw(localization.Content)</label>
-                <textarea id="Content" name="PageModel.Content">@Model?.Content</textarea>
+                <textarea id="Content" name="PageModel.Content"></textarea>
             </form>
             <script>
                 function errorHandler(formElement) {
@@ -144,11 +102,12 @@
                     errorMsg.setAttribute('id', 'error-msg');
                     formElement.insertBefore(errorMsg, formElement.firstChild);
                 }
-                function successRequestHandler(request) {
+                function successfulRequestHandler(request) {
                     alert('@Html.Raw(localization.PageAdded)');
                     location.replace(request.getResponseHeader('location'));
                 }
-                let searchString = '?pageID=@((int)AdminPanelPages.AddPage)';
-                let submitButton = document.getElementById('submit-button');
-                submitButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'add-page-form', successRequestHandler, errorHandler));
+                let addPageButton = document.getElementById('add-page-button');
+                addPageButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddPage)', 'add-page-form', successfulRequestHandler, errorHandler));
+                let textarea = document.getElementById('Content');
+                textarea.addEventListener('keydown', insertTabEventHandler);
             </script>

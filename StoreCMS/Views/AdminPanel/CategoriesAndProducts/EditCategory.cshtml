@@ -9,9 +9,10 @@
     bool isMainPage = Context.Items["isMainPage"] == null ? false : (bool)Context.Items["isMainPage"];
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="edit-category-form" class="page-container">
-                <input id="submit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="edit-category-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -22,7 +23,7 @@
                         <input type="text" id="PageName" name="PageModel.PageName" required value="@Model.PageName" />
                         @*PAGE DESCRIPTION*@
                         <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
-                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model.PageDescription">
+                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
                         @*PAGE KEYWORDS*@
                         <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
                         <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model.PageKeywords" />
@@ -145,11 +146,13 @@
                     errorMsg.setAttribute('id', 'error-msg');
                     formElement.insertBefore(errorMsg, formElement.firstChild);
                 }
-                function successRequestHandler() {
+                function successfulRequestHandler() {
                     alert('@Html.Raw(localization.CategoryEdited)');
                     location.reload();
                 }
-                let submitButton = document.getElementById('submit-button');
                 let searchString = '?pageID=@((int)AdminPanelPages.EditCategory)&itemID=@Model.ID';
-                submitButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-category-form', successRequestHandler, errorHandler));
+                let editCategoryButton = document.getElementById('edit-category-button');
+                editCategoryButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-category-form', successfulRequestHandler, errorHandler));
+                let textarea = document.getElementById('Content');
+                textarea.addEventListener('keydown', insertTabEventHandler);
             </script>

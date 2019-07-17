@@ -1,0 +1,33 @@
+﻿@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/work_with_template.css";
+    Context.Items["PageName"] = localization.AddTemplatePageName;
+}
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="add-template-form" class="page-container">
+                <div class="name-block">
+                    <label for="Name">@Html.Raw(localization.Name)</label>
+                    <input type="text" id="Name" name="TemplateModel.Name" required />
+                </div>
+                <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
+                <textarea id="TemplateSource" name="TemplateModel.TemplateSource"></textarea>
+                <input id="add-template-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+            </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsg = document.createElement('span');
+                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
+                    errorMsg.setAttribute('id', 'error-msg');
+                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                }
+                function successRequestHandler(request) {
+                    alert('@Html.Raw(localization.TemplateCreated)');
+                    location.replace(request.getResponseHeader('location'));
+                }
+                let addTemplateButton = document.getElementById('add-template-button');
+                addTemplateButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddTemplate)', 'add-template-form', successRequestHandler, errorHandler));
+                let textarea = document.getElementById('TemplateSource');
+                textarea.addEventListener('keydown', insertTabEventHandler);
+            </script>

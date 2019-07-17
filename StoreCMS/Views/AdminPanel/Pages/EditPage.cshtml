@@ -9,9 +9,10 @@
     bool isMainPage = Context.Items["isMainPage"] == null ? false : (bool)Context.Items["isMainPage"];
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="edit-page-form" class="page-container">
-                <input id="submit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="edit-page-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -149,7 +150,9 @@
                     alert('@Html.Raw(localization.PageEdited)');
                     location.reload();
                 }
-                let submitButton = document.getElementById('submit-button');
                 let searchString = '?pageID=@((int)AdminPanelPages.EditPage)&itemID=@Model.ID';
-                submitButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-page-form', successRequestHandler, errorHandler));
+                let editPageButton = document.getElementById('edit-page-button');
+                editPageButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-page-form', successRequestHandler, errorHandler));
+                let textarea = document.getElementById('Content');
+                textarea.addEventListener('keydown', insertTabEventHandler);
             </script>
