@@ -3,18 +3,14 @@
     public class RuPagesLocalization : IPagesLocalization
     {
         public string Pages_PageName => "Страницы";
-        public string AddPage_PageName => "Добавить страницу";
-        public string EditPage_PageName => "Изменить страницу";
+        public string AddPage_PageName => "Добавление страницы";
+        public string EditPage_PageName => "Изменение страницы";
 
         public string AddPage => "Добавить страницу";
         public string Name => "Название";
         public string ActionsWithPage => "Действия";
         public string EditPage => "Изменить страницу";
         public string DeletePage => "Удалить страницу";
-
-        public string PageType => "Тип страницы";
-        public string Usual => "Обычная страница";
-        public string Category => "Страница с товаром";
 
         public string SaveButton => "Сохранить";
         public string Title => "Заголовок(Title) страницы";
@@ -30,9 +26,11 @@
         public string Published => "Опубликована";
         public string IsIndex => "Поисковым системам доступна индексация страницы";
         public string IsFollow => "Поисковым системам доступен переход по ссылкам";
-        public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";
         public string Content => "Содержимое страницы";
 
-        public string CategoryName => "Название категории";
+        public string PageAdded => "Страница добавлена";
+        public string PageEdited => "Страница изменена";
+        public string PageDeleted => "Страница удалена";
+        public string IncorrectInput => "Обязательные поля (помеченные *) не заполнены или содержат недопустимые символы";
     }
 }

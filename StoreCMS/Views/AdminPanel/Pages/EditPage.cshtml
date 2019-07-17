@@ -1,23 +1,19 @@
 ﻿@model PageModel
 @inject IPagesLocalization localization
-@inject CMSDatabase db
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/pages/workWithPage.css";
-    Context.Items["PageName"] = localization.EditPage_PageName;
-    var pages = db.UsualPages.Select(p => new { p.ID, Name = $"{p.Title}(ID{p.ID})", p.PreviousPageID, p.Alias });
-    var templates = db.Templates.ToList();
-    bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
+    Context.Items["PageStyle"] = "/styles/admin_panel/pages/work_with_page.css";
+    Context.Items["PageName"] = $"{localization.EditPage_PageName} {Model.PageName}";
+    UsualPage[] pages = Context.Items["UsualPages"] as UsualPage[];
+    Template[] templates = Context.Items["Templates"] as Template[];
     bool isMainPage = Context.Items["isMainPage"] == null ? false : (bool)Context.Items["isMainPage"];
 }
-<form method="post" class="pageContainer">
-            @if (incorrect)
-            {
-                <span class="incorrect">@Html.Raw(localization.IncorrectInput)</span>
-            }
-                <input type="submit" value="@Html.Raw(localization.SaveButton)" />
-                <div class="leftRightBlocks">
-                    <div class="leftBlock">
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
+            <form id="edit-page-form" class="page-container">
+                <input id="submit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <div class="blocks">
+                    <div class="left-block">
                         @*TITLE*@
                         <label for="Title">@Html.Raw(localization.Title)*</label>
                         <input type="text" id="Title" name="PageModel.Title" required value="@Model.Title" />
@@ -31,7 +27,7 @@
                         <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
                         <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model.PageKeywords" />
                     </div>
-                    <div class="rightBlock">
+                    <div class="right-block">
                         @*TEMPLATE*@
                         <label for="TemplateId">@Html.Raw(localization.Template)</label>
                         <select id="TemplateId" name="PageModel.TemplateId" required>
@@ -55,16 +51,6 @@
                             }
                         }
                         </select>
-                        @*PAGE TYPE*@
-                        <label for="PageType">@Html.Raw(localization.PageType)</label>
-                        @if (Model.PageType == PageType.Usual)
-                        {
-                        <input type="text" id="PageType" value="@Html.Raw(localization.Usual)" disabled />
-                        }
-                        else if (Model.PageType == PageType.Category)
-                        {
-                        <input type="text" id="PageType" value="@Html.Raw(localization.Category)" disabled />
-                        }
                         @if (!isMainPage)
                         {
                         @*PREVIOUS PAGE*@
@@ -86,11 +72,11 @@
                             }
                             if (Model.PreviousPageID.HasValue && p.ID == Model.PreviousPageID.Value)
                             {
-                            <option value="@p.ID" selected>@Html.Raw(p.Name)</option>
+                            <option value="@p.ID" selected>@Html.Raw(p.PageName)</option>
                             }
                             else
                             {
-                            <option value="@p.ID">@Html.Raw(p.Name)</option>
+                            <option value="@p.ID">@Html.Raw(p.PageName)</option>
                             }
                         }
                         </select>
@@ -99,38 +85,51 @@
                         <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
                         }
                         @*IS PUBLISHED?*@
-                        <div class="checkboxBlock">
+                        <div class="checkbox-block">
                         @if (Model.Published)
                         {
                             <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked="checked" />
                         }
                         else
                         {
-                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" />
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="false" />
                         }
+                            <script>
+                                let publishedCheckbox = document.getElementById('Published');
+                                publishedCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
                             <label for="Published">@Html.Raw(localization.Published)</label>
                         </div>
                         @*IS ROBOT INDEX?*@
-                        <div class="checkboxBlock">
+                        <div class="checkbox-block">
                         @if (Model.IsIndex)
                         {
                             <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" checked="checked" />
                         }
                         else
                         {
-                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" />
+                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="false" />
                         }
+                            <script>
+                                let isIndexCheckbox = document.getElementById('IsIndex');
+                                isIndexCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
                             <label for="IsIndex">@Html.Raw(localization.IsIndex)</label>
                         </div>
-                        <div class="checkboxBlock">
+                        @*IS FOLLOW?*@
+                        <div class="checkbox-block">
                         @if (Model.IsFollow)
                         {
                             <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" checked="checked" />
                         }
                         else
                         {
-                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" />
+                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="false" />
                         }
+                            <script>
+                                let isFollowCheckbox = document.getElementById('IsFollow');
+                                isFollowCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
                             <label for="IsFollow">@Html.Raw(localization.IsFollow)</label>
                         </div>
                     </div>
@@ -139,3 +138,18 @@
                 <label for="Content">@Html.Raw(localization.Content)</label>
                 <textarea id="Content" name="PageModel.Content">@Model?.Content</textarea>
             </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsg = document.createElement('span');
+                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
+                    errorMsg.setAttribute('id', 'error-msg');
+                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                }
+                function successRequestHandler() {
+                    alert('@Html.Raw(localization.PageEdited)');
+                    location.reload();
+                }
+                let submitButton = document.getElementById('submit-button');
+                let searchString = '?pageID=@((int)AdminPanelPages.EditPage)&itemID=@Model.ID';
+                submitButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-page-form', successRequestHandler, errorHandler));
+            </script>

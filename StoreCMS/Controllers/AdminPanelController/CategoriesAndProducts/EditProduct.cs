@@ -9,20 +9,16 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult EditProduct(int? itemID, PageModel model = null)
+        public IActionResult EditProduct(int? itemID)
         {
             HttpContext.Items["pageID"] = AdminPanelPages.EditProduct;
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
-            if (model == null)
-            {
-                ProductPage page = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
-                model = PagesManagementFunctions.PageToPageModel(page);
-            }
-            else
-                HttpContext.Items["IsIncorrect"] = true;
-            if (model == null)
+            ProductPage page = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
+            if(page == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
+            PageModel model = PagesManagementFunctions.PageToPageModel(page);
+            HttpContext.Items["Templates"] = db.Templates.AsNoTracking().ToArrayAsync().Result;
             return View("CategoriesAndProducts/EditProduct", model);
         }
     }

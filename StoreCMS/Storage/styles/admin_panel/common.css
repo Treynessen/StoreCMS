@@ -111,3 +111,9 @@ tr:not(:first-child):hover {
         max-height: 2vh;
     }
 }
+
+#error-msg {
+    display: block;
+    font-size: 1.1rem;
+    color: #ff0000;
+}

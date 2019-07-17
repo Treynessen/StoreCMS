@@ -22,6 +22,7 @@ namespace Treynessen.Controllers
             db.Entry(product).State = EntityState.Detached;
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
             string[] productImages = ImagesManagementFunctions.GetProductImagesUrl(product, env);
+            HttpContext.Items["ProductPage"] = product;
             return View("CategoriesAndProducts/ProductImages", productImages);
         }
     }

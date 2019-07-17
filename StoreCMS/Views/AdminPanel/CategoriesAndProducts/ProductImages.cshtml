@@ -1,43 +1,62 @@
 ﻿@model string[]
-@inject IProductsLocalization localization
+@inject ICategoriesAndProductsLocalization localization
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/products/productImages.css";
-    Context.Items["PageName"] = localization.ProductImagesPageName;
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/product_images.css";
+    ProductPage product = Context.Items["ProductPage"] as ProductPage;
+    Context.Items["PageName"] = $"{localization.ProductImagesPageName} {product?.PageName}";
     User user = Context.Items["User"] as User;
 }
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/send_file.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProductImage, user, Context))
 {
-<form method="post" class="uploadFileForm" enctype="multipart/form-data">
-                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddProductImage)">
-                <div class="inputFileButton">
-                    <label for="upload">@Html.Raw(localization.ChooseTheFile)</label>
-                    <input type="file" id="upload" name="uploadedFile" accept=".png, .jpg, .jpeg" />
+            <form class="upload-image">
+                <div class="input-file-button">
+                    <label for="input-file">@Html.Raw(localization.UploadImage)</label>
+                    <input type="file" id="input-file" name="uploadedFile" accept=".jpg, .jpeg" />
                 </div>
-                <input type="submit" />
             </form>
+            <script>
+                function successfulRequestHandler() {
+                    alert('@Html.Raw(localization.ImageUploaded)');
+                    location.reload();
+                }
+                function errorRequestHandler() {
+                    alert('@Html.Raw(localization.UnsuccessfulImageUploaded)');
+                }
+                let inputButton = document.getElementById('input-file');
+                let searchString = '?pageID=@((int)AdminPanelPages.AddProductImage)&itemID=@product?.ID';
+                inputButton.addEventListener('change', createSendFileEventHandler(searchString, successfulRequestHandler, errorRequestHandler,'.JPEG', '.JPG'));
+            </script>
 }
-            <div class="imagesList">
+            <div class="images-list">
     @{
         int imageID = 0;
     }
     @foreach (var m in Model)
     {
-                <div class="imageBlock">
+                <div class="image-block">
                     <div><image src="@m" max-width="290" max-height="175" quality="80"></image></div>
                     <label>@m.Substring(m.LastIndexOf('/') + 1)</label>
-                    <form method="post">
-                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProductImage)" />
+                    <form id="image-@(imageID + 1)-form">
                         <input type="hidden" name="imageID" value="@imageID">
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
                 {
-                        <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
+                        <input id="submit-button-@(imageID + 1)" type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
                 }
                 else
                 {
                         <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" disabled />
                 }
                     </form>
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+                {
+                    <script>
+                        let submitButton_@(imageID + 1) = document.getElementById('submit-button-@(imageID + 1)');
+                        submitButton_@(imageID + 1).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProductImage)&itemID=@product?.ID', 'image-@(imageID + 1)-form', () => { alert('@Html.Raw(localization.ImageDeleted)'); location.reload(); }));
+                    </script>
+                }
                 </div>
         imageID++;
     }

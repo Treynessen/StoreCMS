@@ -1,4 +1,4 @@
-﻿form.pageContainer {
+﻿form.page-container {
     display: flex;
     width: 100%;
     max-width: 100%;
@@ -7,51 +7,51 @@
     flex-direction: column;
 }
 
-.pageContainer textarea {
-    display: block;
-    resize: none;
-    flex-grow: 1;
-    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-    font-size: 1rem;
-    padding: .7vh;
-    background-color: #ebebeb;
-    border: 2px solid #c5c3c3;
-}
-
-    .pageContainer textarea:focus {
-        outline: none;
-        background-color: #dadada;
-        border-color: #a9a7a7;
-        transition-property: background-color, border-color;
-        transition-timing-function: ease;
-        transition-duration: 500ms;
+    form.page-container textarea {
+        display: block;
+        resize: none;
+        flex-grow: 1;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        font-size: 1rem;
+        padding: .7vh;
+        background-color: #ebebeb;
+        border: 2px solid #c5c3c3;
     }
 
-div.leftRightBlocks {
+        form.page-container textarea:focus {
+            outline: none;
+            background-color: #dadada;
+            border-color: #a9a7a7;
+            transition-property: background-color, border-color;
+            transition-timing-function: ease;
+            transition-duration: 500ms;
+        }
+
+div.blocks {
     display: flex;
     width: 100%;
     max-width: 100%;
 }
 
-div.leftBlock {
+div.left-block {
     width: 55%;
     margin-right: 5%;
 }
 
-div.rightBlock {
+div.right-block {
     flex-grow: 1;
 }
 
-div.checkboxBlock {
+div.checkbox-block {
     margin-top: .7vh;
 }
 
-.checkboxBlock label {
-    display: inline;
-    font-size: 1.2rem;
-}
+    div.checkbox-block label {
+        display: inline;
+        font-size: 1.2rem;
+    }
 
-div.priceBlock {
+div.price-block {
     display: flex;
     margin-top: 1.5vh;
     justify-content: space-between;
@@ -59,17 +59,17 @@ div.priceBlock {
     max-width: 100%;
 }
 
-.priceBlock div {
-    width: 45%;
-    max-width: 45%;
-}
+    div.price-block div {
+        width: 45%;
+        max-width: 45%;
+    }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-textarea.shortDescription {
+textarea.short-description {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -92,8 +92,4 @@ input[type="submit"] {
     input[type="submit"]:hover {
         background: #00a8ff;
         cursor: pointer;
-    }
-
-    span.incorrect{
-        color: #ff0000;
     }

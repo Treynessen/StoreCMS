@@ -12,6 +12,7 @@ namespace Treynessen.Security
     {
         public static bool IsValidLoginFormData(CMSDatabase db, LoginFormModel data, HttpContext context)
         {
+            if (string.IsNullOrEmpty(data.Login) || string.IsNullOrEmpty(data.Password)) return false;
             User user = db.Users.FirstOrDefaultAsync(u => u.Login.Equals(data.Login, StringComparison.InvariantCulture)).Result;
             if (user == null) return false;
             if (!user.Password.Equals(data.Password, StringComparison.InvariantCulture)) return false;

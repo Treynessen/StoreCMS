@@ -1,28 +1,53 @@
 ﻿@model CategoryPage[]
-@inject IProductsLocalization localization
+@inject ICategoriesAndProductsLocalization localization
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/products/categories.css";
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/categories.css";
     Context.Items["PageName"] = localization.CategoriesPageName;
     User user = Context.Items["User"] as User;
 }
-<table>
+<script src="/scripts/admin_panel/send_data.js"></script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddCategory, user, Context))
+{
+    
+            <div class="add-category-button">
+                <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddCategory)">@Html.Raw(localization.AddCategory)</a>
+            </div>
+}
+            <table>
                 <tr>
-                    <td>@Html.Raw(localization.Name)</td>
-                </tr>
-                @foreach (var category in Model)
+                    <td>ID</td>
+                        <td>@Html.Raw(localization.Name)</td>
+                        <td>URL</td>
+                        <td>@Html.Raw(localization.Actions)</td>
+                    </tr>
+    @foreach (var c in Model)
+    {
+                    <tr>
+                        <td id="category-@c.ID-id" onclick="location.assign(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.ID)</td>
+                        <td id="category-@c.ID-title" onclick="location.assign(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.Title)</td>
+                        <td id="category-@c.ID-url" onclick="location.assign(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.RequestPath)</td>
+                        <td>
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
                 {
-                <tr>
-                    <td>
-                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CategoryProducts, user, Context))
+                            <form method="get">
+                                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditCategory)" />
+                                <input type="hidden" name="itemID" value="@c.ID">
+                                <input type="submit" class="action-button" value="@Html.Raw(localization.EditCategory)" />
+                            </form>
+                }
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteCategory, user, Context))
                 {
-                        <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@category.ID">@Html.Raw(category.PageName)<b> (ID@(category.ID))</b></a>
+                <form id="delete-category-@c.ID">
+                                <input type="hidden" name="itemID" value="@c.ID">
+                                <input id="delete-button-@c.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteCategory)" />
+                            </form>
+                            <script>
+                                let deleteButton_@c.ID = document.getElementById('delete-button-@c.ID');
+                                deleteButton_@(c.ID).addEventListener('click', createSendDataEventHandler('DELETE' ,'?pageID=@((int)AdminPanelPages.DeleteCategory)', 'delete-category-@c.ID', () => { alert('@Html.Raw(localization.CategoryDeleted)'); location.reload(); }))
+                            </script>
                 }
-                else
-                {
-                        <span>@Html.Raw(category.PageName)<b> (ID@(category.ID))</b></span>
-                }
-                    </td>
-                </tr>
-                }
-             </table>
+                        </td>
+                    </tr>
+    }
+                </table>

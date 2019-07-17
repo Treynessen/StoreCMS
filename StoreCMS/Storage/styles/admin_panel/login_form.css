@@ -24,12 +24,6 @@ input[type="submit"] {
         cursor: pointer;
     }
 
-#error-msg {
-    display: block;
-    font-size: 1.1rem;
-    color: #ff0000;
-}
-
 @media all and (orientation:portrait) {
     form.loginFormBlock {
         width: 50%;

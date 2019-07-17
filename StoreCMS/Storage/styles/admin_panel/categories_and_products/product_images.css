@@ -1,4 +1,4 @@
-﻿div.inputFileButton {
+﻿div.input-file-button {
     display: inline-block;
     border: none;
     font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
@@ -7,45 +7,48 @@
     background-color: #00c0ff;
 }
 
-    div.inputFileButton:hover {
+    div.input-file-button:hover {
         background: #00a8ff;
         cursor: pointer;
     }
 
-    div.inputFileButton > label {
+    div.input-file-button > label {
         display: block;
         padding: .8vh;
         margin: 0;
         cursor: pointer;
     }
 
-    div.inputFileButton > input[type=file] {
+    div.input-file-button > input[type=file] {
         display: none;
         position: absolute;
         z-index: -1;
     }
 
-form.uploadFileForm {
+form.upload-image {
     margin-bottom: 2vh;
 }
 
-.uploadFileForm > input[type=submit] {
-    display: inline-block;
-    margin-left: .5%;
-    border: none;
-    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-    padding: .8vh;
-    font-size: 1.4rem;
-    border-radius: 5px;
-    background-color: #00c0ff;
-}
-
-    .uploadFileForm > input[type=submit]:hover {
-        background: #00a8ff;
-        cursor: pointer;
+    form.upload-image > input[type=submit] {
+        display: inline-block;
+        border: none;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        padding: .8vh;
+        font-size: 1.4rem;
+        border-radius: 5px;
+        background-color: #00c0ff;
     }
 
-div.imagesList {
+        form.upload-image > input[type=submit]:hover {
+            background: #00a8ff;
+            cursor: pointer;
+        }
+
+    form.upload-image > span {
+        margin-left: 1%;
+    }
+
+div.images-list {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -53,7 +56,7 @@ div.imagesList {
     overflow-y: auto;
 }
 
-div.imageBlock {
+div.image-block {
     display: inline-flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -65,19 +68,19 @@ div.imageBlock {
     overflow: hidden;
 }
 
-    div.imageBlock:not(:first-child) {
+    div.image-block:not(:first-child) {
         margin-left: .6%;
     }
 
-    div.imageBlock:nth-child(5n+1) {
+    div.image-block:nth-child(5n+1) {
         margin-left: 0;
     }
 
-    div.imageBlock:nth-child(n+6) {
+    div.image-block:nth-child(n+6) {
         margin-top: .6%;
     }
 
-    div.imageBlock > div {
+    div.image-block > div {
         flex-grow: 1;
         width: 100%;
         max-width: 100%;
@@ -86,7 +89,7 @@ div.imageBlock {
         overflow: hidden;
     }
 
-        div.imageBlock > div > img {
+        div.image-block > div > img {
             display: block;
             position: absolute;
             margin: auto;
@@ -96,7 +99,7 @@ div.imageBlock {
             right: 0;
         }
 
-    div.imageBlock > label {
+    div.image-block > label {
         display: block;
         margin: 0;
         width: 100%;
@@ -109,7 +112,7 @@ div.imageBlock {
         text-align: center;
     }
 
-    div.imageBlock > form > input[type=submit] {
+    div.image-block > form > input[type=submit] {
         display: block;
         border: none;
         box-sizing: border-box;
@@ -123,7 +126,7 @@ div.imageBlock {
         background-color: #00c0ff;
     }
 
-        div.imageBlock > form > input[type=submit]:hover {
+        div.image-block > form > input[type=submit]:hover {
             background: #00a8ff;
             cursor: pointer;
         }

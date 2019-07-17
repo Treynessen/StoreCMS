@@ -9,50 +9,43 @@
     }
 
     td:nth-child(2) {
-        width: 30%;
+        width: 40%;
         overflow-x: auto;
         white-space: nowrap;
     }
 
     td:nth-child(3) {
-        width: 30%;
+        width: 20%;
         overflow-x: auto;
         white-space: nowrap;
     }
 
     td:nth-child(4) {
-        width: 20%;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-    }
-
-    td:nth-child(5) {
         width: 15%;
         overflow-x: auto;
         text-align: center;
     }
 
-div.addPageButton {
+div.add-page-button {
     margin-bottom: 1vh;
 }
 
-.addPageButton a {
-    display: inline-block;
-    text-decoration: none;
-    color: #000;
-    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-    font-size: 1.4rem;
-    padding: .8vh;
-    border-radius: 5px;
-    background-color: #00c0ff;
-}
-
-    .addPageButton a:hover {
-        background: #00a8ff;
+    div.add-page-button a {
+        display: inline-block;
+        text-decoration: none;
+        color: #000;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        font-size: 1.4rem;
+        padding: .8vh;
+        border-radius: 5px;
+        background-color: #00c0ff;
     }
 
-input.actionButton {
+        div.add-page-button a:hover {
+            background: #00a8ff;
+        }
+
+input.action-button {
     display: inline;
     border-style: none;
     background-color: transparent;
@@ -61,7 +54,7 @@ input.actionButton {
     font-weight: bold;
 }
 
-.actionButton:hover {
-    color: #00599e;
-    cursor: pointer;
-}
+    input.action-button:hover {
+        color: #00599e;
+        cursor: pointer;
+    }

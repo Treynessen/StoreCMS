@@ -1,0 +1,135 @@
+﻿@inject ICategoriesAndProductsLocalization localization
+@inject CMSDatabase db
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/work_with_page.css";
+    Context.Items["PageName"] = localization.AddCategoryPageName;
+    UsualPage[] pages = Context.Items["UsualPages"] as UsualPage[];
+    Template[] templates = Context.Items["Templates"] as Template[];
+    bool incorrect = Model == null ? false : true;
+}
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
+            <form id="add-category-form" class="page-container">
+                @*SAVE BUTTON*@
+                <input id="submit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <div class="blocks">
+                    <div class="left-block">
+                        @*TITLE*@
+                        <label for="Title">@Html.Raw(localization.CategoryTitle)*</label>
+                        <input type="text" id="Title" name="PageModel.Title" required value="@Model?.Title" />
+                        @*BREADCRUMB*@
+                        <label for="PageName">@Html.Raw(localization.CategoryBreadcrumb)*</label>
+                        <input type="text" id="PageName" name="PageModel.PageName" required value="@Model?.PageName" />
+                        @*PAGE DESCRIPTION*@
+                        <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
+                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160" value="@Model?.PageDescription">
+                        @*PAGE KEYWORDS*@
+                        <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
+                        <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
+                    </div>
+                    <div class="right-block">
+                        @*TEMPLATES LIST*@
+                        <label for="TemplateId">@Html.Raw(localization.Template)</label>
+                        <select id="TemplateId" name="PageModel.TemplateId">
+                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                            @foreach (var t in templates)
+                            {
+                            <option value="@t.ID">@Html.Raw(t.Name)</option>
+                            }
+                        </select>
+                        @*PREVIOUS PAGE*@
+                        <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
+                        <select id="PreviousPage" name="PageModel.PreviousPageID">
+                        @if (Model == null || !Model.PreviousPageID.HasValue)
+                        {
+                            <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
+                        }
+                        else
+                        {
+                            <option>@Html.Raw(localization.WithoutPreviousPage)</option>
+                        }
+                        @foreach (var p in pages)
+                        {
+                            if (Model != null && Model.PreviousPageID.HasValue && Model.PreviousPageID.Value == p.ID)
+                            {
+                            <option value="@p.ID" selected>@Html.Raw(p.PageName)</option>
+                            }
+                            else
+                            {
+                            <option value="@p.ID">@Html.Raw(p.PageName)</option>
+                            }
+                        }
+                        </select>
+                        @*ALIAS*@
+                        <label for="Alias">@Html.Raw(localization.Alias)</label>
+                        <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
+                        @*PUBLISHED?*@
+                        <div class="checkbox-block">
+                        @if (Model == null || Model.Published)
+                        {
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="false" />
+                        }
+                            <script>
+                                let publishedCheckbox = document.getElementById('Published');
+                                publishedCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="Published">@Html.Raw(localization.Published)</label>
+                        </div>
+                        @*IS INDEX?*@
+                        <div class="checkbox-block">
+                        @if (Model == null || Model.IsIndex)
+                        {
+                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="false" />
+                        }
+                            <script>
+                                let isIndexCheckbox = document.getElementById('IsIndex');
+                                isIndexCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="IsIndex">@Html.Raw(localization.IsIndex)</label>
+                        </div>
+                        @*IS FOLLOW?*@
+                        <div class="checkbox-block">
+                        @if (Model == null || Model.IsFollow)
+                        {
+                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="false" />
+                        }
+                            <script>
+                                let isFollowCheckbox = document.getElementById('IsFollow');
+                                isFollowCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="IsFollow">@Html.Raw(localization.IsFollow)</label>
+                        </div>
+                    </div>
+                </div>
+                @*CONTENT*@
+                <label for="Content">@Html.Raw(localization.Content)</label>
+                <textarea id="Content" name="PageModel.Content">@Model?.Content</textarea>
+            </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsg = document.createElement('span');
+                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
+                    errorMsg.setAttribute('id', 'error-msg');
+                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                }
+                function successRequestHandler(request) {
+                    alert('@Html.Raw(localization.CategoryAdded)');
+                    location.replace(request.getResponseHeader('location'));
+                }
+                let searchString = '?pageID=@((int)AdminPanelPages.AddCategory)';
+                let submitButton = document.getElementById('submit-button');
+                submitButton.addEventListener('click', createSendDataEventHandler('POST' ,searchString, 'add-category-form', successRequestHandler, errorHandler));
+            </script>

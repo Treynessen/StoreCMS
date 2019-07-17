@@ -2,18 +2,19 @@
 @using Treynessen.Extensions;
 @model List<ProductPage>
 @inject IHostingEnvironment env
-@inject IProductsLocalization localization
+@inject ICategoriesAndProductsLocalization localization
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/products/categoryProducts.css";
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/category_products.css";
     int categoryID = (int)Context.Items["itemID"];
     string categoryName = Context.Items["categoryName"] as string;
     Context.Items["PageName"] = $"{localization.CategoryProductsPageName} {categoryName}";
     User user = Context.Items["User"] as User;
 }
+<script src="/scripts/admin_panel/send_data.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProduct, user, Context))
 {
-<div class="addProductButton">
+<div class="add-product-button">
                 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddProduct)&itemID=@categoryID">@Html.Raw($"{localization.AddProductInCategory} <b>{categoryName}</b>")</a>
             </div>
 }
@@ -22,7 +23,7 @@
                     <td></td>
                     <td>@Html.Raw(localization.Name)</td>
                     <td>URL</td>
-                    <td>@Html.Raw(localization.ActionsWithProduct)</td>
+                    <td>@Html.Raw(localization.Actions)</td>
                 </tr>
                 @foreach (var p in Model)
                 {
@@ -36,7 +37,7 @@
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditProduct)" />
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditProduct)" />
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.EditProduct)" />
                         </form>
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.ProductImages, user, Context))
@@ -44,16 +45,19 @@
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.ProductImages)" />
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.ProductImages)" />
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.ProductImages)" />
                         </form>
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProduct, user, Context))
                 {
-                        <form method="post">
-                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProduct)" />
+            <form id="delete-product-@p.ID">
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeleteProduct)" />
+                            <input id="delete-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteProduct)" />
                         </form>
+                        <script>
+                            let deleteButton_@p.ID = document.getElementById('delete-button-@p.ID');
+                            deleteButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProduct)', 'delete-product-@p.ID', () => { alert('@Html.Raw(localization.ProductDeleted)'); location.reload(); }))
+                        </script>
                 }
                     </td>
                 </tr>

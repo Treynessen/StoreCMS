@@ -27,6 +27,7 @@ namespace Treynessen.Database
             ++productPage.PreviousPage.ProductsCount;
             db.ProductPages.Add(productPage);
             db.SaveChanges();
+            model.ID = productPage.ID;
             successfullyCompleted = true;
         }
     }

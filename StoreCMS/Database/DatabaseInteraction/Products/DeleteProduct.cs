@@ -11,15 +11,11 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void DeleteProduct(CMSDatabase db, int? productID, HttpContext context, out int? categoryID)
+        public static void DeleteProduct(CMSDatabase db, int? productID, HttpContext context)
         {
             if (!productID.HasValue)
-            {
-                categoryID = null;
                 return;
-            }
             ProductPage deletedProduct = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == productID.Value).Result;
-            categoryID = deletedProduct.PreviousPageID;
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{deletedProduct.PreviousPageID}{deletedProduct.ID}\\";
             if (Directory.Exists(pathToImages))

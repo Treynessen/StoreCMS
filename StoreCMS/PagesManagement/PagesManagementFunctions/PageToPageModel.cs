@@ -34,6 +34,7 @@ namespace Treynessen.PagesManagement
                 default:
                     return null;
             }
+            model.ID = page.ID;
             model.Title = page.Title;
             model.PageName = page.PageName;
             model.Alias = page.Alias;

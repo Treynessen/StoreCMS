@@ -12,10 +12,6 @@
         string EditPage { get; }
         string DeletePage { get; }
 
-        string PageType { get; }
-        string Usual { get; }
-        string Category { get; }
-
         string SaveButton { get; }
         string Title { get; }
         string Breadcrumb { get; }
@@ -30,9 +26,11 @@
         string Published { get; }
         string IsIndex { get; }
         string IsFollow { get; }
-        string IncorrectInput { get; }
         string Content { get; }
 
-        string CategoryName { get; }
+        string PageAdded { get; }
+        string PageEdited { get; }
+        string PageDeleted { get; }
+        string IncorrectInput { get; }
     }
 }

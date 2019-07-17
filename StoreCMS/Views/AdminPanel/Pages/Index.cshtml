@@ -1,4 +1,4 @@
-﻿@model PageViewModel[]
+﻿@model UsualPage[]
 @inject IPagesLocalization localization
 @{
     Layout = "CommonPage";
@@ -6,9 +6,10 @@
     Context.Items["PageName"] = localization.Pages_PageName;
     User user = Context.Items["User"] as User;
 }
+<script src="/scripts/admin_panel/send_data.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddPage, user, Context))
 {
-<div class="addPageButton">
+            <div class="add-page-button">
                 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a>
             </div>
 }
@@ -17,34 +18,33 @@
                     <td>ID</td>
                     <td>@Html.Raw(localization.Name)</td>
                     <td>URL</td>
-                    <td>@Html.Raw(localization.PageType)</td>
                     <td>@Html.Raw(localization.ActionsWithPage)</td>
                 </tr>
     @foreach (var p in Model)
     {
                 <tr>
                     <td>@Html.Raw(p.ID)</td>
-                    <td>@Html.Raw(p.Name)</td>
-                    <td>@Html.Raw(p.Url)</td>
-                    <td>@Html.Raw((p.PageType == PageType.Usual ? localization.Usual : localization.Category))</td>
+                    <td>@Html.Raw(p.Title)</td>
+                    <td>@Html.Raw(p.RequestPath)</td>
                     <td>
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditPage, user, Context))
                 {
                         <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditPage)" />
-                            <input type="hidden" name="pageType" value="@((int)p.PageType)" />
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.EditPage)" />
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.EditPage)" />
                         </form>
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeletePage, user, Context))
                 {
-                        <form method="post">
-                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeletePage)" />
-                            <input type="hidden" name="pageType" value="@((int)p.PageType)" />
+            <form id="delete-page-@p.ID">
                             <input type="hidden" name="itemID" value="@p.ID">
-                            <input type="submit" class="actionButton" value="@Html.Raw(localization.DeletePage)" />
+                            <input id="delete-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeletePage)" />
                         </form>
+                        <script>
+                            let deleteButton_@p.ID = document.getElementById('delete-button-@p.ID');
+                            deleteButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeletePage)', 'delete-page-@p.ID', () => { alert('@Html.Raw(localization.PageDeleted)'); location.reload(); }))
+                        </script>
                 }
                     </td>
                 </tr>

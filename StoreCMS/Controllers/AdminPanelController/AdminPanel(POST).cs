@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
 using Treynessen.Database;
 using Treynessen.AdminPanelTypes;
-using Treynessen.ImagesManagement;
 using Treynessen.Database.Entities;
 using Treynessen.FileManagerManagement;
 
@@ -32,46 +31,53 @@ namespace Treynessen.Controllers
             switch (model.PageId)
             {
                 case AdminPanelPages.AddPage:
+                    model.PageModel.PageType = PagesManagement.PageType.Usual;
                     DatabaseInteraction.AddPage(db, model.PageModel, HttpContext, out bool pageAdded);
                     if (pageAdded)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
-                    else return AddPage(model.PageModel);
+                    {
+                        string createdPageUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditPage}&itemID={model.PageModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdPageUrl);
+                        return StatusCode(201);
+                    }
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditPage:
+                    model.PageType = PagesManagement.PageType.Usual;
                     DatabaseInteraction.EditPage(db, model, HttpContext, out bool pageEdited);
-                    if (pageEdited)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditPage}&pageType={(int)model.PageType}&itemID={model.itemID}");
-                    return EditPage(model.PageType, model.itemID, model.PageModel);
+                    if (pageEdited) return StatusCode(200);
+                    else return StatusCode(422);
 
-                case AdminPanelPages.DeletePage:
-                    DatabaseInteraction.DeletePage(db, model.PageType, model.itemID, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
+                case AdminPanelPages.AddCategory:
+                    model.PageModel.PageType = PagesManagement.PageType.Category;
+                    DatabaseInteraction.AddPage(db, model.PageModel, HttpContext, out bool categoryAdded);
+                    if (categoryAdded)
+                    {
+                        string createdPageUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditCategory}&itemID={model.PageModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdPageUrl);
+                        return StatusCode(201);
+                    }
+                    else return StatusCode(422);
+
+                case AdminPanelPages.EditCategory:
+                    model.PageType = PagesManagement.PageType.Category;
+                    DatabaseInteraction.EditPage(db, model, HttpContext, out bool categoryEdited);
+                    if (categoryEdited) return StatusCode(200);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.AddProduct:
                     DatabaseInteraction.AddProduct(db, model.PageModel, model.itemID, HttpContext, out bool productAdded);
                     if (productAdded)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.CategoryProducts}&itemID={model.itemID}");
-                    else return AddProduct(model.PageModel);
+                    {
+                        string createdPageUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditProduct}&itemID={model.PageModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdPageUrl);
+                        return StatusCode(201);
+                    }
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditProduct:
                     DatabaseInteraction.EditProduct(db, model.PageModel, model.itemID, HttpContext, out bool productEdited);
-                    if (productEdited)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditProduct}&itemID={model.itemID}");
-                    else return EditProduct(model.itemID, model.PageModel);
-
-                case AdminPanelPages.DeleteProduct:
-                    DatabaseInteraction.DeleteProduct(db, model.itemID, HttpContext, out int? categoryID);
-                    if (categoryID.HasValue)
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.CategoryProducts}&itemID={categoryID.Value}");
-                    else return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
-
-                case AdminPanelPages.AddProductImage:
-                    ImagesManagementFunctions.AddProductImageToServer(db, model.uploadedFile, model.itemID, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ProductImages}&itemID={model.itemID}");
-
-                case AdminPanelPages.DeleteProductImage:
-                    ImagesManagementFunctions.DeleteProductImage(db, model.itemID, model.imageID, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.ProductImages}&itemID={model.itemID}");
+                    if (productEdited) return StatusCode(200);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.AddTemplate:
                     DatabaseInteraction.AddTemplate(db, model.TemplateModel, HttpContext, out bool templateAdded);
@@ -104,10 +110,6 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.DeleteChunk:
                     DatabaseInteraction.DeleteChunk(db, model.itemID, HttpContext);
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
-
-                case AdminPanelPages.UploadFile:
-                    FileManagerManagementFunctions.UploadFileToServer(model.Path, model.uploadedFile, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
 
                 case AdminPanelPages.CreateFolder:
                     FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext);

@@ -54,3 +54,5 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Vi
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Templates\product_page_template.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\FileManager\EditScriptFile.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\Chunks\category_page_content.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\CategoriesAndProducts\AddCategory.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\CategoriesAndProducts\EditCategory.g.cshtml.cs

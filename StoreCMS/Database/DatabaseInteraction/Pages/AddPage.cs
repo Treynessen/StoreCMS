@@ -30,6 +30,7 @@ namespace Treynessen.Database
             }
             db.Add(page);
             db.SaveChanges();
+            model.ID = page.ID;
             successfullyCompleted = true;
         }
     }

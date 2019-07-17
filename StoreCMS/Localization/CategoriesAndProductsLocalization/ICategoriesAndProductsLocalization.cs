@@ -1,27 +1,33 @@
 ﻿namespace Treynessen.Localization
 {
-    public interface IProductsLocalization
+    public interface ICategoriesAndProductsLocalization
     {
         string CategoriesPageName { get; }
         string CategoryProductsPageName { get; }
+        string AddCategoryPageName { get; }
         string AddProductPageName { get; }
+        string EditCategoryPageName { get; }
         string EditProductPageName { get; }
         string ProductImagesPageName { get; }
 
-        string Name { get; }
+        string AddCategory { get; }
         string AddProductInCategory { get; }
-        string ActionsWithProduct { get; }
+        string Name { get; }
+        string Actions{ get; }
+        string EditCategory { get; }
         string EditProduct { get; }
         string ProductImages { get; }
+        string DeleteCategory { get; }
         string DeleteProduct { get; }
 
-        string ChooseTheFile { get; }
+        string UploadImage { get; }
         string DeleteProductImage { get; }
 
-        string IncorrectInput { get; }
         string SaveButton { get; }
-        string Title { get; }
-        string Breadcrumb { get; }
+        string CategoryTitle { get; }
+        string ProductTitle { get; }
+        string CategoryBreadcrumb { get; }
+        string ProductBreadcrumb { get; }
         string Price { get; }
         string OldPrice { get; }
         string ShortDescription { get; }
@@ -31,10 +37,24 @@
         string PageKeywords { get; }
         string Template { get; }
         string WithoutTemplate { get; }
+        string PreviousPage { get; }
+        string WithoutPreviousPage { get; }
         string Alias { get; }
         string Published { get; }
         string IsIndex { get; }
         string IsFollow { get; }
         string Content { get; }
+
+        string CategoryAdded { get; }
+        string ProductAdded { get; }
+        string CategoryEdited { get; }
+        string ProductEdited { get; }
+        string CategoryDeleted { get; }
+        string ProductDeleted { get; }
+        string ImageUploaded { get; }
+        string ImageDeleted { get; }
+
+        string UnsuccessfulImageUploaded { get; }
+        string IncorrectInput { get; }
     }
 }

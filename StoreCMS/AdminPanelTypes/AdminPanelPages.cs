@@ -14,6 +14,9 @@
         EditPage,
         DeletePage,
 
+        AddCategory,
+        DeleteCategory,
+        EditCategory,
         CategoryProducts,
         AddProduct,
         EditProduct,

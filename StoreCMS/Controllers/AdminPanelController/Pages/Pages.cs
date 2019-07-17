@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.AdminPanelTypes;
-using Treynessen.PagesManagement;
 
 namespace Treynessen.Controllers
 {
@@ -12,11 +11,8 @@ namespace Treynessen.Controllers
         public IActionResult Pages()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.Pages;
-
-            var usualPages = db.UsualPages.AsNoTracking().Select(page => new PageViewModel { ID = page.ID, Name = page.PageName, Url = page.RequestPath, PageType = PageType.Usual });
-            var categoryPages = db.CategoryPages.AsNoTracking().Select(page => new PageViewModel { ID = page.ID, Name = page.PageName, Url = page.RequestPath, PageType = PageType.Category });
-            var sortedPages = usualPages.Concat(categoryPages).OrderBy(page => page.PageType).ThenBy(page => page.ID).ToArray();
-            return View("Pages/Index", sortedPages);
+            var usualPages = db.UsualPages.AsNoTracking().OrderBy(p => p.ID).ToArrayAsync().Result;
+            return View("Pages/Index", usualPages);
         }
     }
 }
