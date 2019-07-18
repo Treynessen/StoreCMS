@@ -52,7 +52,10 @@ namespace Treynessen.FileManagerManagement
                     }
                 }
                 if (!type.HasValue)
+                {
+                    redirectPath = null;
                     return;
+                }
                 for (int i = 0; i < pointIndex; ++i)
                 {
                     bool correctSymbol = false;
@@ -65,7 +68,10 @@ namespace Treynessen.FileManagerManagement
                         }
                     }
                     if (!correctSymbol)
+                    {
+                        redirectPath = null;
                         return;
+                    }
                 }
             }
             if (type != FileManagerObjectType.Folder)
@@ -79,16 +85,23 @@ namespace Treynessen.FileManagerManagement
                     }
                     else File.Delete(pathToFile);
                 }
+                else redirectPath = null;
             }
             else
             {
                 string pathToFolder = $"{path}{fileOrFolderFullName}\\";
                 if (!Directory.Exists(pathToFolder))
+                {
+                    redirectPath = null;
                     return;
+                }
                 foreach (var dir in env.GetStorageDirectoriesInfo())
                 {
                     if (pathToFolder.Equals(dir.Path, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        redirectPath = null;
                         return;
+                    }
                 }
                 Directory.Delete(pathToFolder, true);
             }

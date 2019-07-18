@@ -16,16 +16,9 @@
 <meta name="robots" content="[Page:IsRobotIndex]">
 </head>
 <body>
-@(await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model))
-<script>
-	var catalog = document.getElementById('catalog');
-	var button = catalog.querySelector('.button');
-	button.onclick = function() {
-		catalog.classList.toggle('open');
-	};
-</script>
-@(await Html.PartialAsync("~/Views/Chunks/content.cshtml", Model))
-@(await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model))
+@{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/content.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
 </body>
 </html>

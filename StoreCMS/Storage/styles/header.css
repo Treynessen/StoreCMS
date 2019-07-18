@@ -1,9 +1,9 @@
-div.headerFullWidth{
+div.header-full-width{
 	width: 100%;
 	background: linear-gradient(to bottom, #4b4b4b, #1d1d1d);
 }
 
-div.headerFullWidth > div.headerContainer{
+div.header-full-width> div.header-container{
 	display: flex;
 	justify-content: center;
 	width: 1000px;
@@ -12,7 +12,7 @@ div.headerFullWidth > div.headerContainer{
 	font-size: 20px;
 }
 
-div.headerContainer > a.logoBlock{
+div.header-container > a.logo-block{
 	display: block;
 	background-image: url(/images/logo.png);
 	width: 410px;
@@ -21,11 +21,11 @@ div.headerContainer > a.logoBlock{
 	margin-right: 5px;
 }
 
-div.headerContainer > div.headerContainer_leftBlock{
+div.header-container > div.header-container-left-block{
 	flex-grow: 1;
 }
 
-div.headerContainer_leftBlock > span{
+div.header-container-left-block > span{
 	display: block;
 	text-align: center;
 	font-weight: bold;
@@ -33,27 +33,27 @@ div.headerContainer_leftBlock > span{
 	margin-bottom: 3px;
 }
 
-div.headerContainer_leftBlock > span:first-child{
+div.header-container-left-block > span:first-child{
 	font-weight: normal;
 	color: #deff00;
 }
 
-div.headerContainer_leftBlock > span:last-child{
+div.header-container-left-block > span:last-child{
 	margin-bottom: 0;
 }
 
-div.headerContainer > div.headerContainer_rightBlock{
+div.header-container > div.header-container-right-block{
 	margin-left: 5px;
 }
 
-div.headerContainer_rightBlock > span{
+div.header-container-right-block > span{
 	display: block;
 	font-weight: normal;
 	color: #deff00;
 	margin-bottom: 3px;
 }
 
-div.headerContainer_rightBlock > a{
+div.header-container-right-block > a{
 	display: block;
 	text-decoration: none;
 	font-weight: bold;
@@ -62,10 +62,10 @@ div.headerContainer_rightBlock > a{
 	margin-bottom: 3px;
 }
 
-div.headerContainer_rightBlock > a:last-child{
+div.header-container-right-block > a:last-child{
 	margin-bottom: 0;
 }
 
-div.headerContainer_rightBlock > a:hover{
+div.header-container-right-block > a:hover{
 	color: #ffd200;
 }

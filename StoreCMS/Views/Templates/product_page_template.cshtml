@@ -18,15 +18,6 @@
 <body>
 @{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
-<script>
-	var catalog = document.getElementById('catalog');
-	var button = catalog.querySelector('.button');
-	button.onclick = function() {
-		catalog.classList.toggle('open');
-	};
-</script>
-<script src="/styles/jquery-2-min.js"></script>
-<script src="/styles/jslider-min.js"></script>
 @{ try { @await Html.PartialAsync("~/Views/Chunks/product_page_content.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
 </body>

@@ -3,7 +3,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/file_manager/edit_template.css";
-    Context.Items["PageName"] = $"{localization.EditScriptPageName} {Model.FileName}";
+    Context.Items["PageName"] = $"{localization.EditStylePageName} {Model.FileName}";
     User user = Context.Items["User"] as User;
     string path = Context.Items["PathToFile"] as string;
 }

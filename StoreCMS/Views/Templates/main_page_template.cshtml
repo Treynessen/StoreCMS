@@ -1,4 +1,4 @@
-﻿@model Page
+@model Page
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -19,13 +19,6 @@
 <body>
 @{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
-<script>
-	var catalog = document.getElementById('catalog');
-	var button = catalog.querySelector('.button');
-	button.onclick = function() {
-		catalog.classList.toggle('open');
-	};
-</script>
 @{ try { @await Html.PartialAsync("~/Views/Chunks/notice.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/content.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
