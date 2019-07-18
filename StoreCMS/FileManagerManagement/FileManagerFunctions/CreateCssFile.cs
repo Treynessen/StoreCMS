@@ -10,7 +10,7 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void CreateCssFile(string path, string fileName, HttpContext context)
+        public static void CreateCssFile(string path, string fileName, HttpContext context, out bool successfullyCreated)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (string.IsNullOrEmpty(path))
@@ -21,19 +21,29 @@ namespace Treynessen.FileManagerManagement
             {
                 Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*$");
                 if (!regex.IsMatch(path))
+                {
+                    successfullyCreated = false;
                     return;
+                }
                 path = path.Replace('>', '\\');
                 if (!path[path.Length - 1].Equals('\\'))
                     path = path.Insert(path.Length, "\\");
                 path = $"{env.GetStorageFolderFullPath()}{path}";
             }
             if (!Directory.Exists(path) || !HasAccessToFolder(path, env))
+            {
+                successfullyCreated = false;
                 return;
+            }
             fileName = OtherFunctions.GetCorrectName(fileName, context);
             if (string.IsNullOrEmpty(fileName))
+            {
+                successfullyCreated = false;
                 return;
+            }
             fileName = GetUniqueFileOrFolderName(path, fileName, ".css");
             File.Create($"{path}{fileName}").Close();
+            successfullyCreated = true;
         }
     }
 }

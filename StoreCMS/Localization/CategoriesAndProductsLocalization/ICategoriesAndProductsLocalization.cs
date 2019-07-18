@@ -54,7 +54,7 @@
         string ImageUploaded { get; }
         string ImageDeleted { get; }
 
-        string UnsuccessfulImageUploaded { get; }
+        string UnsuccessfullyImageUploaded { get; }
         string IncorrectInput { get; }
     }
 }

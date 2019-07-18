@@ -14,10 +14,13 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void DeletePage(CMSDatabase db, PageType? pageType, int? itemID, HttpContext context)
+        public static void DeletePage(CMSDatabase db, PageType? pageType, int? itemID, HttpContext context, out bool successfullyDeleted)
         {
             if (!pageType.HasValue || !itemID.HasValue)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             Page page = null;
             switch (pageType)
             {
@@ -28,10 +31,14 @@ namespace Treynessen.Database
                     page = db.CategoryPages.FirstOrDefaultAsync(p => p.ID == itemID).Result;
                     break;
                 default:
+                    successfullyDeleted = false;
                     return;
             }
             if (page == null)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             if (page is UsualPage up)
             {
                 db.Entry(up).Reference(p => p.PreviousPage).LoadAsync().Wait();
@@ -65,6 +72,7 @@ namespace Treynessen.Database
                 db.Remove(page);
             }
             db.SaveChanges();
+            successfullyDeleted = true;
         }
     }
 }

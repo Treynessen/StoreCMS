@@ -13,13 +13,19 @@ namespace Treynessen.ImagesManagement
 {
     public static partial class ImagesManagementFunctions
     {
-        public static void DeleteProductImage(CMSDatabase db, int? productID, int? imageID, HttpContext context)
+        public static void DeleteProductImage(CMSDatabase db, int? productID, int? imageID, HttpContext context, out bool successfullyDeleted)
         {
             if (!productID.HasValue || !imageID.HasValue)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             ProductPage product = db.ProductPages.FirstOrDefaultAsync(p => p.ID == productID.Value).Result;
             if (product == null)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             db.Entry(product).State = EntityState.Detached;
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
@@ -39,6 +45,7 @@ namespace Treynessen.ImagesManagement
                             newImageName: $"{product.Alias}{(i == 0 ? string.Empty : $"_{i.ToString()}")}"
                 );
             }
+            successfullyDeleted = true;
         }
     }
 }

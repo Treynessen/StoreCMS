@@ -10,7 +10,7 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void CreateFolder(string path, string folderName, HttpContext context)
+        public static void CreateFolder(string path, string folderName, HttpContext context, out bool successfullyCreated)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (string.IsNullOrEmpty(path))
@@ -21,19 +21,29 @@ namespace Treynessen.FileManagerManagement
             {
                 Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*$");
                 if (!regex.IsMatch(path))
+                {
+                    successfullyCreated = false;
                     return;
+                }
                 path = path.Replace('>', '\\');
                 if (!path[path.Length - 1].Equals('\\'))
                     path = path.Insert(path.Length, "\\");
                 path = $"{env.GetStorageFolderFullPath()}{path}";
             }
             if (!Directory.Exists(path) || !HasAccessToFolder(path, env))
+            {
+                successfullyCreated = false;
                 return;
+            }
             folderName = OtherFunctions.GetCorrectName(folderName, context);
             if (string.IsNullOrEmpty(folderName))
+            {
+                successfullyCreated = false;
                 return;
+            }
             folderName = GetUniqueFileOrFolderName(path, folderName);
             Directory.CreateDirectory($"{path}{folderName}");
+            successfullyCreated = true;
         }
     }
 }

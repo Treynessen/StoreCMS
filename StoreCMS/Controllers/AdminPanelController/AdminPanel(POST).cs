@@ -110,16 +110,19 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.CreateFolder:
-                    FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext);
-                    return StatusCode(200);
+                    FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext, out bool folderCreated);
+                    if (folderCreated) return StatusCode(201);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.CreateStyle:
-                    FileManagerManagementFunctions.CreateCssFile(model.Path, model.Name, HttpContext);
-                    return StatusCode(200);
+                    FileManagerManagementFunctions.CreateCssFile(model.Path, model.Name, HttpContext, out bool styleFileCreated);
+                    if (styleFileCreated) return StatusCode(201);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.CreateScript:
-                    FileManagerManagementFunctions.CreateScriptFile(model.Path, model.Name, HttpContext);
-                    return StatusCode(200);
+                    FileManagerManagementFunctions.CreateScriptFile(model.Path, model.Name, HttpContext, out bool scriptFileCreated);
+                    if (scriptFileCreated) return StatusCode(201);
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditStyle:
                     FileManagerManagementFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out string editedStylePath, out bool cssFileEdited);

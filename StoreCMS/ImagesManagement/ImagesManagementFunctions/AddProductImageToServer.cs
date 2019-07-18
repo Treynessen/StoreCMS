@@ -14,14 +14,21 @@ namespace Treynessen.ImagesManagement
 {
     public static partial class ImagesManagementFunctions
     {
-        public static void AddProductImageToServer(CMSDatabase db, IFormFile file, int? itemID, HttpContext context)
+        public static void AddProductImageToServer(CMSDatabase db, IFormFile file, int? itemID, HttpContext context, out bool successfullyUploaded)
         {
+            successfullyUploaded = true;
             if (!itemID.HasValue || file == null)
+            {
+                successfullyUploaded = false;
                 return;
+            }
             ProductPage product = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
             db.Entry(product).State = EntityState.Detached;
             if (product == null)
+            {
+                successfullyUploaded = false;
                 return;
+            }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
             Directory.CreateDirectory(imagesPath);
@@ -39,7 +46,7 @@ namespace Treynessen.ImagesManagement
                         source.Save(pathToFile);
                     }
                 }
-                catch (System.NotSupportedException) { }
+                catch (System.NotSupportedException) { successfullyUploaded = false; }
             }
         }
     }

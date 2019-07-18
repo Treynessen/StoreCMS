@@ -13,13 +13,19 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void DeleteTemplate(CMSDatabase db, int? itemID, HttpContext context)
+        public static void DeleteTemplate(CMSDatabase db, int? itemID, HttpContext context, out bool successfullyDeleted)
         {
             if (!itemID.HasValue)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             Template template = db.Templates.FirstOrDefaultAsync(t => t.ID == itemID).Result;
             if (template == null)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToTemplateFile = $"{env.GetTemplatesFolderFullPath()}{template.Name}.cshtml";
             if (File.Exists(pathToTemplateFile))
@@ -46,6 +52,7 @@ namespace Treynessen.Database
 
             db.Templates.Remove(template);
             db.SaveChanges();
+            successfullyDeleted = true;
         }
     }
 }

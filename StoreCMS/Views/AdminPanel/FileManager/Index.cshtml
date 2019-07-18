@@ -66,8 +66,11 @@
                         alert('@Html.Raw(localization.FolderCreated)');
                         location.reload();
                     }
+                    function folderCreationError() {
+                        alert('@Html.Raw(localization.IncorrectRequest)');
+                    }
                     let createFolderButton = document.getElementById('create-folder-button');
-                    createFolderButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateFolder)', 'create-folder-form', createdFolder));
+                    createFolderButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateFolder)', 'create-folder-form', createdFolder, folderCreationError));
                 </script>
             }
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateStyle, user, Context))
@@ -82,8 +85,11 @@
                         alert('@Html.Raw(localization.StyleFileCreated)');
                         location.reload();
                     }
+                    function styleFileCreationError() {
+                        alert('@Html.Raw(localization.IncorrectRequest)');
+                    }
                     let createStyleFileButton = document.getElementById('create-style-file-button');
-                    createStyleFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateStyle)', 'create-style-file-form', createdStyleFile));
+                    createStyleFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateStyle)', 'create-style-file-form', createdStyleFile, styleFileCreationError));
                 </script>
             }
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateScript, user, Context))
@@ -98,8 +104,11 @@
                         alert('@Html.Raw(localization.ScriptFileCreated)');
                         location.reload();
                     }
+                    function scriptFileCreationError() {
+                        alert('@Html.Raw(localization.IncorrectRequest)');
+                    }
                     let createScriptFileButton = document.getElementById('create-script-file-button');
-                    createScriptFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateScript)', 'create-script-file-form', createdScriptFile));
+                    createScriptFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateScript)', 'create-script-file-form', createdScriptFile, scriptFileCreationError));
                 </script>
             }
             </div>

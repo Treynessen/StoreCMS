@@ -26,12 +26,13 @@ namespace Treynessen.Controllers
             switch (pageID)
             {
                 case AdminPanelPages.AddProductImage:
-                    ImagesManagementFunctions.AddProductImageToServer(db, uploadedFile, itemID, HttpContext);
-                    return StatusCode(200);
+                    ImagesManagementFunctions.AddProductImageToServer(db, uploadedFile, itemID, HttpContext, out bool successfullyUploadedImage);
+                    if (successfullyUploadedImage) return StatusCode(200);
+                    else return StatusCode(415);
 
                 case AdminPanelPages.UploadFile:
-                    FileManagerManagementFunctions.UploadFileToServer(path, uploadedFile, HttpContext, out bool successfulUpload);
-                    if (successfulUpload) return StatusCode(200);
+                    FileManagerManagementFunctions.UploadFileToServer(path, uploadedFile, HttpContext, out bool successfullyUploadedFile);
+                    if (successfullyUploadedFile) return StatusCode(200);
                     else return StatusCode(415);
 
                 default:

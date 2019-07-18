@@ -11,11 +11,19 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void DeleteProduct(CMSDatabase db, int? productID, HttpContext context)
+        public static void DeleteProduct(CMSDatabase db, int? productID, HttpContext context, out bool successfullyDeleted)
         {
             if (!productID.HasValue)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             ProductPage deletedProduct = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == productID.Value).Result;
+            if (deletedProduct == null)
+            {
+                successfullyDeleted = false;
+                return;
+            }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{deletedProduct.PreviousPageID}{deletedProduct.ID}\\";
             if (Directory.Exists(pathToImages))
@@ -24,6 +32,7 @@ namespace Treynessen.Database
             --categoryPage.ProductsCount;
             db.ProductPages.Remove(deletedProduct);
             db.SaveChanges();
+            successfullyDeleted = true;
         }
     }
 }

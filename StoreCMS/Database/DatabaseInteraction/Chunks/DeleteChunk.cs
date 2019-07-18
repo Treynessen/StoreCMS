@@ -15,19 +15,26 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void DeleteChunk(CMSDatabase db, int? itemID, HttpContext context)
+        public static void DeleteChunk(CMSDatabase db, int? itemID, HttpContext context, out bool successfullyDeleted)
         {
             if (!itemID.HasValue)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             Chunk chunk = db.Chunks.FirstOrDefaultAsync(t => t.ID == itemID).Result;
             if (chunk == null)
+            {
+                successfullyDeleted = false;
                 return;
+            }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToChunkFile = $"{env.GetChunksFolderFullPath()}{chunk.Name}.cshtml";
             if (File.Exists(pathToChunkFile))
                 File.Delete(pathToChunkFile);
             db.Chunks.Remove(chunk);
             db.SaveChanges();
+            successfullyDeleted = true;
 
             // Получаем список чанков и шаблонов, использующих данный чанк и делаем перерендер
             var templates = db.Templates

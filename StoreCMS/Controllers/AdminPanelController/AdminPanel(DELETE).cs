@@ -24,28 +24,34 @@ namespace Treynessen.Controllers
             switch (pageID)
             {
                 case AdminPanelPages.DeletePage:
-                    DatabaseInteraction.DeletePage(db, PageType.Usual, itemID, HttpContext);
-                    return StatusCode(200);
+                    DatabaseInteraction.DeletePage(db, PageType.Usual, itemID, HttpContext, out bool pageDeleted);
+                    if (pageDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 case AdminPanelPages.DeleteCategory:
-                    DatabaseInteraction.DeletePage(db, PageType.Category, itemID, HttpContext);
-                    return StatusCode(200);
+                    DatabaseInteraction.DeletePage(db, PageType.Category, itemID, HttpContext, out bool categoryDeleted);
+                    if (categoryDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 case AdminPanelPages.DeleteProduct:
-                    DatabaseInteraction.DeleteProduct(db, itemID, HttpContext);
-                    return StatusCode(200);
+                    DatabaseInteraction.DeleteProduct(db, itemID, HttpContext, out bool productDeleted);
+                    if (productDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 case AdminPanelPages.DeleteProductImage:
-                    ImagesManagementFunctions.DeleteProductImage(db, itemID, imageID, HttpContext);
-                    return StatusCode(200);
+                    ImagesManagementFunctions.DeleteProductImage(db, itemID, imageID, HttpContext, out bool productImageDeleted);
+                    if (productImageDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 case AdminPanelPages.DeleteTemplate:
-                    DatabaseInteraction.DeleteTemplate(db, itemID, HttpContext);
-                    return StatusCode(200);
+                    DatabaseInteraction.DeleteTemplate(db, itemID, HttpContext, out bool templateDeleted);
+                    if (templateDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 case AdminPanelPages.DeleteChunk:
-                    DatabaseInteraction.DeleteChunk(db, itemID, HttpContext);
-                    return StatusCode(200);
+                    DatabaseInteraction.DeleteChunk(db, itemID, HttpContext, out bool chunkDeleted);
+                    if(chunkDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 case AdminPanelPages.DeleteFileOrFolder:
                     FileManagerManagementFunctions.DeleteFileOrFolder(path, HttpContext, out string redirectPath);
