@@ -1,10 +1,10 @@
-﻿form.pageContainer {
+﻿form.page-container {
     display: flex;
     height: 100%;
     flex-direction: column;
 }
 
-div.nameBlock {
+div.name-block {
     display: block;
     width: 40%;
 }
@@ -43,8 +43,4 @@ input[type="submit"] {
     input[type="submit"]:hover {
         background: #00a8ff;
         cursor: pointer;
-    }
-
-    span.incorrect{
-        color: #ff0000;
     }

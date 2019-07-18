@@ -6,6 +6,7 @@ using Treynessen.PagesManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.ImagesManagement;
 using Treynessen.Database.Entities;
+using Treynessen.FileManagerManagement;
 
 namespace Treynessen.Controllers
 {
@@ -45,6 +46,17 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.DeleteChunk:
                     DatabaseInteraction.DeleteChunk(db, itemID, HttpContext);
                     return StatusCode(200);
+
+                case AdminPanelPages.DeleteFileOrFolder:
+                    FileManagerManagementFunctions.DeleteFileOrFolder(path, HttpContext, out string redirectPath);
+                    if (redirectPath == null)
+                        return StatusCode(404);
+                    else
+                    {
+                        string redirectUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={redirectPath}";
+                        HttpContext.Response.Headers.Add("location", redirectUrl);
+                        return StatusCode(200);
+                    }
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

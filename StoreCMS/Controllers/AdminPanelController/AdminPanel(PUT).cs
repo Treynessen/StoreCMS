@@ -30,8 +30,9 @@ namespace Treynessen.Controllers
                     return StatusCode(200);
 
                 case AdminPanelPages.UploadFile:
-                    FileManagerManagementFunctions.UploadFileToServer(path, uploadedFile, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={path}");
+                    FileManagerManagementFunctions.UploadFileToServer(path, uploadedFile, HttpContext, out bool successfulUpload);
+                    if (successfulUpload) return StatusCode(200);
+                    else return StatusCode(415);
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

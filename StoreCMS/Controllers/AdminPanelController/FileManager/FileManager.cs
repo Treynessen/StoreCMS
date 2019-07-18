@@ -59,7 +59,7 @@ namespace Treynessen.Controllers
                 }
             }
             HttpContext.Items["CurrentDirectoryBreadcrumbs"] = breadcrumbs;
-
+            
             return View("FileManager/Index", fileManagerObjects);
         }
     }

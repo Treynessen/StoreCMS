@@ -23,12 +23,12 @@
                     errorMsg.setAttribute('id', 'error-msg');
                     formElement.insertBefore(errorMsg, formElement.firstChild);
                 }
-                function successRequestHandler() {
+                function successfulRequestHandler() {
                     alert('@Html.Raw(localization.TemplateEdited)');
                     location.reload();
                 }
                 let editTemplateButton = document.getElementById('edit-template-button');
-                editTemplateButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditTemplate)&itemID=@Model.ID', 'edit-template-form', successRequestHandler, errorHandler));
+                editTemplateButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditTemplate)&itemID=@Model.ID', 'edit-template-form', successfulRequestHandler, errorHandler));
                 let textarea = document.getElementById('TemplateSource');
                 textarea.addEventListener('keydown', insertTabEventHandler);
             </script>

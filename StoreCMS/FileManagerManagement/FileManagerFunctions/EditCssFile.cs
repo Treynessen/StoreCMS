@@ -12,12 +12,13 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void EditCssFile(string path, StyleModel model, HttpContext context, out bool successfullyCompleted)
+        public static void EditCssFile(string path, StyleModel model, HttpContext context, out string redirectPath, out bool successfullyCompleted)
         {
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.css$");
             if (!regex.IsMatch(path))
             {
                 successfullyCompleted = false;
+                redirectPath = string.Empty;
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
@@ -34,12 +35,14 @@ namespace Treynessen.FileManagerManagement
             if (!File.Exists(pathToFile) || !HasAccessToFolder(path, env))
             {
                 successfullyCompleted = false;
+                redirectPath = string.Empty;
                 return;
             }
             model.FileName = OtherFunctions.GetCorrectName(model.FileName, context);
             if (string.IsNullOrEmpty(model.FileName))
             {
                 successfullyCompleted = false;
+                redirectPath = string.Empty;
                 return;
             }
             string oldCssFileName = cssFileFullName.Substring(0, cssFileFullName.Length - 4);
@@ -48,11 +51,12 @@ namespace Treynessen.FileManagerManagement
             {
                 File.Move($"{path}{cssFileFullName}", cssFileFullPath);
             }
-            using(StreamWriter writer = new StreamWriter(cssFileFullPath))
+            using (StreamWriter writer = new StreamWriter(cssFileFullPath))
             {
                 writer.Write(model.FileContent);
             }
             successfullyCompleted = true;
+            redirectPath = cssFileFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '>');
         }
     }
 }

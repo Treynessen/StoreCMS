@@ -11,7 +11,7 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void UploadFileToServer(string path, IFormFile file, HttpContext context)
+        public static void UploadFileToServer(string path, IFormFile file, HttpContext context, out bool successfulUpload)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (string.IsNullOrEmpty(path))
@@ -22,17 +22,26 @@ namespace Treynessen.FileManagerManagement
             {
                 Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*$");
                 if (!regex.IsMatch(path))
+                {
+                    successfulUpload = false;
                     return;
+                }
                 path = path.Replace('>', '\\');
                 if (!path[path.Length - 1].Equals('\\'))
                     path = path.Insert(path.Length, "\\");
                 path = $"{env.GetStorageFolderFullPath()}{path}";
             }
             if (!Directory.Exists(path) || !HasAccessToFolder(path, env))
+            {
+                successfulUpload = false;
                 return;
+            }
             int pointIndex = file.FileName.LastIndexOf('.');
             if (pointIndex == -1)
+            {
+                successfulUpload = false;
                 return;
+            }
             string fileExtension = file.FileName.Substring(pointIndex).ToLower();
             bool itsCorrectExtension = false;
             foreach (var typeOfExtension in typesOfExtensions)
@@ -44,7 +53,10 @@ namespace Treynessen.FileManagerManagement
                 }
             }
             if (!itsCorrectExtension)
+            {
+                successfulUpload = false;
                 return;
+            }
             string fileName = file.FileName.Substring(0, pointIndex);
             fileName = OtherFunctions.GetCorrectName(fileName, context);
             if (string.IsNullOrEmpty(fileName))
@@ -55,6 +67,7 @@ namespace Treynessen.FileManagerManagement
             {
                 file.CopyTo(fs);
             }
+            successfulUpload = true;
         }
     }
 }

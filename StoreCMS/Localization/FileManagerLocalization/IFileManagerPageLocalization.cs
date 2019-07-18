@@ -6,7 +6,7 @@
         string EditStylePageName { get; }
         string EditScriptPageName { get; }
 
-        string ChooseTheFile { get; }
+        string UploadFile { get; }
         string FolderName { get; }
         string CssFileName { get; }
         string ScriptFileName { get; }
@@ -21,5 +21,15 @@
         string IncorrectInput { get; }
         string FileContent { get; }
         string SaveButton { get; }
+
+        string FolderCreated { get; }
+        string StyleFileCreated { get; }
+        string ScriptFileCreated { get; }
+        string Deleted { get; }
+        string IncorrectRequest { get; }
+        string FileUploaded { get; }
+        string UnsuccessfulFileUpload { get; }
+        string StyleFileEdited { get; }
+        string ScriptFileEdited { get; }
     }
 }

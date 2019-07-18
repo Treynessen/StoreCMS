@@ -50,7 +50,7 @@ namespace Treynessen.Controllers
                     }
                 }
             }
-            return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Settings}");
+            return StatusCode(200);
         }
     }
 }

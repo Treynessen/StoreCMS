@@ -11,6 +11,9 @@
         string AccessLevelToEditPage { get; }
         string AccessLevelToDeletePage { get; }
         string AccessLevelToCategories { get; }
+        string AccessLevelToAddCategory { get; }
+        string AccessLevelToEditCategory { get; }
+        string AccessLevelToDeleteCategory { get; }
         string AccessLevelToCategoryProducts { get; }
         string AccessLevelToAddProduct { get; }
         string AccessLevelToEditProduct { get; }
@@ -53,5 +56,7 @@
         string ConnectionString { get; }
 
         string SaveButton { get; }
+
+        string SettingsSaved { get; }
     }
 }

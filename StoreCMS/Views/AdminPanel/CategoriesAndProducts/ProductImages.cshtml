@@ -13,8 +13,8 @@
 {
             <form class="upload-image">
                 <div class="input-file-button">
-                    <label for="input-file">@Html.Raw(localization.UploadImage)</label>
-                    <input type="file" id="input-file" name="uploadedFile" accept=".jpg, .jpeg" />
+                    <label for="upload-file-button">@Html.Raw(localization.UploadImage)</label>
+                    <input type="file" id="upload-file-button" name="uploadedFile" accept=".jpg, .jpeg" />
                 </div>
             </form>
             <script>
@@ -25,9 +25,9 @@
                 function errorRequestHandler() {
                     alert('@Html.Raw(localization.UnsuccessfulImageUploaded)');
                 }
-                let inputButton = document.getElementById('input-file');
                 let searchString = '?pageID=@((int)AdminPanelPages.AddProductImage)&itemID=@product?.ID';
-                inputButton.addEventListener('change', createSendFileEventHandler(searchString, successfulRequestHandler, errorRequestHandler,'.JPEG', '.JPG'));
+                let uploadFileButton = document.getElementById('upload-file-button');
+                uploadFileButton.addEventListener('change', createSendFileEventHandler(searchString, successfulRequestHandler, errorRequestHandler,'.jpeg', '.jpg'));
             </script>
 }
             <div class="images-list">

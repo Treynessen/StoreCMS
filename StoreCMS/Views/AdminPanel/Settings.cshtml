@@ -19,6 +19,9 @@ new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddPage, Html.Ra
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditPage, Html.Raw(localization.AccessLevelToEditPage)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeletePage, Html.Raw(localization.AccessLevelToDeletePage)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Categories, Html.Raw(localization.AccessLevelToCategories)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddCategory, Html.Raw(localization.AccessLevelToAddCategory)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditCategory, Html.Raw(localization.AccessLevelToEditCategory)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteCategory, Html.Raw(localization.AccessLevelToDeleteCategory)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CategoryProducts, Html.Raw(localization.AccessLevelToCategoryProducts)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddProduct, Html.Raw(localization.AccessLevelToAddProduct)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditProduct, Html.Raw(localization.AccessLevelToEditProduct)),
@@ -54,10 +57,12 @@ Html.Raw($"4 - {localization.HighAccessLevel}"),
 Html.Raw($"5 - {localization.VeryHighAccessLevel}")
 };
 }
-<form method="post" action="/admin?pageID=@((int)AdminPanelPages.EditSettings)">
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="save-settings-form">
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                 {
-                <input type="submit" value="@Html.Raw(localization.SaveButton)">
+                <input id="save-settings-button" type="submit" value="@Html.Raw(localization.SaveButton)">
                 }
                 @*DB SETTINGS*@
                 <table>
@@ -79,11 +84,11 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     <tr><td>@Html.Raw(localization.ProductTemplate)</td></tr>
                     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                     {
-                    <tr><td class="withoutPadding"><textarea name="SettingsModel.ProductBlockTemplate">@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
+                    <tr><td class="without-padding"><textarea id="ProductBlockTemplate" name="SettingsModel.ProductBlockTemplate">@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
                     }
                     else
                     {
-                    <tr><td class="withoutPadding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
+                    <tr><td class="without-padding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
                     }
                 </table>
                 @*CATEGORY PAGE SETTINGS*@
@@ -93,22 +98,22 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                         <td>@Html.Raw(localization.NumberOfProductsOnPage)</td>
                         @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                         {
-                        <td class="withoutPadding"><input type="number" name="SettingsModel.NumberOfProductsOnPage" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))"></td>
+                        <td class="without-padding"><input type="number" name="SettingsModel.NumberOfProductsOnPage" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))"></td>
                         }
                         else
                         {
-                        <td class="withoutPadding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))" disabled></td>
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))" disabled></td>
                         }
                     </tr>
                     <tr>
                         <td>@Html.Raw(localization.PaginationStyleName)</td>
                         @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                         {
-                        <td class="withoutPadding"><input type="text" name="SettingsModel.PaginationStyleName" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))"></td>
+                        <td class="without-padding"><input type="text" name="SettingsModel.PaginationStyleName" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))"></td>
                         }
                         else
                         {
-                        <td class="withoutPadding"><input type="text" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))" disabled></td>
+                        <td class="without-padding"><input type="text" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))" disabled></td>
                         }
                     </tr>
                 </table>
@@ -119,7 +124,7 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     {
                     @*ПОЛУЧАЕМ ЗНАЧЕНИЕ НАСТРОЙКИ*@
                     int settingAccessLevel = (int)accessLevelConfiguration.GetAccessLevelInfoTo(s.Key.ToString());
-                    <tr class="withPadding">
+                    <tr class="with-padding">
                         <td>@s.Value</td>
                         <td>
                         @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
@@ -147,3 +152,13 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     }
                 </table>
             </form>
+            <script>
+                function successfulRequestHandler() {
+                    alert('@Html.Raw(localization.SettingsSaved)');
+                    location.reload();
+                }
+                let saveSettingsButton = document.getElementById('save-settings-button');
+                saveSettingsButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditSettings)', 'save-settings-form', successfulRequestHandler));
+                let textarea = document.getElementById('ProductBlockTemplate');
+                textarea.addEventListener('keydown', insertTabEventHandler);
+            </script>

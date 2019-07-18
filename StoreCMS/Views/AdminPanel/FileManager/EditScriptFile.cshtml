@@ -2,21 +2,35 @@
 @inject IFileManagerLocalization localization
 @{
     Layout = "CommonPage";
-    Context.Items["PageStyle"] = "/styles/admin_panel/file_manager/editTemplate.css";
-    Context.Items["PageName"] = localization.EditScriptPageName;
+    Context.Items["PageStyle"] = "/styles/admin_panel/file_manager/edit_template.css";
+    Context.Items["PageName"] = $"{localization.EditScriptPageName} {Model.FileName}";
     User user = Context.Items["User"] as User;
-    bool incorrect = Context.Items["IsIncorrect"] == null ? false : (bool)Context.Items["IsIncorrect"];
+    string path = Context.Items["PathToFile"] as string;
 }
-<form method="post" class="pageContainer">
-    @if (incorrect)
-    {
-                <span class="incorrect">@Html.Raw(localization.IncorrectInput)</span>
-    }
-                <div class="nameBlock">
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="edit-script-file-form" class="page-container">
+                <div class="name-block">
                     <label for="Name">@Html.Raw(localization.Name)</label>
                     <input type="text" id="Name" name="StyleModel.FileName" value="@Model?.FileName" required />
                 </div>
                 <label for="TemplateSource">@Html.Raw(localization.FileContent)</label>
                 <textarea id="TemplateSource" name="StyleModel.FileContent">@Model?.FileContent</textarea>
-                <input type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="edit-script-file-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
             </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsg = document.createElement('span');
+                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
+                    errorMsg.setAttribute('id', 'error-msg');
+                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                }
+                function successfulRequestHandler(request) {
+                    alert('@Html.Raw(localization.ScriptFileEdited)');
+                    location.replace(request.getResponseHeader('location'));
+                }
+                let editScriptFileButton = document.getElementById('edit-script-file-button');
+                editScriptFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditScript)&path=@Html.Raw(path)', 'edit-script-file-form', successfulRequestHandler, errorHandler));
+                let textarea = document.getElementById('TemplateSource');
+                textarea.addEventListener('keydown', insertTabEventHandler);
+            </script>

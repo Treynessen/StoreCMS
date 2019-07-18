@@ -17,6 +17,7 @@ namespace Treynessen.Controllers
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.js$");
             if (!regex.IsMatch(path))
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}");
+            HttpContext.Items["PathToFile"] = path;
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
             HttpContext.Items["pageID"] = AdminPanelPages.EditScript;
             string scriptFileFullName = path.Substring(path.LastIndexOf('>') + 1);

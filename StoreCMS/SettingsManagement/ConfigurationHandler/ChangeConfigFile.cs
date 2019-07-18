@@ -24,6 +24,9 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditPage}\": \"{(model.AccessSettings.EditPage.HasValue ? (int)model.AccessSettings.EditPage.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.DeletePage}\": \"{(model.AccessSettings.DeletePage.HasValue ? (int)model.AccessSettings.DeletePage.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.Categories}\": \"{(model.AccessSettings.Categories.HasValue ? (int)model.AccessSettings.Categories.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.AddCategory}\": \"{(model.AccessSettings.AddCategory.HasValue ? (int)model.AccessSettings.AddCategory.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditCategory}\": \"{(model.AccessSettings.EditCategory.HasValue ? (int)model.AccessSettings.EditCategory.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.DeleteCategory}\": \"{(model.AccessSettings.DeleteCategory.HasValue ? (int)model.AccessSettings.DeleteCategory.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.CategoryProducts}\": \"{(model.AccessSettings.CategoryProducts.HasValue ? (int)model.AccessSettings.CategoryProducts.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.AddProduct}\": \"{(model.AccessSettings.AddProduct.HasValue ? (int)model.AccessSettings.AddProduct.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditProduct}\": \"{(model.AccessSettings.EditProduct.HasValue ? (int)model.AccessSettings.EditProduct.Value : (int)AccessLevel.VeryHigh)}\",\n");

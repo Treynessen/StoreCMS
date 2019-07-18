@@ -11,6 +11,9 @@
         public string AccessLevelToEditPage => "Уровень доступа к изменению страницы";
         public string AccessLevelToDeletePage => "Уровень доступа к удалению страницы";
         public string AccessLevelToCategories => "Уровень доступа к списку категорий";
+        public string AccessLevelToAddCategory => "Уровень доступа к добавлению категории";
+        public string AccessLevelToEditCategory => "Уровень доступа к изменению категории";
+        public string AccessLevelToDeleteCategory => "Уровень доступа к удалению категории";
         public string AccessLevelToCategoryProducts => "Уровень доступа к товарам категории";
         public string AccessLevelToAddProduct => "Уровень доступа к добавлению товара";
         public string AccessLevelToEditProduct => "Уровень доступа к изменению товара";
@@ -53,5 +56,7 @@
         public string ConnectionString => "Параметры подключения к БД";
 
         public string SaveButton => "Сохранить";
+
+        public string SettingsSaved => "Настройки сохранены";
     }
 }

@@ -22,12 +22,12 @@
                     errorMsg.setAttribute('id', 'error-msg');
                     formElement.insertBefore(errorMsg, formElement.firstChild);
                 }
-                function successRequestHandler(request) {
+                function successfulRequestHandler(request) {
                     alert('@Html.Raw(localization.ChunkCreated)');
                     location.replace(request.getResponseHeader('location'));
                 }
                 let addChunkButton = document.getElementById('add-chunk-button');
-                addChunkButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddChunk)', 'add-chunk-form', successRequestHandler, errorHandler));
+                addChunkButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddChunk)', 'add-chunk-form', successfulRequestHandler, errorHandler));
                 let textarea = document.getElementById('TemplateSource');
                 textarea.addEventListener('keydown', insertTabEventHandler);
             </script>

@@ -1,4 +1,4 @@
-﻿div.breadcrumbList {
+﻿div.breadcrumb-list {
     width: 100%;
     max-width: 100%;
     text-wrap: none;
@@ -7,58 +7,58 @@
     margin-bottom: 1vh;
 }
 
-.breadcrumbList > a {
-    display: inline-block;
-    box-sizing: border-box;
-    border: 1px solid;
-    color: #000;
-    font-size: 2.3vh;
-    text-decoration: none;
-    padding: .5vh;
-    margin: 0;
-    background-color: #00c0ff;
-}
-
-    .breadcrumbList > a:not(:first-child) {
-        border-left: 0;
+    div.breadcrumb-list > a {
+        display: inline-block;
+        box-sizing: border-box;
+        border: 1px solid;
+        color: #000;
+        font-size: 2.3vh;
+        text-decoration: none;
+        padding: .5vh;
+        margin: 0;
+        background-color: #00c0ff;
     }
 
-    .breadcrumbList > a:hover {
+        div.breadcrumb-list > a:not(:first-child) {
+            border-left: 0;
+        }
+
+        div.breadcrumb-list > a:hover {
+            background-color: #00a8ff;
+        }
+
+    div.breadcrumb-list > div {
+        display: inline-block;
+        box-sizing: border-box;
+        border: 1px solid;
+        color: #000;
+        font-size: 2.3vh;
+        padding: .5vh;
+        margin: 0;
         background-color: #00a8ff;
     }
 
-.breadcrumbList > div {
-    display: inline-block;
-    box-sizing: border-box;
-    border: 1px solid;
-    color: #000;
-    font-size: 2.3vh;
-    padding: .5vh;
-    margin: 0;
-    background-color: #00a8ff;
-}
+        div.breadcrumb-list > div:not(:first-child) {
+            border-left: 0;
+        }
 
-    .breadcrumbList > div:not(:first-child) {
-        border-left: 0;
-    }
-
-div.actionList {
+div.action-list {
     width: 100%;
     max-width: 100%;
 }
 
-form.createFolerOrTemplateFile {
+form.create-foler-or-template-file {
     display: inline-flex;
     margin-bottom: 1vh;
     width: 30%;
     max-width: 30%;
 }
 
-div.actionList > form.createFolerOrTemplateFile:nth-child(n+3) {
+div.action-list > form.create-foler-or-template-file:nth-child(n+5) {
     margin-left: 1%;
 }
 
-.createFolerOrTemplateFile > input[type=submit] {
+form.create-foler-or-template-file > input[type=submit] {
     box-sizing: border-box;
     border: 2px solid #000;
     background-color: #ebebeb;
@@ -68,19 +68,19 @@ div.actionList > form.createFolerOrTemplateFile:nth-child(n+3) {
     max-height: 3.5vh;
 }
 
-    .createFolerOrTemplateFile > input[type=submit]:hover {
+    form.create-foler-or-template-file > input[type=submit]:hover {
         cursor: pointer;
         background-color: #dadada;
     }
 
-.createFolerOrTemplateFile > input[type=text] {
+form.create-foler-or-template-file > input[type=text] {
     flex-grow: 1;
     border-left: 0;
     border-color: #000;
 }
 
 
-div.inputFileButton {
+div.input-file-button {
     display: inline-block;
     border: none;
     font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
@@ -89,43 +89,43 @@ div.inputFileButton {
     background-color: #00c0ff;
 }
 
-    div.inputFileButton:hover {
+    div.input-file-button:hover {
         background: #00a8ff;
         cursor: pointer;
     }
 
-    div.inputFileButton > label {
+    div.input-file-button > label {
         display: block;
         padding: .8vh;
         margin: 0;
         cursor: pointer;
     }
 
-    div.inputFileButton > input[type=file] {
+    div.input-file-button > input[type=file] {
         display: none;
         position: absolute;
         z-index: -1;
     }
 
-form.uploadFileForm {
+form.upload-file-form {
     margin-bottom: 1vh;
 }
 
-.uploadFileForm > input[type=submit] {
-    display: inline-block;
-    margin-left: .5%;
-    border: none;
-    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-    padding: .8vh;
-    font-size: 1.4rem;
-    border-radius: 5px;
-    background-color: #00c0ff;
-}
-
-    .uploadFileForm > input[type=submit]:hover {
-        background: #00a8ff;
-        cursor: pointer;
+    form.upload-file-form > input[type=submit] {
+        display: inline-block;
+        margin-left: .5%;
+        border: none;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        padding: .8vh;
+        font-size: 1.4rem;
+        border-radius: 5px;
+        background-color: #00c0ff;
     }
+
+        form.upload-file-form > input[type=submit]:hover {
+            background: #00a8ff;
+            cursor: pointer;
+        }
 
 tr:nth-child(1) > td:nth-child(1) {
     padding: .7vh;
@@ -161,7 +161,7 @@ td:nth-child(1) > a {
     padding: .7vh;
 }
 
-input.deleteButton {
+input.delete-button {
     display: block;
     border-style: none;
     position: absolute;
@@ -173,12 +173,12 @@ input.deleteButton {
     background-color: #00c0ff;
 }
 
-.deleteButton:hover {
-    background-color: #00a8ff;
-    cursor: pointer;
-}
+    input.delete-button:hover {
+        background-color: #00a8ff;
+        cursor: pointer;
+    }
 
-input.disabledDeleteButton {
+input.disabled-delete-button {
     display: block;
     border-style: none;
     position: absolute;

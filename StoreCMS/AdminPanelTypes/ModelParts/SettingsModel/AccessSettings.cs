@@ -16,6 +16,10 @@ namespace Treynessen.AdminPanelTypes
         public AccessLevel? EditPage { get; set; }
         public AccessLevel? DeletePage { get; set; }
 
+        public AccessLevel? AddCategory { get; set; }
+        public AccessLevel? EditCategory { get; set; }
+        public AccessLevel? DeleteCategory { get; set; }
+
         public AccessLevel? CategoryProducts { get; set; }
         public AccessLevel? AddProduct { get; set; }
         public AccessLevel? EditProduct { get; set; }

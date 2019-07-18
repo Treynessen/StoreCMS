@@ -52,8 +52,8 @@ namespace Treynessen.Controllers
                     DatabaseInteraction.AddPage(db, model.PageModel, HttpContext, out bool categoryAdded);
                     if (categoryAdded)
                     {
-                        string createdPageUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditCategory}&itemID={model.PageModel.ID}";
-                        HttpContext.Response.Headers.Add("location", createdPageUrl);
+                        string createdCategoryUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditCategory}&itemID={model.PageModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdCategoryUrl);
                         return StatusCode(201);
                     }
                     else return StatusCode(422);
@@ -68,8 +68,8 @@ namespace Treynessen.Controllers
                     DatabaseInteraction.AddProduct(db, model.PageModel, model.itemID, HttpContext, out bool productAdded);
                     if (productAdded)
                     {
-                        string createdPageUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditProduct}&itemID={model.PageModel.ID}";
-                        HttpContext.Response.Headers.Add("location", createdPageUrl);
+                        string createdProductUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditProduct}&itemID={model.PageModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdProductUrl);
                         return StatusCode(201);
                     }
                     else return StatusCode(422);
@@ -98,8 +98,8 @@ namespace Treynessen.Controllers
                     DatabaseInteraction.AddChunk(db, model.TemplateModel, HttpContext, out bool chunkAdded);
                     if (chunkAdded)
                     {
-                        string createdTemplateUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditChunk}&itemID={model.TemplateModel.ID}";
-                        HttpContext.Response.Headers.Add("location", createdTemplateUrl);
+                        string createdChunkUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditChunk}&itemID={model.TemplateModel.ID}";
+                        HttpContext.Response.Headers.Add("location", createdChunkUrl);
                         return StatusCode(201);
                     }
                     else return StatusCode(422);
@@ -111,41 +111,35 @@ namespace Treynessen.Controllers
 
                 case AdminPanelPages.CreateFolder:
                     FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+                    return StatusCode(200);
 
                 case AdminPanelPages.CreateStyle:
                     FileManagerManagementFunctions.CreateCssFile(model.Path, model.Name, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+                    return StatusCode(200);
 
                 case AdminPanelPages.CreateScript:
                     FileManagerManagementFunctions.CreateScriptFile(model.Path, model.Name, HttpContext);
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={model.Path}");
+                    return StatusCode(200);
 
                 case AdminPanelPages.EditStyle:
-                    FileManagerManagementFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out bool cssFileEdited);
-                    if (!cssFileEdited)
+                    FileManagerManagementFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out string editedStylePath, out bool cssFileEdited);
+                    if (cssFileEdited)
                     {
-                        HttpContext.Items["pageID"] = AdminPanelPages.EditStyle;
-                        HttpContext.Items["IsIncorrect"] = true;
-                        return View("FileManager/EditCssFile", model.StyleModel);
+                        string editedCssFileUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditStyle}&path={editedStylePath}";
+                        HttpContext.Response.Headers.Add("location", editedCssFileUrl);
+                        return StatusCode(200);
                     }
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditStyle}&path={model.Path.Substring(0, model.Path.LastIndexOf('>') + 1)}{model.StyleModel.FileName}.css");
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditScript:
-                    FileManagerManagementFunctions.EditScriptFile(model.Path, model.StyleModel, HttpContext, out bool scriptFileEdited);
-                    if (!scriptFileEdited)
+                    FileManagerManagementFunctions.EditScriptFile(model.Path, model.StyleModel, HttpContext, out string editedScriptPath, out bool scriptFileEdited);
+                    if (scriptFileEdited)
                     {
-                        HttpContext.Items["pageID"] = AdminPanelPages.EditScript;
-                        HttpContext.Items["IsIncorrect"] = true;
-                        return View("FileManager/EditScriptFile", model.StyleModel);
+                        string editedScriptFileUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditScript}&path={editedScriptPath}";
+                        HttpContext.Response.Headers.Add("location", editedScriptFileUrl);
+                        return StatusCode(200);
                     }
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditScript}&path={model.Path.Substring(0, model.Path.LastIndexOf('>') + 1)}{model.StyleModel.FileName}.js");
-
-                case AdminPanelPages.DeleteFileOrFolder:
-                    FileManagerManagementFunctions.DeleteFileOrFolder(model.Path, HttpContext, out string redirectPath);
-                    if (string.IsNullOrEmpty(redirectPath))
-                        return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}");
-                    return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}&path={redirectPath}");
+                    else return StatusCode(422);
 
                 case AdminPanelPages.EditSettings:
                     return EditSettings(model.SettingsModel, HttpContext);

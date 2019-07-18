@@ -12,12 +12,13 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void EditScriptFile(string path, StyleModel model, HttpContext context, out bool successfullyCompleted)
+        public static void EditScriptFile(string path, StyleModel model, HttpContext context, out string redirectPath, out bool successfullyCompleted)
         {
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.js$");
             if (!regex.IsMatch(path))
             {
                 successfullyCompleted = false;
+                redirectPath = string.Empty;
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
@@ -34,12 +35,14 @@ namespace Treynessen.FileManagerManagement
             if (!File.Exists(pathToFile) || !HasAccessToFolder(path, env))
             {
                 successfullyCompleted = false;
+                redirectPath = string.Empty;
                 return;
             }
             model.FileName = OtherFunctions.GetCorrectName(model.FileName, context);
             if (string.IsNullOrEmpty(model.FileName))
             {
                 successfullyCompleted = false;
+                redirectPath = string.Empty;
                 return;
             }
             string oldScriptFileName = scriptFileFullName.Substring(0, scriptFileFullName.Length - 3);
@@ -53,6 +56,7 @@ namespace Treynessen.FileManagerManagement
                 writer.Write(model.FileContent);
             }
             successfullyCompleted = true;
+            redirectPath = scriptFileFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '>');
         }
     }
 }
