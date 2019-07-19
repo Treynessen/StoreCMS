@@ -17,14 +17,9 @@
 </head>
 <body>
 @{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
-
 @{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
-
 @{ try { @await Html.PartialAsync("~/Views/Chunks/content.cshtml", Model) } catch { } }
-
 @{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
-
 @{ try { @await Html.PartialAsync("~/Views/Chunks/scripts.cshtml", Model) } catch { } }
-
 </body>
 </html>

@@ -49,6 +49,8 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Insert(0, $"@model {modelType}\n");
 
+            cshtmlContentBuilder.Append('\n');
+
             return cshtmlContentBuilder.ToString();
         }
     }
