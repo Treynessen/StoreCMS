@@ -1,4 +1,4 @@
-div.noticeBlock{
+div.notice-block{
 	box-sizing: border-box;
 	width: 998px;
 	margin: 5px auto 0;
@@ -10,10 +10,10 @@ div.noticeBlock{
 	font-size: 25px;
 }
 
-div.noticeBlock > p{
+div.notice-block > p{
 	margin: 0;
 }
 
-.redColor{
+.red-color{
 	color: #FF0000;
 }

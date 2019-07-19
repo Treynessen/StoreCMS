@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetProductBlockCshtmlFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(productBlockCshtmlFullPath))
-                productBlockCshtmlFullPath = $"{env.GetConfigsFolderFullPath()}product_block.cshtml";
+                productBlockCshtmlFullPath = $"{GetConfigsFolderFullPath(env)}product_block.cshtml";
             return productBlockCshtmlFullPath;
         }
     }

@@ -1,4 +1,4 @@
-div.sortPanel{
+div.sort-panel{
 	display: flex;
 	width: 998px;
 	margin: 5px auto 0;
@@ -7,21 +7,21 @@ div.sortPanel{
 	border-radius: 3px 3px 0 0;
 }
 
-div.sortPanel > span{
+div.sort-panel > span{
 	display: block;
 	padding: 5px 10px;
 }
 
-b.sortMenu > a:hover{
+b.sort-menu > a:hover{
 	color: #000;
 }
 
-div.contentBlock{
+div.content-block{
 	border-radius: 0 0 3px 3px;
 	margin-top: 0px;
 }
 
-div.navigationMenu{
+div.navigation-menu{
 	margin-bottom: 10px;
 }
 
@@ -34,24 +34,24 @@ a.product{
 	height: 115px;
 }
 
-a.product:hover{
-	color: #000;
-	border-color: #f7951f;
-	box-shadow: 0 2px 4px rgba(0,0,0,.1);
-}
+	a.product:hover{
+		color: #000;
+		border-color: #f7951f;
+		box-shadow: 0 2px 4px rgba(0,0,0,.1);
+	}
 
 a.product > img{
 	width: 150px;
 }
 
-a.product > div.productInfo{
+a.product > div.product-info{
 	display: flex;
 	flex-direction: column;
 	width: 650px;
 	margin: 0 10px;
 }
 
-a.product > div.productInfo > span.productName{
+a.product > div.product-info > span.product-name{
 	display: block;
 	box-sizing: border-box;
 	font-weight: bold;
@@ -62,7 +62,7 @@ a.product > div.productInfo > span.productName{
 	overflow: hidden;
 }
 
-a.product > div.productInfo > div.shortDescription{
+a.product > div.product-info > div.short-description{
 	display: flex;
 	flex-grow: 1;
 	align-items: center;
@@ -70,36 +70,36 @@ a.product > div.productInfo > div.shortDescription{
 	font-size: 16px;
 }
 
-a.product > div.productInfo > div.shortDescription > span{
+a.product > div.product-info > div.short-description > span{
 	align-self: flex-end;
 	max-height: 57px;
 	overflow: hidden;
 }
 
-a.product > div.productInfo > div.shortDescription > span > p {
+a.product > div.product-info > div.short-description > span > p {
 	margin: 0;
 }
 
-a.product > div.productPrice{
+a.product > div.product-price{
 	flex-grow: 1;
 	padding: 5px 10px;
 	text-align: right;
 }
 
-a.product > div.productPrice > span:first-child{
+a.product > div.product-price > span:first-child{
 	display: block;
         font-size: 28px;
         white-space: nowrap;
 	overflow: hidden;
 }
 
-a.product > div.productPrice > span:first-child:after{
+a.product > div.product-price > span:first-child:after{
 	content: " ₽";
 	font-size: 18px;
 	color: #7a7a7a;
 }
 
-a.product > div.productPrice > span:not(:first-child){
+a.product > div.product-price > span:not(:first-child){
 	display: inline-block;
         font-size: 28px;
         text-decoration: line-through;
@@ -108,7 +108,7 @@ a.product > div.productPrice > span:not(:first-child){
 	overflow: hidden;
 }
 
-a.product > div.productPrice > span:not(:first-child):after{
+a.product > div.product-price > span:not(:first-child):after{
 	display: inline-block;	
 	content: "₽";
         text-decoration: none;

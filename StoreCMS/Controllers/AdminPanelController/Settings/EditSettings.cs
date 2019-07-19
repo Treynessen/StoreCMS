@@ -32,7 +32,6 @@ namespace Treynessen.Controllers
                     }
                     string[] additions = {
                         "@using Treynessen.Functions;",
-                        "@using Treynessen.ImagesManagement;",
                         "@using Treynessen.Database.Entities;",
                         "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
                     };

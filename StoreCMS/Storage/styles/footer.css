@@ -1,4 +1,4 @@
-div.footerBlock{
+div.footer-block{
 	width: 1000px;
 	margin: 10px auto 10px;
 	text-align: center;
@@ -6,6 +6,6 @@ div.footerBlock{
 	color: #7a7a7a;
 }
 
-div.footerBlock > p{
+div.footer-block > p{
 	margin: 0;
 }

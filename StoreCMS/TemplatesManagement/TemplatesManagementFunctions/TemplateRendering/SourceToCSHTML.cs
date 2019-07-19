@@ -39,7 +39,6 @@ namespace Treynessen.TemplatesManagement
             if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture) || source.Contains("[Category:PageButtons]", System.StringComparison.InvariantCulture))
                 cshtmlContentBuilder.Insert(0, "@{ List<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>; }\n");
 
-            cshtmlContentBuilder.Insert(0, $"@model {modelType}\n");
             if (additions != null && additions.Length > 0)
             {
                 for (int i = additions.Length - 1; i >= 0; --i)
@@ -47,7 +46,9 @@ namespace Treynessen.TemplatesManagement
                     cshtmlContentBuilder.Insert(0, $"{additions[i]}\n");
                 }
             }
-           
+
+            cshtmlContentBuilder.Insert(0, $"@model {modelType}\n");
+
             return cshtmlContentBuilder.ToString();
         }
     }

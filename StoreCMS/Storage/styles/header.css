@@ -33,14 +33,14 @@ div.header-container-left-block > span{
 	margin-bottom: 3px;
 }
 
-div.header-container-left-block > span:first-child{
-	font-weight: normal;
-	color: #deff00;
-}
+	div.header-container-left-block > span:first-child{
+		font-weight: normal;
+		color: #deff00;
+	}
 
-div.header-container-left-block > span:last-child{
-	margin-bottom: 0;
-}
+	div.header-container-left-block > span:last-child{
+		margin-bottom: 0;
+	}
 
 div.header-container > div.header-container-right-block{
 	margin-left: 5px;
@@ -62,10 +62,10 @@ div.header-container-right-block > a{
 	margin-bottom: 3px;
 }
 
-div.header-container-right-block > a:last-child{
-	margin-bottom: 0;
-}
+	div.header-container-right-block > a:last-child{
+		margin-bottom: 0;
+	}
 
-div.header-container-right-block > a:hover{
-	color: #ffd200;
-}
+	div.header-container-right-block > a:hover{
+		color: #ffd200;
+	}

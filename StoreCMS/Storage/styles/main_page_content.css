@@ -1,10 +1,10 @@
-div.categoryBlocksContainer{
+div.category-block-container{
 	display: flex;
 	width: 100%;
 	flex-wrap: wrap;
 }
 
-div.categoryBlocksContainer > a.categoryBlock{
+div.category-block-container > a.category-block{
 	display: block;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -16,12 +16,20 @@ div.categoryBlocksContainer > a.categoryBlock{
 	margin-left: 6px;
 }
 
-div.categoryBlocksContainer > a.categoryBlock:hover{
-	border-color: #f7951f;
-	box-shadow: 0 2px 4px rgba(0,0,0,.1);
-}
+	div.category-block-container > a.category-block:hover{
+		border-color: #f7951f;
+		box-shadow: 0 2px 4px rgba(0,0,0,.1);
+	}
 
-div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent{
+	div.category-block-container > a.category-block:nth-child(5n+1){
+		margin-left: 0;
+	}
+
+	div.category-block-container > a.category-block:nth-child(n+6){
+		margin-top: 6px;
+	}
+
+div.category-block-container > a.category-block > div.category-block-content{
 	display: flex;
 	flex-direction: column;
 	position: absolute;
@@ -31,15 +39,7 @@ div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent{
 	height: 100%;
 }
 
-div.categoryBlocksContainer > a.categoryBlock:nth-child(5n+1){
-	margin-left: 0;
-}
-
-div.categoryBlocksContainer > a.categoryBlock:nth-child(n+6){
-	margin-top: 6px;
-}
-
-div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent > span.categoryName{
+div.category-block-container > a.category-block > div.category-block-content > span.category-name{
 	display: block;
 	box-sizing: border-box;
 	height: 22%;
@@ -50,11 +50,11 @@ div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent > span.
 	text-align: center;
 }
 
-div.categoryBlocksContainer > a.categoryBlock:hover > div.categoryBlockContent > span.categoryName{
-	color: #000;
-}
+	div.category-block-container > a.category-block:hover > div.category-block-content > span.category-name{
+		color: #000;
+	}
 
-div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent > div.categoryImage{
+div.category-block-container > a.category-block > div.category-block-content > div.category-image{
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -63,7 +63,7 @@ div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent > div.c
 	overflow: hidden;
 }
 
-div.categoryBlocksContainer > a.categoryBlock > div.categoryBlockContent > div.categoryImage > img{
+div.category-block-container > a.category-block > div.category-block-content > div.category-image > img{
 	max-width: 100%;
 	max-height: 100%;
 }

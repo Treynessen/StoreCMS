@@ -42,7 +42,7 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:IsIndex]", Replacement = "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:IsFollow]", Replacement = "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))" });
             // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Category:Products]", Replacement = "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlFullPath()}" + "\", p); } catch { } } } }" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Category:Products]", Replacement = "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlShortPath()}" + "\", p); } catch { } } } }" });
             insertionReplacements.AddLast(new InsertionReplacement
             {
                 Insertion = "[Category:PageButtons]",

@@ -1,45 +1,45 @@
-h1.contactsTitle{
+h1.contacts-title{
 	margin: 0 0 10px  0;
 }
 
-div.shopContainer{
+div.shop-container{
 	display: flex;
 	width: 100%;
 	font-size: 22px;
 	align-items: center;
 }
 
-div.shopContainer:nth-child(n+3){
-	margin-top: 50px;
-}
+	div.shop-container:nth-child(n+3){
+		margin-top: 50px;
+	}
 
-div.shopContainer > span.shopNum{
+div.shop-container > span.shop-num{
 	display: block;
 	margin-right: 15px;
 
 }
 
-div.shopContainer > span.shopInfo{
+div.shop-container > span.shop-info{
 	display: block;
 	flex-frow: 1;
 }
 
-span.redText{
+span.red-text{
 	color: #ff0000;
 }
 
-div.shopContainer > span.shopInfo > p{
+div.shop-container > span.shop-info > p{
 	margin: 0;
 }
 
-div.map_imgBlock{
+div.map-img-block{
 	position: relative;
 	width: 100%;
 	margin-top: 10px;
 	padding-top: 120px;
 }
 
-div.map_imgBlock > div.map{
+div.map-img-block > div.map{
 	width: 600px;
 	height: 450px;
 	border: 5px solid;
@@ -47,7 +47,7 @@ div.map_imgBlock > div.map{
 	z-index: 1;
 }
 
-div.map_imgBlock > img{
+div.map-img-block > img{
 	position: absolute;
 	border: 5px solid;
 	border-radius: 5px;

@@ -16,6 +16,8 @@ function createDropMenuEvent(button, eventStarterIds){
 				break;
 			}
 		}
+		if (e.currentTarget.id == e.target.id)
+			canProcess = true;
 		if (canProcess){
 			button.classList.toggle('clicked'); 
 			dropped = !dropped; 

@@ -44,7 +44,7 @@ using Treynessen.Database.Entities;
 #line default
 #line hidden
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"53ce1157d7589a7ba84b642bafed7024cbfb9943", @"/Views/Templates/category_page_template.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"4ea0ac9dd8e29f1d582e77aa90a16654937768a3", @"/Views/Templates/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"a171fe621900d30ce349d435054eba87062936fb", @"/Views/Templates/_ViewImports.cshtml")]
     public class Views_Templates_category_page_template : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Page>
     {
         #line hidden
@@ -74,7 +74,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<!DOCTYPE html>\n<html lang=\"ru\">\n");
             EndContext();
             BeginContext(45, 772, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "80ee6220c431402a8e49f983fa780ae0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "bd15e4340d324e7d928fea34fb1fb843", async() => {
                 BeginContext(51, 8, true);
                 WriteLiteral("\n<title>");
                 EndContext();
@@ -133,7 +133,7 @@ WriteAttributeValue("", 684, Model != null ? Html.Raw(Model.PageKeywords) : Html
             WriteLiteral("\n");
             EndContext();
             BeginContext(818, 468, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b06ebf4b2d4b43468ce6480c643481fd", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "50e2201ab6be4cd0b9f4d029ef5d66f0", async() => {
                 BeginContext(824, 1, true);
                 WriteLiteral("\n");
                 EndContext();
