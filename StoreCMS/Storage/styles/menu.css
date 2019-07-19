@@ -3,33 +3,203 @@ div.menu-container{
 	justify-content: space-between;
 	width: 1000px;
 	margin: 0 auto;
-        color: #1d1d1d;
 }
 
-div.menu-container > #catalog-block{
-        box-sizing: border-box;
+/* Кнопка "Каталог" */
+
+div.menu-container > #catalog-button{
+	background: linear-gradient(to bottom, #f9eb73, #f7941d);
+	box-sizing: border-box;
 	width: 240px;
-        margin-right: 5px;
-        border: 1px solid #1d1d1d;
-        border-top: 0px;
+	margin-right: 5px;
+	border: 1px solid #a6a6a6;
+	border-top: 0px;
 	border-radius: 0 0 3px 3px;
 }
 
-div.menu-container > #catalog-block > div.button{
-	background: linear-gradient(to bottom, #f9eb73, #f7941d);
+div.menu-container > #catalog-button > div.button{
 	cursor: pointer;
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
 	padding: 8px 0;
+	color: #1d1d1d;
 }
+
+div.menu-container > #catalog-button > div.button > div.down-triangle{
+	display: inline-block;
+	content: " ";
+	position: relative;
+	top: 6px;
+	margin-right: 5px;
+	border: 8px solid transparent;	
+	border-top: 9px solid #1d1d1d;
+}
+
+	div.menu-container > #catalog-button.clicked{
+		border-color: #1d1d1d;
+		border-radius: 0;
+		transition-property: border-color;
+		transition-timing-function: ease;
+		transition-duration: 350ms;
+	}
+
+	div.menu-container > #catalog-button.clicked > div.button{
+		background-color: #1d1d1d;
+		color: #f8c34c;
+		transition-property: background-color, color;
+		transition-timing-function: ease;
+		transition-duration: 350ms;
+	}
+
+	div.menu-container > #catalog-button.clicked > div.button > div.down-triangle{
+		border-top-color: #fff;
+		transition-property: border-top-color;
+		transition-timing-function: ease;
+		transition-duration: 350ms;
+	}
+
+/* ------------- */
+
+/* Выпадающее меню */
+
+div.menu-container > #catalog-button > ul{
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	list-style-type: none;
+	min-width: 240px;
+	max-width: 500px;
+	margin-top: 1px;
+	margin-left: -1px;
+	padding: 0;
+	z-index: 3;
+}
+
+div.menu-container > #catalog-button > ul > li{
+	box-sizing: border-box;
+	position: relative;
+	border-bottom: 1px solid;
+}
+
+	div.menu-container > #catalog-button > ul > li:last-child{
+		border-bottom: 0;
+	}
+
+div.menu-container> #catalog-button > ul > li > a{
+	display: block;
+	text-decoration: none;
+	color: #1d1d1d;
+	font-size: 16px;
+	padding: 8px 7px;
+	font-weight: bold;
+	background-color: #f8bc45;
+}
+
+	div.menu-container> #catalog-button > ul > li:hover > a{
+		color: #f8bc45;
+		background-color: #1d1d1d;
+		transition-property: background-color, color;
+		transition-timing-function: ease;
+		transition-duration: 350ms;
+	}
+
+div.menu-container> #catalog-button > ul > li > a > div.right-triangle{
+	display: inline-block;
+	content: " ";
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	right: 0;
+	border: 8px solid transparent;	
+	border-left: 10px solid #1d1d1d;
+}
+
+div.menu-container> #catalog-button > ul > li:hover > a > div.right-triangle{
+	border-left-color: #fff;
+	transition-property: border-left-color;
+	transition-timing-function: ease;
+	transition-duration: 350ms;
+}
+
+	div.menu-container > #catalog-button.clicked > ul{
+		visibility: visible;
+		opacity: 1;
+		transition-property: opacity;
+		transition-timing-function: ease;
+		transition-duration: 350ms;
+	}
+
+/* ------------- */
+
+/* Выпадающее сабменю */
+
+div.menu-container > #catalog-button.clicked > ul > li > ul{
+	display: table;
+	visibility: hidden;
+	opacity: 0;
+	max-width: 500px;
+	list-style-type: none;
+	position: absolute;
+	padding: 0;
+	top: -1px;
+	margin-left: 2px;
+	left: 100%;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li:hover > ul{
+	visibility: visible;
+	opacity: 1;
+	transition-property: opacity;
+	transition-timing-function: ease;
+	transition-duration: 350ms;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li > ul > li{
+	display: block;
+	box-sizing: border-box;
+	border-bottom: 1px solid;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li > ul > li:first-child{
+	margin-left: -2px;
+	border-left: 2px solid #1d1d1d;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li > ul > li:first-child{
+	border-top: 1px solid;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li > ul > li:last-child{
+	border-bottom: 0;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li > ul > li > a{
+	display: block;
+	text-decoration: none;
+	color: #1d1d1d;
+	font-size: 16px;
+	padding: 8px 7px;
+	font-weight: bold;
+	background-color: #f8bc45;
+}
+
+div.menu-container > #catalog-button.clicked > ul > li > ul > li:hover > a{
+	color: #f8bc45;
+	background-color: #1d1d1d;
+	transition-property: background-color, color;
+	transition-timing-function: ease;
+	transition-duration: 350ms;
+}
+
+/* ------------- */
 
 div.menu-container > div.main-menu{
 	display: flex;
 	box-sizing: border-box;
 	flex: 1;
 	background: linear-gradient(to bottom, #f9eb73, #f7941d);
-	border: 1px solid #1d1d1d;
+	border: 1px solid #a6a6a6;
 	border-top: 0px;
 	border-radius: 0 0 3px 3px;
 	font-size: 18px;
@@ -40,6 +210,7 @@ div.menu-container > div.main-menu{
 div.menu-container > div.main-menu > a{
 	display: block;
 	text-decoration: none;
+	color: #1d1d1d;
 	padding: 8px 10px;
 }
 
@@ -48,12 +219,18 @@ div.menu-container > div.main-menu > a:hover{
 	color: #f8c34c;
 }
 
+div.menu-container > div.main-menu > a:first-child:hover{
+	border: 1px solid #1d1d1d;
+	padding: 7px 9px;
+	border-radius: 0 0 0 2px;
+}
+
 div.menu-container > div.search-block{
 	display: flex;
 	box-sizing: border-box;
 	width: 240px;
 	background: linear-gradient(to bottom, #f9eb73, #f7941d);
-	border: 1px solid #1d1d1d;
+	border: 1px solid #a6a6a6;
 	border-top: 0px;
 	border-radius: 0 0 3px 3px;
 	margin-left: 5px;

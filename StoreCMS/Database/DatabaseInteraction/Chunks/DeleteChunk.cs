@@ -74,7 +74,7 @@ namespace Treynessen.Database
             string productBlockFileContent = OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath());
             if (productBlockFileContent.Contains($"[#{chunk.Name}]"))
             {
-                string[] addictions = {
+                string[] additions = {
                         "@using Treynessen.Functions;",
                         "@using Treynessen.Database.Entities;",
                         "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
@@ -85,7 +85,7 @@ namespace Treynessen.Database
                     modelType: "ProductPage",
                     env: env,
                     skipChunkName: null,
-                    additions: addictions
+                    additions: additions
                 );
                 using (StreamWriter writer = new StreamWriter(env.GetProductBlockCshtmlFullPath()))
                 {

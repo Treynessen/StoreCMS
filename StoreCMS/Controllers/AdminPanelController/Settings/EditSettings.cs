@@ -30,7 +30,7 @@ namespace Treynessen.Controllers
                     {
                         writer.Write(model.ProductBlockTemplate);
                     }
-                    string[] addictions = {
+                    string[] additions = {
                         "@using Treynessen.Functions;",
                         "@using Treynessen.ImagesManagement;",
                         "@using Treynessen.Database.Entities;",
@@ -42,7 +42,7 @@ namespace Treynessen.Controllers
                         modelType: "ProductPage",
                         env: env,
                         skipChunkName: null,
-                        additions: addictions
+                        additions: additions
                     );
                     using (StreamWriter writer = new StreamWriter(env.GetProductBlockCshtmlFullPath()))
                     {

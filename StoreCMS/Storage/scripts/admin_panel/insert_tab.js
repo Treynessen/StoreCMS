@@ -1,12 +1,14 @@
 ﻿function insertTabEventHandler(e) {
     if (e.keyCode == 9 && !e.shiftKey && !e.ctrlKey && !e.altKey) {
         let textarea = e.currentTarget;
-        let indexForInsertion = textarea.selectionStart;
-        let leftSide = textarea.value.substring(0, indexForInsertion) + '    ';
-        let rightSide = textarea.value.substr(indexForInsertion);
+        let startIndexForInsertion = textarea.selectionStart;
+        let endIndexForInsertion = textarea.selectionEnd;
+        let leftSide = textarea.value.substring(0, startIndexForInsertion) + '\t';
+        let rightSide = textarea.value.substr(endIndexForInsertion);
         let textareaContent = leftSide + rightSide;
         textarea.value = textareaContent;
-        textarea.setSelectionRange(indexForInsertion + 4, indexForInsertion + 4);
+        let newSelectionRange = startIndexForInsertion + 1;
+        textarea.setSelectionRange(newSelectionRange, newSelectionRange);
         e.preventDefault();
     }
 }

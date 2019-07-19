@@ -1,11 +1,24 @@
 @model Page
 <div class="menu-container">
-	<div id="catalog-block">
-                <div class="button">Каталог товаров</div>
-        </div>
+	<div id="catalog-button">
+		<div id="button" class="button"><div id="down-triangle" class="down-triangle"></div>Каталог товаров</div>
+		<ul>
+			<li>
+				<a>ТОВАР 1<div class="right-triangle"></div></a>
+				<ul>
+					<li><a>ТОВАР 1</a></li>
+					<li><a href="/">ТОВАР 2</a></li>
+					<li><a href="/">ТОВАР 3</a></li>
+					<li><a href="/">ТОВАР 4</a></li>
+				</ul>
+			</li>
+			<li><a href="/">ТОВАР 2</a></li>
+			<li><a href="/">ТОВАР 3</a></li>
+		</ul>
+	</div>
 	<div class="main-menu">
 		<a href="/">Главная страница</a>
-		<a href="/contacts">Контакты</a>
+        	<a href="/contacts">Контакты</a>
 	</div>
 	<div class="search-block">
 		<input type="text" placeholder="Поиск товара">
