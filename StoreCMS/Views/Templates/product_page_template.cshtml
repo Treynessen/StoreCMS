@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="/styles/common.css">
 <link rel="stylesheet" href="/styles/header.css">
 <link rel="stylesheet" href="/styles/menu.css">
-<link rel="stylesheet" href="/styles/product_page_slider.css">
 <link rel="stylesheet" href="/styles/product_page_content.css">
+<link rel="stylesheet" href="/styles/lightbox-min.css">
 <link rel="stylesheet" href="/styles/footer.css">
 <link rel="icon" href="/favicon.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,5 +21,7 @@
 @{ try { @await Html.PartialAsync("~/Views/Chunks/product_page_content.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
 @{ try { @await Html.PartialAsync("~/Views/Chunks/scripts.cshtml", Model) } catch { } }
+<script src="/scripts/gallery_selector.js"></script>
+<script src="/scripts/lightbox-plus-jquery-min.js"></script>
 </body>
 </html>

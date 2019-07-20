@@ -25,6 +25,7 @@ namespace Treynessen.Database
             }
             productPage.ID = GetDatabaseRawID(db.ProductPages);
             ++productPage.PreviousPage.ProductsCount;
+            productPage.PreviousPage.LastProductTemplate = productPage.Template;
             db.ProductPages.Add(productPage);
             db.SaveChanges();
             model.ID = productPage.ID;

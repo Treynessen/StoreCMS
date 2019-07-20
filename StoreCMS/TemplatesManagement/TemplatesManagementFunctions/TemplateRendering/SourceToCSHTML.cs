@@ -36,7 +36,7 @@ namespace Treynessen.TemplatesManagement
                 }
             }
 
-            if (source.Contains("[Category:Products]", System.StringComparison.InvariantCulture) || source.Contains("[Category:PageButtons]", System.StringComparison.InvariantCulture))
+            if (source.Contains("[ProductList]", System.StringComparison.InvariantCulture) || source.Contains("[Category:PageButtons]", System.StringComparison.InvariantCulture))
                 cshtmlContentBuilder.Insert(0, "@{ List<ProductPage> products = Context.Items[\"products\"] as List<ProductPage>; }\n");
 
             if (additions != null && additions.Length > 0)

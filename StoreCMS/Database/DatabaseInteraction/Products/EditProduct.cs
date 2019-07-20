@@ -42,6 +42,7 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
+            editedProduct.PreviousPage.LastProductTemplate = editedProduct.Template;
             db.ProductPages.Update(editedProduct);
             db.SaveChanges();
 

@@ -5,7 +5,8 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/work_with_page.css";
     CategoryPage categoryPage = Context.Items["CategoryPage"] as CategoryPage;
     Context.Items["PageName"] = $"{localization.AddProductPageName} {categoryPage?.PageName}";
-    var templates = db.Templates.ToList();
+    Template[] templates = Context.Items["Templates"] as Template[];
+    int? lastTemplate = Context.Items["LastTemplate"] as int?;
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
@@ -58,11 +59,25 @@
                         @*TEMPLATES LIST*@
                         <label for="TemplateId">@Html.Raw(localization.Template)</label>
                         <select id="TemplateId" name="PageModel.TemplateId">
+                            @if (lastTemplate.HasValue)
+                            {
+                            <option>@Html.Raw(localization.WithoutTemplate)</option>
+                            }
+                            else
+                            {
                             <option selected>@Html.Raw(localization.WithoutTemplate)</option>
-                            @foreach (var t in templates)
+                            }
+                        @foreach (var t in templates)
+                        {
+                            @if (lastTemplate.HasValue && lastTemplate.Value == t.ID)
+                            {
+                            <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                            }
+                            else
                             {
                             <option value="@t.ID">@Html.Raw(t.Name)</option>
                             }
+                        }
                         </select>
                         @*ALIAS*@
                         <label for="Alias">@Html.Raw(localization.Alias)</label>

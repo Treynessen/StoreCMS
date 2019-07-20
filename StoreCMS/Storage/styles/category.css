@@ -12,7 +12,7 @@ div.sort-panel > span{
 	padding: 5px 10px;
 }
 
-b.sort-menu > a:hover{
+div.sort-panel > span > b.sort-menu > a:hover{
 	color: #000;
 }
 

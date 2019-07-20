@@ -42,7 +42,7 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:IsIndex]", Replacement = "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:IsFollow]", Replacement = "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))" });
             // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Category:Products]", Replacement = "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlShortPath()}" + "\", p); } catch { } } } }" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[ProductList]", Replacement = "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlShortPath()}" + "\", p); } catch { } } } }" });
             insertionReplacements.AddLast(new InsertionReplacement
             {
                 Insertion = "[Category:PageButtons]",
@@ -57,9 +57,9 @@ namespace Treynessen.TemplatesManagement
             });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:Name]", Replacement = "@(Model is ProductPage ? Html.Raw((Model as ProductPage).PageName) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:ShortDescription]", Replacement = "@(Model is ProductPage ? Html.Raw((Model as ProductPage).ShortDescription) : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:Price]", Replacement = "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice((Model as ProductPage).Price)) : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:OldPrice]", Replacement = "@(Model is ProductPage ? Html.Raw(OtherFunctions.FormatPrice((Model as ProductPage).OldPrice)) : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:CurrentPrice]", Replacement = "@(Model is ProductPage && (Model as ProductPage).OldPrice != 0 ? Html.Raw(\"<span>\" + OtherFunctions.FormatPrice((Model as ProductPage).Price) + \"</span><span>\" + OtherFunctions.FormatPrice((Model as ProductPage).OldPrice) + \"</span>\") : Html.Raw(\"<span>\" + OtherFunctions.FormatPrice((Model as ProductPage).Price) + \"</span>\"))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:Price]", Replacement = "@(Model is ProductPage ? Html.Raw(OtherFunctions.PriceFormatting((Model as ProductPage).Price)) : Html.Raw(string.Empty))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:OldPrice]", Replacement = "@(Model is ProductPage ? Html.Raw(OtherFunctions.PriceFormatting((Model as ProductPage).OldPrice)) : Html.Raw(string.Empty))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:CurrentPrice]", Replacement = "@(Model is ProductPage && (Model as ProductPage).OldPrice != 0 ? Html.Raw(\"<span>\" + OtherFunctions.PriceFormatting((Model as ProductPage).Price) + \"</span><span>\" + OtherFunctions.PriceFormatting((Model as ProductPage).OldPrice) + \"</span>\") : Html.Raw(\"<span>\" + OtherFunctions.PriceFormatting((Model as ProductPage).Price) + \"</span>\"))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:MainImageUrl]", Replacement = $"@(Model is ProductPage ? \"{env.GetProductsImagesFolderSrc()}\" + (Model as ProductPage).PreviousPageID.ToString() + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[YEAR]", Replacement = "@(DateTime.Now.Year)" });
         }
