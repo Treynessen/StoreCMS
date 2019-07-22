@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.PagesManagement;
@@ -16,15 +18,16 @@ namespace Treynessen.Controllers
 
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
-            UsualPage page = db.UsualPages.FirstOrDefaultAsync(up => up.ID == itemID.Value).Result;
+            UsualPage page = db.UsualPages.FirstOrDefault(up => up.ID == itemID.Value);
             if (page == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Pages}");
-            // Для блокировки выбора страницы-родителя в представлении
+            // Получаем список ID страниц, которые зависят от текущей
+            LinkedList<int> idList = PagesManagementFunctions.GetDependentPageIDs(db, page);
+            // Для блокировки выбора страницы-родителя в представлении, если текущая страница - главная
             HttpContext.Items["isMainPage"] = page.RequestPath.Equals("/", StringComparison.InvariantCulture);
-            db.Entry(page).State = EntityState.Detached;
             PageModel model = PagesManagementFunctions.PageToPageModel(page);
-            HttpContext.Items["UsualPages"] = db.UsualPages.ToArrayAsync().Result;
-            HttpContext.Items["Templates"] = db.Templates.ToArrayAsync().Result;
+            HttpContext.Items["UsualPages"] = db.UsualPages.AsNoTracking().Where(up => !idList.Contains(up.ID)).ToArray();
+            HttpContext.Items["Templates"] = db.Templates.AsNoTracking().ToArray();
             return View("Pages/EditPage", model);
         }
     }

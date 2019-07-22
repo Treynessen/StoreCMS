@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
@@ -40,7 +40,7 @@ namespace Treynessen.PagesManagement
                         return null;
                     if (model.PreviousPageID.HasValue)
                     {
-                        usualPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
+                        usualPage.PreviousPage = db.UsualPages.FirstOrDefault(up => up.ID == model.PreviousPageID.Value);
                         if (usualPage.PreviousPage == null)
                             usualPage.PreviousPageID = null;
                     }
@@ -57,7 +57,7 @@ namespace Treynessen.PagesManagement
                     page = categoryPage;
                     if (model.PreviousPageID.HasValue)
                     {
-                        categoryPage.PreviousPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.PreviousPageID.Value).Result;
+                        categoryPage.PreviousPage = db.UsualPages.FirstOrDefault(up => up.ID == model.PreviousPageID.Value);
                         if (categoryPage.PreviousPage == null)
                             categoryPage.PreviousPageID = null;
                     }
@@ -74,7 +74,7 @@ namespace Treynessen.PagesManagement
                     if (!model.PreviousPageID.HasValue)
                         return null;
                     ProductPage productPage = new ProductPage();
-                    productPage.PreviousPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.PreviousPageID).Result; // ←
+                    productPage.PreviousPage = db.CategoryPages.FirstOrDefault(cp => cp.ID == model.PreviousPageID); // ←
                     if (productPage.PreviousPage == null)
                         return null;
                     page = productPage;
@@ -134,7 +134,7 @@ namespace Treynessen.PagesManagement
 
             page.Content = model.Content;
             if (model.TemplateId.HasValue)
-                page.Template = db.Templates.FirstOrDefaultAsync(t => t.ID == model.TemplateId).Result;
+                page.Template = db.Templates.FirstOrDefault(t => t.ID == model.TemplateId);
             page.Published = model.Published;
             page.PageDescription = model.PageDescription;
             page.PageKeywords = model.PageKeywords;

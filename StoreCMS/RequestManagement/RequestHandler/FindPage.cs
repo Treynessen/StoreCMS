@@ -1,5 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Entities;
 
 namespace Treynessen.RequestManagement
@@ -13,27 +14,20 @@ namespace Treynessen.RequestManagement
                 _requestString = _requestString.Substring(1);
             string[] splitedRequestString = _requestString.Split('/');
 
-            CancellationTokenSource productPageSearchTokenSource = null;
-            CancellationTokenSource categoryPageSearchTokenSource = new CancellationTokenSource();
-            CancellationTokenSource usualPageSearchTokenSource = new CancellationTokenSource();
-
-            Task<ProductPage> productPageSearchTask = null;
+            Page page = null;
             if (splitedRequestString.Length != 1)
             {
-                productPageSearchTokenSource = new CancellationTokenSource();
-                productPageSearchTask = FindPageInTable(db.ProductPages, productPageSearchTokenSource, categoryPageSearchTokenSource, usualPageSearchTokenSource);
+                page = db.ProductPages.AsNoTracking().FirstOrDefault(pp => pp.RequestPathHash == requestStringHash && pp.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
             }
-
-            Task<CategoryPage> categoryPageSearchTask = FindPageInTable(db.CategoryPages, categoryPageSearchTokenSource, productPageSearchTokenSource, usualPageSearchTokenSource);
-            Task<UsualPage> usualPageSearchTask = FindPageInTable(db.UsualPages, usualPageSearchTokenSource, productPageSearchTokenSource, categoryPageSearchTokenSource);
-
-            if (productPageSearchTask != null && productPageSearchTask.Result != null)
-                return productPageSearchTask.Result;
-            else if (categoryPageSearchTask.Result != null)
-                return categoryPageSearchTask.Result;
-            else if (usualPageSearchTask.Result != null)
-                return usualPageSearchTask.Result;
-            else return null;
+            if (page == null)
+            {
+                page = db.CategoryPages.AsNoTracking().FirstOrDefault(cp => cp.RequestPathHash == requestStringHash && cp.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
+            }
+            if (page == null)
+            {
+                page = db.UsualPages.AsNoTracking().FirstOrDefault(up => up.RequestPathHash == requestStringHash && up.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
+            }
+            return page;
         }
     }
 }

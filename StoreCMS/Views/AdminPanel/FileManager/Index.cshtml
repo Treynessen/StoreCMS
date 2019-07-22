@@ -40,7 +40,7 @@
                 <form class="upload-file-form">
                     <div class="input-file-button">
                         <label for="upload-file-button">@Html.Raw(localization.UploadFile)</label>
-                        <input type="file" id="upload-file-button" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .css, .js, .ico" />
+                        <input type="file" id="upload-file-button" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .webp, .css, .js, .ico" />
                     </div>
                 </form>
                 <script>
@@ -52,7 +52,7 @@
                         alert('@Html.Raw(localization.UnsuccessfulFileUpload)');
                     }
                     let uploadFileButton = document.getElementById('upload-file-button');
-                    uploadFileButton.addEventListener('change', createSendFileEventHandler('?pageID=@((int)AdminPanelPages.UploadFile)&path=@Html.Raw(breadcrumbs.Last.Value.Value)', successfulUpload, unsuccessfulUpload,'.png', '.jpg', '.jpeg', '.bmp', '.gif', '.css', '.js', '.ico'));
+                    uploadFileButton.addEventListener('change', createSendFileEventHandler('?pageID=@((int)AdminPanelPages.UploadFile)&path=@Html.Raw(breadcrumbs.Last.Value.Value)', successfulUpload, unsuccessfulUpload,'.png', '.jpg', '.jpeg', '.bmp', '.gif', '.webp', '.css', '.js', '.ico'));
                 </script>
             }
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateFolder, user, Context))

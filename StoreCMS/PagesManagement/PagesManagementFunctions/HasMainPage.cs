@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -9,10 +9,9 @@ namespace Treynessen.PagesManagement
     {
         public static bool HasMainPage(CMSDatabase db)
         {
-            UsualPage usualPage = db.UsualPages.FirstOrDefaultAsync(up => up.RequestPath.Equals("/", StringComparison.InvariantCulture)).Result;
+            UsualPage usualPage = db.UsualPages.FirstOrDefault(up => up.RequestPath.Equals("/", StringComparison.InvariantCulture));
             if (usualPage == null)
                 return false;
-            db.Entry(usualPage).State = EntityState.Detached;
             return true;
         }
     }

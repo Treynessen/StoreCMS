@@ -27,15 +27,14 @@ namespace Treynessen.Database
                 return;
             }
             model.PageType = PageType.Product;
-            ProductPage changeableProduct = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == productID.Value).Result;
-            if (changeableProduct == null)
+            ProductPage editableProduct = db.ProductPages.AsNoTracking().FirstOrDefault(pp => pp.ID == productID.Value);
+            if (editableProduct == null)
             {
                 successfullyCompleted = false;
                 return;
             }
-            db.Entry(changeableProduct).State = EntityState.Detached;
-            model.ID = changeableProduct.ID;
-            model.PreviousPageID = changeableProduct.PreviousPageID;
+            model.ID = editableProduct.ID;
+            model.PreviousPageID = editableProduct.PreviousPageID;
             ProductPage editedProduct = PagesManagementFunctions.PageModelToPage(db, model, context) as ProductPage;
             if (editedProduct == null)
             {
@@ -47,13 +46,13 @@ namespace Treynessen.Database
             db.SaveChanges();
 
             // Изменяем имена изображений продукта, если изменился псевдоним страницы
-            if (!changeableProduct.Alias.Equals(editedProduct.Alias, StringComparison.InvariantCulture))
+            if (!editableProduct.Alias.Equals(editedProduct.Alias, StringComparison.InvariantCulture))
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                 string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{editedProduct.PreviousPageID}{editedProduct.ID}\\";
                 if (Directory.Exists(pathToImages))
                 {
-                    string oldName = changeableProduct.Alias;
+                    string oldName = editableProduct.Alias;
                     string newName = editedProduct.Alias;
                     Regex imagesChecker = new Regex($"{oldName}(_\\d+)?.jpg$");
                     string[] oldImagesNames = Directory.GetFiles(pathToImages, $"*{oldName}*.jpg");

@@ -22,7 +22,7 @@ namespace Treynessen.Database
                 successfullyDeleted = false;
                 return;
             }
-            Chunk chunk = db.Chunks.FirstOrDefaultAsync(t => t.ID == itemID).Result;
+            Chunk chunk = db.Chunks.FirstOrDefault(t => t.ID == itemID);
             if (chunk == null)
             {
                 successfullyDeleted = false;
@@ -37,14 +37,8 @@ namespace Treynessen.Database
             successfullyDeleted = true;
 
             // Получаем список чанков и шаблонов, использующих данный чанк и делаем перерендер
-            var templates = db.Templates
-            .Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]"))
-            .AsNoTracking()
-            .ToList();
-            var chunks = db.Chunks
-            .Where(tc => tc.TemplateSource.Contains($"[#{chunk.Name}]"))
-            .AsNoTracking()
-            .ToList();
+            var templates = db.Templates.AsNoTracking().Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();
+            var chunks = db.Chunks.AsNoTracking().Where(tc => tc.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();
             var renderTask = Task.Run(() =>
             {
                 foreach (var t in templates)
@@ -78,7 +72,7 @@ namespace Treynessen.Database
                         "@using Treynessen.Functions;",
                         "@using Treynessen.Database.Entities;",
                         "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
-                    };
+                };
                 string productBlockCshtmlTemplate = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: productBlockFileContent,

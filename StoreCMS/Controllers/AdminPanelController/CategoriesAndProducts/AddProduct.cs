@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Entities;
@@ -13,12 +14,17 @@ namespace Treynessen.Controllers
             HttpContext.Items["pageID"] = AdminPanelPages.AddProduct;
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
-            var categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == itemID.Value).Result;
+            var categoryPage = db.CategoryPages.AsNoTracking().FirstOrDefault(cp => cp.ID == itemID.Value);
             if (categoryPage == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
-            db.Entry(categoryPage).State = EntityState.Detached;
-            HttpContext.Items["Templates"] = db.Templates.AsNoTracking().ToArrayAsync().Result;
-            HttpContext.Items["LastTemplate"] = categoryPage.LastProductTemplateID;
+            Template[] templates = db.Templates.AsNoTracking().ToArray();
+            int? lastProductTemplateID = categoryPage.LastProductTemplateID;
+            if (lastProductTemplateID.HasValue)
+            {
+                lastProductTemplateID = templates.FirstOrDefault(t => t.ID == lastProductTemplateID.Value) != null ? lastProductTemplateID : null;
+            }
+            HttpContext.Items["Templates"] = templates;
+            HttpContext.Items["LastTemplate"] = lastProductTemplateID;
             HttpContext.Items["CategoryPage"] = categoryPage;
             return View("CategoriesAndProducts/AddProduct");
         }

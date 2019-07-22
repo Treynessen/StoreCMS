@@ -52,6 +52,11 @@
 
         public string ProductTemplate => "HTML шаблон товара в списке";
 
+        public string TemplateSettingsForSpecialPages => "Установка шаблонов для специальных страниц";
+        public string SearchPageTemplate => "Шаблон страницы «Поиск товара»";
+        public string PageNotFoundTemplate => "Шаблон страницы 404";
+        public string WithoutTemplate => "Без шаблона";
+
         public string BDConnectionSettings => "Настройки подключения к БД";
         public string ConnectionString => "Параметры подключения к БД";
 

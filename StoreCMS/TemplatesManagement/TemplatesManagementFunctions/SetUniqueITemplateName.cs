@@ -12,10 +12,10 @@ namespace Treynessen.TemplatesManagement
     {
         public static void SetUniqueITemplateName(CMSDatabase db, ITemplate template)
         {
-            var rawsIdAndName = template is Template
-                ? db.Templates.Where(t => t.ID != template.ID).AsNoTracking().Select(t => new { t.ID, t.Name }).ToList()
-                : db.Chunks.Where(tc => tc.ID != template.ID).AsNoTracking().Select(tc => new { tc.ID, tc.Name }).ToList();
-            if (rawsIdAndName == null)
+            var rawIdsAndNames = template is Template
+                ? db.Templates.AsNoTracking().Where(t => t.ID != template.ID).Select(t => new { t.ID, t.Name }).ToList()
+                : db.Chunks.AsNoTracking().Where(tc => tc.ID != template.ID).Select(tc => new { tc.ID, tc.Name }).ToList();
+            if (rawIdsAndNames == null)
                 throw new ArgumentException();
 
             int index = 0;
@@ -24,7 +24,7 @@ namespace Treynessen.TemplatesManagement
             {
                 has = false;
                 string name = $"{template.Name}{(index == 0 ? string.Empty : index.ToString())}";
-                has = rawsIdAndName.FirstOrDefault(t => t.Name.Equals(name, StringComparison.InvariantCulture)) != null;
+                has = rawIdsAndNames.FirstOrDefault(t => t.Name.Equals(name, StringComparison.InvariantCulture)) != null;
                 if (has && index == 0)
                 {
                     template.Name = OtherFunctions.GetNameWithUnderscore(template.Name);

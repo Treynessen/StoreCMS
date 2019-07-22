@@ -11,7 +11,7 @@ namespace Treynessen.Controllers
         public IActionResult Categories()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.Categories;
-            var categories = db.CategoryPages.AsNoTracking().OrderBy(cp => cp.PageName).ToArrayAsync().Result;
+            var categories = db.CategoryPages.AsNoTracking().OrderBy(cp => cp.PageName).ToArray();
             return View("CategoriesAndProducts/Categories", categories);
         }
     }

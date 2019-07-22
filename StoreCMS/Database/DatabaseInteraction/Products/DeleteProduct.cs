@@ -1,7 +1,7 @@
 ﻿using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
 using Treynessen.Database.Context;
@@ -18,7 +18,7 @@ namespace Treynessen.Database
                 successfullyDeleted = false;
                 return;
             }
-            ProductPage deletedProduct = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == productID.Value).Result;
+            ProductPage deletedProduct = db.ProductPages.FirstOrDefault(pp => pp.ID == productID.Value);
             if (deletedProduct == null)
             {
                 successfullyDeleted = false;
@@ -28,8 +28,8 @@ namespace Treynessen.Database
             string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{deletedProduct.PreviousPageID}{deletedProduct.ID}\\";
             if (Directory.Exists(pathToImages))
                 Directory.Delete(pathToImages, true);
-            CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == deletedProduct.PreviousPageID).Result;
-            --categoryPage.ProductsCount;
+            db.Entry(deletedProduct).Reference(pp => pp.PreviousPage).Load();
+            --deletedProduct.PreviousPage.ProductsCount;
             db.ProductPages.Remove(deletedProduct);
             db.SaveChanges();
             successfullyDeleted = true;

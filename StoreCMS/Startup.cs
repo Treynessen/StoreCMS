@@ -62,6 +62,11 @@ public class Startup
                 template: "~/admin",
                 defaults: new { controller = "AdminPanel", action = "AdminPanel" }
             );
+            routeBuilder.MapRoute(
+                name: "page_not_found",
+                template: "{*requestString}",
+                defaults: new { controller = "Page", action = "PageNotFound" }
+            );
         });
     }
 }

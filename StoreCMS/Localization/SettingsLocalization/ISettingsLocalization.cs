@@ -52,6 +52,11 @@
 
         string ProductTemplate { get; }
 
+        string TemplateSettingsForSpecialPages { get; }
+        string SearchPageTemplate { get; }
+        string PageNotFoundTemplate { get; }
+        string WithoutTemplate { get; }
+
         string BDConnectionSettings { get; }
         string ConnectionString { get; }
 

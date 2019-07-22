@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
@@ -8,10 +10,10 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult ProductPage(ProductPage productPage)
         {
-            db.Entry(productPage).Reference(up => up.Template).LoadAsync().Wait();
-            if (productPage.Template != null)
+            Template template = db.Templates.AsNoTracking().FirstOrDefault(t => t.ID == productPage.TemplateId);
+            if (template != null)
             {
-                return View(productPage.Template.TemplatePath, productPage);
+                return View(template.TemplatePath, productPage);
             }
             return Content(productPage.Content);
         }

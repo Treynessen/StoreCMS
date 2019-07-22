@@ -14,8 +14,12 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append($"\"{model.DbConnectionString}\"\n" + "\t},\n");
 
             configContentBuilder.Append("\t\"CategoryPageSettings\": {\n");
-            configContentBuilder.Append($"\t\t\"NumberOfProductsOnPage\": \"{(model.NumberOfProductsOnPage.HasValue ? model.NumberOfProductsOnPage.Value : 1)}\",\n");
+            configContentBuilder.Append($"\t\t\"NumberOfProductsOnPage\": \"{(model.NumberOfProductsOnPage ?? 1)}\",\n");
             configContentBuilder.Append($"\t\t\"PaginationStyleName\": \"{model.PaginationStyleName}\"\n" + "\t},\n");
+
+            configContentBuilder.Append("\t\"TemplateSettingsForSpecialPages\": {\n");
+            configContentBuilder.Append($"\t\t\"SearchPageTemplateId\": \"{(model.SearchPageTemplateId ?? 0)}\",\n");
+            configContentBuilder.Append($"\t\t\"PageNotFoundTemplateId\": \"{(model.PageNotFoundTemplateId ?? 0)}\"\n" + "\t},\n");
 
             configContentBuilder.Append("\t\"AdminPanelAccessSettings\": {\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.MainPage}\": \"{(model.AccessSettings.MainPage.HasValue ? (int)model.AccessSettings.MainPage.Value : (int)AccessLevel.VeryHigh)}\",\n");

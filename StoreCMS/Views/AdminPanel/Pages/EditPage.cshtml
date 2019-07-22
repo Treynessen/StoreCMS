@@ -67,10 +67,6 @@
                         }
                         @foreach (var p in pages)
                         {
-                            if (Model.PreviousPageID == p.PreviousPageID && Model.Alias.Equals(p.Alias, StringComparison.InvariantCulture))
-                            {
-                                continue;
-                            }
                             if (Model.PreviousPageID.HasValue && p.ID == Model.PreviousPageID.Value)
                             {
                             <option value="@p.ID" selected>@Html.Raw(p.PageName)</option>

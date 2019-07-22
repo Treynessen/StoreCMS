@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.AdminPanelTypes;
 
@@ -10,8 +11,8 @@ namespace Treynessen.Controllers
         public IActionResult AddCategory()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.AddCategory;
-            HttpContext.Items["UsualPages"] = db.UsualPages.ToArrayAsync().Result;
-            HttpContext.Items["Templates"] = db.Templates.ToArrayAsync().Result;
+            HttpContext.Items["UsualPages"] = db.UsualPages.AsNoTracking().ToArray();
+            HttpContext.Items["Templates"] = db.Templates.AsNoTracking().ToArray();
             return View("CategoriesAndProducts/AddCategory");
         }
     }

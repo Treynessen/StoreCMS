@@ -13,7 +13,7 @@ namespace Treynessen.Database.Context
         public DbSet<UsualPage> UsualPages { get; set; }
         public DbSet<CategoryPage> CategoryPages { get; set; }
         public DbSet<ProductPage> ProductPages { get; set; }
-
+        
         public DbSet<Template> Templates { get; set; }
         public DbSet<Chunk> Chunks { get; set; }
 

@@ -6,7 +6,7 @@ namespace Treynessen.Database.Entities
     [Table("CategoryPages")]
     public class CategoryPage : Page
     {
-        public int ProductsCount { get; set; }
+        public uint ProductsCount { get; set; }
         public int? PreviousPageID { get; set; }
         public UsualPage PreviousPage { get; set; }
 

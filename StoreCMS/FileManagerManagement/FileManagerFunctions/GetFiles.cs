@@ -16,6 +16,7 @@ namespace Treynessen.FileManagerManagement
             new KeyValuePair<string, FileManagerObjectType>(".png", FileManagerObjectType.Image),
             new KeyValuePair<string, FileManagerObjectType>(".bmp", FileManagerObjectType.Image),
             new KeyValuePair<string, FileManagerObjectType>(".gif", FileManagerObjectType.Image),
+            new KeyValuePair<string, FileManagerObjectType>(".webp", FileManagerObjectType.Image),
             new KeyValuePair<string, FileManagerObjectType>(".ico", FileManagerObjectType.Image),
             new KeyValuePair<string, FileManagerObjectType>(".css", FileManagerObjectType.Style),
             new KeyValuePair<string, FileManagerObjectType>(".js", FileManagerObjectType.Script)

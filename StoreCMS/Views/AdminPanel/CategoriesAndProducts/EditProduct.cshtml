@@ -1,6 +1,5 @@
 ﻿@model PageModel
 @inject ICategoriesAndProductsLocalization localization
-@inject CMSDatabase db
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/work_with_page.css";
@@ -156,7 +155,7 @@
                     formElement.insertBefore(errorMsg, formElement.firstChild);
                 }
                 function successfulRequestHandler() {
-                    alert('@Html.Raw(localization.CategoryEdited)');
+                    alert('@Html.Raw(localization.ProductEdited)');
                     location.reload();
                 }
                 let searchString = '?pageID=@((int)AdminPanelPages.EditProduct)&itemID=@Model.ID';

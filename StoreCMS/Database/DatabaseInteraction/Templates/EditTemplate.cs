@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,13 +22,12 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            Template changebleTemplate = db.Templates.FirstOrDefaultAsync(t => t.ID == itemID).Result;
-            if (changebleTemplate == null)
+            Template editableTemplate = db.Templates.AsNoTracking().FirstOrDefault(t => t.ID == itemID);
+            if (editableTemplate == null)
             {
                 successfullyCompleted = false;
                 return;
             }
-            else db.Entry(changebleTemplate).State = EntityState.Detached;
             Template editedTemplate = TemplatesManagementFunctions.TemplateModelToITemplate<Template>(model, context);
             if (editedTemplate == null)
             {
@@ -46,11 +46,11 @@ namespace Treynessen.Database
             successfullyCompleted = true;
 
             // Изменяем cshtml файл, если изменилось имя шаблона и/или код шаблона
-            bool changedName = !editedTemplate.Name.Equals(changebleTemplate.Name, StringComparison.InvariantCulture);
-            bool changedTemplateSource = !editedTemplate.TemplateSource.Equals(changebleTemplate.TemplateSource, StringComparison.InvariantCulture);
+            bool changedName = !editedTemplate.Name.Equals(editableTemplate.Name, StringComparison.InvariantCulture);
+            bool changedTemplateSource = !editedTemplate.TemplateSource.Equals(editableTemplate.TemplateSource, StringComparison.InvariantCulture);
             if (changedName && changedTemplateSource)
             {
-                string pathToOldFileName = $"{env.GetTemplatesFolderFullPath()}{changebleTemplate.Name}.cshtml";
+                string pathToOldFileName = $"{env.GetTemplatesFolderFullPath()}{editableTemplate.Name}.cshtml";
                 if (File.Exists(pathToOldFileName))
                     File.Delete(pathToOldFileName);
                 string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
@@ -64,7 +64,7 @@ namespace Treynessen.Database
             }
             else if (changedName)
             {
-                string pathToOldFileName = $"{env.GetTemplatesFolderFullPath()}{changebleTemplate.Name}.cshtml";
+                string pathToOldFileName = $"{env.GetTemplatesFolderFullPath()}{editableTemplate.Name}.cshtml";
                 if (File.Exists(pathToOldFileName))
                     File.Move(pathToOldFileName, $"{env.GetTemplatesFolderFullPath()}{editedTemplate.Name}.cshtml");
                 else

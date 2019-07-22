@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Entities;
@@ -14,11 +15,10 @@ namespace Treynessen.Controllers
             HttpContext.Items["pageID"] = AdminPanelPages.EditChunk;
             if (!itemID.HasValue)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
-            Chunk chunk = db.Chunks.FirstOrDefaultAsync(p => p.ID == itemID.Value).Result;
+            Chunk chunk = db.Chunks.AsNoTracking().FirstOrDefault(p => p.ID == itemID.Value);
             TemplateModel model = TemplatesManagementFunctions.ITemplateToTemplateModel(chunk);
             if (model == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Chunks}");
-            db.Entry(chunk).State = EntityState.Detached;
             return View("Chunks/EditChunk", model);
         }
     }

@@ -13,5 +13,6 @@ namespace Treynessen.Database.Entities
         public string Password { get; set; }
         [Required]
         public UserType UserType { get; set; }
+        public int UserTypeID { get; set; }
     }
 }

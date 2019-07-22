@@ -11,7 +11,7 @@ namespace Treynessen.Controllers
         public IActionResult Pages()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.Pages;
-            var usualPages = db.UsualPages.AsNoTracking().OrderBy(p => p.ID).ToArrayAsync().Result;
+            var usualPages = db.UsualPages.AsNoTracking().OrderBy(p => p.ID).ToArray();
             return View("Pages/Index", usualPages);
         }
     }

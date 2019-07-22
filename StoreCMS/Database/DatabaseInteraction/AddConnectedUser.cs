@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Treynessen.Security;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -13,7 +13,7 @@ namespace Treynessen.Database
         // На стороне клиента, в куках, сохраняем логин и ключ для входа
         public static void AddConnectedUser(CMSDatabase db, User user, HttpContext context)
         {
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefaultAsync(cu => cu.UserName.Equals(user.Login, StringComparison.InvariantCulture)).Result;
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(user.Login, StringComparison.InvariantCulture));
 
             // Если пользователь уже был залогинен, то обновляем его данные
             // Это сделано, если вдруг пользователь заходит с другого браузера
@@ -44,9 +44,6 @@ namespace Treynessen.Database
                 db.ConnectedUsers.Add(connectedUser);
                 db.SaveChanges();
             }
-
-            db.Entry(user).State = EntityState.Detached;
-            db.Entry(connectedUser).State = EntityState.Detached;
 
             // Использовать вместо userName хэш?
             context.Response.Cookies.Append("userName", connectedUser.UserName);

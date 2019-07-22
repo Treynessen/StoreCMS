@@ -19,5 +19,6 @@ namespace Treynessen.Database.Entities
         public string UserAgent { get; set; }
         [Required]
         public User User { get; set; }
+        public int UserID { get; set; }
     }
 }

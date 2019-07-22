@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
@@ -16,7 +17,7 @@ namespace Treynessen.Security
             if (string.IsNullOrEmpty(userName))
                 return null;
 
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefaultAsync(cu => cu.UserName.Equals(userName, StringComparison.InvariantCulture)).Result;
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(userName, StringComparison.InvariantCulture));
 
             if (connectedUser == null)
                 return null;
@@ -45,14 +46,11 @@ namespace Treynessen.Security
             connectedUser.LastActionTime = DateTime.Now;
             db.Update(connectedUser);
             db.SaveChanges();
-
-            db.Entry(connectedUser).Reference(cu => cu.User).LoadAsync().Wait();
-            db.Entry(connectedUser.User).Reference(u => u.UserType).LoadAsync().Wait();
-
+            db.Entry(connectedUser).Reference(cu => cu.User).Load();
+            db.Entry(connectedUser.User).Reference(u => u.UserType).Load();
             db.Entry(connectedUser).State = EntityState.Detached;
             db.Entry(connectedUser.User).State = EntityState.Detached;
             db.Entry(connectedUser.User.UserType).State = EntityState.Detached;
-
             return connectedUser.User;
         }
     }

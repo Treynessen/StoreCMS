@@ -24,13 +24,12 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            Chunk changebleChunk = db.Chunks.FirstOrDefaultAsync(t => t.ID == itemID).Result;
-            if (changebleChunk == null)
+            Chunk editableChunk = db.Chunks.AsNoTracking().FirstOrDefault(t => t.ID == itemID);
+            if (editableChunk == null)
             {
                 successfullyCompleted = false;
                 return;
             }
-            else db.Entry(changebleChunk).State = EntityState.Detached;
             Chunk editedChunk = TemplatesManagementFunctions.TemplateModelToITemplate<Chunk>(model, context);
             if (editedChunk == null)
             {
@@ -49,11 +48,11 @@ namespace Treynessen.Database
             successfullyCompleted = true;
 
             // Изменяем cshtml файл, если изменилось имя шаблона и/или код шаблона
-            bool changedName = !editedChunk.Name.Equals(changebleChunk.Name, StringComparison.InvariantCulture);
-            bool changedTemplateSource = !editedChunk.TemplateSource.Equals(changebleChunk.TemplateSource, StringComparison.InvariantCulture);
+            bool changedName = !editedChunk.Name.Equals(editableChunk.Name, StringComparison.InvariantCulture);
+            bool changedTemplateSource = !editedChunk.TemplateSource.Equals(editableChunk.TemplateSource, StringComparison.InvariantCulture);
             if (changedName && changedTemplateSource)
             {
-                string pathToOldFileName = $"{env.GetChunksFolderFullPath()}{changebleChunk.Name}.cshtml";
+                string pathToOldFileName = $"{env.GetChunksFolderFullPath()}{editableChunk.Name}.cshtml";
                 if (File.Exists(pathToOldFileName))
                     File.Delete(pathToOldFileName);
                 string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
@@ -67,7 +66,7 @@ namespace Treynessen.Database
             }
             else if (changedName)
             {
-                string pathToOldFileName = $"{env.GetChunksFolderFullPath()}{changebleChunk.Name}.cshtml";
+                string pathToOldFileName = $"{env.GetChunksFolderFullPath()}{editableChunk.Name}.cshtml";
                 if (File.Exists(pathToOldFileName))
                     File.Move(pathToOldFileName, $"{env.GetChunksFolderFullPath()}{editedChunk.Name}.cshtml");
                 else
@@ -94,17 +93,16 @@ namespace Treynessen.Database
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), editedChunk.Name, cshtmlContent);
             }
 
-            // Если изменилось название чанка, то получаем список шаблонов и чанков, которые использовали данный чанк
+            // Если изменилось название чанка, то получаем список шаблонов и чанков, которые использовали или теперь используют данный чанк
+            // и делаем их перерендер
             if (changedName)
             {
-                var templates = db.Templates
-                .Where(t => t.TemplateSource.Contains($"[#{changebleChunk.Name}]") || t.TemplateSource.Contains($"[#{editedChunk.Name}]"))
-                .AsNoTracking()
+                var templates = db.Templates.AsNoTracking()
+                .Where(t => t.TemplateSource.Contains($"[#{editableChunk.Name}]") || t.TemplateSource.Contains($"[#{editedChunk.Name}]"))
                 .ToList();
-                var chunks = db.Chunks
+                var chunks = db.Chunks.AsNoTracking()
                 .Where(tc => tc.ID != itemID.Value
-                && (tc.TemplateSource.Contains($"[#{changebleChunk.Name}]") || tc.TemplateSource.Contains($"[#{editedChunk.Name}]")))
-                .AsNoTracking()
+                && (tc.TemplateSource.Contains($"[#{editableChunk.Name}]") || tc.TemplateSource.Contains($"[#{editedChunk.Name}]")))
                 .ToList();
                 var renderTask = Task.Run(() =>
                 {
@@ -133,7 +131,7 @@ namespace Treynessen.Database
                 }
 
                 string productBlockFileContent = OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath());
-                if (changedName && productBlockFileContent.Contains($"[#{changebleChunk.Name}]"))
+                if (changedName && productBlockFileContent.Contains($"[#{editableChunk.Name}]"))
                 {
                     string[] additions = {
                         "@using Treynessen.Functions;",

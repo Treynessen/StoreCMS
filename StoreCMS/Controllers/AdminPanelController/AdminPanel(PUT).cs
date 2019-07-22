@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
-using Treynessen.Database;
 using Treynessen.AdminPanelTypes;
 using Treynessen.ImagesManagement;
 using Treynessen.Database.Entities;

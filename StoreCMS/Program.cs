@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
 using Treynessen.Database;
@@ -27,7 +26,7 @@ public class Program
 
     private static void SetDeafaultUserType(CMSDatabase db)
     {
-        UserType userType = db.UserTypes.AsNoTracking().FirstOrDefaultAsync(ut => ut.AccessLevel == AccessLevel.VeryHigh).Result;
+        UserType userType = db.UserTypes.FirstOrDefault(ut => ut.AccessLevel == AccessLevel.VeryHigh);
         if (userType == null)
         {
             userType = new UserType
@@ -38,7 +37,6 @@ public class Program
             };
             db.UserTypes.Add(userType);
             db.SaveChanges();
-            db.Entry(userType).State = EntityState.Detached;
         }
     }
 
@@ -50,12 +48,10 @@ public class Program
         else
         {
             createUser = true;
-            foreach(var user in db.Users.ToArray())
+            foreach (var user in db.Users.ToArray())
             {
-                db.Entry(user).Reference(u => u.UserType).LoadAsync().Wait();
-                db.Entry(user).State = EntityState.Detached;
-                db.Entry(user.UserType).State = EntityState.Detached;
-                if(user.UserType.AccessLevel == AccessLevel.VeryHigh)
+                user.UserType = db.UserTypes.FirstOrDefault(ut => ut.ID == user.UserTypeID);
+                if (user.UserType.AccessLevel == AccessLevel.VeryHigh)
                 {
                     createUser = false;
                     break;
@@ -64,7 +60,7 @@ public class Program
         }
         if (createUser)
         {
-            UserType userType = db.UserTypes.FirstOrDefaultAsync(ut => ut.AccessLevel == AccessLevel.VeryHigh).Result;
+            UserType userType = db.UserTypes.FirstOrDefault(ut => ut.AccessLevel == AccessLevel.VeryHigh);
             User user = new User
             {
                 ID = DatabaseInteraction.GetDatabaseRawID(db.Users),
@@ -74,8 +70,6 @@ public class Program
             };
             db.Users.Add(user);
             db.SaveChanges();
-            db.Entry(user).State = EntityState.Detached;
-            db.Entry(userType).State = EntityState.Detached;
         }
     }
 }

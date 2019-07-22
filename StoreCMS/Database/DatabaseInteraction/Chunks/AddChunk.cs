@@ -49,14 +49,9 @@ namespace Treynessen.Database
             successfullyCompleted = true;
 
             // Получаем список шаблонов и чанков, которые содержат данный чанк
-            var templates = db.Templates
-            .Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]"))
-            .AsNoTracking()
-            .ToList();
-            var chunks = db.Chunks
-            .Where(tc => tc.ID != chunk.ID && (tc.TemplateSource.Contains($"[#{chunk.Name}]")))
-            .AsNoTracking()
-            .ToList();
+            var templates = db.Templates.AsNoTracking().Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();
+            var chunks = db.Chunks.AsNoTracking().Where(tc => tc.ID != chunk.ID && (tc.TemplateSource.Contains($"[#{chunk.Name}]"))).ToList();
+            // Делаем рендер, содержащих данный чанк, шаблонов и чанков 
             var renderTask = Task.Run(() =>
             {
                 foreach (var t in templates)
@@ -83,6 +78,7 @@ namespace Treynessen.Database
                 TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetChunksFolderFullPath(), c.Name, _cshtmlContent);
             }
 
+            // Если шаблон блока товара содержит текущий чанк, то делаем его перерендер
             string productBlockFileContent = OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath());
             if (productBlockFileContent.Contains($"[#{chunk.Name}]"))
             {
@@ -90,7 +86,7 @@ namespace Treynessen.Database
                         "@using Treynessen.Functions;",
                         "@using Treynessen.Database.Entities;",
                         "@addTagHelper Treynessen.TagHelpers.ImageTagHelper, StoreCMS"
-                    };
+                };
                 string productBlockCshtmlTemplate = TemplatesManagementFunctions.SourceToCSHTML(
                     db: db,
                     source: productBlockFileContent,
@@ -104,7 +100,6 @@ namespace Treynessen.Database
                     writer.Write(productBlockCshtmlTemplate);
                 }
             }
-
             renderTask.Wait();
         }
     }

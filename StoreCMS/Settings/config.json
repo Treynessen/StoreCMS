@@ -6,6 +6,10 @@
 		"NumberOfProductsOnPage": "8",
 		"PaginationStyleName": "pagination"
 	},
+	"TemplateSettingsForSpecialPages": {
+		"SearchPageTemplateId": "1",
+		"PageNotFoundTemplateId": "4"
+	},
 	"AdminPanelAccessSettings": {
 		"MainPage": "5",
 		"Pages": "5",

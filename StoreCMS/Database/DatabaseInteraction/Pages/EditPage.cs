@@ -22,40 +22,37 @@ namespace Treynessen.Database
             model.PageModel.PageType = model.PageType;
             bool isMainPage = false;
             model.PageModel.IsMainPage = false;
+            Page editablePage = null;
             switch (model.PageModel.PageType)
             {
                 case PageType.Usual:
-                    UsualPage usualPage = db.UsualPages.FirstOrDefaultAsync(up => up.ID == model.itemID).Result;
-                    db.Entry(usualPage).State = EntityState.Detached;
-                    if (usualPage == null)
+                    editablePage = db.UsualPages.AsNoTracking().FirstOrDefault(up => up.ID == model.itemID);
+                    if (editablePage == null)
                     {
                         successfullyCompleted = false;
                         return;
                     }
-                    model.PageModel.ID = usualPage.ID;
-                    isMainPage = usualPage.RequestPath.Equals("/", StringComparison.InvariantCulture);
+                    model.PageModel.ID = editablePage.ID;
+                    isMainPage = editablePage.RequestPath.Equals("/", StringComparison.InvariantCulture);
                     break;
                 case PageType.Category:
-                    CategoryPage categoryPage = db.CategoryPages.FirstOrDefaultAsync(cp => cp.ID == model.itemID).Result;
-                    db.Entry(categoryPage).State = EntityState.Detached;
-                    if (categoryPage == null)
+                    editablePage = db.CategoryPages.AsNoTracking().FirstOrDefault(cp => cp.ID == model.itemID);
+                    if (editablePage == null)
                     {
                         successfullyCompleted = false;
                         return;
                     }
-                    model.PageModel.ID = categoryPage.ID;
+                    model.PageModel.ID = editablePage.ID;
                     break;
                 default:
                     successfullyCompleted = false;
                     return;
             }
-            // Для блокировки выбора страницы-родителя в представлении
-            context.Items["isMainPage"] = isMainPage;
             model.PageModel.PageType = model.PageModel.PageType.Value;
-            Page page = PagesManagementFunctions.PageModelToPage(db, model.PageModel, context);
-            if (page != null)
+            Page editedPage = PagesManagementFunctions.PageModelToPage(db, model.PageModel, context);
+            if (editedPage != null)
             {
-                if (page is UsualPage up)
+                if (editedPage is UsualPage up)
                 {
                     if (isMainPage)
                     {
@@ -64,12 +61,16 @@ namespace Treynessen.Database
                         up.RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(up.RequestPath);
                         up.PreviousPage = null;
                     }
-                    // Если родителем страницы является сама страница, то возвращаем сообщение об ошибке
-                    if (up.PreviousPageID.HasValue && up.PreviousPage.ID == up.ID)
+                    // Если родителем страницы является сама страница или зависимая страница, то возвращаем сообщение об ошибке
+                    if (up.PreviousPage != null && PagesManagementFunctions.GetDependentPageIDs(db, up).Contains(up.PreviousPage.ID))
                     {
                         successfullyCompleted = false;
                         return;
                     }
+                }
+                else if(editedPage is CategoryPage cp)
+                {
+                    cp.ProductsCount = (editablePage as CategoryPage).ProductsCount;
                 }
             }
             else
@@ -77,25 +78,28 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            db.Update(page);
+            db.Update(editedPage);
 
-            // Обновляем все зависимые страницы
-            if (page is UsualPage)
+            // Обновляем все зависимые страницы, если изменилось имя страницы и/или url страницы
+            if (!editablePage.PageName.Equals(editedPage.PageName, StringComparison.InvariantCulture)
+                || !editablePage.Alias.Equals(editedPage.RequestPath, StringComparison.InvariantCulture))
             {
-                List<UsualPage> usualPages = db.UsualPages.Where(p => p.PreviousPageID == page.ID).ToListAsync().Result;
-                List<CategoryPage> categoryPages = db.CategoryPages.Where(p => p.PreviousPageID == page.ID).ToListAsync().Result;
-                foreach (var u_page in usualPages)
-                    RefreshPageAndDependencies(db, u_page);
-                foreach (var c_page in categoryPages)
-                    RefreshPageAndDependencies(db, c_page);
+                if (editedPage is UsualPage)
+                {
+                    List<UsualPage> usualPages = db.UsualPages.Where(p => p.PreviousPageID == editedPage.ID).ToList();
+                    List<CategoryPage> categoryPages = db.CategoryPages.Where(p => p.PreviousPageID == editedPage.ID).ToList();
+                    foreach (var u_page in usualPages)
+                        RefreshPageAndDependencies(db, u_page);
+                    foreach (var c_page in categoryPages)
+                        RefreshPageAndDependencies(db, c_page);
+                }
+                if (editedPage is CategoryPage)
+                {
+                    List<ProductPage> productPages = db.ProductPages.Where(p => p.PreviousPageID == editedPage.ID).ToList();
+                    foreach (var p_page in productPages)
+                        RefreshPageAndDependencies(db, p_page);
+                }
             }
-            if (page is CategoryPage)
-            {
-                List<ProductPage> productPages = db.ProductPages.Where(p => p.PreviousPageID == page.ID).ToListAsync().Result;
-                foreach (var p_page in productPages)
-                    RefreshPageAndDependencies(db, p_page);
-            }
-
             db.SaveChanges();
             successfullyCompleted = true;
         }

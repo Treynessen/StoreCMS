@@ -11,6 +11,21 @@
     Context.Items["PageName"] = localization.PageName;
     AccessLevelConfiguration accessLevelConfiguration = Context.Items["AccessLevelConfiguration"] as AccessLevelConfiguration;
     Context.Items["PageStyle"] = "/styles/admin_panel/settings.css";
+    Template[] templates = Context.Items["Templates"] as Template[];
+    int? searchPageTemplateId = null;
+    try
+    {
+        searchPageTemplateId = Convert.ToInt32(configuration.GetConfigValue("TemplateSettingsForSpecialPages:SearchPageTemplateId"));
+        searchPageTemplateId = templates.FirstOrDefault(t => t.ID == searchPageTemplateId.Value) != null ? searchPageTemplateId : null;
+    }
+    catch (FormatException) { }
+    int? pageNotFoundTemplateId = null;
+    try
+    {
+        pageNotFoundTemplateId = Convert.ToInt32(configuration.GetConfigValue("TemplateSettingsForSpecialPages:PageNotFoundTemplateId"));
+        pageNotFoundTemplateId = templates.FirstOrDefault(t => t.ID == pageNotFoundTemplateId.Value) != null ? pageNotFoundTemplateId : null;
+    }
+    catch (FormatException) { }
     List<KeyValuePair<AdminPanelPages, IHtmlContent>> settingList = new List<KeyValuePair<AdminPanelPages, IHtmlContent>>()
 {
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.MainPage, Html.Raw(localization.AccessLevelToAdminPanel)),
@@ -90,6 +105,62 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     {
                     <tr><td class="without-padding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
                     }
+                </table>
+                @*TEMPLATE SETTINGS FOR SPECIAL PAGES*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.TemplateSettingsForSpecialPages)</td></tr>
+                    <tr class="with-padding">
+                        <td>@Html.Raw(localization.SearchPageTemplate)</td>
+                        <td>
+                            <select name="SettingsModel.SearchPageTemplateId">
+                                @if (searchPageTemplateId.HasValue)
+                                {
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                                else
+                                {
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                            @foreach (var t in templates)
+                            {
+                                if (searchPageTemplateId.HasValue && t.ID == searchPageTemplateId.Value)
+                                {
+                                <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
+                            }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="with-padding">
+                        <td>@Html.Raw(localization.PageNotFoundTemplate)</td>
+                        <td>
+                            <select name="SettingsModel.PageNotFoundTemplateId">
+                                @if (pageNotFoundTemplateId.HasValue)
+                                {
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                                else
+                                {
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                            @foreach (var t in templates)
+                            {
+                                if (pageNotFoundTemplateId.HasValue && t.ID == pageNotFoundTemplateId.Value)
+                                {
+                                <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
+                            }
+                            </select>
+                        </td>
+                    </tr>
                 </table>
                 @*CATEGORY PAGE SETTINGS*@
                 <table>

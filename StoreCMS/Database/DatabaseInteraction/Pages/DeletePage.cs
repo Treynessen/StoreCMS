@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
 using Treynessen.PagesManagement;
@@ -25,10 +24,10 @@ namespace Treynessen.Database
             switch (pageType)
             {
                 case PageType.Usual:
-                    page = db.UsualPages.FirstOrDefaultAsync(p => p.ID == itemID).Result;
+                    page = db.UsualPages.FirstOrDefault(p => p.ID == itemID);
                     break;
                 case PageType.Category:
-                    page = db.CategoryPages.FirstOrDefaultAsync(p => p.ID == itemID).Result;
+                    page = db.CategoryPages.FirstOrDefault(p => p.ID == itemID);
                     break;
                 default:
                     successfullyDeleted = false;
@@ -41,7 +40,6 @@ namespace Treynessen.Database
             }
             if (page is UsualPage up)
             {
-                db.Entry(up).Reference(p => p.PreviousPage).LoadAsync().Wait();
                 // Получаем все зависимые страницы
                 List<UsualPage> usualPages = db.UsualPages.Where(p => p.PreviousPageID == up.ID).ToList();
                 List<CategoryPage> categoryPages = db.CategoryPages.Where(p => p.PreviousPageID == up.ID).ToList();
@@ -50,19 +48,19 @@ namespace Treynessen.Database
                 // Обновляем полученные зависимые страницы
                 foreach (var u_page in usualPages)
                 {
-                    u_page.PreviousPage = up.PreviousPage;
+                    u_page.PreviousPageID = up.PreviousPageID;
                     RefreshPageAndDependencies(db, u_page);
                 }
                 foreach (var c_page in categoryPages)
                 {
-                    c_page.PreviousPage = up.PreviousPage;
+                    c_page.PreviousPageID = up.PreviousPageID;
                     RefreshPageAndDependencies(db, c_page);
                 }
             }
             else if (page is CategoryPage cp)
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                db.Entry(cp).Collection(p => p.ProductPages).LoadAsync().Wait();
+                cp.ProductPages = db.ProductPages.Where(pp => pp.PreviousPageID == cp.ID).ToList();
                 foreach (var p in cp.ProductPages)
                 {
                     string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{p.PreviousPageID}{p.ID}\\";

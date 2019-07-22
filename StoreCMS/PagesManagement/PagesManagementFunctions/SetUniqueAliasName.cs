@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.Functions;
 using Treynessen.Database.Context;
@@ -17,17 +15,22 @@ namespace Treynessen.PagesManagement
             if (page == null)
                 throw new ArgumentException();
 
-            var usualPageUrlsTask = db.UsualPages.AsNoTracking()
+            // Страницы с редиректами не входят в проверку, ибо в этом нет никакого смысла
+            // По очередности при обработке запроса редиректы стоят после обработки обычных
+            // запросов, поэтому при определении страницы url редиректа == url страницы, обработчик 
+            // отправит нас на страницу, а редирект будет перекрыт
+
+            var usualPageUrls = db.UsualPages.AsNoTracking()
                 .Where(up => up.GetType() == page.GetType() ? up.ID != page.ID : true)
-                .Select(up => up.RequestPath).ToListAsync();
+                .Select(up => up.RequestPath).ToList();
 
-            var categoryPageUrlsTask = db.CategoryPages.AsNoTracking()
+            var categoryPageUrls = db.CategoryPages.AsNoTracking()
                 .Where(cp => cp.GetType() == page.GetType() ? cp.ID != page.ID : true)
-                .Select(cp => cp.RequestPath).ToListAsync();
+                .Select(cp => cp.RequestPath).ToList();
 
-            var productPageUrlsTask = db.ProductPages.AsNoTracking()
+            var productPageUrls = db.ProductPages.AsNoTracking()
                 .Where(pp => pp.GetType() == page.GetType() ? pp.ID != page.ID : true)
-                .Select(pp => pp.RequestPath).ToListAsync();
+                .Select(pp => pp.RequestPath).ToList();
 
             int index = 0;
             bool has = false;
@@ -48,9 +51,9 @@ namespace Treynessen.PagesManagement
                     index = 1;
                 }
 
-                var hasInUsualPagesTask = ContainedInCollection(usualPageUrlsTask.Result, checkPath, usualPageTokenSource, categoryPageTokenSource, productPageTokenSource);
-                var hasInCategoryPagesTask = ContainedInCollection(categoryPageUrlsTask.Result, checkPath, categoryPageTokenSource, usualPageTokenSource, productPageTokenSource);
-                var hasInProductPagesTask = ContainedInCollection(productPageUrlsTask.Result, checkPath, productPageTokenSource, usualPageTokenSource, categoryPageTokenSource);
+                var hasInUsualPagesTask = ContainedInCollection(usualPageUrls, checkPath, usualPageTokenSource.Token, categoryPageTokenSource, productPageTokenSource);
+                var hasInCategoryPagesTask = ContainedInCollection(categoryPageUrls, checkPath, categoryPageTokenSource.Token, usualPageTokenSource, productPageTokenSource);
+                var hasInProductPagesTask = ContainedInCollection(productPageUrls, checkPath, productPageTokenSource.Token, usualPageTokenSource, categoryPageTokenSource);
 
                 if (hasInUsualPagesTask.Result || hasInCategoryPagesTask.Result || hasInProductPagesTask.Result)
                     has = true;

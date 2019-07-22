@@ -9,7 +9,7 @@ namespace Treynessen.Extensions
         public static LinkedList<string> GetForbiddenUrls(this IHostingEnvironment env)
         {
             if (forbiddenUrls == null)
-                forbiddenUrls = new LinkedList<string>(new[]{ "/admin" });
+                forbiddenUrls = new LinkedList<string>(new[]{ "/admin", "/search" });
             return forbiddenUrls;
         }
     }
