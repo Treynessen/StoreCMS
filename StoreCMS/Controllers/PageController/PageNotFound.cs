@@ -18,7 +18,7 @@ namespace Treynessen.Controllers
             int? pageNotFoundTemplateId = null;
             try
             {
-                pageNotFoundTemplateId = Convert.ToInt32(config.GetConfigValue("TemplateSettingsForSpecialPages:PageNotFoundTemplateId"));
+                pageNotFoundTemplateId = Convert.ToInt32(config.GetConfigValue("PageNotFoundSettings:PageNotFoundTemplateId"));
                 Template template = db.Templates.AsNoTracking().FirstOrDefault(t => t.ID == pageNotFoundTemplateId);
                 if (template != null)
                     return View(template.TemplatePath);

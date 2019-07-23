@@ -51,8 +51,12 @@
         string PaginationStyleName { get; }
 
         string ProductTemplate { get; }
+        
+        string PageNotFoundSettings { get; }
 
-        string TemplateSettingsForSpecialPages { get; }
+        string SearchPageSettings { get; }
+        string MaxNumberOfSymbolsInSearchQuery { get; }
+
         string SearchPageTemplate { get; }
         string PageNotFoundTemplate { get; }
         string WithoutTemplate { get; }

@@ -4,6 +4,7 @@
 
 td {
     padding: 0;
+    white-space: nowrap;
 }
 
 tr:first-child > td{
@@ -16,7 +17,7 @@ tr:not(:first-child) > td:first-child {
 
 td > input[type="text"], input[type="number"] {
     border: none;
-    padding: 2vh 0.5vh;
+    padding: 2vh 0.8vh;
 }
 
 input::-webkit-outer-spin-button,

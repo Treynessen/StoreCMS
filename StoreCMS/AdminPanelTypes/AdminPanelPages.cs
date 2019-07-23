@@ -8,6 +8,7 @@
         Templates,
         Chunks,
         FileManager,
+        SynonymsForStrings, // Для поиска товара
         Settings,
 
         AddPage,
@@ -43,6 +44,10 @@
         DeleteFileOrFolder,
 
         EditSettings,
+
+        AddSynonymForString,
+        EditSynonymForString,
+        DeleteSynonymForString,
 
         LoginForm
     }

@@ -144,6 +144,16 @@ namespace Treynessen.Controllers
                     }
                     else return StatusCode(422);
 
+                case AdminPanelPages.AddSynonymForString:
+                    DatabaseInteraction.AddSynonymForString(db, model.SynonymForStringModel, out bool synonymForStringAdded);
+                    if (synonymForStringAdded) return StatusCode(201);
+                    else return StatusCode(422);
+
+                case AdminPanelPages.EditSynonymForString:
+                    DatabaseInteraction.EditSynonymForString(db, model.itemID, model.SynonymForStringModel, out bool synonymForStringEdited);
+                    if (synonymForStringEdited) return StatusCode(200);
+                    else return StatusCode(422);
+
                 case AdminPanelPages.EditSettings:
                     return EditSettings(model.SettingsModel, HttpContext);
 

@@ -10,6 +10,7 @@
         public string Templates => "Шаблоны";
         public string Chunks => "Части шаблонов";
         public string FileManager => "Файлы";
+        public string SynonymsForStrings => "Синонимы к строкам";
         public string Settings => "Настройки";
     }
 }

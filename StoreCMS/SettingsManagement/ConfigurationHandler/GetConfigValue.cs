@@ -4,7 +4,7 @@
     {
         public string GetConfigValue(string sectionName)
         {
-            return configuration[sectionName].Replace("\\", "\\\\");
+            return configuration[sectionName]?.Replace("\\", "\\\\");
         }
     }
 }

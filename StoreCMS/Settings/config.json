@@ -6,8 +6,11 @@
 		"NumberOfProductsOnPage": "8",
 		"PaginationStyleName": "pagination"
 	},
-	"TemplateSettingsForSpecialPages": {
+	"SearchPageSettings": {
 		"SearchPageTemplateId": "1",
+		"MaxNumberOfSymbolsInSearchQuery": "100"
+	},
+	"PageNotFoundSettings": {
 		"PageNotFoundTemplateId": "4"
 	},
 	"AdminPanelAccessSettings": {

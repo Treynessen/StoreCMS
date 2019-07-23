@@ -4,6 +4,7 @@
     {
         public string DbConnectionString { get; set; }
         public string ProductBlockTemplate { get; set; }
+        public int? MaxNumberOfSymbolsInSearchQuery { get; set; }
         public int? SearchPageTemplateId { get; set; }
         public int? PageNotFoundTemplateId { get; set; }
         public int? NumberOfProductsOnPage { get; set; }

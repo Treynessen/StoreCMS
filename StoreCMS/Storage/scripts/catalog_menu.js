@@ -7,7 +7,7 @@ function createDropMenuEvent(button, eventStarterIds){
 	button.addEventListener('mouseout', function() { cursorIntoMenuArea = false; });
 	ulElement.addEventListener('mouseover', function() { cursorIntoMenuArea = true; });
 	ulElement.addEventListener('mouseout', function() { cursorIntoMenuArea = false; });
-	document.body.addEventListener('click', function() { if(dropped && !cursorIntoMenuArea) { button.classList.toggle('clicked'); dropped = false; } });
+	document.addEventListener('click', function() { if(dropped && !cursorIntoMenuArea) { button.classList.toggle('clicked'); dropped = false; } });
 	return function(e) { 
 		let canProcess = false;
 		for (let i in eventStarterIds){

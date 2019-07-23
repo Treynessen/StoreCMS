@@ -22,9 +22,9 @@ namespace Treynessen.Security
             if (connectedUser == null)
                 return null;
 
-            // Вынести время бездействия хранения в конфиг
-            // Если вышло время бездействия, то отключаем пользователя
-            if (DateTime.Now - connectedUser.LastActionTime > new TimeSpan(10, 0, 0))
+            db.Entry(connectedUser).Reference(cu => cu.User).Load();
+
+            if ((DateTime.Now - connectedUser.LastActionTime).TotalMinutes > connectedUser.User.IdleTime)
             {
                 db.ConnectedUsers.Remove(connectedUser);
                 db.SaveChanges();
@@ -46,7 +46,7 @@ namespace Treynessen.Security
             connectedUser.LastActionTime = DateTime.Now;
             db.Update(connectedUser);
             db.SaveChanges();
-            db.Entry(connectedUser).Reference(cu => cu.User).Load();
+            
             db.Entry(connectedUser.User).Reference(u => u.UserType).Load();
             db.Entry(connectedUser).State = EntityState.Detached;
             db.Entry(connectedUser.User).State = EntityState.Detached;

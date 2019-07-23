@@ -50,7 +50,7 @@ namespace Treynessen.Controllers
 
                 case AdminPanelPages.DeleteChunk:
                     DatabaseInteraction.DeleteChunk(db, itemID, HttpContext, out bool chunkDeleted);
-                    if(chunkDeleted) return StatusCode(200);
+                    if (chunkDeleted) return StatusCode(200);
                     else return StatusCode(404);
 
                 case AdminPanelPages.DeleteFileOrFolder:
@@ -63,6 +63,11 @@ namespace Treynessen.Controllers
                         HttpContext.Response.Headers.Add("location", redirectUrl);
                         return StatusCode(200);
                     }
+
+                case AdminPanelPages.DeleteSynonymForString:
+                    DatabaseInteraction.DeleteSynonymForString(db, itemID, out bool synonymForStringDeleted);
+                    if (synonymForStringDeleted) return StatusCode(200);
+                    else return StatusCode(404);
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

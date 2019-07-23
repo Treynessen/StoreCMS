@@ -70,6 +70,8 @@ namespace Treynessen.Controllers
                     return EditCssFile(model.Path);
                 case AdminPanelPages.EditScript:
                     return EditScriptFile(model.Path);
+                case AdminPanelPages.SynonymsForStrings:
+                    return SynonymsForStrings();
                 case AdminPanelPages.Settings:
                     return Settings();
                 default:

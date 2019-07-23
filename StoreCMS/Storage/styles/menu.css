@@ -70,8 +70,7 @@ div.menu-container > #catalog-button > ul{
 	list-style-type: none;
 	min-width: 240px;
 	max-width: 500px;
-	margin-top: 1px;
-	margin-left: -1px;
+	margin: 1px 0 0 -1px;
 	padding: 0;
 	z-index: 3;
 }
@@ -216,7 +215,7 @@ div.menu-container > div.main-menu > a{
 		border-radius: 0 0 0 2px;
 	}
 
-div.menu-container > div.search-block{
+div.menu-container > form.search-block{
 	display: flex;
 	box-sizing: border-box;
 	width: 240px;
@@ -228,7 +227,7 @@ div.menu-container > div.search-block{
 	padding: 6px;
 }
 
-div.menu-container > div.search-block > input[type=text]{
+div.menu-container > form.search-block > input[type=text]{
 	box-sizing: border-box;
 	outline: none;
 	width: 195px;
@@ -241,7 +240,7 @@ div.menu-container > div.search-block > input[type=text]{
 	padding: 2px 0 0 6px;
 }
 
-div.menu-container > div.search-block > input[type=submit]{
+div.menu-container > form.search-block > input[type=submit]{
 	cursor: pointer;
 	outline: none;
 	flex-grow: 1;
@@ -254,6 +253,6 @@ div.menu-container > div.search-block > input[type=submit]{
 	box-shadow: inset -1px 2px 4px 0 #6d6d6d;
 }
 
-	div.menu-container > div.search-block > input[type=submit]:hover{
+	div.menu-container > form.search-block > input[type=submit]:hover{
 		background-color: #b4b4b4;
 	}

@@ -66,7 +66,8 @@ public class Program
                 ID = DatabaseInteraction.GetDatabaseRawID(db.Users),
                 Login = "admin",
                 Password = "admin",
-                UserType = userType
+                UserType = userType,
+                IdleTime = 10
             };
             db.Users.Add(user);
             db.SaveChanges();

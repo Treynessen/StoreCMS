@@ -37,6 +37,7 @@ public class Startup
         services.AddTransient<ICategoriesAndProductsLocalization>(provider => new RuCategoriesAndProductsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
         services.AddTransient<IFileManagerLocalization>(provider => new RuFileManagerLocalization());
+        services.AddTransient<ISynonymsForStringsLocalization>(provider => new RuSynonymsForStringsLocalization());
         services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
 
         services.AddMvc();
@@ -44,6 +45,11 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
+        //app.Use(async (context, next) =>
+        //{
+        //    context.Items["DateTime"] = System.DateTime.Now;
+        //    await next.Invoke();
+        //});
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -51,6 +57,11 @@ public class Startup
         app.UseStaticFiles();
         app.UseMvc(routeBuilder =>
         {
+            routeBuilder.MapRoute(
+                name: "search_page",
+                template: "~/search",
+                defaults: new { controller = "Page", action = "SearchPage" }
+            );
             routeBuilder.MapRoute(
                 name: "some_page",
                 template: "{*requestString}",

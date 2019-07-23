@@ -52,7 +52,11 @@
 
         public string ProductTemplate => "HTML шаблон товара в списке";
 
-        public string TemplateSettingsForSpecialPages => "Установка шаблонов для специальных страниц";
+        public string PageNotFoundSettings => "Настройки страницы 404";
+
+        public string SearchPageSettings => "Настройки страницы «Поиск товара»";
+        public string MaxNumberOfSymbolsInSearchQuery => "Макс. количество символов в поисковом запросе";
+
         public string SearchPageTemplate => "Шаблон страницы «Поиск товара»";
         public string PageNotFoundTemplate => "Шаблон страницы 404";
         public string WithoutTemplate => "Без шаблона";

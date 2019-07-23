@@ -10,6 +10,7 @@
         string Templates { get; }
         string Chunks { get; }
         string FileManager { get; }
+        string SynonymsForStrings { get; }
         string Settings { get; }
     }
 }

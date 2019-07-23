@@ -15,14 +15,14 @@
     int? searchPageTemplateId = null;
     try
     {
-        searchPageTemplateId = Convert.ToInt32(configuration.GetConfigValue("TemplateSettingsForSpecialPages:SearchPageTemplateId"));
+        searchPageTemplateId = Convert.ToInt32(configuration.GetConfigValue("SearchPageSettings:SearchPageTemplateId"));
         searchPageTemplateId = templates.FirstOrDefault(t => t.ID == searchPageTemplateId.Value) != null ? searchPageTemplateId : null;
     }
     catch (FormatException) { }
     int? pageNotFoundTemplateId = null;
     try
     {
-        pageNotFoundTemplateId = Convert.ToInt32(configuration.GetConfigValue("TemplateSettingsForSpecialPages:PageNotFoundTemplateId"));
+        pageNotFoundTemplateId = Convert.ToInt32(configuration.GetConfigValue("PageNotFoundSettings:PageNotFoundTemplateId"));
         pageNotFoundTemplateId = templates.FirstOrDefault(t => t.ID == pageNotFoundTemplateId.Value) != null ? pageNotFoundTemplateId : null;
     }
     catch (FormatException) { }
@@ -94,6 +94,32 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                         }
                         </tr>
                 </table>
+                @*CATEGORY PAGE SETTINGS*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.CategoryPageSettings)</td></tr>
+                    <tr>
+                        <td>@Html.Raw(localization.NumberOfProductsOnPage)</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="number" name="SettingsModel.NumberOfProductsOnPage" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))" disabled></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>@Html.Raw(localization.PaginationStyleName)</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="text" name="SettingsModel.PaginationStyleName" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="text" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))" disabled></td>
+                        }
+                    </tr>
+                </table>
                 @*PRODUCT TEMPLATE SETTINGS*@
                 <table>
                     <tr><td>@Html.Raw(localization.ProductTemplate)</td></tr>
@@ -106,9 +132,9 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     <tr><td class="without-padding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
                     }
                 </table>
-                @*TEMPLATE SETTINGS FOR SPECIAL PAGES*@
+                @*SEARCH PAGE SETTINGS*@
                 <table>
-                    <tr><td colspan="2">@Html.Raw(localization.TemplateSettingsForSpecialPages)</td></tr>
+                    <tr><td colspan="2">@Html.Raw(localization.SearchPageSettings)</td></tr>
                     <tr class="with-padding">
                         <td>@Html.Raw(localization.SearchPageTemplate)</td>
                         <td>
@@ -135,6 +161,21 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <td>@Html.Raw(localization.MaxNumberOfSymbolsInSearchQuery)</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="number" name="SettingsModel.MaxNumberOfSymbolsInSearchQuery" value="@Html.Raw(configuration.GetConfigValue("SearchPageSettings:MaxNumberOfSymbolsInSearchQuery"))"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("SearchPageSettings:MaxNumberOfSymbolsInSearchQuery"))" disabled></td>
+                        }
+                    </tr>
+                </table>
+                @*PAGE NOT FOUND SETTINGS*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.PageNotFoundSettings)</td></tr>
                     <tr class="with-padding">
                         <td>@Html.Raw(localization.PageNotFoundTemplate)</td>
                         <td>
@@ -160,32 +201,6 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                             }
                             </select>
                         </td>
-                    </tr>
-                </table>
-                @*CATEGORY PAGE SETTINGS*@
-                <table>
-                    <tr><td colspan="2">@Html.Raw(localization.CategoryPageSettings)</td></tr>
-                    <tr>
-                        <td>@Html.Raw(localization.NumberOfProductsOnPage)</td>
-                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
-                        {
-                        <td class="without-padding"><input type="number" name="SettingsModel.NumberOfProductsOnPage" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))"></td>
-                        }
-                        else
-                        {
-                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))" disabled></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td>@Html.Raw(localization.PaginationStyleName)</td>
-                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
-                        {
-                        <td class="without-padding"><input type="text" name="SettingsModel.PaginationStyleName" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))"></td>
-                        }
-                        else
-                        {
-                        <td class="without-padding"><input type="text" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))" disabled></td>
-                        }
                     </tr>
                 </table>
                 @*ACCESS SETTINGS*@

@@ -9,6 +9,7 @@ namespace Treynessen.Database.Entities
     {
         public uint Price { get; set; }
         public uint OldPrice { get; set; }
+        public string Barcode { get; set; } // Штрих-код
         public string ShortDescription { get; set; } // Краткое описание товара
         public bool SpecialProduct { get; set; } // Особый товар (хит продаж или что-то типо этого)
         public DateTime LastUpdate { get; set; }

@@ -17,8 +17,11 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append($"\t\t\"NumberOfProductsOnPage\": \"{(model.NumberOfProductsOnPage ?? 1)}\",\n");
             configContentBuilder.Append($"\t\t\"PaginationStyleName\": \"{model.PaginationStyleName}\"\n" + "\t},\n");
 
-            configContentBuilder.Append("\t\"TemplateSettingsForSpecialPages\": {\n");
+            configContentBuilder.Append("\t\"SearchPageSettings\": {\n");
             configContentBuilder.Append($"\t\t\"SearchPageTemplateId\": \"{(model.SearchPageTemplateId ?? 0)}\",\n");
+            configContentBuilder.Append($"\t\t\"MaxNumberOfSymbolsInSearchQuery\": \"{(model.MaxNumberOfSymbolsInSearchQuery ?? 0)}\"\n" + "\t},\n");
+
+            configContentBuilder.Append("\t\"PageNotFoundSettings\": {\n");
             configContentBuilder.Append($"\t\t\"PageNotFoundTemplateId\": \"{(model.PageNotFoundTemplateId ?? 0)}\"\n" + "\t},\n");
 
             configContentBuilder.Append("\t\"AdminPanelAccessSettings\": {\n");
