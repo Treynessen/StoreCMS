@@ -71,7 +71,7 @@ a.product > div.product-info > div.short-description{
 }
 
 a.product > div.product-info > div.short-description > span{
-	align-self: flex-end;
+	align-self: center;
 	max-height: 57px;
 	overflow: hidden;
 }

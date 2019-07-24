@@ -43,6 +43,11 @@ namespace Treynessen.Controllers
                     if (productImageDeleted) return StatusCode(200);
                     else return StatusCode(404);
 
+                case AdminPanelPages.DeleteRedirection:
+                    DatabaseInteraction.DeleteRedirection(db, itemID, out bool redirectionDeleted);
+                    if (redirectionDeleted) return StatusCode(200);
+                    else return StatusCode(404);
+
                 case AdminPanelPages.DeleteTemplate:
                     DatabaseInteraction.DeleteTemplate(db, itemID, HttpContext, out bool templateDeleted);
                     if (templateDeleted) return StatusCode(200);

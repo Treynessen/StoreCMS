@@ -18,6 +18,12 @@ namespace Treynessen.RequestManagement
                 httpContext.Items["RequestedPage"] = page;
                 return true;
             }
+            string redirection = requestHandler.GetRedirection();
+            if (!string.IsNullOrEmpty(redirection))
+            {
+                httpContext.Items["Redirection"] = redirection;
+                return true;
+            }
             else return false;
         }
     }

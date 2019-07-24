@@ -4,7 +4,7 @@ if(products.length == 0){
 	let regex = /search=.[^&]*/i;
 	let searchQuery = regex.exec(location.search);
 	if(searchQuery !== null){
-		searchQuery = decodeURIComponent(searchQuery.toString()).substr(7);
+		searchQuery = decodeURIComponent(searchQuery.toString().replace('+', ' ')).substr(7);
 	}
 	info.textContent = 'По запросу ' + searchQuery + ' ничего не найдено';
 	let contentBlock = document.querySelector('div.content-block');

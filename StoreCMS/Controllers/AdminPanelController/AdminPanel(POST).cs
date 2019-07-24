@@ -79,6 +79,16 @@ namespace Treynessen.Controllers
                     if (productEdited) return StatusCode(200);
                     else return StatusCode(422);
 
+                case AdminPanelPages.AddRedirection:
+                    DatabaseInteraction.AddRedirection(db, model.RedirectionModel, out bool redirectionAdded);
+                    if (redirectionAdded) return StatusCode(201);
+                    else return StatusCode(422);
+
+                case AdminPanelPages.EditRedirection:
+                    DatabaseInteraction.EditRedirection(db, model.itemID, model.RedirectionModel, out bool redirectionEdited);
+                    if (redirectionEdited) return StatusCode(200);
+                    else return StatusCode(422);
+
                 case AdminPanelPages.AddTemplate:
                     DatabaseInteraction.AddTemplate(db, model.TemplateModel, HttpContext, out bool templateAdded);
                     if (templateAdded)

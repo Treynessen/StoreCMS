@@ -7,6 +7,7 @@
         string MainPage { get; }
         string Pages { get; }
         string CategoriesAndProducts { get; }
+        string Redirections { get; }
         string Templates { get; }
         string Chunks { get; }
         string FileManager { get; }

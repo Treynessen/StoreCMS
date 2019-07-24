@@ -26,7 +26,7 @@ namespace Treynessen.Controllers
                 case ProductPage pp:
                     return ProductPage(pp);
                 default:
-                    return null;
+                    return Redirect(HttpContext.Items["Redirection"] as string);
             }
         }
     }

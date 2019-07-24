@@ -5,6 +5,7 @@
         MainPage = 1,
         Pages,
         Categories,
+        Redirections,
         Templates,
         Chunks,
         FileManager,
@@ -26,6 +27,10 @@
         ProductImages,
         AddProductImage,
         DeleteProductImage,
+
+        AddRedirection,
+        EditRedirection,
+        DeleteRedirection,
 
         AddTemplate,
         EditTemplate,

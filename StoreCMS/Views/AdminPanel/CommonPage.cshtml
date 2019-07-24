@@ -17,6 +17,10 @@
     {
         pages.Add(AdminPanelPages.Categories, localization.CategoriesAndProducts);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Redirections, user, Context))
+    {
+        pages.Add(AdminPanelPages.Redirections, localization.Redirections);
+    }
     if (SecurityFunctions.HasAccessTo(AdminPanelPages.Templates, user, Context))
     {
         pages.Add(AdminPanelPages.Templates, localization.Templates);

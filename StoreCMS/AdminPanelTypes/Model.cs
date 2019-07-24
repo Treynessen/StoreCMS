@@ -12,6 +12,7 @@ namespace Treynessen.AdminPanelTypes
         public string Path { get; set; }
 
         public PageModel PageModel { get; set; }
+        public RedirectionModel RedirectionModel { get; set; }
         public TemplateModel TemplateModel { get; set; }
         public StyleModel StyleModel { get; set; }
         public SynonymForStringModel SynonymForStringModel { get; set; }

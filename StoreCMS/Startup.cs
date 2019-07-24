@@ -9,8 +9,6 @@ using Treynessen.Database.Context;
 using Treynessen.RequestManagement;
 using Treynessen.SettingsManagement;
 
-using Microsoft.AspNetCore.Http;
-
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
@@ -37,6 +35,7 @@ public class Startup
         services.AddTransient<IAdminPanelPageLocalization>(provider => new RuAdminPanelPageLocalization());
         services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
         services.AddTransient<ICategoriesAndProductsLocalization>(provider => new RuCategoriesAndProductsLocalization());
+        services.AddTransient<IRedirectionsLocalization>(provider => new RuRedirectionsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
         services.AddTransient<IFileManagerLocalization>(provider => new RuFileManagerLocalization());
         services.AddTransient<ISynonymsForStringsLocalization>(provider => new RuSynonymsForStringsLocalization());
