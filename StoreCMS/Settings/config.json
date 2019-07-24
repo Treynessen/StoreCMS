@@ -3,7 +3,7 @@
 		"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True;MultipleActiveResultSets=true;"
 	},
 	"CategoryPageSettings": {
-		"NumberOfProductsOnPage": "1",
+		"NumberOfProductsOnPage": "8",
 		"PaginationStyleName": "pagination"
 	},
 	"SearchPageSettings": {

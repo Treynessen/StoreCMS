@@ -62,15 +62,16 @@ namespace Treynessen.TagHelpers
             }
             // Очищаем строку запросов от page=...
             string queryString = Context.HttpContext.Request.QueryString.ToString();
-            Regex regex = new Regex("&?page=.*", RegexOptions.IgnoreCase);
+            Regex regex = new Regex("page=.[^&]*&?", RegexOptions.IgnoreCase);
             var matches = regex.Matches(queryString);
+            StringBuilder queryStringBuilder = new StringBuilder(queryString);
             foreach(var match in matches as IEnumerable<Match>)
             {
-                int index = match.Value.IndexOf("&", 1);
-                if (index >= 0)
-                    queryString = queryString.Replace(match.Value.Substring(0, index + 1), string.Empty);
-                else queryString = queryString.Replace(match.Value, string.Empty);
+                queryStringBuilder.Replace(match.Value, string.Empty);
             }
+            if (queryStringBuilder.Length > 0 && queryStringBuilder[queryStringBuilder.Length - 1].Equals('&'))
+                queryStringBuilder.Remove(queryStringBuilder.Length - 1, 1);
+            queryString = queryStringBuilder.ToString();
             if (queryString.Length == 1 && queryString[0].Equals('?'))
                 queryString = string.Empty;
 
