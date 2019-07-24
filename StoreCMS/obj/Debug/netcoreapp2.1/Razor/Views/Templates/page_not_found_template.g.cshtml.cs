@@ -74,7 +74,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<!DOCTYPE html>\n<html lang=\"ru\">\n");
             EndContext();
             BeginContext(45, 746, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8ed6417a74ef43039291e33b033a6307", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "de392798f05f4496867d1ab823d95f4d", async() => {
                 BeginContext(51, 488, true);
                 WriteLiteral(@"
 <title>Ошибка 404 - магазин «Инструмент»</title> 
@@ -124,7 +124,7 @@ WriteAttributeValue("", 658, Model != null ? Html.Raw(Model.PageKeywords) : Html
             WriteLiteral("\n");
             EndContext();
             BeginContext(792, 464, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6a64125ff9544fdcafa92b687249ab4f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "264dce711aa743b7b15a27ab0b2ad74c", async() => {
                 BeginContext(798, 1, true);
                 WriteLiteral("\n");
                 EndContext();

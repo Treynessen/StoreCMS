@@ -9,6 +9,8 @@ using Treynessen.Database.Context;
 using Treynessen.RequestManagement;
 using Treynessen.SettingsManagement;
 
+using Microsoft.AspNetCore.Http;
+
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)

@@ -46,7 +46,6 @@ namespace Treynessen.Controllers
                     int pagesCount = GetPagesCount((int)categoryPage.ProductsCount, maxProductOnPage.Value);
                     HttpContext.Items["PagesCount"] = pagesCount;
                     HttpContext.Items["PaginationStyleName"] = config.GetConfigValue("CategoryPageSettings:PaginationStyleName");
-                    HttpContext.Items["OrderBy"] = model.Orderby;
                     //Если задана страница, то скипаем предыдущие товары для дальнейшего отбора
                     if (model.Page.HasValue && model.Page.Value > 1 && model.Page.Value <= pagesCount)
                     {

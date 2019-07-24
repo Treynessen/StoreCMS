@@ -1,0 +1,25 @@
+@model Page
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<title>Поиск по сайту</title> 
+<link rel="stylesheet" href="/styles/common.css">
+<link rel="stylesheet" href="/styles/header.css">
+<link rel="stylesheet" href="/styles/menu.css">
+<link rel="stylesheet" href="/styles/content.css">
+<link rel="stylesheet" href="/styles/search_page.css">
+<link rel="stylesheet" href="/styles/footer.css">
+<link rel="icon" href="/favicon.ico">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))">
+<meta name="keywords" content="@(Model != null ? Html.Raw(Model.PageKeywords) : Html.Raw(string.Empty))">
+<meta name="robots" content="[Page:IsRobotIndex]">
+</head>
+<body>
+@{ try { @await Html.PartialAsync("~/Views/Chunks/header.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/menu.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/search_page_content.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/footer.cshtml", Model) } catch { } }
+@{ try { @await Html.PartialAsync("~/Views/Chunks/scripts.cshtml", Model) } catch { } }
+</body>
+</html>

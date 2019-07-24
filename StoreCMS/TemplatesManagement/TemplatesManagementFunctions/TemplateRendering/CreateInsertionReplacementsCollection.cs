@@ -45,11 +45,10 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[ProductList]", Replacement = "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlShortPath()}" + "\", p); } catch { } } } }" });
             insertionReplacements.AddLast(new InsertionReplacement
             {
-                Insertion = "[Category:PageButtons]",
+                Insertion = "[PageButtons]",
                 Replacement = "@{ if (products != null) { " +
                 "<page-buttons class=\"@Context.Items[\"PaginationStyleName\"]\" " +
                 "current-path=\"@Context.Request.Path\" " +
-                "order-by=\"@(Context.Items[\"OrderBy\"] as OrderBy?)\" " +
                 "current-page=\"@(Context.Items[\"CurrentPage\"] as int?)\" " +
                 "pages-count=\"@(Context.Items[\"PagesCount\"] as int?)\"" +
                 "></page-buttons>" +

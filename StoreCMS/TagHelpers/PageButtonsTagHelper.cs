@@ -1,6 +1,9 @@
 ﻿using System.Text;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Treynessen.Controllers;
 
 namespace Treynessen.TagHelpers
 {
@@ -38,8 +41,11 @@ namespace Treynessen.TagHelpers
 
     public class PageButtonsTagHelper : TagHelper
     {
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext Context { get; set; }
+
         public string CurrentPath { get; set; }
-        public OrderBy? OrderBy { get; set; }
         public int? CurrentPage { get; set; }
         public int? PagesCount { get; set; }
 
@@ -54,6 +60,20 @@ namespace Treynessen.TagHelpers
                 output.SuppressOutput();
                 return;
             }
+            // Очищаем строку запросов от page=...
+            string queryString = Context.HttpContext.Request.QueryString.ToString();
+            Regex regex = new Regex("&?page=.*", RegexOptions.IgnoreCase);
+            var matches = regex.Matches(queryString);
+            foreach(var match in matches as IEnumerable<Match>)
+            {
+                int index = match.Value.IndexOf("&", 1);
+                if (index >= 0)
+                    queryString = queryString.Replace(match.Value.Substring(0, index + 1), string.Empty);
+                else queryString = queryString.Replace(match.Value, string.Empty);
+            }
+            if (queryString.Length == 1 && queryString[0].Equals('?'))
+                queryString = string.Empty;
+
             output.TagName = "ul";
             if (!string.IsNullOrEmpty(Class))
                 output.Attributes.SetAttribute("class", Class);
@@ -64,7 +84,7 @@ namespace Treynessen.TagHelpers
             // Если текущая операция == 2, то рисуем стрелки с ссылкой на первую страницу
             StringBuilder tagContentBuilder = new StringBuilder();
             if (currentOperation >= 2)
-                tagContentBuilder.Append($"<li><a href=\"{CurrentPath}{(OrderBy.HasValue ? $"?orderby={OrderBy.Value}" : string.Empty)}\">«</a></li>");
+                tagContentBuilder.Append($"<li><a href=\"{CurrentPath}{queryString}\">«</a></li>");
             if (currentOperation < 1)
                 currentOperation = 1;
             // Рисуем все возможные страницы
@@ -73,11 +93,11 @@ namespace Treynessen.TagHelpers
                 if (currentOperation == CurrentPage.Value)
                     tagContentBuilder.Append($"<li><span>{currentOperation}</span></li>");
                 else
-                    tagContentBuilder.Append($"<li><a href=\"{CurrentPath}?page={currentOperation}{(OrderBy.HasValue ? $"&orderby={OrderBy.Value}" : string.Empty)}\">{currentOperation}</a></li>");
+                    tagContentBuilder.Append($"<li><a href=\"{CurrentPath}{(string.IsNullOrEmpty(queryString) ? "?" : $"{queryString}&")}page={currentOperation}\">{currentOperation}</a></li>");
             }
             // Рисуем стрелки на последнюю страницу, если необходимо
             if (CurrentPage.Value + 2 < PagesCount.Value)
-                tagContentBuilder.Append($"<li><a href=\"{CurrentPath}?page={PagesCount.Value}{(OrderBy.HasValue ? $"&orderby={OrderBy.Value}" : string.Empty)}\">»</a></li>");
+                tagContentBuilder.Append($"<li><a href=\"{CurrentPath}{(string.IsNullOrEmpty(queryString) ? "?" : $"{queryString}&")}page={PagesCount.Value}\">»</a></li>");
             output.Content.AppendHtml(tagContentBuilder.ToString());
         }
     }

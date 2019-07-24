@@ -82,6 +82,37 @@ namespace Treynessen.Controllers
                     {
                         finalQuery = finalQuery.Union(it.Value);
                     }
+
+                    // Получаем количество товаров на странице
+                    int? maxProductOnPage = null;
+                    try
+                    {
+                        maxProductOnPage = Convert.ToInt32(config.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"));
+                    }
+                    catch (FormatException) { }
+                    // Если значение верное, то отбираем заданное количество товаров
+                    if (maxProductOnPage.HasValue && maxProductOnPage.Value >= 1)
+                    {
+                        int pagesCount = GetPagesCount(finalQuery.Count(), maxProductOnPage.Value);
+                        HttpContext.Items["PagesCount"] = pagesCount;
+                        HttpContext.Items["PaginationStyleName"] = config.GetConfigValue("CategoryPageSettings:PaginationStyleName");
+                        HttpContext.Items["OrderBy"] = model.Orderby;
+                        //Если задана страница, то скипаем предыдущие товары для дальнейшего отбора
+                        if (model.Page.HasValue && model.Page.Value > 1 && model.Page.Value <= pagesCount)
+                        {
+                            HttpContext.Items["CurrentPage"] = model.Page.Value;
+                            finalQuery = finalQuery.Skip((model.Page.Value - 1) * maxProductOnPage.Value);
+                        }
+                        if (HttpContext.Items["CurrentPage"] == null)
+                            HttpContext.Items["CurrentPage"] = 1;
+                        finalQuery = finalQuery.Take(maxProductOnPage.Value);
+                    }
+                    else
+                    {
+                        HttpContext.Items["CurrentPage"] = 1;
+                        HttpContext.Items["PagesCount"] = 1;
+                    }
+
                     // Получаем список найденных товаров
                     HttpContext.Items["products"] = finalQuery.AsNoTracking().ToList();
                 }

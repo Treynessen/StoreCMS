@@ -133,7 +133,7 @@ Write(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty));
             WriteLiteral(" ");
             EndContext();
             BeginContext(632, 271, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("page-buttons", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "487b85f18981402a9486cfce24de7f18", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("page-buttons", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1e8418cf0f374fbfbbf9c998e87d7b12", async() => {
             }
             );
             __Treynessen_TagHelpers_PageButtonsTagHelper = CreateTagHelper<global::Treynessen.TagHelpers.PageButtonsTagHelper>();
@@ -156,12 +156,13 @@ Write(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty));
             __tagHelperStringValueBuffer = EndWriteTagHelperAttribute();
             __Treynessen_TagHelpers_PageButtonsTagHelper.CurrentPath = __tagHelperStringValueBuffer;
             __tagHelperExecutionContext.AddTagHelperAttribute("current-path", __Treynessen_TagHelpers_PageButtonsTagHelper.CurrentPath, global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
+            BeginAddHtmlAttributeValues(__tagHelperExecutionContext, "order-by", 1, global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
 #line 8 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\category_page_content.cshtml"
-__Treynessen_TagHelpers_PageButtonsTagHelper.OrderBy = (Context.Items["OrderBy"] as OrderBy?);
+AddHtmlAttributeValue("", 739, Context.Items["OrderBy"] as OrderBy?, 739, 39, false);
 
 #line default
 #line hidden
-            __tagHelperExecutionContext.AddTagHelperAttribute("order-by", __Treynessen_TagHelpers_PageButtonsTagHelper.OrderBy, global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
+            EndAddHtmlAttributeValues(__tagHelperExecutionContext);
 #line 8 "D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\Views\Chunks\category_page_content.cshtml"
 __Treynessen_TagHelpers_PageButtonsTagHelper.CurrentPage = (Context.Items["CurrentPage"] as int?);
 
