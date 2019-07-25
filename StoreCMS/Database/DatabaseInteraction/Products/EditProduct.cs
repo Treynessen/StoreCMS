@@ -57,24 +57,38 @@ namespace Treynessen.Database
                     Regex imagesChecker = new Regex($"{oldName}(_\\d+)?.jpg$");
                     string[] oldImagesNames = Directory.GetFiles(pathToImages, $"*{oldName}*.jpg");
                     int numOfImages = (from img in oldImagesNames
-                                      where imagesChecker.IsMatch(img)
-                                      select img).Count();
+                                       where imagesChecker.IsMatch(img)
+                                       select img).Count();
                     // Можно было бы заменить разом имена всем изображениям через перебор в цикле, но
                     // проблема в том, что путь до папки с изображениями может содержать старое название
                     // изображения. В итоге замена имени через File.Move(старый_путь, старый_путь.Replace(oldName, newName))
                     // может привести к переносу изображений в другую директорию.
                     LinkedList<KeyValuePair<string, string>> renameErrors = new LinkedList<KeyValuePair<string, string>>();
+                    string shortPathToImages = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
                     for (int i = 0; i < numOfImages; ++i)
                     {
                         string oldImageName = $"{oldName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
                         string newImageName = $"{newName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
+                        // Изменяем данные в БД
+                        Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString($"{shortPathToImages}{newImageName}.jpg")
+                        && img.ShortPath.Equals($"{shortPathToImages}{newImageName}.jpg", StringComparison.InvariantCulture));
+                        if (image != null)
+                            db.Images.Remove(image);
+                        image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString($"{shortPathToImages}{oldImageName}.jpg")
+                        && img.ShortPath.Equals($"{shortPathToImages}{oldImageName}.jpg", StringComparison.InvariantCulture));
+                        if (image != null)
+                        {
+                            image.ShortPath = image.ShortPath.Replace(oldImageName, newImageName);
+                            image.ShortPathHash = OtherFunctions.GetHashFromString(image.ShortPath);
+                            image.FullName = image.ShortPath.Substring(image.ShortPath.LastIndexOf('/') + 1);
+                        }
                         try
                         {
                             ImagesManagementFunctions.RenameImageAndDependencies(
                                 pathToImages: pathToImages,
                                 oldImageName: oldImageName,
                                 newImageName: newImageName,
-                                editImagesInfoFile: false
+                                imageExtension: ".jpg"
                             );
                         }
                         catch (IOException)
@@ -87,19 +101,19 @@ namespace Treynessen.Database
                             renameErrors.AddLast(new KeyValuePair<string, string>(oldImageName, newImageName));
                         }
                     }
+                    db.SaveChanges();
                     if (renameErrors.Count > 0)
                     {
-                        foreach(var e in renameErrors)
+                        foreach (var e in renameErrors)
                         {
                             ImagesManagementFunctions.RenameImageAndDependencies(
                                 pathToImages: pathToImages,
                                 oldImageName: e.Key,
                                 newImageName: e.Value,
-                                editImagesInfoFile: false
+                                imageExtension: ".jpg"
                             );
                         }
                     }
-                    OtherFunctions.ReplaceContentInFile($"{pathToImages}images.info", oldName, newName);
                 }
             }
             successfullyCompleted = true;

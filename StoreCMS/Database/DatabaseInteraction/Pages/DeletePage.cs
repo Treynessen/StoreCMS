@@ -1,11 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Functions;
 using Treynessen.Extensions;
 using Treynessen.PagesManagement;
+using Treynessen.ImagesManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -63,6 +66,14 @@ namespace Treynessen.Database
                 cp.ProductPages = db.ProductPages.Where(pp => pp.PreviousPageID == cp.ID).ToList();
                 foreach (var p in cp.ProductPages)
                 {
+                    string[] images = ImagesManagementFunctions.GetProductImageUrls(p, env);
+                    for (int i = 0; i < images.Length; ++i)
+                    {
+                        Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(images[i])
+                        && img.ShortPath.Equals(images[i], StringComparison.InvariantCulture));
+                        if (image != null)
+                            db.Images.Remove(image);
+                    }
                     string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{p.PreviousPageID}{p.ID}\\";
                     if (Directory.Exists(pathToImages))
                         Directory.Delete(pathToImages, true);

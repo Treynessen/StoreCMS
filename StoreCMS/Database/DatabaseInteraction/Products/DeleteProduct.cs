@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.ImagesManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -18,19 +21,28 @@ namespace Treynessen.Database
                 successfullyDeleted = false;
                 return;
             }
-            ProductPage deletedProduct = db.ProductPages.FirstOrDefault(pp => pp.ID == productID.Value);
-            if (deletedProduct == null)
+            ProductPage product = db.ProductPages.FirstOrDefault(pp => pp.ID == productID.Value);
+            if (product == null)
             {
                 successfullyDeleted = false;
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-            string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{deletedProduct.PreviousPageID}{deletedProduct.ID}\\";
+            string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID}{product.ID}\\";
             if (Directory.Exists(pathToImages))
                 Directory.Delete(pathToImages, true);
-            db.Entry(deletedProduct).Reference(pp => pp.PreviousPage).Load();
-            --deletedProduct.PreviousPage.ProductsCount;
-            db.ProductPages.Remove(deletedProduct);
+            // Удаляем данные об изображениях из БД
+            string[] images = ImagesManagementFunctions.GetProductImageUrls(product, env);
+            for (int i = 0; i < images.Length; ++i)
+            {
+                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(images[i])
+                && img.ShortPath.Equals(images[i], StringComparison.InvariantCulture));
+                if (image != null)
+                    db.Images.Remove(image);
+            }
+            db.Entry(product).Reference(pp => pp.PreviousPage).Load();
+            --product.PreviousPage.ProductsCount;
+            db.ProductPages.Remove(product);
             db.SaveChanges();
             successfullyDeleted = true;
         }

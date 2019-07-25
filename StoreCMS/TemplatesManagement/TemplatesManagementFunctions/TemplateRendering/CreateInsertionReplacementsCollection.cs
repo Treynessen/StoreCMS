@@ -28,7 +28,7 @@ namespace Treynessen.TemplatesManagement
                 string leftSubvalue = m.Groups[2].Value.Replace("@", "@@");
                 string rightSubvalue = m.Groups[3].Value.Replace("@", "@@");
                 string result = "@{ var env = Context.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment; " +
-                    "foreach (var imgUrl in ImagesManagementFunctions.GetProductImagesUrl(Model as ProductPage, env, " + $"{skip}))" + " { " + $"<text>{leftSubvalue}@(imgUrl){rightSubvalue}</text>" + " } }";
+                    "foreach (var imgUrl in ImagesManagementFunctions.GetProductImageUrls(Model as ProductPage, env, " + $"{skip}))" + " { " + $"<text>{leftSubvalue}@(imgUrl){rightSubvalue}</text>" + " } }";
                 insertionReplacements.AddLast(new InsertionReplacement { Insertion = m.Value.Replace("@", "@@"), Replacement = result });
             }
 

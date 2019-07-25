@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Treynessen.ImagesManagement;
+using Treynessen.Database.Context;
 
 namespace Treynessen.TagHelpers
 {
     public class ImageTagHelper : TagHelper
     {
+        private CMSDatabase db;
+
         private IHostingEnvironment env;
 
         public string Src { get; set; }
@@ -20,27 +23,28 @@ namespace Treynessen.TagHelpers
         public string Style { get; set; }
         public string Class { get; set; }
 
-        public ImageTagHelper(IHostingEnvironment env)
+        public ImageTagHelper(IHostingEnvironment env, CMSDatabase db)
         {
+            this.db = db;
             this.env = env;
         }
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            string src = await Task.Run(() =>
+            ImageHandler imageHandler = null;
+            if (!string.IsNullOrEmpty(FullPath))
+                imageHandler = new ImageHandler(FullPath, true, db, env);
+            else if (!string.IsNullOrEmpty(Src))
+                imageHandler = new ImageHandler(Src, false, db, env);
+            else return;
+            if (Quality.HasValue)
+                imageHandler.ImageComprassion(Quality.Value);
+            try
             {
-                ImageHandler imageHandler = null;
-                if (!string.IsNullOrEmpty(FullPath))
-                    imageHandler = new ImageHandler(FullPath, true, env);
-                else if (!string.IsNullOrEmpty(Src))
-                    imageHandler = new ImageHandler(Src, false, env);
-                else return null;
-
-                if (Quality.HasValue)
-                    imageHandler.ImageComprassion(Quality.Value);
                 imageHandler.ImageResizing(Width, Height, MaxWidth, MaxHeight).ApplySettings();
-                return imageHandler.CreatedImageSrc;
-            });
+            }
+            catch { } // Если произошла ошибка, то возвращаем пользователю пустую ссылку на изображение
+            string src = imageHandler.CreatedImageSrc;
             output.TagName = "img";
             output.Attributes.SetAttribute("src", src);
             if (!string.IsNullOrEmpty(Alt))

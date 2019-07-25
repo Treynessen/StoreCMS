@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -12,31 +13,18 @@ namespace Treynessen.ImagesManagement
         private int? sourceImageWidth = null;
         private int? sourceImageHeight = null;
 
-        private bool writeSourceImageInfo = false;
+        private bool addImageInfoToDB = false;
 
         private void GetSourceImageInfo()
         {
             if (!isExisted)
                 return;
-            if (File.Exists(pathToImagesInfo))
+            Database.Entities.Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(sourceImageShortPath) 
+            && img.ShortPath.Equals(sourceImageShortPath, StringComparison.InvariantCulture));
+            if (image != null)
             {
-                Regex regex = new Regex($"name = {sourceImageFullName}; width = \\d+; height = \\d+");
-                string sourceImageInfo = regex.Match(OtherFunctions.GetFileContent(pathToImagesInfo))?.Value;
-                if (!string.IsNullOrEmpty(sourceImageInfo))
-                {
-                    try
-                    {
-                        string leftSide = "width = ";
-                        string rightSide = ";";
-                        int beginIndex = sourceImageInfo.IndexOf(leftSide) + leftSide.Length;
-                        int endIndex = sourceImageInfo.LastIndexOf(rightSide, beginIndex + leftSide.Length);
-                        sourceImageWidth = Convert.ToInt32(sourceImageInfo.Substring(beginIndex, endIndex - beginIndex));
-                        leftSide = "height = ";
-                        beginIndex = sourceImageInfo.IndexOf(leftSide, endIndex) + leftSide.Length;
-                        sourceImageHeight = Convert.ToInt32(sourceImageInfo.Substring(beginIndex, sourceImageInfo.Length - beginIndex));
-                    }
-                    catch (FormatException) { }
-                }
+                sourceImageWidth = (int)image.Width;
+                sourceImageHeight = (int)image.Height;
             }
             if (!sourceImageWidth.HasValue && !sourceImageHeight.HasValue)
             {
@@ -44,7 +32,7 @@ namespace Treynessen.ImagesManagement
                 {
                     sourceImageWidth = sourceImage.Width;
                     sourceImageHeight = sourceImage.Height;
-                    writeSourceImageInfo = true;
+                    addImageInfoToDB = true;
                 }
             }
         }

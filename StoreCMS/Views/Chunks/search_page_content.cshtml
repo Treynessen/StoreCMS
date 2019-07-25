@@ -4,6 +4,6 @@
 <div class="navigation-menu"><a href="/">Главная страница</a> → Поиск по сайту</div>
 @(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
 @{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@"~/Settings/product_block.cshtml", p); } catch { } } } }
-@{ if (products != null) { <page-buttons class="@Context.Items["PaginationStyleName"]" current-path="@Context.Request.Path" order-by="@(Context.Items["OrderBy"] as OrderBy?)" current-page="@(Context.Items["CurrentPage"] as int?)" pages-count="@(Context.Items["PagesCount"] as int?)"></page-buttons> } }
+@{ if (products != null) { <page-buttons class="@Context.Items["PaginationStyleName"]" current-path="@Context.Request.Path" current-page="@(Context.Items["CurrentPage"] as int?)" pages-count="@(Context.Items["PagesCount"] as int?)"></page-buttons> } }
 </div>
 <script src="/scripts/search_query_response.js"></script>

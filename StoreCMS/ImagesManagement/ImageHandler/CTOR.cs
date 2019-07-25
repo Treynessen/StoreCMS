@@ -1,26 +1,32 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Database.Context;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.ImagesManagement
 {
     public partial class ImageHandler
     {
-        private IHostingEnvironment env;
+        private CMSDatabase db;
 
+        private IHostingEnvironment env;
+        
         private string pathToImageFolder;
         private string sourceImageName;
         private string sourceImageExtension;
         private string sourceImageFullName;
         private string sourceImageFullPath;
-
-        private string pathToImagesInfo;
+        private string sourceImageShortPath;
 
         private bool isExisted = false;
 
-        public ImageHandler(string pathToImage, bool itsFullPath, IHostingEnvironment env)
+        public ImageHandler(string pathToImage, bool itsFullPath, CMSDatabase db,  IHostingEnvironment env)
         {
+            this.db = db;
             this.env = env;
             pathToImage = pathToImage.Replace('/', '\\');
             if (pathToImage[pathToImage.Length - 1].Equals('\\'))
@@ -41,17 +47,25 @@ namespace Treynessen.ImagesManagement
                     pathToImageFolder = pathToImageFolder.Substring(1);
                 pathToImageFolder = env.GetStorageFolderFullPath() + pathToImageFolder;
             }
-            sourceImageFullPath = pathToImageFolder + sourceImageName + sourceImageExtension;
-            isExisted = File.Exists(sourceImageFullPath);
-            pathToImagesInfo = pathToImageFolder + "images.info";
             sourceImageFullName = sourceImageName + sourceImageExtension;
-            if (!isExisted && File.Exists(pathToImagesInfo))
+            sourceImageFullPath = pathToImageFolder + sourceImageFullName;
+            isExisted = File.Exists(sourceImageFullPath);
+            sourceImageShortPath = sourceImageFullPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
+            // Если изображения не существует, то удаляем зависимые изображения, если таковые имеются и информацию из БД
+            if (!isExisted)
             {
-                ImagesManagementFunctions.DeleteImageInfoFromInfoFile(pathToImagesInfo, sourceImageFullName);
+                // Удаляем информацию об изображении из БД
+                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(sourceImageShortPath) 
+                && img.ShortPath.Equals(sourceImageShortPath, StringComparison.InvariantCulture));
+                if (image != null)
+                {
+                    db.Images.Remove(image);
+                    db.SaveChanges();
+                }
+
                 ImagesManagementFunctions.DeleteDependentImages(pathToImageFolder, sourceImageFullName);
-                return;
             }
-            GetSourceImageInfo();
+            else GetSourceImageInfo();
         }
     }
 }

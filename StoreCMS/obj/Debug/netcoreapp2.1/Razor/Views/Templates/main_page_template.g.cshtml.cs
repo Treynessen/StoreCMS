@@ -74,7 +74,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<!DOCTYPE html>\n<html lang=\"ru\">\n");
             EndContext();
             BeginContext(45, 831, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "72fd655874f84d93b0147550987f3aac", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8e6dd3490aba4380b389db11e7816124", async() => {
                 BeginContext(51, 8, true);
                 WriteLiteral("\n<title>");
                 EndContext();
@@ -134,7 +134,7 @@ WriteAttributeValue("", 743, Model != null ? Html.Raw(Model.PageKeywords) : Html
             WriteLiteral("\n");
             EndContext();
             BeginContext(877, 536, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8891c8749c8d4bdda9d7371572a885b9", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e8fc982bfec749d8ad0d5b4a8e5ee3c5", async() => {
                 BeginContext(883, 1, true);
                 WriteLiteral("\n");
                 EndContext();

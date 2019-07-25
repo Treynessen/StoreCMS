@@ -21,7 +21,7 @@ namespace Treynessen.Controllers
             if (product == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
-            string[] productImages = ImagesManagementFunctions.GetProductImagesUrl(product, env);
+            string[] productImages = ImagesManagementFunctions.GetProductImageUrls(product, env);
             HttpContext.Items["ProductPage"] = product;
             return View("CategoriesAndProducts/ProductImages", productImages);
         }

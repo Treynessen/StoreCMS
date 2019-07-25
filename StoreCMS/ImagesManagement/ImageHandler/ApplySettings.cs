@@ -4,6 +4,8 @@ using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
+using Treynessen.Database;
+using Treynessen.Functions;
 using Treynessen.Extensions;
 
 namespace Treynessen.ImagesManagement
@@ -49,9 +51,19 @@ namespace Treynessen.ImagesManagement
                 }
             }
             CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length - 1).Replace('\\', '/');
-            if (writeSourceImageInfo)
+            if (addImageInfoToDB)
             {
-                ImagesManagementFunctions.AddImageInfoInInfoFile(pathToImageFolder, sourceImageFullName, sourceImageWidth.Value, sourceImageHeight.Value);
+                Database.Entities.Image image = new Database.Entities.Image
+                {
+                    ID = DatabaseInteraction.GetDatabaseRawID(db.Images),
+                    ShortPath = sourceImageShortPath,
+                    ShortPathHash = OtherFunctions.GetHashFromString(sourceImageShortPath),
+                    FullName = sourceImageShortPath.Substring(sourceImageShortPath.LastIndexOf('/') + 1),
+                    Height = (uint)sourceImageHeight.Value,
+                    Width = (uint)sourceImageWidth.Value
+                };
+                db.Images.Add(image);
+                db.SaveChanges();
             }
         }
     }

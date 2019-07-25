@@ -128,7 +128,7 @@ namespace Treynessen.PagesManagement
                 }
             }
 
-            page.RequestPathHash = GetHashFromRequestPath(page.RequestPath);
+            page.RequestPathHash = OtherFunctions.GetHashFromString(page.RequestPath);
 
             page.BreadcrumbsHtml = GetBreadcrumbsHTML(page);
 

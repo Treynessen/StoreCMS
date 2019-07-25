@@ -17,6 +17,8 @@ namespace Treynessen.Database.Context
         public DbSet<Template> Templates { get; set; }
         public DbSet<Chunk> Chunks { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         public DbSet<Redirection> Redirections { get; set; }
 
         public DbSet<SynonymForString> SynonymsForStrings { get; set; }
@@ -32,7 +34,8 @@ namespace Treynessen.Database.Context
             modelBuilder.Entity<UsualPage>().HasIndex(up => up.RequestPathHash);
             modelBuilder.Entity<CategoryPage>().HasIndex(cp => cp.RequestPathHash);
             modelBuilder.Entity<ProductPage>().HasIndex(pp => pp.RequestPathHash);
-            modelBuilder.Entity<Redirection>().HasIndex(pp => pp.RequestPathHash);
+            modelBuilder.Entity<Image>().HasIndex(img => img.ShortPathHash);
+            modelBuilder.Entity<Redirection>().HasIndex(r => r.RequestPathHash);
         }
     }
 }

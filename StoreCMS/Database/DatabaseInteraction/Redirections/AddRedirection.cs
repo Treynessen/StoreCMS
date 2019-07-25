@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using Treynessen.Functions;
 using Treynessen.AdminPanelTypes;
-using Treynessen.PagesManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -36,7 +34,7 @@ namespace Treynessen.Database
             {
                 ID = GetDatabaseRawID(db.Redirections),
                 RequestPath = model.RequestPath,
-                RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(model.RequestPath),
+                RequestPathHash = OtherFunctions.GetHashFromString(model.RequestPath),
                 RedirectionPath = model.RedirectionPath
             });
             db.SaveChanges();

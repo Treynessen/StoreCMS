@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Treynessen.Functions;
 using Treynessen.PagesManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -42,7 +43,7 @@ namespace Treynessen.Database
                     break;
             }
             PagesManagementFunctions.SetUniqueAliasName(db, page);
-            page.RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(page.RequestPath);
+            page.RequestPathHash = OtherFunctions.GetHashFromString(page.RequestPath);
             switch (page)
             {
                 case UsualPage up:

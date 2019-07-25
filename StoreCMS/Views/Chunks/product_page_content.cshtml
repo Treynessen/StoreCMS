@@ -5,7 +5,7 @@
 		<div class="gallery">
 			<a class="selected-image-block" data-lightbox="image" data-title="@(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))"><img id="selected-image"></a>
 			<div id="image-container">
-				@{ var env = Context.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment; foreach (var imgUrl in ImagesManagementFunctions.GetProductImagesUrl(Model as ProductPage, env, 0)) { <text><div id="image-@{ if(!counters.ContainsKey(1)) { counters.Add(1, 0); } <text>@(++counters[1])</text> }"><image src="@(imgUrl)" max-width="350" max-height="270" quality="80"></image></div></text> } }
+				@{ var env = Context.RequestServices.GetService(typeof(Microsoft.AspNetCore.Hosting.IHostingEnvironment)) as Microsoft.AspNetCore.Hosting.IHostingEnvironment; foreach (var imgUrl in ImagesManagementFunctions.GetProductImageUrls(Model as ProductPage, env, 0)) { <text><div id="image-@{ if(!counters.ContainsKey(1)) { counters.Add(1, 0); } <text>@(++counters[1])</text> }"><image src="@(imgUrl)" max-width="350" max-height="270" quality="80"></image></div></text> } }
 			</div>
 		</div>
 		<div class="info-container">

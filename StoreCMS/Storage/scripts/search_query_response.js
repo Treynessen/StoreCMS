@@ -6,7 +6,7 @@ if(products.length == 0){
 	if(searchQuery !== null){
 		searchQuery = decodeURIComponent(searchQuery.toString().replace('+', ' ')).substr(7);
 	}
-	info.textContent = 'По запросу ' + searchQuery + ' ничего не найдено';
+	info.textContent = 'По запросу ' + (searchQuery !== null ? searchQuery : '') + ' ничего не найдено';
 	let contentBlock = document.querySelector('div.content-block');
 	contentBlock.appendChild(info);
 }

@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
 using Treynessen.ImagesManagement;
+using Treynessen.Database.Context;
 
 namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void DeleteFileOrFolder(string path, HttpContext context, out string redirectPath)
+        public static void DeleteFileOrFolder(string path, CMSDatabase db, HttpContext context, out string redirectPath)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*(\.\w+)?$");
@@ -81,7 +82,7 @@ namespace Treynessen.FileManagerManagement
                 {
                     if (type == FileManagerObjectType.Image)
                     {
-                        ImagesManagementFunctions.DeleteImage(path, fileOrFolderFullName, context);
+                        ImagesManagementFunctions.DeleteImage(path, fileOrFolderFullName, db, env);
                     }
                     else File.Delete(pathToFile);
                 }

@@ -59,7 +59,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(404);
 
                 case AdminPanelPages.DeleteFileOrFolder:
-                    FileManagerManagementFunctions.DeleteFileOrFolder(path, HttpContext, out string redirectPath);
+                    FileManagerManagementFunctions.DeleteFileOrFolder(path, db, HttpContext, out string redirectPath);
                     if (redirectPath == null)
                         return StatusCode(404);
                     else

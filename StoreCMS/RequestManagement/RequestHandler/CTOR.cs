@@ -1,4 +1,4 @@
-﻿using Treynessen.PagesManagement;
+﻿using Treynessen.Functions;
 using Treynessen.Database.Context;
 
 namespace Treynessen.RequestManagement
@@ -14,7 +14,7 @@ namespace Treynessen.RequestManagement
             if (requestString.Length > 1 && requestString[requestString.Length - 1].Equals('/'))
                 requestString = requestString.Substring(0, requestString.Length - 1);
             this.requestString = requestString.ToLower();
-            requestStringHash = PagesManagementFunctions.GetHashFromRequestPath(requestString);
+            requestStringHash = OtherFunctions.GetHashFromString(requestString);
             this.db = db;
         }
     }

@@ -1,11 +1,17 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using Treynessen.Functions;
+using Treynessen.Extensions;
+using Treynessen.Database.Context;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.ImagesManagement
 {
     public static partial class ImagesManagementFunctions
     {
-        public static void DeleteImage(string pathToImageFolder, string imageFullName, HttpContext context)
+        public static void DeleteImage(string pathToImageFolder, string imageFullName, CMSDatabase db, IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(pathToImageFolder) || string.IsNullOrEmpty(imageFullName))
                 return;
@@ -17,7 +23,14 @@ namespace Treynessen.ImagesManagement
             if (!File.Exists(pathToFile))
                 return;
             File.Delete(pathToFile);
-            DeleteImageInfoFromInfoFile($"{pathToImageFolder}images.info", imageFullName);
+            // Удаляем информацию об изображении из БД
+            string shortPathToImage = pathToImageFolder.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/") + imageFullName;
+            Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage) && img.ShortPath.Equals(shortPathToImage, StringComparison.InvariantCulture));
+            if (image != null)
+            {
+                db.Images.Remove(image);
+                db.SaveChanges();
+            }
             // Если у изображения были зависимости (сжатые или ресайзнутые вариации), то удаляем их
             DeleteDependentImages(pathToImageFolder, imageFullName);
         }

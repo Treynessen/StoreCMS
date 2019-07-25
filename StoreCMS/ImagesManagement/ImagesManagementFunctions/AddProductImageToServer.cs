@@ -1,11 +1,15 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Database;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 using Treynessen.FileManagerManagement;
@@ -22,8 +26,7 @@ namespace Treynessen.ImagesManagement
                 successfullyUploaded = false;
                 return;
             }
-            ProductPage product = db.ProductPages.FirstOrDefaultAsync(pp => pp.ID == itemID).Result;
-            db.Entry(product).State = EntityState.Detached;
+            ProductPage product = db.ProductPages.AsNoTracking().FirstOrDefault(pp => pp.ID == itemID);
             if (product == null)
             {
                 successfullyUploaded = false;
@@ -38,15 +41,37 @@ namespace Treynessen.ImagesManagement
             {
                 try
                 {
-                    using (Image<Rgba32> source = Image.Load(stream))
+                    using (Image<Rgba32> source = SixLabors.ImageSharp.Image.Load(stream))
                     {
                         // Если остались зависимости от предыдущего изображения, то удаляем их
-                        DeleteDependentImages(imagesPath, fullImageName); 
-                        AddImageInfoInInfoFile(imagesPath, fullImageName, source.Width, source.Height);
+                        DeleteDependentImages(imagesPath, fullImageName);
+                        // Добавляем или изменяем информацию в БД
+                        string shortPathToImage = pathToFile.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
+                        Database.Entities.Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage)
+                        && img.ShortPath.Equals(shortPathToImage, StringComparison.InvariantCulture));
+                        if (image == null)
+                        {
+                            image = new Database.Entities.Image
+                            {
+                                ID = DatabaseInteraction.GetDatabaseRawID(db.Images),
+                                ShortPath = shortPathToImage,
+                                ShortPathHash = OtherFunctions.GetHashFromString(shortPathToImage),
+                                FullName = shortPathToImage.Substring(shortPathToImage.LastIndexOf('/') + 1),
+                                Width = (uint)source.Width,
+                                Height = (uint)source.Height
+                            };
+                            db.Images.Add(image);
+                        }
+                        else
+                        {
+                            image.Width = (uint)source.Width;
+                            image.Height = (uint)source.Height;
+                        }
+                        db.SaveChanges();
                         source.Save(pathToFile);
                     }
                 }
-                catch (System.NotSupportedException) { successfullyUploaded = false; }
+                catch (NotSupportedException) { successfullyUploaded = false; }
             }
         }
     }

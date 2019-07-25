@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.Functions;
 using Treynessen.PagesManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
@@ -58,7 +59,7 @@ namespace Treynessen.Database
                     {
                         up.Alias = "index";
                         up.RequestPath = "/";
-                        up.RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(up.RequestPath);
+                        up.RequestPathHash = OtherFunctions.GetHashFromString(up.RequestPath);
                         up.PreviousPage = null;
                     }
                     // Если родителем страницы является сама страница или зависимая страница, то возвращаем сообщение об ошибке

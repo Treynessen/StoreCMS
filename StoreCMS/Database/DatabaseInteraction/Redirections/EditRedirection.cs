@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Treynessen.Functions;
 using Treynessen.AdminPanelTypes;
-using Treynessen.PagesManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -38,7 +38,7 @@ namespace Treynessen.Database
                 return;
             }
             redirection.RequestPath = model.RequestPath;
-            redirection.RequestPathHash = PagesManagementFunctions.GetHashFromRequestPath(model.RequestPath);
+            redirection.RequestPathHash = OtherFunctions.GetHashFromString(model.RequestPath);
             redirection.RedirectionPath = model.RedirectionPath;
             db.SaveChanges();
             successfullyCompleted = true;
