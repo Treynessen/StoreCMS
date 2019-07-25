@@ -11,6 +11,7 @@
         string Templates { get; }
         string Chunks { get; }
         string FileManager { get; }
+        string UserTypes { get; }
         string SynonymsForStrings { get; }
         string Settings { get; }
     }

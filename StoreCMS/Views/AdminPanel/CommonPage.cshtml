@@ -33,6 +33,10 @@
     {
         pages.Add(AdminPanelPages.FileManager, localization.FileManager);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserTypes, user, Context))
+    {
+        pages.Add(AdminPanelPages.UserTypes, localization.UserTypes);
+    }
     if (SecurityFunctions.HasAccessTo(AdminPanelPages.SynonymsForStrings, user, Context))
     {
         pages.Add(AdminPanelPages.SynonymsForStrings, localization.SynonymsForStrings);

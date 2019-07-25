@@ -38,6 +38,7 @@ public class Startup
         services.AddTransient<IRedirectionsLocalization>(provider => new RuRedirectionsLocalization());
         services.AddTransient<ITemplatesLocalization>(provider => new RuTemplatesLocalization());
         services.AddTransient<IFileManagerLocalization>(provider => new RuFileManagerLocalization());
+        services.AddTransient<IUserTypesLocalization>(provider => new RuUserTypesLocalization());
         services.AddTransient<ISynonymsForStringsLocalization>(provider => new RuSynonymsForStringsLocalization());
         services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
 

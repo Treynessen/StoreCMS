@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
 using Treynessen.Database;
+using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -26,17 +28,10 @@ public class Program
 
     private static void SetDeafaultUserType(CMSDatabase db)
     {
-        UserType userType = db.UserTypes.FirstOrDefault(ut => ut.AccessLevel == AccessLevel.VeryHigh);
+        UserType userType = db.UserTypes.AsNoTracking().FirstOrDefault(ut => ut.AccessLevel == AccessLevel.VeryHigh);
         if (userType == null)
         {
-            userType = new UserType
-            {
-                ID = DatabaseInteraction.GetDatabaseRawID(db.UserTypes),
-                Name = "Admin",
-                AccessLevel = AccessLevel.VeryHigh
-            };
-            db.UserTypes.Add(userType);
-            db.SaveChanges();
+            DatabaseInteraction.AddUserType(db, new UserTypeModel { Name = "Admin", AccessLevel = AccessLevel.VeryHigh }, out bool userTypeAdded);
         }
     }
 

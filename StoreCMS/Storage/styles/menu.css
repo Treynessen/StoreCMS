@@ -245,7 +245,7 @@ div.menu-container > form.search-block > input[type=submit]{
 	outline: none;
 	flex-grow: 1;
 	background-color: #d1d1d1;
-	background-image: url(https://lh4.googleusercontent.com/-b-5aBxcxarY/UAfFW9lVyjI/AAAAAAAABUg/gQtEXuPuIds/s13/go.png);
+	background-image: url(/images/go.png);
 	background-position: center center;
 	background-repeat: no-repeat;
 	border: 0;

@@ -9,6 +9,7 @@
         Templates,
         Chunks,
         FileManager,
+        UserTypes,
         SynonymsForStrings, // Для поиска товара
         Settings,
 
@@ -48,11 +49,15 @@
         EditScript,
         DeleteFileOrFolder,
 
-        EditSettings,
+        AddUserType,
+        EditUserType,
+        DeleteUserType,
 
         AddSynonymForString,
         EditSynonymForString,
         DeleteSynonymForString,
+
+        EditSettings,
 
         LoginForm
     }

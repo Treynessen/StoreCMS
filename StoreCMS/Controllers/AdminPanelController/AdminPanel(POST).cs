@@ -154,6 +154,16 @@ namespace Treynessen.Controllers
                     }
                     else return StatusCode(422);
 
+                case AdminPanelPages.AddUserType:
+                    DatabaseInteraction.AddUserType(db, model.UserTypeModel, out bool userTypeAdded);
+                    if (userTypeAdded) return StatusCode(201);
+                    else return StatusCode(422);
+
+                case AdminPanelPages.EditUserType:
+                    DatabaseInteraction.EditUserType(db, model.itemID, model.UserTypeModel, out bool userTypeEdited);
+                    if (userTypeEdited) return StatusCode(200);
+                    else return StatusCode(422);
+
                 case AdminPanelPages.AddSynonymForString:
                     DatabaseInteraction.AddSynonymForString(db, model.SynonymForStringModel, out bool synonymForStringAdded);
                     if (synonymForStringAdded) return StatusCode(201);

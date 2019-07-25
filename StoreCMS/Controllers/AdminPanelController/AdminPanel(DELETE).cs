@@ -69,6 +69,11 @@ namespace Treynessen.Controllers
                         return StatusCode(200);
                     }
 
+                case AdminPanelPages.DeleteUserType:
+                    DatabaseInteraction.DeleteUserType(db, itemID, out bool userTypeDeleted);
+                    if (userTypeDeleted) return StatusCode(200);
+                    else return StatusCode(404);
+
                 case AdminPanelPages.DeleteSynonymForString:
                     DatabaseInteraction.DeleteSynonymForString(db, itemID, out bool synonymForStringDeleted);
                     if (synonymForStringDeleted) return StatusCode(200);

@@ -31,6 +31,7 @@ namespace Treynessen.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+
             ImageHandler imageHandler = null;
             if (!string.IsNullOrEmpty(FullPath))
                 imageHandler = new ImageHandler(FullPath, true, db, env);

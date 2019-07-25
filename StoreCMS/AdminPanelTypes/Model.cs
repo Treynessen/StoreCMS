@@ -15,6 +15,7 @@ namespace Treynessen.AdminPanelTypes
         public RedirectionModel RedirectionModel { get; set; }
         public TemplateModel TemplateModel { get; set; }
         public StyleModel StyleModel { get; set; }
+        public UserTypeModel UserTypeModel { get; set; }
         public SynonymForStringModel SynonymForStringModel { get; set; }
         public SettingsModel SettingsModel { get; set; }
     }
