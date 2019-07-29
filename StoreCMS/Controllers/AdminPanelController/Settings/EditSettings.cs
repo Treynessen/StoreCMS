@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
+using Treynessen.Database.Context;
 using Treynessen.SettingsManagement;
 using Treynessen.TemplatesManagement;
 
@@ -15,7 +18,7 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [NonAction]
-        public IActionResult EditSettings(SettingsModel model, HttpContext context)
+        public IActionResult EditSettings(CMSDatabase db, SettingsModel model, HttpContext context)
         {
             ConfigurationHandler configurationHandler = context.RequestServices.GetRequiredService<ConfigurationHandler>();
             configurationHandler.ChangeConfigFile(model);
@@ -49,6 +52,11 @@ namespace Treynessen.Controllers
                     }
                 }
             }
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.SettingsEdited
+            );
             return StatusCode(200);
         }
     }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.Functions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.PagesManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
@@ -69,7 +71,7 @@ namespace Treynessen.Database
                         return;
                     }
                 }
-                else if(editedPage is CategoryPage cp)
+                else if (editedPage is CategoryPage cp)
                 {
                     cp.ProductsCount = (editablePage as CategoryPage).ProductsCount;
                 }
@@ -103,6 +105,14 @@ namespace Treynessen.Database
             }
             db.SaveChanges();
             successfullyCompleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db, 
+                context: context,
+                info: $"{editablePage.PageName} (ID-{editablePage.ID.ToString()}): " +
+                (editablePage is UsualPage ? (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.PageEdited
+                : (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.CategoryEdited)
+            );
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -9,7 +12,7 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void EditSynonymForString(CMSDatabase db, int? itemID, SynonymForStringModel model, out bool successfullyCompleted)
+        public static void EditSynonymForString(CMSDatabase db, int? itemID, SynonymForStringModel model, HttpContext context, out bool successfullyCompleted)
         {
             if (itemID.HasValue && !string.IsNullOrEmpty(model.String) && !string.IsNullOrEmpty(model.Synonym))
             {
@@ -23,7 +26,10 @@ namespace Treynessen.Database
                 }
 
                 SynonymForString synonymForString = db.SynonymsForStrings.FirstOrDefault(s => s.ID == itemID);
-                if (synonymForString == null)
+                string oldString = synonymForString.String;
+                string oldSynonym = synonymForString.Synonym;
+                if (synonymForString == null 
+                    || (oldString.Equals(model.String, StringComparison.InvariantCulture) && oldSynonym.Equals(model.Synonym, StringComparison.InvariantCulture)))
                 {
                     successfullyCompleted = false;
                     return;
@@ -32,6 +38,13 @@ namespace Treynessen.Database
                 synonymForString.Synonym = model.Synonym;
                 db.SaveChanges();
                 successfullyCompleted = true;
+
+                LogManagementFunctions.AddAdminPanelLog(
+                    db: db,
+                    context: context,
+                    info: $"{synonymForString.String} -> {synonymForString.Synonym}: " +
+                    $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.SynonymForStringEditedTo} {oldString} -> {oldSynonym}"
+                );
             }
             else successfullyCompleted = false;
         }

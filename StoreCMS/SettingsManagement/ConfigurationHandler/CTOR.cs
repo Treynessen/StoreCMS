@@ -11,11 +11,9 @@ namespace Treynessen.SettingsManagement
         public IConfigurationSection DbConfiguration => configuration.GetSection("DBSettings");
         public IConfigurationSection AccessConfiguration => configuration.GetSection("AdminPanelAccessSettings");
 
-        public ConfigurationHandler(string path, IHostingEnvironment env)
+        public ConfigurationHandler(string path)
         {
-            configuration = new ConfigurationBuilder()
-            .SetBasePath(env.ContentRootPath)
-            .AddJsonFile(path).Build();
+            configuration = new ConfigurationBuilder().AddJsonFile(path).Build();
             this.path = path;
         }
     }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.PagesManagement;
 using Treynessen.Database.Context;
@@ -16,22 +18,18 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            switch (page)
-            {
-                case UsualPage up:
-                    up.ID = GetDatabaseRawID(db.UsualPages);
-                    break;
-                case CategoryPage cp:
-                    cp.ID = GetDatabaseRawID(db.CategoryPages);
-                    break;
-                default:
-                    successfullyCompleted = false;
-                    return;
-            }
             db.Add(page);
             db.SaveChanges();
             model.ID = page.ID;
             successfullyCompleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{page.PageName} (ID-{page.ID.ToString()}): " +
+                (page is UsualPage ? (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.PageAdded
+                : (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.CategoryAdded)
+            );
         }
     }
 }

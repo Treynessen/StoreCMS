@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Treynessen.Database.Entities
 {
-    public abstract class Page : Interfaces.IKeyID
+    public abstract class Page
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
         [Required]
         public int RequestPathHash { get; set; }

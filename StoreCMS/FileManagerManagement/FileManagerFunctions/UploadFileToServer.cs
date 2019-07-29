@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
+using Treynessen.Database.Context;
 
 namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void UploadFileToServer(string path, IFormFile file, HttpContext context, out bool successfulUpload)
+        public static void UploadFileToServer(CMSDatabase db, string path, IFormFile file, HttpContext context, out bool successfulUpload)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (string.IsNullOrEmpty(path))
@@ -62,12 +65,17 @@ namespace Treynessen.FileManagerManagement
             if (string.IsNullOrEmpty(fileName))
                 fileName = "uploaded_file";
             fileName = GetUniqueFileOrFolderName(path, fileName, fileExtension);
-            path += fileName;
-            using (FileStream fs = new FileStream(path, FileMode.Create))
+            using (FileStream fs = new FileStream($"{path}{fileName}", FileMode.Create))
             {
                 file.CopyTo(fs);
             }
             successfulUpload = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{fileName}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileUploadedTo} {path}"
+            );
         }
     }
 }

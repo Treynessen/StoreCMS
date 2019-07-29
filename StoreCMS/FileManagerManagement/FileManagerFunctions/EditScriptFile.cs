@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
+using Treynessen.Database.Context;
 
 namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void EditScriptFile(string path, StyleModel model, HttpContext context, out string redirectPath, out bool successfullyCompleted)
+        public static void EditScriptFile(CMSDatabase db, string path, StyleModel model, HttpContext context, out string redirectPath, out bool successfullyCompleted)
         {
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.js$");
             if (!regex.IsMatch(path))
@@ -49,7 +52,7 @@ namespace Treynessen.FileManagerManagement
             string scriptFileFullPath = $"{path}{model.FileName}.js";
             if (!oldScriptFileName.Equals(model.FileName, StringComparison.InvariantCulture))
             {
-                File.Move($"{path}{scriptFileFullName}", scriptFileFullPath);
+                File.Move($"{pathToFile}", scriptFileFullPath);
             }
             using (StreamWriter writer = new StreamWriter(scriptFileFullPath))
             {
@@ -57,6 +60,13 @@ namespace Treynessen.FileManagerManagement
             }
             successfullyCompleted = true;
             redirectPath = scriptFileFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '>');
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{pathToFile}{(!oldScriptFileName.Equals(model.FileName, StringComparison.InvariantCulture) ? $" -> {scriptFileFullPath}" : string.Empty)}: " +
+                $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileEdited}"
+            );
         }
     }
 }

@@ -21,16 +21,17 @@ namespace Treynessen.Controllers
                 return RedirectToAction(nameof(AdminPanel));
 
             HttpContext.Items["User"] = user;
+            HttpContext.Items["LogLocalization"] = localization;
 
             switch (pageID)
             {
                 case AdminPanelPages.AddProductImage:
-                    ImagesManagementFunctions.AddProductImageToServer(db, uploadedFile, itemID, HttpContext, out bool successfullyUploadedImage);
+                    ImagesManagementFunctions.UploadProductImageToServer(db, uploadedFile, itemID, HttpContext, out bool successfullyUploadedImage);
                     if (successfullyUploadedImage) return StatusCode(200);
                     else return StatusCode(415);
 
                 case AdminPanelPages.UploadFile:
-                    FileManagerManagementFunctions.UploadFileToServer(path, uploadedFile, HttpContext, out bool successfullyUploadedFile);
+                    FileManagerManagementFunctions.UploadFileToServer(db, path, uploadedFile, HttpContext, out bool successfullyUploadedFile);
                     if (successfullyUploadedFile) return StatusCode(200);
                     else return StatusCode(415);
 

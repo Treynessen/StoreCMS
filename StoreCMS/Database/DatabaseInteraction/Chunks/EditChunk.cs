@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -46,6 +48,11 @@ namespace Treynessen.Database
             db.Chunks.Update(editedChunk);
             db.SaveChanges();
             successfullyCompleted = true;
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{editableChunk.Name} (ID-{editableChunk.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.ChunkEdited}"
+            );
 
             // Изменяем cshtml файл, если изменилось имя шаблона и/или код шаблона
             bool changedName = !editedChunk.Name.Equals(editableChunk.Name, StringComparison.InvariantCulture);

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.PagesManagement;
 using Treynessen.Database.Context;
@@ -23,13 +25,18 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            productPage.ID = GetDatabaseRawID(db.ProductPages);
             ++productPage.PreviousPage.ProductsCount;
             productPage.PreviousPage.LastProductTemplate = productPage.Template;
             db.ProductPages.Add(productPage);
             db.SaveChanges();
             model.ID = productPage.ID;
             successfullyCompleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{productPage.PageName} (ID-{productPage.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.ProductAdded}"
+            );
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -9,7 +12,7 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void AddSynonymForString(CMSDatabase db, SynonymForStringModel model, out bool successfullyCompleted)
+        public static void AddSynonymForString(CMSDatabase db, SynonymForStringModel model, HttpContext context, out bool successfullyCompleted)
         {
             if (!string.IsNullOrEmpty(model.String) && !string.IsNullOrEmpty(model.Synonym))
             {
@@ -23,10 +26,16 @@ namespace Treynessen.Database
                 }
 
                 SynonymForString synonymForString = new SynonymForString { String = model.String, Synonym = model.Synonym };
-                synonymForString.ID = GetDatabaseRawID(db.SynonymsForStrings);
                 db.SynonymsForStrings.Add(synonymForString);
                 db.SaveChanges();
                 successfullyCompleted = true;
+
+
+                LogManagementFunctions.AddAdminPanelLog(
+                    db: db,
+                    context: context,
+                    info: $"{synonymForString.String} -> {synonymForString.Synonym}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.SynonymForStringAdded}"
+                );
             }
             else successfullyCompleted = false;
         }

@@ -46,11 +46,9 @@ namespace Treynessen.Security
             connectedUser.LastActionTime = DateTime.Now;
             db.Update(connectedUser);
             db.SaveChanges();
-            
+
             db.Entry(connectedUser.User).Reference(u => u.UserType).Load();
-            db.Entry(connectedUser).State = EntityState.Detached;
-            db.Entry(connectedUser.User).State = EntityState.Detached;
-            db.Entry(connectedUser.User.UserType).State = EntityState.Detached;
+
             return connectedUser.User;
         }
     }

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -42,11 +44,15 @@ namespace Treynessen.Database
                 templateName: chunk.Name,
                 chstmlContent: cshtmlContent
             );
-            chunk.ID = GetDatabaseRawID(db.Chunks);
             db.Chunks.Add(chunk);
             db.SaveChanges();
             model.ID = chunk.ID;
             successfullyCompleted = true;
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{chunk.Name} (ID-{chunk.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.ChunkAdded}"
+            );
 
             // Получаем список шаблонов и чанков, которые содержат данный чанк
             var templates = db.Templates.AsNoTracking().Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();

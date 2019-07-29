@@ -55,7 +55,6 @@ namespace Treynessen.ImagesManagement
             {
                 Database.Entities.Image image = new Database.Entities.Image
                 {
-                    ID = DatabaseInteraction.GetDatabaseRawID(db.Images),
                     ShortPath = sourceImageShortPath,
                     ShortPathHash = OtherFunctions.GetHashFromString(sourceImageShortPath),
                     FullName = sourceImageShortPath.Substring(sourceImageShortPath.LastIndexOf('/') + 1),

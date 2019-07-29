@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Treynessen.AdminPanelTypes;
 using Treynessen.Database;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
+using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -17,6 +19,12 @@ namespace Treynessen.Security
             if (user == null) return false;
             if (!user.Password.Equals(data.Password, StringComparison.InvariantCulture)) return false;
             DatabaseInteraction.AddConnectedUser(db, user, context);
+            context.Items["User"] = user;
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn
+            );
             return true;
         }
     }

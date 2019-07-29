@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 using Treynessen.TemplatesManagement;
@@ -35,6 +37,11 @@ namespace Treynessen.Database
             db.Chunks.Remove(chunk);
             db.SaveChanges();
             successfullyDeleted = true;
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{chunk.Name} (ID-{chunk.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.ChunkDeleted}"
+            );
 
             // Получаем список чанков и шаблонов, использующих данный чанк и делаем перерендер
             var templates = db.Templates.AsNoTracking().Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();

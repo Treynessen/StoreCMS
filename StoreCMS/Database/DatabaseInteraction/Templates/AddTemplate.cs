@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -37,11 +39,16 @@ namespace Treynessen.Database
                 templateName: template.Name,
                 chstmlContent: cshtmlContent
             );
-            template.ID = GetDatabaseRawID(db.Templates);
             db.Templates.Add(template);
             db.SaveChanges();
             model.ID = template.ID;
             successfullyCompleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{template.Name} (ID-{template.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.TemplateAdded}"
+            );
         }
     }
 }

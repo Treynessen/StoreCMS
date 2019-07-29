@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Treynessen.Database.Entities
 {
-    public class Redirection : Interfaces.IKeyID
+    public class Redirection
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
         [Required]
         public int RequestPathHash { get; set; } // Хэш-значение RequestPath'а

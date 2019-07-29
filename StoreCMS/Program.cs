@@ -31,7 +31,8 @@ public class Program
         UserType userType = db.UserTypes.AsNoTracking().FirstOrDefault(ut => ut.AccessLevel == AccessLevel.VeryHigh);
         if (userType == null)
         {
-            DatabaseInteraction.AddUserType(db, new UserTypeModel { Name = "Admin", AccessLevel = AccessLevel.VeryHigh }, out bool userTypeAdded);
+            db.UserTypes.Add(new UserType { Name = "Admin", AccessLevel = AccessLevel.VeryHigh });
+            db.SaveChanges();
         }
     }
 
@@ -58,7 +59,6 @@ public class Program
             UserType userType = db.UserTypes.FirstOrDefault(ut => ut.AccessLevel == AccessLevel.VeryHigh);
             User user = new User
             {
-                ID = DatabaseInteraction.GetDatabaseRawID(db.Users),
                 Login = "admin",
                 Password = "admin",
                 UserType = userType,

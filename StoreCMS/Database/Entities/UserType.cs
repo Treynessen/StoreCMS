@@ -5,9 +5,8 @@ using Treynessen.Security;
 
 namespace Treynessen.Database.Entities
 {
-    public class UserType : Interfaces.IKeyID
+    public class UserType
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }

@@ -1,4 +1,7 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -6,7 +9,7 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void DeleteSynonymForString(CMSDatabase db, int? itemID, out bool successfullyCompleted)
+        public static void DeleteSynonymForString(CMSDatabase db, int? itemID, HttpContext context, out bool successfullyCompleted)
         {
             if (itemID.HasValue)
             {
@@ -19,6 +22,12 @@ namespace Treynessen.Database
                 db.Remove(synonymForString);
                 db.SaveChanges();
                 successfullyCompleted = true;
+
+                LogManagementFunctions.AddAdminPanelLog(
+                    db: db,
+                    context: context,
+                    info: $"{synonymForString.String} -> {synonymForString.Synonym}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.SynonymForStringDeleted}"
+                );
             }
             else successfullyCompleted = false;
         }

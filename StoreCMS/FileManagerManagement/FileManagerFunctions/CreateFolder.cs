@@ -5,12 +5,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
+using Treynessen.Database.Context;
 
 namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void CreateFolder(string path, string folderName, HttpContext context, out bool successfullyCreated)
+        public static void CreateFolder(CMSDatabase db, string path, string folderName, HttpContext context, out bool successfullyCreated)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             if (string.IsNullOrEmpty(path))
@@ -44,6 +47,12 @@ namespace Treynessen.FileManagerManagement
             folderName = GetUniqueFileOrFolderName(path, folderName);
             Directory.CreateDirectory($"{path}{folderName}");
             successfullyCreated = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{folderName}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FolderCreatedIn} {path}"
+            );
         }
     }
 }

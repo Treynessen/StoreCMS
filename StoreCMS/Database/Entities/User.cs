@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Treynessen.Database.Entities
 {
-    public class User : Interfaces.IKeyID
+    public class User
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
         [Required]
         public string Login { get; set; }
@@ -17,5 +16,7 @@ namespace Treynessen.Database.Entities
         [Required]
         public UserType UserType { get; set; }
         public int UserTypeID { get; set; }
+
+        public List<AdminPanelLog> AdminPanelLogs { get; set; }
     }
 }

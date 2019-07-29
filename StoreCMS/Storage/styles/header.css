@@ -1,5 +1,5 @@
 div.header-full-width{
-	width: 100%;
+	min-width: 1000px;
 	background: linear-gradient(to bottom, #4b4b4b, #1d1d1d);
 }
 

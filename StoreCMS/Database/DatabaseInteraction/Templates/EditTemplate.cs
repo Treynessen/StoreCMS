@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -44,6 +46,11 @@ namespace Treynessen.Database
             db.Templates.Update(editedTemplate);
             db.SaveChanges();
             successfullyCompleted = true;
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{editableTemplate.Name} (ID-{editableTemplate.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.TemplateEdited}"
+            );
 
             // Изменяем cshtml файл, если изменилось имя шаблона и/или код шаблона
             bool changedName = !editedTemplate.Name.Equals(editableTemplate.Name, StringComparison.InvariantCulture);

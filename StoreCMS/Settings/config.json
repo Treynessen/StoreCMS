@@ -7,11 +7,11 @@
 		"PaginationStyleName": "pagination"
 	},
 	"SearchPageSettings": {
-		"SearchPageTemplateId": "6",
+		"SearchPageTemplateId": "0",
 		"MaxNumberOfSymbolsInSearchQuery": "100"
 	},
 	"PageNotFoundSettings": {
-		"PageNotFoundTemplateId": "4"
+		"PageNotFoundTemplateId": "0"
 	},
 	"AdminPanelAccessSettings": {
 		"MainPage": "5",

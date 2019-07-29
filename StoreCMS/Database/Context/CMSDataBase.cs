@@ -23,6 +23,8 @@ namespace Treynessen.Database.Context
 
         public DbSet<SynonymForString> SynonymsForStrings { get; set; }
 
+        public DbSet<AdminPanelLog> AdminPanelLogs { get; set; }
+
         public CMSDatabase(DbContextOptions<CMSDatabase> options)
             : base(options)
         {

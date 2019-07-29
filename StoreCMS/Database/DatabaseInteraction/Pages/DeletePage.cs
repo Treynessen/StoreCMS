@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.PagesManagement;
 using Treynessen.ImagesManagement;
 using Treynessen.Database.Context;
@@ -82,6 +84,14 @@ namespace Treynessen.Database
             }
             db.SaveChanges();
             successfullyDeleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{page.PageName} (ID-{page.ID.ToString()}): "+
+                (page is UsualPage ? (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.PageDeleted
+                : (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.CategoryDeleted)
+            );
         }
     }
 }

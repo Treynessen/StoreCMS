@@ -21,6 +21,9 @@ namespace Treynessen.Controllers
             if (!SecurityFunctions.HasAccessTo(pageID, user, HttpContext))
                 return RedirectToAction(nameof(AdminPanel));
 
+            HttpContext.Items["User"] = user;
+            HttpContext.Items["LogLocalization"] = localization;
+
             switch (pageID)
             {
                 case AdminPanelPages.DeletePage:
@@ -44,7 +47,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(404);
 
                 case AdminPanelPages.DeleteRedirection:
-                    DatabaseInteraction.DeleteRedirection(db, itemID, out bool redirectionDeleted);
+                    DatabaseInteraction.DeleteRedirection(db, itemID, HttpContext, out bool redirectionDeleted);
                     if (redirectionDeleted) return StatusCode(200);
                     else return StatusCode(404);
 
@@ -59,7 +62,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(404);
 
                 case AdminPanelPages.DeleteFileOrFolder:
-                    FileManagerManagementFunctions.DeleteFileOrFolder(path, db, HttpContext, out string redirectPath);
+                    FileManagerManagementFunctions.DeleteFileOrFolder(db, path, HttpContext, out string redirectPath);
                     if (redirectPath == null)
                         return StatusCode(404);
                     else
@@ -70,12 +73,12 @@ namespace Treynessen.Controllers
                     }
 
                 case AdminPanelPages.DeleteUserType:
-                    DatabaseInteraction.DeleteUserType(db, itemID, out bool userTypeDeleted);
+                    DatabaseInteraction.DeleteUserType(db, itemID, HttpContext, out bool userTypeDeleted);
                     if (userTypeDeleted) return StatusCode(200);
                     else return StatusCode(404);
 
                 case AdminPanelPages.DeleteSynonymForString:
-                    DatabaseInteraction.DeleteSynonymForString(db, itemID, out bool synonymForStringDeleted);
+                    DatabaseInteraction.DeleteSynonymForString(db, itemID, HttpContext, out bool synonymForStringDeleted);
                     if (synonymForStringDeleted) return StatusCode(200);
                     else return StatusCode(404);
 

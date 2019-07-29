@@ -2,7 +2,7 @@
 {
     public class RuUserTypesLocalization : IUserTypesLocalization
     {
-        public string PageName => "Перенаправления";
+        public string PageName => "Типы пользователей";
 
         public string VeryLowAccessLevel => "Очень низкий уровень доступа";
         public string LowAccessLevel => "Низкий уровень доступа";

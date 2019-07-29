@@ -13,6 +13,8 @@ namespace Treynessen.Controllers
         [HttpPost]
         public IActionResult AdminPanel(Model model, LoginFormModel loginFormModel)
         {
+            HttpContext.Items["LogLocalization"] = localization;
+
             if (model.PageId == AdminPanelPages.LoginForm)
             {
                 if (SecurityFunctions.IsValidLoginFormData(db, loginFormModel, HttpContext))
@@ -80,12 +82,12 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.AddRedirection:
-                    DatabaseInteraction.AddRedirection(db, model.RedirectionModel, out bool redirectionAdded);
+                    DatabaseInteraction.AddRedirection(db, model.RedirectionModel, HttpContext, out bool redirectionAdded);
                     if (redirectionAdded) return StatusCode(201);
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditRedirection:
-                    DatabaseInteraction.EditRedirection(db, model.itemID, model.RedirectionModel, out bool redirectionEdited);
+                    DatabaseInteraction.EditRedirection(db, model.itemID, model.RedirectionModel, HttpContext, out bool redirectionEdited);
                     if (redirectionEdited) return StatusCode(200);
                     else return StatusCode(422);
 
@@ -120,22 +122,22 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.CreateFolder:
-                    FileManagerManagementFunctions.CreateFolder(model.Path, model.Name, HttpContext, out bool folderCreated);
+                    FileManagerManagementFunctions.CreateFolder(db, model.Path, model.Name, HttpContext, out bool folderCreated);
                     if (folderCreated) return StatusCode(201);
                     else return StatusCode(422);
 
                 case AdminPanelPages.CreateStyle:
-                    FileManagerManagementFunctions.CreateCssFile(model.Path, model.Name, HttpContext, out bool styleFileCreated);
+                    FileManagerManagementFunctions.CreateCssFile(db, model.Path, model.Name, HttpContext, out bool styleFileCreated);
                     if (styleFileCreated) return StatusCode(201);
                     else return StatusCode(422);
 
                 case AdminPanelPages.CreateScript:
-                    FileManagerManagementFunctions.CreateScriptFile(model.Path, model.Name, HttpContext, out bool scriptFileCreated);
+                    FileManagerManagementFunctions.CreateScriptFile(db, model.Path, model.Name, HttpContext, out bool scriptFileCreated);
                     if (scriptFileCreated) return StatusCode(201);
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditStyle:
-                    FileManagerManagementFunctions.EditCssFile(model.Path, model.StyleModel, HttpContext, out string editedStylePath, out bool cssFileEdited);
+                    FileManagerManagementFunctions.EditCssFile(db, model.Path, model.StyleModel, HttpContext, out string editedStylePath, out bool cssFileEdited);
                     if (cssFileEdited)
                     {
                         string editedCssFileUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditStyle}&path={editedStylePath}";
@@ -145,7 +147,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditScript:
-                    FileManagerManagementFunctions.EditScriptFile(model.Path, model.StyleModel, HttpContext, out string editedScriptPath, out bool scriptFileEdited);
+                    FileManagerManagementFunctions.EditScriptFile(db, model.Path, model.StyleModel, HttpContext, out string editedScriptPath, out bool scriptFileEdited);
                     if (scriptFileEdited)
                     {
                         string editedScriptFileUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.EditScript}&path={editedScriptPath}";
@@ -155,27 +157,27 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.AddUserType:
-                    DatabaseInteraction.AddUserType(db, model.UserTypeModel, out bool userTypeAdded);
+                    DatabaseInteraction.AddUserType(db, model.UserTypeModel, HttpContext, out bool userTypeAdded);
                     if (userTypeAdded) return StatusCode(201);
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditUserType:
-                    DatabaseInteraction.EditUserType(db, model.itemID, model.UserTypeModel, out bool userTypeEdited);
+                    DatabaseInteraction.EditUserType(db, model.itemID, model.UserTypeModel, HttpContext, out bool userTypeEdited);
                     if (userTypeEdited) return StatusCode(200);
                     else return StatusCode(422);
 
                 case AdminPanelPages.AddSynonymForString:
-                    DatabaseInteraction.AddSynonymForString(db, model.SynonymForStringModel, out bool synonymForStringAdded);
+                    DatabaseInteraction.AddSynonymForString(db, model.SynonymForStringModel, HttpContext, out bool synonymForStringAdded);
                     if (synonymForStringAdded) return StatusCode(201);
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditSynonymForString:
-                    DatabaseInteraction.EditSynonymForString(db, model.itemID, model.SynonymForStringModel, out bool synonymForStringEdited);
+                    DatabaseInteraction.EditSynonymForString(db, model.itemID, model.SynonymForStringModel, HttpContext, out bool synonymForStringEdited);
                     if (synonymForStringEdited) return StatusCode(200);
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditSettings:
-                    return EditSettings(model.SettingsModel, HttpContext);
+                    return EditSettings(db, model.SettingsModel, HttpContext);
 
                 default:
                     return RedirectToAction(nameof(AdminPanel));

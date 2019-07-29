@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.PagesManagement;
 using Treynessen.ImagesManagement;
@@ -117,6 +119,12 @@ namespace Treynessen.Database
                 }
             }
             successfullyCompleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{editableProduct.PageName} (ID-{editableProduct.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.ProductEdited}"
+            );
         }
     }
 }

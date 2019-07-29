@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.ImagesManagement;
 using Treynessen.Database.Context;
 
@@ -12,7 +14,7 @@ namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void DeleteFileOrFolder(string path, CMSDatabase db, HttpContext context, out string redirectPath)
+        public static void DeleteFileOrFolder(CMSDatabase db, string path, HttpContext context, out string redirectPath)
         {
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*(\.\w+)?$");
@@ -87,6 +89,11 @@ namespace Treynessen.FileManagerManagement
                     else File.Delete(pathToFile);
                 }
                 else redirectPath = null;
+                LogManagementFunctions.AddAdminPanelLog(
+                    db: db,
+                    context: context,
+                    info: $"{pathToFile}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileDeleted}"
+                );
             }
             else
             {
@@ -105,6 +112,11 @@ namespace Treynessen.FileManagerManagement
                     }
                 }
                 Directory.Delete(pathToFolder, true);
+                LogManagementFunctions.AddAdminPanelLog(
+                    db: db,
+                    context: context,
+                    info: $"{pathToFolder}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FolderDeleted}"
+                );
             }
         }
     }

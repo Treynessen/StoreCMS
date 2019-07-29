@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -43,6 +45,11 @@ namespace Treynessen.Database
             db.Templates.Remove(template);
             db.SaveChanges();
             successfullyDeleted = true;
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{template.Name} (ID-{template.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.TemplateDeleted}"
+            );
         }
     }
 }

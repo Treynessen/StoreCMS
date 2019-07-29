@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
+using Treynessen.Database.Context;
 
 namespace Treynessen.FileManagerManagement
 {
     public static partial class FileManagerManagementFunctions
     {
-        public static void EditCssFile(string path, StyleModel model, HttpContext context, out string redirectPath, out bool successfullyCompleted)
+        public static void EditCssFile(CMSDatabase db, string path, StyleModel model, HttpContext context, out string redirectPath, out bool successfullyCompleted)
         {
             Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*\.css$");
             if (!regex.IsMatch(path))
@@ -49,7 +52,7 @@ namespace Treynessen.FileManagerManagement
             string cssFileFullPath = $"{path}{model.FileName}.css";
             if (!oldCssFileName.Equals(model.FileName, StringComparison.InvariantCulture))
             {
-                File.Move($"{path}{cssFileFullName}", cssFileFullPath);
+                File.Move($"{pathToFile}", cssFileFullPath);
             }
             using (StreamWriter writer = new StreamWriter(cssFileFullPath))
             {
@@ -57,6 +60,13 @@ namespace Treynessen.FileManagerManagement
             }
             successfullyCompleted = true;
             redirectPath = cssFileFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '>');
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{pathToFile}{(!oldCssFileName.Equals(model.FileName, StringComparison.InvariantCulture) ? $" -> {cssFileFullPath}" : string.Empty)}: " +
+                $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileEdited}"
+            );
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Translit;
 using Treynessen.Security;
+using Treynessen.Extensions;
 using Treynessen.Localization;
 using Treynessen.Database.Context;
 using Treynessen.RequestManagement;
@@ -13,16 +14,18 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddScoped(provider => 
-        new ConfigurationHandler("Settings/config.json", 
-        services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>()));
+        services.AddScoped(provider =>
+        {
+            IHostingEnvironment env = services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>();
+            return new ConfigurationHandler(env.GetConfigsFolderFullPath() + "config.json");
+        });
 
         services.AddDbContext<CMSDatabase>(options =>
         {
             ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
             options.UseSqlServer(configHandler.DbConfiguration["ConnectionString"]);
         });
-        
+
         services.AddTransient(provider =>
         {
             ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
@@ -41,6 +44,8 @@ public class Startup
         services.AddTransient<IUserTypesLocalization>(provider => new RuUserTypesLocalization());
         services.AddTransient<ISynonymsForStringsLocalization>(provider => new RuSynonymsForStringsLocalization());
         services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
+
+        services.AddTransient<IAdminPanelLogLocalization>(provider => new RuAdminPanelLogLocalization());
 
         services.AddMvc();
     }

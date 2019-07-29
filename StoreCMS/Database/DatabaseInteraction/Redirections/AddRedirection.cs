@@ -1,5 +1,8 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Treynessen.Functions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -8,7 +11,7 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void AddRedirection(CMSDatabase db, RedirectionModel model, out bool successfullyCompleted)
+        public static void AddRedirection(CMSDatabase db, RedirectionModel model, HttpContext context,  out bool successfullyCompleted)
         {
             if (string.IsNullOrEmpty(model.RedirectionPath) || string.IsNullOrEmpty(model.RequestPath))
             {
@@ -30,15 +33,21 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            db.Redirections.Add(new Redirection
+            Redirection redirection = new Redirection
             {
-                ID = GetDatabaseRawID(db.Redirections),
                 RequestPath = model.RequestPath,
                 RequestPathHash = OtherFunctions.GetHashFromString(model.RequestPath),
                 RedirectionPath = model.RedirectionPath
-            });
+            };
+            db.Redirections.Add(redirection);
             db.SaveChanges();
             successfullyCompleted = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{redirection.RequestPath} -> {redirection.RedirectionPath}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.RedirectionAdded}"
+            );
         }
     }
 }
