@@ -9,9 +9,10 @@
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
-            <form id="add-category-form" class="page-container">
+            <form id="add-category" class="page-container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddCategory)">
                 @*SAVE BUTTON*@
-                <input id="add-category-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -34,17 +35,17 @@
                             <option selected>@Html.Raw(localization.WithoutTemplate)</option>
                             @foreach (var t in templates)
                             {
-                            <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
                             }
                         </select>
                         @*PREVIOUS PAGE*@
                         <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
                         <select id="PreviousPage" name="PageModel.PreviousPageID">
                             <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
-                        @foreach (var p in pages)
-                        {
-                            <option value="@p.ID">@Html.Raw(p.PageName)</option>
-                        }
+                            @foreach (var p in pages)
+                            {
+                                <option value="@p.ID">@Html.Raw(p.PageName)</option>
+                            }
                         </select>
                         @*ALIAS*@
                         <label for="Alias">@Html.Raw(localization.Alias)</label>
@@ -84,17 +85,23 @@
             </form>
             <script>
                 function errorHandler(formElement) {
-                    let errorMsg = document.createElement('span');
-                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-                    errorMsg.setAttribute('id', 'error-msg');
-                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
                 }
-                function successfulRequestHandler(request) {
-                    alert('@Html.Raw(localization.CategoryAdded)');
-                    location.replace(request.getResponseHeader('location'));
+                function responseHandler(request, formElement) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.CategoryAdded)');
+                        location.replace(request.getResponseHeader('location'));
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
                 }
-                let addCategoryButton = document.getElementById('add-category-button');
-                addCategoryButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddCategory)', 'add-category-form', successfulRequestHandler, errorHandler));
-                let textarea = document.getElementById('Content');
-                textarea.addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-category', responseHandler, errorHandler));
+                document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
             </script>

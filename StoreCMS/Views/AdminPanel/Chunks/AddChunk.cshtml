@@ -6,28 +6,35 @@
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
-            <form id="add-chunk-form" class="page-container">
+            <form id="add-chunk" class="page-container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddChunk)">
                 <div class="name-block">
                     <label for="Name">@Html.Raw(localization.Name)</label>
                     <input type="text" id="Name" name="TemplateModel.Name" required />
                 </div>
                 <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
                 <textarea id="TemplateSource" name="TemplateModel.TemplateSource"></textarea>
-                <input id="add-chunk-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
             </form>
             <script>
                 function errorHandler(formElement) {
-                    let errorMsg = document.createElement('span');
-                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-                    errorMsg.setAttribute('id', 'error-msg');
-                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
                 }
-                function successfulRequestHandler(request) {
-                    alert('@Html.Raw(localization.ChunkCreated)');
-                    location.replace(request.getResponseHeader('location'));
+                function responseHandler(request, formElement) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.ChunkCreated)');
+                        location.replace(request.getResponseHeader('location'));
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
                 }
-                let addChunkButton = document.getElementById('add-chunk-button');
-                addChunkButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddChunk)', 'add-chunk-form', successfulRequestHandler, errorHandler));
-                let textarea = document.getElementById('TemplateSource');
-                textarea.addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-chunk', responseHandler, errorHandler));
+                document.getElementById('TemplateSource').addEventListener('keydown', insertTabEventHandler);
             </script>

@@ -76,6 +76,8 @@ namespace Treynessen.Controllers
                     return UserTypes();
                 case AdminPanelPages.SynonymsForStrings:
                     return SynonymsForStrings();
+                case AdminPanelPages.UserProfile:
+                    return UserProfile();
                 case AdminPanelPages.Settings:
                     return Settings();
                 default:

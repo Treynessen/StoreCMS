@@ -10,9 +10,10 @@
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
-            <form id="add-page-form" class="page-container">
+            <form id="add-page" class="page-container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddPage)">
                 @*SAVE BUTTON*@
-                <input id="add-page-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -97,17 +98,23 @@
             </form>
             <script>
                 function errorHandler(formElement) {
-                    let errorMsg = document.createElement('span');
-                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-                    errorMsg.setAttribute('id', 'error-msg');
-                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
                 }
-                function successfulRequestHandler(request) {
-                    alert('@Html.Raw(localization.PageAdded)');
-                    location.replace(request.getResponseHeader('location'));
+                function responseHandler(request, formElement) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.PageAdded)');
+                        location.replace(request.getResponseHeader('location'));
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
                 }
-                let addPageButton = document.getElementById('add-page-button');
-                addPageButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddPage)', 'add-page-form', successfulRequestHandler, errorHandler));
-                let textarea = document.getElementById('Content');
-                textarea.addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-page', responseHandler, errorHandler));
+                document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
             </script>

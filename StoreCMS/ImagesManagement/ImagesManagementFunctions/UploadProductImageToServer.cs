@@ -49,7 +49,7 @@ namespace Treynessen.ImagesManagement
                         // Добавляем или изменяем информацию в БД
                         string shortPathToImage = pathToFile.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
                         Database.Entities.Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage)
-                        && img.ShortPath.Equals(shortPathToImage, StringComparison.InvariantCulture));
+                        && img.ShortPath.Equals(shortPathToImage, StringComparison.Ordinal));
                         if (image == null)
                         {
                             image = new Database.Entities.Image

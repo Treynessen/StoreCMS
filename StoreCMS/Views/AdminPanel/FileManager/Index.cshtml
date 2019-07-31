@@ -11,13 +11,14 @@
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script>
-                function deletedFileOrFolder(request) {
-                    alert('@Html.Raw(localization.Deleted)');
-                    location.replace(request.getResponseHeader('location'));
-                }
-                function incorrectRequest() {
-                    alert('@Html.Raw(localization.IncorrectRequest)');
-                    location.reload();
+                function fileOrFolderDeletionResponse(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.Deleted)');
+                        location.replace(request.getResponseHeader('location'));
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.IncorrectRequest)');
+                    }
                 }
             </script>
             <div class="breadcrumb-list">
@@ -33,83 +34,95 @@
                 }
             }
             </div>
-            <div class="action-list">
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.UploadFile, user, Context))
             {
                 <script src="/scripts/admin_panel/send_file.js"></script>
-                <form class="upload-file-form">
+                <form id="upload-file">
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.UploadFile)">
+                    <input type="hidden" name="path" value="@Html.Raw(breadcrumbs.Last.Value.Value)">
                     <div class="input-file-button">
                         <label for="upload-file-button">@Html.Raw(localization.UploadFile)</label>
                         <input type="file" id="upload-file-button" name="uploadedFile" accept=".png, .jpg, .jpeg, .bmp, .gif, .webp, .css, .js, .ico" />
                     </div>
                 </form>
                 <script>
-                    function successfulUpload() {
-                        alert('@Html.Raw(localization.FileUploaded)');
-                        location.reload();
-                    }
-                    function unsuccessfulUpload() {
+                    function errorHandler() {
                         alert('@Html.Raw(localization.UnsuccessfulFileUpload)');
                     }
-                    let uploadFileButton = document.getElementById('upload-file-button');
-                    uploadFileButton.addEventListener('change', createSendFileEventHandler('?pageID=@((int)AdminPanelPages.UploadFile)&path=@Html.Raw(breadcrumbs.Last.Value.Value)', successfulUpload, unsuccessfulUpload,'.png', '.jpg', '.jpeg', '.bmp', '.gif', '.webp', '.css', '.js', '.ico'));
+                    function responseHandler(request) {
+                        if (request.status == 200) {
+                            alert('@Html.Raw(localization.FileUploaded)');
+                            location.reload();
+                        }
+                        else if (request.status == 415) {
+                            errorHandler();
+                        }
+                    }
+                    document.getElementById('upload-file-button').addEventListener('change', createSendFileEventHandler('upload-file', responseHandler, errorHandler,'.png', '.jpg', '.jpeg', '.bmp', '.gif', '.webp', '.css', '.js', '.ico'));
                 </script>
             }
+            <div class="action-list">
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateFolder, user, Context))
             {
-                <form id="create-folder-form" class="create-foler-or-template-file">
+    <form id="create-folder">
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateFolder)" />
                     <input type="hidden" name="path" value="@Html.Raw(breadcrumbs.Last.Value.Value)" />
                     <input id="create-folder-button" type="submit" value="@Html.Raw(localization.Create)" />
                     <input type="text" name="name" placeholder="@Html.Raw(localization.FolderName)" />
                 </form>
                 <script>
-                    function createdFolder() {
-                        alert('@Html.Raw(localization.FolderCreated)');
-                        location.reload();
+                    function folderCreationResponse(request) {
+                        if (request.status == 201) {
+                            alert('@Html.Raw(localization.FolderCreated)');
+                            location.reload();
+                        }
+                        else if (request.status == 422) {
+                            alert('@Html.Raw(localization.IncorrectRequest)');
+                        }
                     }
-                    function folderCreationError() {
-                        alert('@Html.Raw(localization.IncorrectRequest)');
-                    }
-                    let createFolderButton = document.getElementById('create-folder-button');
-                    createFolderButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateFolder)', 'create-folder-form', createdFolder, folderCreationError));
+                    document.getElementById('create-folder-button').addEventListener('click', createSendDataEventHandler('POST', 'create-folder', folderCreationResponse));
                 </script>
             }
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateStyle, user, Context))
             {
-                <form id="create-style-file-form" class="create-foler-or-template-file">
+    <form id="create-style">
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateStyle)" />
                     <input type="hidden" name="path" value="@Html.Raw(breadcrumbs.Last.Value.Value)" />
-                    <input id="create-style-file-button" type="submit" value="@Html.Raw(localization.Create)" />
+                    <input id="create-style-button" type="submit" value="@Html.Raw(localization.Create)" />
                     <input type="text" name="name" placeholder="@Html.Raw(localization.CssFileName)" />
                 </form>
                 <script>
-                    function createdStyleFile() {
-                        alert('@Html.Raw(localization.StyleFileCreated)');
-                        location.reload();
+                    function styleCreationResponse(request) {
+                        if (request.status == 201) {
+                            alert('@Html.Raw(localization.StyleFileCreated)');
+                            location.reload();
+                        }
+                        else if (request.status == 422) {
+                            alert('@Html.Raw(localization.IncorrectRequest)');
+                        }
                     }
-                    function styleFileCreationError() {
-                        alert('@Html.Raw(localization.IncorrectRequest)');
-                    }
-                    let createStyleFileButton = document.getElementById('create-style-file-button');
-                    createStyleFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateStyle)', 'create-style-file-form', createdStyleFile, styleFileCreationError));
+                    document.getElementById('create-style-button').addEventListener('click', createSendDataEventHandler('POST', 'create-style', styleCreationResponse));
                 </script>
             }
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CreateScript, user, Context))
             {
-                <form id="create-script-file-form" class="create-foler-or-template-file">
+    <form id="create-script">
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.CreateScript)" />
                     <input type="hidden" name="path" value="@Html.Raw(breadcrumbs.Last.Value.Value)" />
-                    <input id="create-script-file-button" type="submit" value="@Html.Raw(localization.Create)" />
+                    <input id="create-script-button" type="submit" value="@Html.Raw(localization.Create)" />
                     <input type="text" name="name" placeholder="@Html.Raw(localization.ScriptFileName)" />
                 </form>
                 <script>
-                    function createdScriptFile() {
-                        alert('@Html.Raw(localization.ScriptFileCreated)');
-                        location.reload();
+                    function scriptCreationResponse(request) {
+                        if (request.status == 201) {
+                            alert('@Html.Raw(localization.ScriptFileCreated)');
+                            location.reload();
+                        }
+                        else if (request.status == 422) {
+                            alert('@Html.Raw(localization.IncorrectRequest)');
+                        }
                     }
-                    function scriptFileCreationError() {
-                        alert('@Html.Raw(localization.IncorrectRequest)');
-                    }
-                    let createScriptFileButton = document.getElementById('create-script-file-button');
-                    createScriptFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.CreateScript)', 'create-script-file-form', createdScriptFile, scriptFileCreationError));
+                    document.getElementById('create-script-button').addEventListener('click', createSendDataEventHandler('POST', 'create-script', scriptCreationResponse));
                 </script>
             }
             </div>
@@ -157,13 +170,13 @@
                 {
                     if (f.CanDelete)
                     {
-                        <form id="delete-file-or-folder-form-@it">
+                        <form id="delete-file-or-folder-@it">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteFileOrFolder)" />
                             <input type="hidden" name="path" value="@Html.Raw(f.ShortPath)" />
                             <input id="delete-file-or-folder-button-@it" type="submit" class="delete-button" value="@Html.Raw(localization.Delete)" />
                         </form>
                         <script>
-                            let deleteFileOrFolderButton_@(it) = document.getElementById('delete-file-or-folder-button-@(it)');
-                            deleteFileOrFolderButton_@(it).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteFileOrFolder)', 'delete-file-or-folder-form-@(it)', deletedFileOrFolder, incorrectRequest));
+                            document.getElementById('delete-file-or-folder-button-@(it)').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-file-or-folder-@(it)', fileOrFolderDeletionResponse));
                         </script>
                     }
                     else

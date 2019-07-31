@@ -16,7 +16,7 @@ namespace Treynessen.ImagesManagement
                 var images = Directory.GetFiles(pathToImageFolder, $"*{imageName}*{imageExtension}");
                 Regex regex = new Regex($"{imageName}(_\\d+x\\d+)?(_q\\d{{1,3}})?{imageExtension}$");
                 string pathToImage = $"{pathToImageFolder}{imageFullName}";
-                var forDelete = images.Where(i => !i.Equals(pathToImage, StringComparison.InvariantCulture) && regex.IsMatch(i)).ToList();
+                var forDelete = images.Where(i => !i.Equals(pathToImage, StringComparison.Ordinal) && regex.IsMatch(i)).ToList();
                 foreach (var f in forDelete)
                 {
                     File.Delete(f);

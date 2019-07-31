@@ -13,7 +13,7 @@ namespace Treynessen.Database
         // На стороне клиента, в куках, сохраняем логин и ключ для входа
         public static void AddConnectedUser(CMSDatabase db, User user, HttpContext context)
         {
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(user.Login, StringComparison.InvariantCulture));
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(user.Login, StringComparison.Ordinal));
 
             // Если пользователь уже был залогинен, то обновляем его данные
             // Это сделано, если вдруг пользователь заходит с другого браузера

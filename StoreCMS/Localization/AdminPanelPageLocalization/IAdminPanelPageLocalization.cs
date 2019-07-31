@@ -13,6 +13,7 @@
         string FileManager { get; }
         string UserTypes { get; }
         string SynonymsForStrings { get; }
+        string UserProfile { get; }
         string Settings { get; }
     }
 }

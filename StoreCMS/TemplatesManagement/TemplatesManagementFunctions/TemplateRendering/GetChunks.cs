@@ -15,9 +15,9 @@ namespace Treynessen.TemplatesManagement
             while (pointer != -1)
             {
                 pointer = GetNextChunk(pointer, source, out string chunkName);
-                if (!string.IsNullOrEmpty(chunkName) && !chunkName.Equals(currentChunkName, StringComparison.InvariantCulture))
+                if (!string.IsNullOrEmpty(chunkName) && !chunkName.Equals(currentChunkName, StringComparison.Ordinal))
                 {
-                    Chunk chunk = db.Chunks.FirstOrDefaultAsync(tc => tc.Name.Equals(chunkName, StringComparison.InvariantCulture)).Result;
+                    Chunk chunk = db.Chunks.FirstOrDefaultAsync(tc => tc.Name.Equals(chunkName, StringComparison.Ordinal)).Result;
                     if (chunk != null)
                     {
                         db.Entry(chunk).State = EntityState.Detached;

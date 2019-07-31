@@ -44,7 +44,7 @@ namespace Treynessen.PagesManagement
                         if (usualPage.PreviousPage == null)
                             usualPage.PreviousPageID = null;
                     }
-                    if (usualPage.PreviousPage == null || usualPage.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                    if (usualPage.PreviousPage == null || usualPage.PreviousPage.RequestPath.Equals("/", StringComparison.Ordinal))
                         usualPage.RequestPath = "/";
                     else usualPage.RequestPath = $"{usualPage.PreviousPage.RequestPath}/";
                     break;
@@ -61,7 +61,7 @@ namespace Treynessen.PagesManagement
                         if (categoryPage.PreviousPage == null)
                             categoryPage.PreviousPageID = null;
                     }
-                    if (categoryPage.PreviousPage == null || categoryPage.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                    if (categoryPage.PreviousPage == null || categoryPage.PreviousPage.RequestPath.Equals("/", StringComparison.Ordinal))
                         categoryPage.RequestPath = "/";
                     else categoryPage.RequestPath = $"{categoryPage.PreviousPage.RequestPath}/";
                     break;
@@ -103,7 +103,7 @@ namespace Treynessen.PagesManagement
             if (string.IsNullOrEmpty(page.Alias))
                 return null;
 
-            if (page.RequestPath.Equals("/") && page.Alias.Equals("index", StringComparison.InvariantCulture) && !model.IsMainPage)
+            if (page.RequestPath.Equals("/") && page.Alias.Equals("index", StringComparison.Ordinal) && !model.IsMainPage)
                 page.Alias = "ind";
 
             if (model.ID.HasValue)
@@ -119,7 +119,7 @@ namespace Treynessen.PagesManagement
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             for (LinkedListNode<string> it = env.GetForbiddenUrls().First; it != null; it = it.Next)
             {
-                if (page.RequestPath.Equals(it.Value, StringComparison.InvariantCultureIgnoreCase))
+                if (page.RequestPath.Equals(it.Value, StringComparison.OrdinalIgnoreCase))
                 {
                     page.Alias += "_page";
                     page.RequestPath += "_page";

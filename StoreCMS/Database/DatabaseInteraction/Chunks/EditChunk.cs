@@ -38,7 +38,7 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            if (editedChunk.Name.Equals("_ViewImports", StringComparison.InvariantCultureIgnoreCase))
+            if (editedChunk.Name.Equals("_ViewImports", StringComparison.OrdinalIgnoreCase))
                 editedChunk.Name = "view_imports";
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             editedChunk.ID = itemID.Value;
@@ -55,8 +55,8 @@ namespace Treynessen.Database
             );
 
             // Изменяем cshtml файл, если изменилось имя шаблона и/или код шаблона
-            bool changedName = !editedChunk.Name.Equals(editableChunk.Name, StringComparison.InvariantCulture);
-            bool changedTemplateSource = !editedChunk.TemplateSource.Equals(editableChunk.TemplateSource, StringComparison.InvariantCulture);
+            bool changedName = !editedChunk.Name.Equals(editableChunk.Name, StringComparison.Ordinal);
+            bool changedTemplateSource = !editedChunk.TemplateSource.Equals(editableChunk.TemplateSource, StringComparison.Ordinal);
             if (changedName && changedTemplateSource)
             {
                 string pathToOldFileName = $"{env.GetChunksFolderFullPath()}{editableChunk.Name}.cshtml";

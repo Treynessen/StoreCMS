@@ -12,9 +12,20 @@
     User user = Context.Items["User"] as User;
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
+            <script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.ProductDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.ProductNotFound)');
+                    }
+                }
+            </script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProduct, user, Context))
 {
-<div class="add-product-button">
+            <div class="add-product-button">
                 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddProduct)&itemID=@categoryID">@Html.Raw($"{localization.AddProductInCategory} <b>{categoryName}</b>")</a>
             </div>
 }
@@ -42,7 +53,7 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.ProductImages, user, Context))
                 {
-                        <form method="get">
+        <form method="get">
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.ProductImages)" />
                             <input type="hidden" name="itemID" value="@p.ID">
                             <input type="submit" class="action-button" value="@Html.Raw(localization.ProductImages)" />
@@ -50,13 +61,13 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProduct, user, Context))
                 {
-            <form id="delete-product-form-@p.ID">
+            <form id="delete-product-@p.ID">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProduct)">
                             <input type="hidden" name="itemID" value="@p.ID">
                             <input id="delete-product-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteProduct)" />
                         </form>
                         <script>
-                            let deleteProductButton_@p.ID = document.getElementById('delete-product-button-@p.ID');
-                            deleteProductButton_@(p.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteProduct)', 'delete-product-form-@p.ID', () => { alert('@Html.Raw(localization.ProductDeleted)'); location.reload(); }))
+                            document.getElementById('delete-product-button-@p.ID').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-product-@p.ID', responseHandler));
                         </script>
                 }
                     </td>

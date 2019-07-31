@@ -53,6 +53,9 @@
         string ProductDeleted { get; }
         string ImageUploaded { get; }
         string ImageDeleted { get; }
+        string CategoryNotFound { get; }
+        string ProductNotFound { get; }
+        string ImageNotFound { get; }
 
         string UnsuccessfullyImageUploaded { get; }
         string IncorrectInput { get; }

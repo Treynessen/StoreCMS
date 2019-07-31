@@ -36,7 +36,7 @@ namespace Treynessen.FileManagerManagement
                 bool correctExtension = false;
                 foreach (var typeOfExtension in typesOfExtensions)
                 {
-                    if (pathToFile.EndsWith(typeOfExtension.Key, StringComparison.InvariantCulture))
+                    if (pathToFile.EndsWith(typeOfExtension.Key, StringComparison.Ordinal))
                     {
                         correctExtension = true;
                         break;
@@ -71,7 +71,7 @@ namespace Treynessen.FileManagerManagement
                 FileManagerObject fileManagerObject = new FileManagerObject { Name = name, ShortPath = shortPath, CanDelete = true };
                 foreach (var typeOfExtension in typesOfExtensions)
                 {
-                    if (fileExtension.Equals(typeOfExtension.Key, StringComparison.InvariantCulture))
+                    if (fileExtension.Equals(typeOfExtension.Key, StringComparison.OrdinalIgnoreCase))
                     {
                         fileManagerObject.Type = typeOfExtension.Value;
                         break;

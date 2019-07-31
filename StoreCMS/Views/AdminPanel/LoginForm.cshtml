@@ -9,6 +9,7 @@
 </head>
 <body>
     <form id="login-form" class="login-form-block">
+        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.LoginForm)">
         <label for="Login">@Html.Raw(localization.UserName)</label>
         <input type="text" id="Login" name="Login" autocomplete="off" value="@Model?.Login" required>
         <label for="Password">@Html.Raw(localization.Password)</label>
@@ -18,14 +19,24 @@
     <script src="/scripts/admin_panel/send_data.js"></script>
     <script>
         function errorHandler(formElement) {
-            let errorMsg = document.createElement('span');
-            errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-            errorMsg.setAttribute('id', 'error-msg');
-            formElement.insertBefore(errorMsg, formElement.firstChild);
+            let errorMsgElement = document.getElementById('error-msg');
+            if (errorMsgElement === null) {
+                errorMsgElement = document.createElement('span');
+                errorMsgElement.setAttribute('id', 'error-msg');
+                formElement.insertBefore(errorMsgElement, formElement.firstChild);
+            }
+            errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
+        }
+        function responseHandler(request, formElement) {
+            if (request.status == 200) {
+                location.reload();
+            }
+            else if (request.status == 401) {
+                errorHandler(formElement);
+            }
         }
         let submitButton = document.getElementById('submit-button');
-        let searchString = '?pageID=@((int)AdminPanelPages.LoginForm)';
-        submitButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'login-form', () => location.reload(), errorHandler));
+        submitButton.addEventListener('click', createSendDataEventHandler('POST', 'login-form', responseHandler, errorHandler));
     </script>
 </body>
 </html>

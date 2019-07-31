@@ -17,7 +17,7 @@ namespace Treynessen.PagesManagement
                 {
                     if (currentCancellationToken.IsCancellationRequested)
                         break;
-                    if (path.Equals(requestPath, StringComparison.InvariantCulture))
+                    if (path.Equals(requestPath, StringComparison.Ordinal))
                     {
                         if (otherCancellationTokenSources != null)
                         {

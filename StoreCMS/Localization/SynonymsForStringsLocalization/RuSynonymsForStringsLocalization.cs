@@ -11,7 +11,8 @@
         public string Edit => "Изменить";
         public string Delete => "Удалить";
 
-        public string RequestCannotBeCompleted => "Запрос не может быть выполнен";
+        public string ErrorMsg => "Обязательные поля не заполнены или содержат недопустимые значения";
+        public string SynonymForStringNotFound => "Синоним для строки не найден";
 
         public string SynonymForStringAdded => "Синоним для строки добавлен";
         public string SynonymForStringEdited => "Синоним для строки изменен";

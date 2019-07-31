@@ -11,6 +11,7 @@
         FileManager,
         UserTypes,
         SynonymsForStrings, // Для поиска товара
+        UserProfile,
         Settings,
 
         AddPage,

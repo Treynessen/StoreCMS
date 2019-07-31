@@ -20,12 +20,7 @@ namespace Treynessen.Database
                 return;
             }
             UserType userType = db.UserTypes.FirstOrDefault(ut => ut.ID == itemID.Value);
-            if (userType == null || (userType.Name.Equals(model.Name, StringComparison.InvariantCulture) && userType.AccessLevel == model.AccessLevel))
-            {
-                successfullyCompleted = false;
-                return;
-            }
-            if (userType.ID == 1 && model.AccessLevel.Value != userType.AccessLevel)
+            if (userType == null || (userType.ID == 1 && model.AccessLevel.Value != userType.AccessLevel))
             {
                 successfullyCompleted = false;
                 return;

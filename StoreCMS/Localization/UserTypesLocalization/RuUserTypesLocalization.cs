@@ -17,7 +17,8 @@
         public string Edit => "Изменить";
         public string Delete => "Удалить";
 
-        public string RequestCannotBeCompleted => "Запрос не может быть выполнен";
+        public string ErrorMsg => "Обязательные поля не заполнены или содержат недопустимые значения";
+        public string UserTypeNotFound => "Синоним для строки не найден";
 
         public string UserTypeAdded => "Тип пользователя добавлен";
         public string UserTypeEdited => "Тип пользователя изменен";

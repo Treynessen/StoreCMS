@@ -37,9 +37,9 @@ namespace Treynessen.ImagesManagement
                 return;
             sourceImageName = sourceImageName.Substring(0, sourceImageName.LastIndexOf('.'));
             sourceImageExtension = pathToImage.Substring(pathToImageFolder.Length + sourceImageName.Length);
-            if ((!sourceImageExtension.Equals(".jpg", StringComparison.InvariantCultureIgnoreCase)
-                && !sourceImageExtension.Equals(".jpeg", StringComparison.InvariantCultureIgnoreCase)
-                && !sourceImageExtension.Equals(".png", StringComparison.InvariantCultureIgnoreCase)))
+            if ((!sourceImageExtension.Equals(".jpg", StringComparison.OrdinalIgnoreCase)
+                && !sourceImageExtension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase)
+                && !sourceImageExtension.Equals(".png", StringComparison.OrdinalIgnoreCase)))
                 return;
             if (!itsFullPath)
             {
@@ -56,7 +56,7 @@ namespace Treynessen.ImagesManagement
             {
                 // Удаляем информацию об изображении из БД
                 Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(sourceImageShortPath) 
-                && img.ShortPath.Equals(sourceImageShortPath, StringComparison.InvariantCulture));
+                && img.ShortPath.Equals(sourceImageShortPath, StringComparison.Ordinal));
                 if (image != null)
                 {
                     db.Images.Remove(image);

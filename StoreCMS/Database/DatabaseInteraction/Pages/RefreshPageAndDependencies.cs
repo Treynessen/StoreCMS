@@ -19,9 +19,9 @@ namespace Treynessen.Database
             {
                 case UsualPage up:
                     db.Entry(up).Reference(p => p.PreviousPage).LoadAsync().Wait();
-                    if (up.PreviousPage == null && up.Alias.Equals("index", StringComparison.InvariantCulture))
+                    if (up.PreviousPage == null && up.Alias.Equals("index", StringComparison.Ordinal))
                         up.Alias = "ind";
-                    if (up.PreviousPage == null || up.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                    if (up.PreviousPage == null || up.PreviousPage.RequestPath.Equals("/", StringComparison.Ordinal))
                         up.RequestPath = $"/{up.Alias}";
                     else up.RequestPath = $"{up.PreviousPage.RequestPath}/{up.Alias}";
                     up.RequestPath = up.PreviousPage == null ? $"/{up.Alias}" : $"{up.PreviousPage.RequestPath}/{up.Alias}";
@@ -29,9 +29,9 @@ namespace Treynessen.Database
                     break;
                 case CategoryPage cp:
                     db.Entry(cp).Reference(p => p.PreviousPage).LoadAsync().Wait();
-                    if (cp.PreviousPage == null && cp.Alias.Equals("index", StringComparison.InvariantCulture))
+                    if (cp.PreviousPage == null && cp.Alias.Equals("index", StringComparison.Ordinal))
                         cp.Alias = "ind";
-                    if (cp.PreviousPage == null || cp.PreviousPage.RequestPath.Equals("/", StringComparison.InvariantCulture))
+                    if (cp.PreviousPage == null || cp.PreviousPage.RequestPath.Equals("/", StringComparison.Ordinal))
                         cp.RequestPath = $"/{cp.Alias}";
                     else cp.RequestPath = $"{cp.PreviousPage.RequestPath}/{cp.Alias}";
                     cp.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(cp);

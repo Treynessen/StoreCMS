@@ -10,9 +10,11 @@
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
-            <form id="add-product-form" class="page-container">
+            <form id="add-product" class="page-container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddProduct)">
+                <input type="hidden" name="itemID" value="@categoryPage?.ID">
                 @*SAVE BUTTON*@
-                <input id="add-product-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -60,23 +62,23 @@
                         <select id="TemplateId" name="PageModel.TemplateId">
                             @if (lastTemplate.HasValue)
                             {
-                            <option>@Html.Raw(localization.WithoutTemplate)</option>
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
                             }
                             else
                             {
-                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
                             }
-                        @foreach (var t in templates)
-                        {
-                            @if (lastTemplate.HasValue && lastTemplate.Value == t.ID)
+                            @foreach (var t in templates)
                             {
-                            <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                @if (lastTemplate.HasValue && lastTemplate.Value == t.ID)
+                                {
+                                    <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
                             }
-                            else
-                            {
-                            <option value="@t.ID">@Html.Raw(t.Name)</option>
-                            }
-                        }
                         </select>
                         @*ALIAS*@
                         <label for="Alias">@Html.Raw(localization.Alias)</label>
@@ -122,20 +124,24 @@
             </form>
             <script>
                 function errorHandler(formElement) {
-                    let errorMsg = document.createElement('span');
-                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-                    errorMsg.setAttribute('id', 'error-msg');
-                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
                 }
-                function successfulRequestHandler(request) {
-                    alert('@Html.Raw(localization.ProductAdded)');
-                    location.replace(request.getResponseHeader('location'));
+                function responseHandler(request, formElement) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.ProductAdded)');
+                        location.replace(request.getResponseHeader('location'));
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
                 }
-                let searchString = '?pageID=@((int)AdminPanelPages.AddProduct)&itemID=@categoryPage?.ID';
-                let addProductButton = document.getElementById('add-product-button');
-                addProductButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'add-product-form', successfulRequestHandler, errorHandler));
-                let textareaShortDescription = document.getElementById('ShortDescription');
-                textareaShortDescription.addEventListener('keydown', insertTabEventHandler);
-                let textareaContent = document.getElementById('Content');
-                textareaContent.addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-product', responseHandler, errorHandler));
+                document.getElementById('ShortDescription').addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
             </script>

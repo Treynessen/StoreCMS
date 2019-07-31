@@ -50,7 +50,7 @@ namespace Treynessen.FileManagerManagement
             }
             string oldCssFileName = cssFileFullName.Substring(0, cssFileFullName.Length - 4);
             string cssFileFullPath = $"{path}{model.FileName}.css";
-            if (!oldCssFileName.Equals(model.FileName, StringComparison.InvariantCulture))
+            if (!oldCssFileName.Equals(model.FileName, StringComparison.Ordinal))
             {
                 File.Move($"{pathToFile}", cssFileFullPath);
             }
@@ -64,7 +64,7 @@ namespace Treynessen.FileManagerManagement
             LogManagementFunctions.AddAdminPanelLog(
                 db: db,
                 context: context,
-                info: $"{pathToFile}{(!oldCssFileName.Equals(model.FileName, StringComparison.InvariantCulture) ? $" -> {cssFileFullPath}" : string.Empty)}: " +
+                info: $"{pathToFile}{(!oldCssFileName.Equals(model.FileName, StringComparison.Ordinal) ? $" -> {cssFileFullPath}" : string.Empty)}: " +
                 $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileEdited}"
             );
         }

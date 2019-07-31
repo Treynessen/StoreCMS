@@ -27,7 +27,7 @@ namespace Treynessen.Database
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            if (chunk.Name.Equals("_ViewImports", System.StringComparison.InvariantCultureIgnoreCase))
+            if (chunk.Name.Equals("_ViewImports", System.StringComparison.OrdinalIgnoreCase))
                 chunk.Name = "view_imports";
             chunk.TemplatePath = env.GetChunksFolderShortPath();
             TemplatesManagementFunctions.SetUniqueITemplateName(db, chunk);

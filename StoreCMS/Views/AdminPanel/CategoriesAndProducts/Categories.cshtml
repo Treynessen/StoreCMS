@@ -7,6 +7,17 @@
     User user = Context.Items["User"] as User;
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
+            <script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.CategoryDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.CategoryNotFound)');
+                    }
+                }
+            </script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddCategory, user, Context))
 {
     
@@ -14,6 +25,9 @@
                 <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddCategory)">@Html.Raw(localization.AddCategory)</a>
             </div>
 }
+            <script>
+                let url = location.origin + location.pathname;
+            </script>
             <table>
                 <tr>
                     <td>ID</td>
@@ -24,9 +38,9 @@
     @foreach (var c in Model)
     {
                     <tr>
-                        <td id="category-@c.ID-id" onclick="location.assign(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.ID)</td>
-                        <td id="category-@c.ID-title" onclick="location.assign(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.Title)</td>
-                        <td id="category-@c.ID-url" onclick="location.assign(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.RequestPath)</td>
+                        <td id="category-@c.ID-id" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.ID)</td>
+                        <td id="category-@c.ID-page-name" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.PageName)</td>
+                        <td id="category-@c.ID-url" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.RequestPath)</td>
                         <td>
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
                 {
@@ -38,13 +52,13 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteCategory, user, Context))
                 {
-                <form id="delete-category-form-@c.ID">
+                <form id="delete-category-@c.ID">
+                                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteCategory)">
                                 <input type="hidden" name="itemID" value="@c.ID">
                                 <input id="delete-category-button-@c.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteCategory)" />
                             </form>
                             <script>
-                                let deleteCategoryButton_@c.ID = document.getElementById('delete-category-button-@c.ID');
-                                deleteCategoryButton_@(c.ID).addEventListener('click', createSendDataEventHandler('DELETE' ,'?pageID=@((int)AdminPanelPages.DeleteCategory)', 'delete-category-form-@c.ID', () => { alert('@Html.Raw(localization.CategoryDeleted)'); location.reload(); }))
+                                document.getElementById('delete-category-button-@c.ID').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-category-@c.ID', responseHandler));
                             </script>
                 }
                         </td>

@@ -53,6 +53,9 @@
         public string ProductDeleted => "Товар удален";
         public string ImageUploaded => "Изображение товара загружено";
         public string ImageDeleted => "Изображение товара удалено";
+        public string CategoryNotFound => "Категория не найдена";
+        public string ProductNotFound => "Товар не найден";
+        public string ImageNotFound => "Изображение не найдено";
 
         public string UnsuccessfullyImageUploaded => "Ошибка при загрузке изображения товара";
         public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";

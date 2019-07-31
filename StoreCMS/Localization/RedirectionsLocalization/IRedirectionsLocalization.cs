@@ -11,7 +11,8 @@
         string Edit { get; }
         string Delete { get; }
 
-        string RequestCannotBeCompleted { get; }
+        string ErrorMsg { get; }
+        string RedirectionNotFound { get; }
 
         string RedirectionAdded { get; }
         string RedirectionEdited { get; }

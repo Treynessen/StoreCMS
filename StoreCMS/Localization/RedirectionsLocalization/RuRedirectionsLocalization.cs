@@ -11,7 +11,8 @@
         public string Edit => "Изменить";
         public string Delete => "Удалить";
 
-        public string RequestCannotBeCompleted => "Запрос не может быть выполнен";
+        public string ErrorMsg => "Обязательные поля не заполнены или содержат недопустимые значения";
+        public string RedirectionNotFound => "Перенаправление не найдено";
 
         public string RedirectionAdded => "Перенаправление добавлено";
         public string RedirectionEdited => "Перенаправление изменено";

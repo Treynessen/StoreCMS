@@ -17,21 +17,32 @@
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
                 <script>
-                    function error() {
-                        alert('@Html.Raw(localization.RequestCannotBeCompleted)');
-                    }
-                    function successfullyEdited() {
-                        alert('@Html.Raw(localization.UserTypeEdited)');
-                        location.reload();
-                    }
-                    function successfullyDeleted() {
-                        alert('@Html.Raw(localization.UserTypeDeleted)');
-                        location.reload();
-                    }
+                        function errorMsg() {
+                            alert('@Html.Raw(localization.ErrorMsg)');
+                        }
+                        function responseFromEditing(request) {
+                            if (request.status == 200) {
+                                alert('@Html.Raw(localization.UserTypeEdited)');
+                                location.reload();
+                            }
+                            else if (request.status == 422) {
+                                errorMsg();
+                            }
+                        }
+                        function responseFromDeleting(request) {
+                            if (request.status == 200) {
+                                alert('@Html.Raw(localization.UserTypeDeleted)');
+                                location.reload();
+                            }
+                            else if (request.status == 404) {
+                                alert('@Html.Raw(localization.UserTypeNotFound)');
+                            }
+                        }
                     </script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddUserType, user, Context))
 {
-                    <form id="add-user-type-form" class="container">
+                    <form id="add-user-type" class="container">
+                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddUserType)">
                         <div class="user-type-name">
                             <label for="user-type">@Html.Raw(localization.UserTypeName)</label>
                             <input type="text" id="user-type" name="UserTypeModel.Name">
@@ -47,21 +58,21 @@
                             </select>
                         </div>
                         <div class="action">
-                            <input type="submit" id="add-user-type-button" value="@Html.Raw(localization.Add)">
+                            <input type="submit" id="add-button" value="@Html.Raw(localization.Add)">
                         </div>
                     </form>
                     <script>
-                        function successfullyAdded() {
+                        function responseFromAdding() {
                             alert('@Html.Raw(localization.UserTypeAdded)');
                             location.reload();
                         }
-                        let addSubmit = document.getElementById('add-user-type-button');
-                        addSubmit.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddUserType)', 'add-user-type-form', successfullyAdded, error));
+                        document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-user-type', responseFromAdding, errorMsg));
                     </script>
 }
 @foreach (var userType in Model)
 {
                     <form id="user-type-@userType.ID" class="container">
+                        <input type="hidden" id="pageID-@userType.ID" name="pageID">
                         <input type="hidden" name="itemID" value="@userType.ID">
                         <div class="user-type-name">
                             <label for="user-type-@userType.ID">@Html.Raw(localization.UserTypeName)</label>
@@ -89,7 +100,8 @@
                             <input type="submit" id="edit-user-type-button-@userType.ID" value="@Html.Raw(localization.Edit)">
                             <script>
                                 let editButton_@(userType.ID) = document.getElementById('edit-user-type-button-@(userType.ID)');
-                                editButton_@(userType.ID).addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditUserType)', 'user-type-@(userType.ID)', successfullyEdited, error));
+                                editButton_@(userType.ID).addEventListener('click', () => { document.getElementById('pageID-@userType.ID').setAttribute('value', '@((int)AdminPanelPages.EditUserType)'); });
+                                editButton_@(userType.ID).addEventListener('click', createSendDataEventHandler('POST', 'user-type-@(userType.ID)', responseFromEditing, errorMsg));
                             </script>         
             }
             else
@@ -98,15 +110,16 @@
             }
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteUserType, user, Context) && userType.ID > 1)
             {
-            <input type="submit" id="delete-user-type-button-@userType.ID" value="@Html.Raw(localization.Delete)">
-                <script>
-                        let deleteButton_@(userType.ID) = document.getElementById('delete-user-type-button-@(userType.ID)');
-                        deleteButton_@(userType.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteUserType)', 'user-type-@(userType.ID)', successfullyDeleted, error));
-                </script>
+                <input type="submit" id="delete-user-type-button-@userType.ID" value="@Html.Raw(localization.Delete)">
+                            <script>
+                                let deleteButton_@(userType.ID) = document.getElementById('delete-user-type-button-@(userType.ID)');
+                                deleteButton_@(userType.ID).addEventListener('click', () => { document.getElementById('pageID-@userType.ID').setAttribute('value', '@((int)AdminPanelPages.DeleteUserType)'); });
+                                deleteButton_@(userType.ID).addEventListener('click', createSendDataEventHandler('DELETE', 'user-type-@(userType.ID)', responseFromDeleting, errorMsg));
+                            </script>
             }
             else
             {
-                            <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
+                <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
             }
                         </div>
                     </form>

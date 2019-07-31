@@ -74,10 +74,19 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
-            <form id="save-settings-form">
+            <form id="save-settings">
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                 {
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditSettings)">
                 <input id="save-settings-button" type="submit" value="@Html.Raw(localization.SaveButton)">
+                <script>
+                    function responseHandler() {
+                        alert('@Html.Raw(localization.SettingsSaved)');
+                        location.reload();
+                    }
+                    document.getElementById('save-settings-button').addEventListener('click', createSendDataEventHandler('POST', 'save-settings', responseHandler));
+                    document.getElementById('ProductBlockTemplate').addEventListener('keydown', insertTabEventHandler);
+                </script>
                 }
                 @*DB SETTINGS*@
                 <table>
@@ -238,13 +247,3 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     }
                 </table>
             </form>
-            <script>
-                function successfulRequestHandler() {
-                    alert('@Html.Raw(localization.SettingsSaved)');
-                    location.reload();
-                }
-                let saveSettingsButton = document.getElementById('save-settings-button');
-                saveSettingsButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditSettings)', 'save-settings-form', successfulRequestHandler));
-                let textarea = document.getElementById('ProductBlockTemplate');
-                textarea.addEventListener('keydown', insertTabEventHandler);
-            </script>

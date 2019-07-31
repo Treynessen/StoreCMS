@@ -31,6 +31,7 @@
         public string PageAdded => "Страница добавлена";
         public string PageEdited => "Страница изменена";
         public string PageDeleted => "Страница удалена";
+        public string PageNotFound => "Страница не найдена";
         public string IncorrectInput => "Обязательные поля (помеченные *) не заполнены или содержат недопустимые символы";
     }
 }

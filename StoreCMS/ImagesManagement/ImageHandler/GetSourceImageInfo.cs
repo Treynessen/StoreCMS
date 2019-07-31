@@ -20,7 +20,7 @@ namespace Treynessen.ImagesManagement
             if (!isExisted)
                 return;
             Database.Entities.Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(sourceImageShortPath) 
-            && img.ShortPath.Equals(sourceImageShortPath, StringComparison.InvariantCulture));
+            && img.ShortPath.Equals(sourceImageShortPath, StringComparison.Ordinal));
             if (image != null)
             {
                 sourceImageWidth = (int)image.Width;

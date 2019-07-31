@@ -31,5 +31,6 @@
         string ChunkDeleted { get; }
 
         string IncorrectInput { get; }
+        string TemplateNotFound { get; }
     }
 }

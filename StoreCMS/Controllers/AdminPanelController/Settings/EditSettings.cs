@@ -27,7 +27,7 @@ namespace Treynessen.Controllers
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                 string pathToTemplate = env.GetProductBlockTemplateFullPath();
                 string oldTemplate = OtherFunctions.GetFileContent(pathToTemplate);
-                if (!model.ProductBlockTemplate.Equals(oldTemplate, StringComparison.InvariantCulture))
+                if (!model.ProductBlockTemplate.Equals(oldTemplate, StringComparison.Ordinal))
                 {
                     using (StreamWriter writer = new StreamWriter(pathToTemplate))
                     {

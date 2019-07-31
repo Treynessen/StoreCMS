@@ -43,41 +43,39 @@
         }
 
 div.action-list {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     max-width: 100%;
 }
 
-form.create-foler-or-template-file {
-    display: inline-flex;
-    margin-bottom: 1vh;
-    width: 30%;
-    max-width: 30%;
-}
-
-div.action-list > form.create-foler-or-template-file:nth-child(n+5) {
-    margin-left: 1%;
-}
-
-form.create-foler-or-template-file > input[type=submit] {
-    box-sizing: border-box;
-    border: 2px solid #000;
-    background-color: #ebebeb;
-    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-    font-size: 1rem;
-    height: 3.5vh;
-    max-height: 3.5vh;
-}
-
-    form.create-foler-or-template-file > input[type=submit]:hover {
-        cursor: pointer;
-        background-color: #dadada;
+    div.action-list > #create-folder, #create-style, #create-script {
+        display: inline-flex;
+        margin-bottom: 1vh;
+        width: 30%;
+        max-width: 30%;
     }
 
-form.create-foler-or-template-file > input[type=text] {
-    flex-grow: 1;
-    border-left: 0;
-    border-color: #000;
-}
+    div.action-list > form > input[type=submit] {
+        box-sizing: border-box;
+        border: 2px solid #000;
+        background-color: #ebebeb;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        font-size: 1rem;
+        height: 3.5vh;
+        max-height: 3.5vh;
+    }
+
+        div.action-list > form > input[type=submit]:hover {
+            cursor: pointer;
+            background-color: #dadada;
+        }
+
+        div.action-list > form > input[type=text] {
+            flex-grow: 1;
+            border-left: 0;
+            border-color: #000;
+        }
 
 
 div.input-file-button {
@@ -107,12 +105,12 @@ div.input-file-button {
         z-index: -1;
     }
 
-form.upload-file-form {
+#upload-file {
     margin-bottom: 1vh;
 }
 
-    form.upload-file-form > input[type=submit] {
-        display: inline-block;
+    #upload-file > input[type=submit] {
+        display: block;
         margin-left: .5%;
         border: none;
         font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
@@ -122,7 +120,7 @@ form.upload-file-form {
         background-color: #00c0ff;
     }
 
-        form.upload-file-form > input[type=submit]:hover {
+        #upload-file > input[type=submit]:hover {
             background: #00a8ff;
             cursor: pointer;
         }

@@ -11,7 +11,7 @@ namespace Treynessen.FileManagerManagement
             DirectoryInfo[] directories = env.GetStorageDirectoriesInfo();
             foreach(var dir in directories)
             {
-                if (fullPath.Contains(dir.Path, StringComparison.InvariantCultureIgnoreCase) && !dir.CanOpen)
+                if (fullPath.Contains(dir.Path, StringComparison.OrdinalIgnoreCase) && !dir.CanOpen)
                     return false;
             }
             return true;

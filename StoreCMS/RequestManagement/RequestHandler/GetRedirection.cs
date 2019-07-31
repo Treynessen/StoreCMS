@@ -9,7 +9,7 @@ namespace Treynessen.RequestManagement
     {
         public string GetRedirection()
         {
-            Redirection redirection = db.Redirections.AsNoTracking().FirstOrDefault(r => r.RequestPathHash == requestStringHash && r.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
+            Redirection redirection = db.Redirections.AsNoTracking().FirstOrDefault(r => r.RequestPathHash == requestStringHash && r.RequestPath.Equals(requestString, StringComparison.Ordinal));
             return redirection?.RedirectionPath;
         }
     }

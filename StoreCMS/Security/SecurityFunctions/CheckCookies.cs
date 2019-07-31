@@ -17,7 +17,7 @@ namespace Treynessen.Security
             if (string.IsNullOrEmpty(userName))
                 return null;
 
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(userName, StringComparison.InvariantCulture));
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(userName, StringComparison.Ordinal));
 
             if (connectedUser == null)
                 return null;
@@ -37,10 +37,10 @@ namespace Treynessen.Security
             // loginKey - это случайно сгенерированный в методе SecurityFunctions.GetRandomKey ключ 
             string userLoginKey = context.Request.Cookies["loginKey"];
 
-            if (!connectedUser.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.InvariantCulture))
+            if (!connectedUser.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.Ordinal))
                 return null;
 
-            if (!connectedUser.UserAgent.Equals(context.Request.Headers["User-Agent"], StringComparison.InvariantCulture))
+            if (!connectedUser.UserAgent.Equals(context.Request.Headers["User-Agent"], StringComparison.Ordinal))
                 return null;
 
             connectedUser.LastActionTime = DateTime.Now;

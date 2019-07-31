@@ -16,7 +16,7 @@ namespace Treynessen.TemplatesManagement
             if (string.IsNullOrEmpty(template.Name))
                 return null;
             template.TemplatePath = model.TemplatePath;
-            template.TemplateSource = model.TemplateSource;
+            template.TemplateSource = model.TemplateSource == null ? string.Empty : model.TemplateSource;
             return template;
         }
     }

@@ -41,6 +41,10 @@
     {
         pages.Add(AdminPanelPages.SynonymsForStrings, localization.SynonymsForStrings);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserProfile, user, Context))
+    {
+        pages.Add(AdminPanelPages.UserProfile, localization.UserProfile);
+    }
     if (SecurityFunctions.HasAccessTo(AdminPanelPages.Settings, user, Context))
     {
         pages.Add(AdminPanelPages.Settings, localization.Settings);

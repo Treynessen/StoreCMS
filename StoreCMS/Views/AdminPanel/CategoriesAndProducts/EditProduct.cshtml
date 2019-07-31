@@ -9,9 +9,11 @@
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
-            <form id="edit-product-form" class="page-container">
+            <form id="edit-product" class="page-container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditProduct)">
+                <input type="hidden" name="itemID" value="@Model.ID">
                 @*SAVE BUTTON*@
-                <input id="edit-product-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="save-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
                 <div class="blocks">
                     <div class="left-block">
                         @*TITLE*@
@@ -42,7 +44,7 @@
                             }
                             else
                             {
-                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="true" checked/>
+                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="true" checked />
                             }
                             <script>
                                 let specialProductCheckbox = document.getElementById('SpecialProduct');
@@ -64,25 +66,25 @@
                         @*TEMPLATE*@
                         <label for="TemplateId">@Html.Raw(localization.Template)</label>
                         <select id="TemplateId" name="PageModel.TemplateId" required>
-                        @if (!Model.TemplateId.HasValue)
-                        {
-                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
-                        }
-                        else
-                        {
-                            <option>@Html.Raw(localization.WithoutTemplate)</option>
-                        }
-                        @foreach (var t in templates)
-                        {
-                            if (Model.TemplateId.HasValue && t.ID == Model.TemplateId.Value)
+                            @if (!Model.TemplateId.HasValue)
                             {
-                            <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
                             }
                             else
                             {
-                            <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
                             }
-                        }
+                            @foreach (var t in templates)
+                            {
+                                if (Model.TemplateId.HasValue && t.ID == Model.TemplateId.Value)
+                                {
+                                    <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                    <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
+                            }
                         </select>
                         @*ALIAS*@
                         <label for="Alias">@Html.Raw(localization.Alias)</label>
@@ -95,14 +97,14 @@
                         <input type="text" id="PageKeywords" name="PageModel.PageKeywords" value="@Model?.PageKeywords" />
                         @*PUBLISHED?*@
                         <div class="checkbox-block">
-                        @if (Model == null || Model.Published)
-                        {
-                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="Published" name="PageModel.Published" value="false" />
-                        }
+                            @if (Model == null || Model.Published)
+                            {
+                                <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="Published" name="PageModel.Published" value="false" />
+                            }
                             <script>
                                 let publishedCheckbox = document.getElementById('Published');
                                 publishedCheckbox.addEventListener('click', checkboxEventHandler);
@@ -111,14 +113,14 @@
                         </div>
                         @*IS INDEX?*@
                         <div class="checkbox-block">
-                        @if (Model == null || Model.IsIndex)
-                        {
-                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="false" />
-                        }
+                            @if (Model == null || Model.IsIndex)
+                            {
+                                <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" checked />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="false" />
+                            }
                             <script>
                                 let isIndexCheckbox = document.getElementById('IsIndex');
                                 isIndexCheckbox.addEventListener('click', checkboxEventHandler);
@@ -127,14 +129,14 @@
                         </div>
                         @*IS FOLLOW?*@
                         <div class="checkbox-block">
-                        @if (Model == null || Model.IsFollow)
-                        {
-                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" checked />
-                        }
-                        else
-                        {
-                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="false" />
-                        }
+                            @if (Model == null || Model.IsFollow)
+                            {
+                                <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" checked />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="false" />
+                            }
                             <script>
                                 let isFollowCheckbox = document.getElementById('IsFollow');
                                 isFollowCheckbox.addEventListener('click', checkboxEventHandler);
@@ -149,20 +151,24 @@
             </form>
             <script>
                 function errorHandler(formElement) {
-                    let errorMsg = document.createElement('span');
-                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-                    errorMsg.setAttribute('id', 'error-msg');
-                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
                 }
-                function successfulRequestHandler() {
-                    alert('@Html.Raw(localization.ProductEdited)');
-                    location.reload();
+                function responseHandler(request, formElement) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.ProductEdited)');
+                        location.reload();
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
                 }
-                let searchString = '?pageID=@((int)AdminPanelPages.EditProduct)&itemID=@Model.ID';
-                let editProductButton = document.getElementById('edit-product-button');
-                editProductButton.addEventListener('click', createSendDataEventHandler('POST', searchString, 'edit-product-form', successfulRequestHandler, errorHandler));
-                let textareaShortDescription = document.getElementById('ShortDescription');
-                textareaShortDescription.addEventListener('keydown', insertTabEventHandler);
-                let textareaContent = document.getElementById('Content');
-                textareaContent.addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('save-button').addEventListener('click', createSendDataEventHandler('POST', 'edit-product', responseHandler, errorHandler));
+                document.getElementById('ShortDescription').addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
             </script>

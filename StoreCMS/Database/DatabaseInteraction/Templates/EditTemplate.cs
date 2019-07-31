@@ -19,7 +19,7 @@ namespace Treynessen.Database
     {
         public static void EditTemplate(CMSDatabase db, int? itemID, TemplateModel model, HttpContext context, out bool successfullyCompleted)
         {
-            if (!itemID.HasValue || model == null)
+            if (!itemID.HasValue || model == null || string.IsNullOrEmpty(model.Name))
             {
                 successfullyCompleted = false;
                 return;
@@ -36,7 +36,7 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            if (editedTemplate.Name.Equals("_ViewImports", StringComparison.InvariantCultureIgnoreCase))
+            if (editedTemplate.Name.Equals("_ViewImports", StringComparison.OrdinalIgnoreCase))
                 editedTemplate.Name = "view_imports";
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             editedTemplate.ID = itemID.Value;
@@ -53,7 +53,7 @@ namespace Treynessen.Database
             );
 
             // Изменяем cshtml файл, если изменилось имя шаблона и/или код шаблона
-            bool changedName = !editedTemplate.Name.Equals(editableTemplate.Name, StringComparison.InvariantCulture);
+            bool changedName = !editedTemplate.Name.Equals(editableTemplate.Name, StringComparison.Ordinal);
             bool changedTemplateSource = !editedTemplate.TemplateSource.Equals(editableTemplate.TemplateSource, StringComparison.InvariantCulture);
             if (changedName && changedTemplateSource)
             {

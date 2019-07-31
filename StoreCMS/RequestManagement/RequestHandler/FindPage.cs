@@ -17,15 +17,15 @@ namespace Treynessen.RequestManagement
             Page page = null;
             if (splitedRequestString.Length != 1)
             {
-                page = db.ProductPages.AsNoTracking().FirstOrDefault(pp => pp.RequestPathHash == requestStringHash && pp.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
+                page = db.ProductPages.AsNoTracking().FirstOrDefault(pp => pp.RequestPathHash == requestStringHash && pp.RequestPath.Equals(requestString, StringComparison.Ordinal));
             }
             if (page == null)
             {
-                page = db.CategoryPages.AsNoTracking().FirstOrDefault(cp => cp.RequestPathHash == requestStringHash && cp.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
+                page = db.CategoryPages.AsNoTracking().FirstOrDefault(cp => cp.RequestPathHash == requestStringHash && cp.RequestPath.Equals(requestString, StringComparison.Ordinal));
             }
             if (page == null)
             {
-                page = db.UsualPages.AsNoTracking().FirstOrDefault(up => up.RequestPathHash == requestStringHash && up.RequestPath.Equals(requestString, StringComparison.InvariantCulture));
+                page = db.UsualPages.AsNoTracking().FirstOrDefault(up => up.RequestPathHash == requestStringHash && up.RequestPath.Equals(requestString, StringComparison.Ordinal));
             }
             return page;
         }

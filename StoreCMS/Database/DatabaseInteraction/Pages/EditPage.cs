@@ -36,7 +36,7 @@ namespace Treynessen.Database
                         return;
                     }
                     model.PageModel.ID = editablePage.ID;
-                    isMainPage = editablePage.RequestPath.Equals("/", StringComparison.InvariantCulture);
+                    isMainPage = editablePage.RequestPath.Equals("/", StringComparison.Ordinal);
                     break;
                 case PageType.Category:
                     editablePage = db.CategoryPages.AsNoTracking().FirstOrDefault(cp => cp.ID == model.itemID);
@@ -85,7 +85,7 @@ namespace Treynessen.Database
 
             // Обновляем все зависимые страницы, если изменилось имя страницы и/или url страницы
             if (!editablePage.PageName.Equals(editedPage.PageName, StringComparison.InvariantCulture)
-                || !editablePage.Alias.Equals(editedPage.RequestPath, StringComparison.InvariantCulture))
+                || !editablePage.Alias.Equals(editedPage.RequestPath, StringComparison.Ordinal))
             {
                 if (editedPage is UsualPage)
                 {

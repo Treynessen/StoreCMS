@@ -15,9 +15,9 @@ namespace Treynessen.Security
         public static bool IsValidLoginFormData(CMSDatabase db, LoginFormModel data, HttpContext context)
         {
             if (string.IsNullOrEmpty(data.Login) || string.IsNullOrEmpty(data.Password)) return false;
-            User user = db.Users.FirstOrDefault(u => u.Login.Equals(data.Login, StringComparison.InvariantCulture));
+            User user = db.Users.FirstOrDefault(u => u.Login.Equals(data.Login, StringComparison.Ordinal));
             if (user == null) return false;
-            if (!user.Password.Equals(data.Password, StringComparison.InvariantCulture)) return false;
+            if (!user.Password.Equals(data.Password, StringComparison.Ordinal)) return false;
             DatabaseInteraction.AddConnectedUser(db, user, context);
             context.Items["User"] = user;
             LogManagementFunctions.AddAdminPanelLog(

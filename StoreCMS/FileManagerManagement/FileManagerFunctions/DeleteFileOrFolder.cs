@@ -105,7 +105,7 @@ namespace Treynessen.FileManagerManagement
                 }
                 foreach (var dir in env.GetStorageDirectoriesInfo())
                 {
-                    if (pathToFolder.Equals(dir.Path, StringComparison.InvariantCultureIgnoreCase))
+                    if (pathToFolder.Equals(dir.Path, StringComparison.OrdinalIgnoreCase))
                     {
                         redirectPath = null;
                         return;

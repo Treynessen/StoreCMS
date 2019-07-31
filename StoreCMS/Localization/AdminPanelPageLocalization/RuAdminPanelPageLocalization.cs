@@ -13,6 +13,7 @@
         public string FileManager => "Файлы";
         public string UserTypes => "Типы пользователей";
         public string SynonymsForStrings => "Синонимы к строкам";
+        public string UserProfile => "Профиль";
         public string Settings => "Настройки";
     }
 }

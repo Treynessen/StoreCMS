@@ -48,7 +48,7 @@ namespace Treynessen.Database
             db.SaveChanges();
 
             // Изменяем имена изображений продукта, если изменился псевдоним страницы
-            if (!editableProduct.Alias.Equals(editedProduct.Alias, StringComparison.InvariantCulture))
+            if (!editableProduct.Alias.Equals(editedProduct.Alias, StringComparison.Ordinal))
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
                 string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{editedProduct.PreviousPageID}{editedProduct.ID}\\";
@@ -73,11 +73,11 @@ namespace Treynessen.Database
                         string newImageName = $"{newName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
                         // Изменяем данные в БД
                         Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString($"{shortPathToImages}{newImageName}.jpg")
-                        && img.ShortPath.Equals($"{shortPathToImages}{newImageName}.jpg", StringComparison.InvariantCulture));
+                        && img.ShortPath.Equals($"{shortPathToImages}{newImageName}.jpg", StringComparison.Ordinal));
                         if (image != null)
                             db.Images.Remove(image);
                         image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString($"{shortPathToImages}{oldImageName}.jpg")
-                        && img.ShortPath.Equals($"{shortPathToImages}{oldImageName}.jpg", StringComparison.InvariantCulture));
+                        && img.ShortPath.Equals($"{shortPathToImages}{oldImageName}.jpg", StringComparison.Ordinal));
                         if (image != null)
                         {
                             image.ShortPath = image.ShortPath.Replace(oldImageName, newImageName);

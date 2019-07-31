@@ -50,7 +50,7 @@ namespace Treynessen.FileManagerManagement
             }
             string oldScriptFileName = scriptFileFullName.Substring(0, scriptFileFullName.Length - 3);
             string scriptFileFullPath = $"{path}{model.FileName}.js";
-            if (!oldScriptFileName.Equals(model.FileName, StringComparison.InvariantCulture))
+            if (!oldScriptFileName.Equals(model.FileName, StringComparison.Ordinal))
             {
                 File.Move($"{pathToFile}", scriptFileFullPath);
             }
@@ -64,7 +64,7 @@ namespace Treynessen.FileManagerManagement
             LogManagementFunctions.AddAdminPanelLog(
                 db: db,
                 context: context,
-                info: $"{pathToFile}{(!oldScriptFileName.Equals(model.FileName, StringComparison.InvariantCulture) ? $" -> {scriptFileFullPath}" : string.Empty)}: " +
+                info: $"{pathToFile}{(!oldScriptFileName.Equals(model.FileName, StringComparison.Ordinal) ? $" -> {scriptFileFullPath}" : string.Empty)}: " +
                 $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileEdited}"
             );
         }

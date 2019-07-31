@@ -31,6 +31,7 @@
         string PageAdded { get; }
         string PageEdited { get; }
         string PageDeleted { get; }
+        string PageNotFound { get; }
         string IncorrectInput { get; }
     }
 }

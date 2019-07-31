@@ -31,7 +31,7 @@ namespace Treynessen.FileManagerManagement
                     directory = directory.Insert(directory.Length, "\\");
                 foreach (var directoryInfo in env.GetStorageDirectoriesInfo())
                 {
-                    if (directory.Equals(directoryInfo.Path, StringComparison.InvariantCulture))
+                    if (directory.Equals(directoryInfo.Path, StringComparison.OrdinalIgnoreCase))
                     {
                         canDelete = false;
                         break;

@@ -33,6 +33,11 @@ namespace Treynessen.ImagesManagement
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
             string imageFullName = $"{product.Alias}{(imageID == 0 ? string.Empty : $"_{imageID.Value}")}.jpg";
+            if (!File.Exists(imagesPath + imageFullName))
+            {
+                successfullyDeleted = false;
+                return;
+            }
             DeleteImage(imagesPath, imageFullName, db, env);
             // Смещаем нумерацию изображений, идущих после удаленного на -1 и изменяем данные в БД
             Regex imagesChecker = new Regex($"{product.Alias}(_\\d+)?.jpg$");
@@ -50,8 +55,8 @@ namespace Treynessen.ImagesManagement
                             imageExtension: ".jpg"
                 );
                 string shortPathToImage = $"{shortPathToImages}{product.Alias}_{(i + 1).ToString()}.jpg";
-                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage) 
-                && img.ShortPath.Equals(shortPathToImage, StringComparison.InvariantCulture));
+                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage)
+                && img.ShortPath.Equals(shortPathToImage, StringComparison.Ordinal));
                 if (image != null)
                 {
                     image.ShortPath = $"{shortPathToImages}{product.Alias}{(i == 0 ? string.Empty : $"_{i.ToString()}")}.jpg";

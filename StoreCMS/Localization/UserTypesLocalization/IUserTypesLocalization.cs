@@ -17,7 +17,8 @@
         string Edit { get; }
         string Delete { get; }
 
-        string RequestCannotBeCompleted { get; }
+        string ErrorMsg { get; }
+        string UserTypeNotFound { get; }
 
         string UserTypeAdded { get; }
         string UserTypeEdited { get; }

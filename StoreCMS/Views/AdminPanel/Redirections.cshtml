@@ -7,78 +7,99 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/redirections.css";
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
-                <script>
-                    function error() {
-                        alert('@Html.Raw(localization.RequestCannotBeCompleted)');
-                    }
-                    function successfullyEdited() {
+            <script>
+                function errorMsg() {
+                    alert('@Html.Raw(localization.ErrorMsg)');
+                }
+                function responseFromEditing(request) {
+                    if (request.status == 200) {
                         alert('@Html.Raw(localization.RedirectionEdited)');
                         location.reload();
                     }
-                    function successfullyDeleted() {
+                    else if (request.status == 422) {
+                        errorMsg();
+                    }
+                }
+                function responseFromDeleting(request) {
+                    if (request.status == 200) {
                         alert('@Html.Raw(localization.RedirectionDeleted)');
                         location.reload();
                     }
-                    </script>
-@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddSynonymForString, user, Context))
-{
-                    <form id="add-redirection-form" class="container">
-                        <div class="link">
-                            <label for="link">@Html.Raw(localization.Link)</label>
-                            <input type="text" id="link" name="RedirectionModel.RequestPath">
-                        </div>
-                        <div class="redirection">
-                            <label for="redirection">@Html.Raw(localization.Redirection)</label>
-                            <input type="text" id="redirection" name="RedirectionModel.RedirectionPath">
-                        </div>
-                        <div class="action">
-                            <input type="submit" id="add-redirection-button" value="@Html.Raw(localization.Add)">
-                        </div>
-                    </form>
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.RedirectionNotFound)');
+                    }
+                }
+            </script>
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddSynonymForString, user, Context))
+            {
+            <form id="add-redirection" class="container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddRedirection)">
+                <div class="link">
+                    <label for="link">@Html.Raw(localization.Link)</label>
+                    <input type="text" id="link" name="RedirectionModel.RequestPath" required>
+                </div>
+                <div class="redirection">
+                    <label for="redirection">@Html.Raw(localization.Redirection)</label>
+                    <input type="text" id="redirection" name="RedirectionModel.RedirectionPath" required>
+                </div>
+                <div class="action">
+                    <input type="submit" id="add-button" value="@Html.Raw(localization.Add)">
+                </div>
+            </form>
+            <script>
+                function responseFromAdding(request) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.RedirectionAdded)');
+                        location.reload();
+                    }
+                    else if (request.status == 422) {
+                        errorMsg();
+                    }
+                }
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-redirection', responseFromAdding, errorMsg));
+            </script>
+            }
+            @foreach (var pair in Model)
+            {
+            <form id="redirection-@pair.ID" class="container">
+                <input type="hidden" name="itemID" value="@pair.ID">
+                <input type="hidden" id="pageID-@pair.ID" name="pageID">
+                <div class="link">
+                    <label for="link-@pair.ID">@Html.Raw(localization.Link)</label>
+                    <input type="text" id="link-@pair.ID" name="RedirectionModel.RequestPath" value="@pair?.RequestPath">
+                </div>
+                <div class="redirection">
+                    <label for="redirection-@pair.ID">@Html.Raw(localization.Redirection)</label>
+                    <input type="text" id="redirection-@pair.ID" name="RedirectionModel.RedirectionPath" value="@pair?.RedirectionPath">
+                </div>
+                <div class="actions">
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSynonymForString, user, Context))
+                {
+                    <input type="submit" id="edit-button-@pair.ID" value="@Html.Raw(localization.Edit)">
                     <script>
-                        function successfullyAdded() {
-                            alert('@Html.Raw(localization.RedirectionAdded)');
-                            location.reload();
-                        }
-                        let addSubmit = document.getElementById('add-redirection-button');
-                        addSubmit.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.AddRedirection)', 'add-redirection-form', successfullyAdded, error));
+                        let editButton_@(pair.ID) = document.getElementById('edit-button-@(pair.ID)');
+                        editButton_@(pair.ID).addEventListener('click', () => { document.getElementById('pageID-@pair.ID').setAttribute('value', '@((int)AdminPanelPages.EditRedirection)'); });
+                        editButton_@(pair.ID).addEventListener('click', createSendDataEventHandler('POST', 'redirection-@(pair.ID)', responseFromEditing, errorMsg));
                     </script>
-}
-@foreach (var pair in Model)
-{
-                    <form id="redirection-@pair.ID" class="container">
-                        <input type="hidden" name="itemID" value="@pair.ID">
-                        <div class="link">
-                            <label for="link-@pair.ID">@Html.Raw(localization.Link)</label>
-                            <input type="text" id="link-@pair.ID" name="RedirectionModel.RequestPath" value="@pair?.RequestPath">
-                        </div>
-                        <div class="redirection">
-                            <label for="redirection-@pair.ID">@Html.Raw(localization.Redirection)</label>
-                            <input type="text" id="redirection-@pair.ID" name="RedirectionModel.RedirectionPath" value="@pair?.RedirectionPath">
-                        </div>
-                        <div class="actions">
-            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSynonymForString, user, Context))
-            {
-                            <input type="submit" id="edit-redirection-button-@pair.ID" value="@Html.Raw(localization.Edit)">
-            }
-            else
-            {
-                            <input type="submit" value="@Html.Raw(localization.Edit)" disabled>
-            }
-            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteSynonymForString, user, Context))
-            {
-                <input type="submit" id="delete-redirection-button-@pair.ID" value="@Html.Raw(localization.Delete)">
-            }
-            else
-            {
-                            <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
-            }
-                        </div>
-                    </form>
+                }
+                else
+                {
+                    <input type="submit" value="@Html.Raw(localization.Edit)" disabled>
+                }
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteSynonymForString, user, Context))
+                {
+    <input type="submit" id="delete-button-@pair.ID" value="@Html.Raw(localization.Delete)">
                     <script>
-                        let editButton_@(pair.ID) = document.getElementById('edit-redirection-button-@(pair.ID)');
-                        editButton_@(pair.ID).addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditRedirection)', 'redirection-@(pair.ID)', successfullyEdited, error));
-                        let deleteButton_@(pair.ID) = document.getElementById('delete-redirection-button-@(pair.ID)');
-                        deleteButton_@(pair.ID).addEventListener('click', createSendDataEventHandler('DELETE', '?pageID=@((int)AdminPanelPages.DeleteRedirection)', 'redirection-@(pair.ID)', successfullyDeleted, error));
+                        let deleteButton_@(pair.ID) = document.getElementById('delete-button-@(pair.ID)');
+                        deleteButton_@(pair.ID).addEventListener('click', () => { document.getElementById('pageID-@pair.ID').setAttribute('value', '@((int)AdminPanelPages.DeleteRedirection)'); });
+                        deleteButton_@(pair.ID).addEventListener('click', createSendDataEventHandler('DELETE', 'redirection-@(pair.ID)', responseFromDeleting, errorMsg));
                     </script>
-}
+                            
+                }
+                else
+                {
+                    <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
+                }
+                </div>
+            </form>       
+            }

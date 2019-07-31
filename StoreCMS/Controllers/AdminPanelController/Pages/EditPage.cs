@@ -24,7 +24,7 @@ namespace Treynessen.Controllers
             // Получаем список ID страниц, которые зависят от текущей
             LinkedList<int> idList = PagesManagementFunctions.GetDependentPageIDs(db, page);
             // Для блокировки выбора страницы-родителя в представлении, если текущая страница - главная
-            HttpContext.Items["isMainPage"] = page.RequestPath.Equals("/", StringComparison.InvariantCulture);
+            HttpContext.Items["isMainPage"] = page.RequestPath.Equals("/", StringComparison.Ordinal);
             PageModel model = PagesManagementFunctions.PageToPageModel(page);
             HttpContext.Items["UsualPages"] = db.UsualPages.AsNoTracking().Where(up => !idList.Contains(up.ID)).ToArray();
             HttpContext.Items["Templates"] = db.Templates.AsNoTracking().ToArray();

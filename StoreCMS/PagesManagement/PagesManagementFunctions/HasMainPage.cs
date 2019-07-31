@@ -9,7 +9,7 @@ namespace Treynessen.PagesManagement
     {
         public static bool HasMainPage(CMSDatabase db)
         {
-            UsualPage usualPage = db.UsualPages.FirstOrDefault(up => up.RequestPath.Equals("/", StringComparison.InvariantCulture));
+            UsualPage usualPage = db.UsualPages.FirstOrDefault(up => up.RequestPath.Equals("/", StringComparison.Ordinal));
             if (usualPage == null)
                 return false;
             return true;

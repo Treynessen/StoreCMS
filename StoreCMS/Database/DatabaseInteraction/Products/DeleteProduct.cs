@@ -38,7 +38,7 @@ namespace Treynessen.Database
             for (int i = 0; i < images.Length; ++i)
             {
                 Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(images[i])
-                && img.ShortPath.Equals(images[i], StringComparison.InvariantCulture));
+                && img.ShortPath.Equals(images[i], StringComparison.Ordinal));
                 if (image != null)
                     db.Images.Remove(image);
             }

@@ -49,7 +49,7 @@ namespace Treynessen.FileManagerManagement
             bool itsCorrectExtension = false;
             foreach (var typeOfExtension in typesOfExtensions)
             {
-                if (fileExtension.Equals(typeOfExtension.Key, StringComparison.InvariantCulture))
+                if (fileExtension.Equals(typeOfExtension.Key, StringComparison.Ordinal))
                 {
                     itsCorrectExtension = true;
                     break;

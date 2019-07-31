@@ -31,5 +31,6 @@
         public string ChunkDeleted => "Часть шаблона удалена";
 
         public string IncorrectInput => "Обязательные поля не заполнены или содержат недопустимые символы";
+        public string TemplateNotFound => "Шаблон не найден";
     }
 }

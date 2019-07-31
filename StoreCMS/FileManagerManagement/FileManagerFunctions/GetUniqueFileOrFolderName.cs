@@ -31,7 +31,7 @@ namespace Treynessen.FileManagerManagement
                 string current = $"{path}{fileName}{(index == 0 ? string.Empty : $"{index.ToString()}")}{fileExtension}";
                 foreach (var f in filesOrFolders)
                 {
-                    if (f.Equals(current, StringComparison.InvariantCultureIgnoreCase))
+                    if (f.Equals(current, StringComparison.OrdinalIgnoreCase))
                     {
                         has = true;
                         break;

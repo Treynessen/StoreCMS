@@ -1,36 +1,35 @@
-﻿function createSendFileEventHandler(requestSearchString, successfulRequestHandler, errorHandler, ...availableExtensions) {
+﻿function createSendFileEventHandler(formId, responseHandler, errorHandler, ...availableExtensions) {
     for (let i in availableExtensions)
         availableExtensions[i] = availableExtensions[i].toLowerCase();
     return function (e) {
-        let successfulRequest = false;
+        let formElement = document.getElementById(formId);
         let inpitFileButton = e.currentTarget;
         if (inpitFileButton.files.length > 0) {
             let fileName = inpitFileButton.files[0].name.toLowerCase();
-            let incorrectExtension = true;
+            let correctExtension = false;
             for (let extension of availableExtensions) {
                 if (fileName.endsWith(extension)) {
-                    incorrectExtension = false;
+                    correctExtension = true;
                     break;
                 }
             }
-            if (!incorrectExtension) {
+            if (correctExtension) {
                 let request = new XMLHttpRequest();
-                request.open('PUT', location.origin + location.pathname + requestSearchString, false);
+                request.open('PUT', location.origin + location.pathname, false);
                 let data = new FormData();
                 data.append(inpitFileButton.name, inpitFileButton.files[0], fileName);
+                for (let element of formElement.elements) {
+                    data.append(element.name, element.value);
+                }
                 request.send(data);
-                if (request.status == 200 || request.status == 201) {
-                    if (typeof successfulRequestHandler === 'function')
-                        successfulRequestHandler(request);
-                    successfulRequest = true;
+                if (typeof responseHandler === 'function') {
+                    responseHandler(request);
                 }
             }
+            else if (typeof errorHandler === 'function') {
+                errorHandler();
+            }
         }
-        if (!successfulRequest && typeof errorHandler === 'function')
-            errorHandler();
-        if (e !== 'undefined') {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
+        e.preventDefault();
     }
 }

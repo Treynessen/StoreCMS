@@ -4,7 +4,7 @@ namespace Treynessen.TemplatesManagement
 {
     public static partial class TemplatesManagementFunctions
     {
-        private static string[] tagHelpers = { "image", "cost-sort", "page-buttons" };
+        private static string[] tagHelpers = { "image", "page-buttons" };
 
         private static string ReplaceConditionalExpressionValue(string value)
         {
@@ -21,9 +21,9 @@ namespace Treynessen.TemplatesManagement
             {
                 foreach (var th in tagHelpers)
                 {
-                    tagHelperLeftIndex = value.IndexOf($"<{th}", StringComparison.InvariantCultureIgnoreCase);
+                    tagHelperLeftIndex = value.IndexOf($"<{th}", StringComparison.OrdinalIgnoreCase);
                     if (tagHelperLeftIndex >= 0)
-                        tagHelperRightIndex = value.IndexOf($"</{th}>", tagHelperLeftIndex, StringComparison.InvariantCultureIgnoreCase) + $"</{th}>".Length;
+                        tagHelperRightIndex = value.IndexOf($"</{th}>", tagHelperLeftIndex, StringComparison.OrdinalIgnoreCase) + $"</{th}>".Length;
                     if (tagHelperLeftIndex >= 0 && tagHelperRightIndex > 0)
                     {
                         replaceTagHelpers = true;

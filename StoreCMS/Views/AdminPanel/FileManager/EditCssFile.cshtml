@@ -9,28 +9,36 @@
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
-            <form id="edit-style-file-form" class="page-container">
+            <form id="edit-style" class="page-container">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditStyle)" />
+                <input type="hidden" name="path" value="@Html.Raw(path)" />
                 <div class="name-block">
                     <label for="Name">@Html.Raw(localization.Name)</label>
                     <input type="text" id="Name" name="StyleModel.FileName" value="@Model?.FileName" required />
                 </div>
                 <label for="TemplateSource">@Html.Raw(localization.FileContent)</label>
                 <textarea id="TemplateSource" name="StyleModel.FileContent">@Model?.FileContent</textarea>
-                <input id="edit-style-file-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <input id="edit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
             </form>
             <script>
                 function errorHandler(formElement) {
-                    let errorMsg = document.createElement('span');
-                    errorMsg.textContent = '@Html.Raw(localization.IncorrectInput)';
-                    errorMsg.setAttribute('id', 'error-msg');
-                    formElement.insertBefore(errorMsg, formElement.firstChild);
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
                 }
-                function successfulRequestHandler(request) {
-                    alert('@Html.Raw(localization.StyleFileEdited)');
-                    location.replace(request.getResponseHeader('location'));
+                function responseHandler(request, formElement) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.StyleFileEdited)');
+                        location.replace(request.getResponseHeader('location'));
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
                 }
-                let editStyleFileButton = document.getElementById('edit-style-file-button');
-                editStyleFileButton.addEventListener('click', createSendDataEventHandler('POST', '?pageID=@((int)AdminPanelPages.EditStyle)&path=@Html.Raw(path)', 'edit-style-file-form', successfulRequestHandler, errorHandler));
-                let textarea = document.getElementById('TemplateSource');
-                textarea.addEventListener('keydown', insertTabEventHandler);
+                document.getElementById('edit-button').addEventListener('click', createSendDataEventHandler('POST', 'edit-style', responseHandler, errorHandler));
+                document.getElementById('TemplateSource').addEventListener('keydown', insertTabEventHandler);
             </script>
