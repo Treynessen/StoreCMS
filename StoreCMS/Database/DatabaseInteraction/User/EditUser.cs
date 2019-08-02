@@ -9,34 +9,42 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        public static void EditUser(CMSDatabase db, int? itemID, UserModel model, HttpContext context, out bool successfullyCompleted)
+        public static void EditUser(CMSDatabase db, int? itemID, UserModel model, HttpContext context, out int statusCode)
         {
             if (!itemID.HasValue
                 || string.IsNullOrEmpty(model.CurrentPassword)
                 || string.IsNullOrEmpty(model.Login)
                 || (!string.IsNullOrEmpty(model.NewPassword) && (model.NewPassword.Length < 5 || !CorrectPassword(model.NewPassword)))
                 || !CorrectLogin(model.Login)
+                || model.IdleTime < 10 || model.IdleTime > 10080
             )
             {
-                successfullyCompleted = false;
+                statusCode = 422;
                 return;
             }
             User editableUser = db.Users.FirstOrDefault(u => u.ID == itemID.Value);
-            if (editableUser == null 
-                || editableUser != context.Items["User"] as User 
-                || !editableUser.Password.Equals(model.CurrentPassword)
-                || (!editableUser.Login.Equals(model.Login, StringComparison.Ordinal) && db.Users.FirstOrDefault(u => u.Login.Equals(model.Login, StringComparison.Ordinal)) != null)
-            )
+            if (editableUser == null)
             {
-                successfullyCompleted = false;
+                statusCode = 404;
+                return;
+            }
+            else if (editableUser != context.Items["User"] as User || !editableUser.Password.Equals(model.CurrentPassword))
+            {
+                statusCode = 403;
+                return;
+            }
+            else if (!editableUser.Login.Equals(model.Login, StringComparison.Ordinal) && db.Users.FirstOrDefault(u => u.Login.Equals(model.Login, StringComparison.Ordinal)) != null)
+            {
+                statusCode = 409;
                 return;
             }
             editableUser.Login = model.Login;
             if (!string.IsNullOrEmpty(model.NewPassword))
                 editableUser.Password = model.NewPassword;
+            editableUser.IdleTime = model.IdleTime;
             editableUser.Email = model.Email;
             db.SaveChanges();
-            successfullyCompleted = true;
+            statusCode = 200;
         }
     }
 }

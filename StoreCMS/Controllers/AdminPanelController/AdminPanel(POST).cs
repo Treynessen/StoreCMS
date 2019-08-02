@@ -181,9 +181,8 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditUserData:
-                    DatabaseInteraction.EditUser(db, model.itemID, model.UserModel, HttpContext, out bool userEdited);
-                    if (userEdited) return StatusCode(200);
-                    else return StatusCode(422);
+                    DatabaseInteraction.EditUser(db, model.itemID, model.UserModel, HttpContext, out int userEditionStatusCode);
+                    return StatusCode(userEditionStatusCode);
 
                 case AdminPanelPages.EditSettings:
                     return EditSettings(db, model.SettingsModel, HttpContext);

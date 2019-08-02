@@ -6,80 +6,106 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/user_profile.css";
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
-<form id="user-data">
-    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditUserData)">
-    <input type="hidden" name="itemID" value="@Model.ID">
-    <div class="row">
-        <label for="Login">@Html.Raw(localization.Login):</label>
-        <input type="text" id="Login" name="UserModel.Login" value="@Model.Login">
-    </div>
-    <div class="row">
-        <label for="NewPassword">@Html.Raw(localization.NewPassword):</label>
-        <input type="password" id="NewPassword" name="UserModel.NewPassword">
-    </div>
-    <div class="row">
-        <label for="PasswordReplay">@Html.Raw(localization.PasswordReplay):</label>
-        <input type="password" id="PasswordReplay">
-    </div>
-    <div class="row">
-        <label for="Email">@Html.Raw(localization.Email):</label>
-        <input type="text" id="Email" name="UserModel.Email" value="@Model.Email">
-    </div>
-    <div class="row">
-        <label for="CurrentPassword">@Html.Raw(localization.CurrentPassword):</label>
-        <input type="password" id="CurrentPassword" name="UserModel.CurrentPassword">
-    </div>
-    <input type="submit" id="edit-button" value="@Html.Raw(localization.Save)">
-</form>
-<script>
-    function responseHandler(request) {
-        if (request.status == 200) {
-            alert('@Html.Raw(localization.UserDataChanged)');
-            location.reload();
-        }
-        else if (request.status == 422) {
-            alert('@Html.Raw(localization.LoginOrPasswordContainInvalidSymbols)');
-        }
-    }
-    let editButton = document.getElementById('edit-button');
-    editButton.addEventListener('click', (e) => {
-        let loginInput = document.getElementById('Login');
-        if (loginInput.value == '') {
-            alert('@Html.Raw(localization.FieldLoginDoesntHaveValue)');
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
-    });
-    editButton.addEventListener('click', (e) => {
-        let newPasswordInput = document.getElementById('NewPassword');
-        let passwordReplayInput = document.getElementById('PasswordReplay');
-        if (newPasswordInput.value != passwordReplayInput.value) {
-            alert('@Html.Raw(localization.PasswordsDontMatch)');
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
-        else if (newPasswordInput.value != '' && newPasswordInput.value.length < 5) {
-            alert('@Html.Raw(localization.PasswordTooShort)');
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
-    });
-    editButton.addEventListener('click', (e) => {
-        let regex = /.*@@.*\..*/
-        let emailInput = document.getElementById('Email');
-        if (emailInput.value != '' && !regex.test(emailInput.value)) {
-            alert('@Html.Raw(localization.EmailIsIncorrect)');
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
-    });
-    editButton.addEventListener('click', (e) => {
-        let currentPasswordInput = document.getElementById('CurrentPassword');
-        if (currentPasswordInput.value == '') {
-            alert('@Html.Raw(localization.FieldCurrentPasswordDoesntHaveValue)');
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        }
-    });
-    editButton.addEventListener('click', createSendDataEventHandler('POST', 'user-data', responseHandler));
-</script>
+            <form id="user-data">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditUserData)">
+                <input type="hidden" name="itemID" value="@Model.ID">
+                <div class="row">
+                    <label for="Login">@Html.Raw(localization.Login):</label>
+                    <input type="text" id="Login" name="UserModel.Login" value="@Model.Login">
+                </div>
+                <div class="row">
+                    <label for="NewPassword">@Html.Raw(localization.NewPassword):</label>
+                    <input type="password" id="NewPassword" name="UserModel.NewPassword">
+                </div>
+                <div class="row">
+                    <label for="PasswordReplay">@Html.Raw(localization.PasswordReplay):</label>
+                    <input type="password" id="PasswordReplay">
+                </div>
+                <div class="row">
+                    <label for="IdleTime">@Html.Raw(localization.IdleTime):</label>
+                    <input type="number" id="IdleTime" name="UserModel.IdleTime" value="@Model.IdleTime">
+                </div>
+                <div class="row">
+                    <label for="Email">@Html.Raw(localization.Email):</label>
+                    <input type="text" id="Email" name="UserModel.Email" value="@Model.Email">
+                </div>
+                <div class="row">
+                    <label for="CurrentPassword">@Html.Raw(localization.CurrentPassword):</label>
+                    <input type="password" id="CurrentPassword" name="UserModel.CurrentPassword">
+                </div>
+                <input type="submit" id="edit-button" value="@Html.Raw(localization.Save)">
+            </form>
+            <script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.UserDataChanged)');
+                        location.reload();
+                    }
+                    else if (request.status == 403) {
+                        alert('@Html.Raw(localization.CurrentPasswordIsIncorrect)');
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.UserNotFound)');
+                    }
+                    else if (request.status == 409) {
+                        alert('@Html.Raw(localization.UserWithSameLoginAlreadyExists)');
+                    }
+                    else if (request.status == 422) {
+                        alert('@Html.Raw(localization.LoginOrPasswordContainInvalidSymbols)');
+                    }
+                }
+                let editButton = document.getElementById('edit-button');
+                editButton.addEventListener('click', (e) => {
+                    let loginInput = document.getElementById('Login');
+                    if (loginInput.value == '') {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.Login)»:  @Html.Raw(localization.FieldDoesntHaveValue)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let newPasswordInput = document.getElementById('NewPassword');
+                    let passwordReplayInput = document.getElementById('PasswordReplay');
+                    if (newPasswordInput.value != passwordReplayInput.value) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.NewPassword)» @Html.Raw(localization.And) «@Html.Raw(localization.PasswordReplay)»: @Html.Raw(localization.PasswordsDontMatch)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if (newPasswordInput.value != '' && newPasswordInput.value.length < 5) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.NewPassword)»:  @Html.Raw(localization.PasswordTooShort)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let idleTimeInput = document.getElementById('IdleTime');
+                    if (idleTimeInput.value < 10) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.IdleTime)»: @Html.Raw(localization.MinimumIs10Minutes)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if (idleTimeInput.value > 10080) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.IdleTime)»: @Html.Raw(localization.MaximumIs10080Minutes)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let regex = /.*@@.*\..*/
+                    let emailInput = document.getElementById('Email');
+                    if (emailInput.value != '' && !regex.test(emailInput.value)) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.Email)»: @Html.Raw(localization.EmailIsIncorrect)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let currentPasswordInput = document.getElementById('CurrentPassword');
+                    if (currentPasswordInput.value == '') {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.CurrentPassword)»: @Html.Raw(localization.FieldDoesntHaveValue)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', createSendDataEventHandler('POST', 'user-data', responseHandler));
+            </script>
