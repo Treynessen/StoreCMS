@@ -9,7 +9,7 @@ namespace Treynessen.Controllers
         public IActionResult UserProfile()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.UserProfile;
-            return View("UserProfile");
+            return View("UserProfile", HttpContext.Items["User"]);
         }
     }
 }

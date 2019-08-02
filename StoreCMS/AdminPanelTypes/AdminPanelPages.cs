@@ -58,6 +58,8 @@
         EditSynonymForString,
         DeleteSynonymForString,
 
+        EditUserData,
+
         EditSettings,
 
         LoginForm

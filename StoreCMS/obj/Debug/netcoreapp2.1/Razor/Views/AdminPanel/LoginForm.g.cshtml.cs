@@ -74,7 +74,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("<!doctype html>\r\n<html>\r\n");
             EndContext();
             BeginContext(70, 269, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "52d4657e013b4b33854c74e6498365c5", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ced999f40afd4aef9cc689f479237dfe", async() => {
                 BeginContext(76, 13, true);
                 WriteLiteral("\r\n    <title>");
                 EndContext();
@@ -104,7 +104,7 @@ using Treynessen.Database.Entities;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(341, 1651, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "04dd634c259c4a5794926a476d14036f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4952255134cb4726994f7e27d8e0dd8d", async() => {
                 BeginContext(347, 97, true);
                 WriteLiteral("\r\n    <form id=\"login-form\" class=\"login-form-block\">\r\n        <input type=\"hidden\" name=\"pageID\"");
                 EndContext();

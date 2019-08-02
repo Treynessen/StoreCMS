@@ -231,7 +231,7 @@ WriteAttributeValue("", 859, product?.ID, 859, 12, false);
             WriteLiteral("            <div class=\"image-block\">\r\n                    <div>");
             EndContext();
             BeginContext(2851, 70, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("image", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "76f63ebc75654c72bf8d9f4d10ac8bec", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("image", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1c6e6585bf1543a09ac1d822bf31733a", async() => {
             }
             );
             __Treynessen_TagHelpers_ImageTagHelper = CreateTagHelper<global::Treynessen.TagHelpers.ImageTagHelper>();

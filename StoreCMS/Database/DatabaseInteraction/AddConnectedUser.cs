@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Treynessen.Security;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -44,6 +46,13 @@ namespace Treynessen.Database
                 db.ConnectedUsers.Add(connectedUser);
                 db.SaveChanges();
             }
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn,
+                user: user
+            );
 
             // Использовать вместо userName хэш?
             context.Response.Cookies.Append("userName", connectedUser.UserName);

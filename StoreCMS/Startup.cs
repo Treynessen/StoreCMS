@@ -43,6 +43,7 @@ public class Startup
         services.AddTransient<IFileManagerLocalization>(provider => new RuFileManagerLocalization());
         services.AddTransient<IUserTypesLocalization>(provider => new RuUserTypesLocalization());
         services.AddTransient<ISynonymsForStringsLocalization>(provider => new RuSynonymsForStringsLocalization());
+        services.AddTransient<IUserProfileLocalization>(provider => new RuUserProfileLocalization());
         services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
 
         services.AddTransient<IAdminPanelLogLocalization>(provider => new RuAdminPanelLogLocalization());

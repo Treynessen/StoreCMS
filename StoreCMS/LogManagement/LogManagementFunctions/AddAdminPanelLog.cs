@@ -7,9 +7,10 @@ namespace Treynessen.LogManagement
 {
     public static partial class LogManagementFunctions
     {
-        public static void AddAdminPanelLog(CMSDatabase db, HttpContext context, string info)
+        public static void AddAdminPanelLog(CMSDatabase db, HttpContext context, string info, User user = null)
         {
-            User user = context.Items["User"] as User;
+            if (user == null)
+                user = context.Items["User"] as User;
             db.AdminPanelLogs.Add(new AdminPanelLog
             {
                 Info = info,

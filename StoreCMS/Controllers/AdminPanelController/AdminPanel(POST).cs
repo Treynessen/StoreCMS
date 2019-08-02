@@ -14,17 +14,21 @@ namespace Treynessen.Controllers
         public IActionResult AdminPanel(Model model, LoginFormModel loginFormModel)
         {
             HttpContext.Items["LogLocalization"] = localization;
+            User user = null;
 
             if (model.PageId == AdminPanelPages.LoginForm)
             {
-                if (SecurityFunctions.IsValidLoginFormData(db, loginFormModel, HttpContext))
+                if (SecurityFunctions.IsValidLoginFormData(db, loginFormModel, HttpContext, out user))
+                {
+                    DatabaseInteraction.AddConnectedUser(db, user, HttpContext);
                     return StatusCode(200);
+                }
                 else return StatusCode(401);
             }
 
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
-            User user = SecurityFunctions.CheckCookies(db, HttpContext);
+            user = SecurityFunctions.CheckCookies(db, HttpContext);
             if (!SecurityFunctions.HasAccessTo(model.PageId, user, HttpContext))
                 return RedirectToAction(nameof(AdminPanel));
 
@@ -174,6 +178,11 @@ namespace Treynessen.Controllers
                 case AdminPanelPages.EditSynonymForString:
                     DatabaseInteraction.EditSynonymForString(db, model.itemID, model.SynonymForStringModel, HttpContext, out bool synonymForStringEdited);
                     if (synonymForStringEdited) return StatusCode(200);
+                    else return StatusCode(422);
+
+                case AdminPanelPages.EditUserData:
+                    DatabaseInteraction.EditUser(db, model.itemID, model.UserModel, HttpContext, out bool userEdited);
+                    if (userEdited) return StatusCode(200);
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditSettings:
