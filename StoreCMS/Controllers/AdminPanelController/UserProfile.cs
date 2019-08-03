@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Treynessen.AdminPanelTypes;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
 {
@@ -9,7 +10,9 @@ namespace Treynessen.Controllers
         public IActionResult UserProfile()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.UserProfile;
-            return View("UserProfile", HttpContext.Items["User"]);
+            User user = HttpContext.Items["User"] as User;
+            db.Entry(user).Collection(u => u.AdminPanelLogs).Load();
+            return View("UserProfile", user.AdminPanelLogs);
         }
     }
 }

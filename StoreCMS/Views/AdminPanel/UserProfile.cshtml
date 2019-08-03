@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model List<AdminPanelLog>
 @inject IUserProfileLocalization localization
 @{
     User user = Context.Items["User"] as User;
@@ -7,11 +7,9 @@
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <form id="user-data">
-                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditUserData)">
-                <input type="hidden" name="itemID" value="@Model.ID">
                 <div class="row">
                     <label for="Login">@Html.Raw(localization.Login):</label>
-                    <input type="text" id="Login" name="UserModel.Login" value="@Model.Login">
+                    <input type="text" id="Login" name="UserModel.Login" value="@user.Login">
                 </div>
                 <div class="row">
                     <label for="NewPassword">@Html.Raw(localization.NewPassword):</label>
@@ -23,16 +21,18 @@
                 </div>
                 <div class="row">
                     <label for="IdleTime">@Html.Raw(localization.IdleTime):</label>
-                    <input type="number" id="IdleTime" name="UserModel.IdleTime" value="@Model.IdleTime">
+                    <input type="number" id="IdleTime" name="UserModel.IdleTime" value="@user.IdleTime">
                 </div>
                 <div class="row">
                     <label for="Email">@Html.Raw(localization.Email):</label>
-                    <input type="text" id="Email" name="UserModel.Email" value="@Model.Email">
+                    <input type="text" id="Email" name="UserModel.Email" value="@user.Email">
                 </div>
                 <div class="row">
                     <label for="CurrentPassword">@Html.Raw(localization.CurrentPassword):</label>
                     <input type="password" id="CurrentPassword" name="UserModel.CurrentPassword">
                 </div>
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditUserData)">
+                <input type="hidden" name="itemID" value="@user.ID">
                 <input type="submit" id="edit-button" value="@Html.Raw(localization.Save)">
             </form>
             <script>
@@ -108,4 +108,35 @@
                     }
                 });
                 editButton.addEventListener('click', createSendDataEventHandler('POST', 'user-data', responseHandler));
+            </script>
+            <p class="head">@Html.Raw(localization.UserActions)</p>
+            @if(Model.Count > 0)
+            {
+            <p class="date">@(DateTime.Now.Day.ToString()).@(DateTime.Now.Month.ToString()).@(DateTime.Now.Year.ToString()):</p>
+            }
+            @foreach (var log in Model)
+            {
+            <p class="log"><b>@log.Time.ToShortTimeString()</b> - @Html.Raw(log.Info)</p>
+            }
+            <form id="get-log">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.GetUserLog)">
+                <input type="hidden" name="itemID" value="@user.ID">
+                <input type="hidden" id="date" name="CurrentLogDate">
+                <input type="submit" id="get-log-button" value="@Html.Raw(localization.ShowMore)">
+            </form>
+            <script>
+                function responseHandler(request) {
+                    if (request.responseText != '') {
+                        getLogForm.insertAdjacentHTML('beforebegin', request.responseText);
+                        dateInput.value = request.getResponseHeader('file-date');
+                    }
+                    else {
+                        this.getLogForm.parentNode.removeChild(getLogForm)
+                    }
+                }
+                var getLogForm = document.getElementById('get-log');
+                var dateInput = document.getElementById('date');
+                let date = new Date(@DateTime.Now.Year, @(DateTime.Now.Month - 1), @DateTime.Now.Day);
+                dateInput.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString() + '-' + date.getDate().toString();
+                document.getElementById('get-log-button').addEventListener('click', createSendDataEventHandler('GET', 'get-log', responseHandler));
             </script>

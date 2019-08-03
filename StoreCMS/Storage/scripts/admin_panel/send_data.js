@@ -3,11 +3,18 @@
         let formElement = document.getElementById(formId);
         if (formElement.checkValidity()) {
             let formData = new FormData();
+            let searchString = ''; // Для GET-методов
+            let getMethod = requestMethod.toLowerCase() == 'get';
             for (let element of formElement.elements) {
-                formData.append(element.name, element.value);
+                if (getMethod) {
+                    if (searchString == '')
+                        searchString = '?' + element.name + '=' + element.value;
+                    else searchString += '&' + element.name + '=' + element.value;
+                }
+                else formData.append(element.name, element.value);
             }
             let request = new XMLHttpRequest();
-            request.open(requestMethod, location.origin + location.pathname, false);
+            request.open(requestMethod, location.origin + location.pathname + searchString, false);
             request.send(formData);
             if (typeof responseHandler === 'function') {
                 responseHandler(request, formElement);

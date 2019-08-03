@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
@@ -45,6 +47,12 @@ namespace Treynessen.Database
             editableUser.Email = model.Email;
             db.SaveChanges();
             statusCode = 200;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{editableUser.Login} (ID-{editableUser.ID.ToString()}): {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.UserDataEdited}"
+            );
         }
     }
 }

@@ -45,6 +45,8 @@
         public string SynonymForStringEditedTo => "синоним для строки изменен на";
         public string SynonymForStringDeleted => "синоним для строки удален";
 
+        public string UserDataEdited => "Данные пользователя изменены";
+
         public string SettingsEdited => "Настройки изменены";
     }
 }

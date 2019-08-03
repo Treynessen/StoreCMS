@@ -1,4 +1,5 @@
-﻿using Treynessen.PagesManagement;
+﻿using System;
+using Treynessen.PagesManagement;
 
 namespace Treynessen.AdminPanelTypes
 {
@@ -7,6 +8,8 @@ namespace Treynessen.AdminPanelTypes
         public AdminPanelPages? PageId { get; set; }
         public PageType? PageType { get; set; }
         public int? itemID { get; set; }
+
+        public DateTime? CurrentLogDate { get; set; }
 
         public string Name { get; set; }
         public string Path { get; set; }

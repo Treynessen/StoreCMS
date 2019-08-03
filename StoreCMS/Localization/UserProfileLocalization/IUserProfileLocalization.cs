@@ -27,5 +27,8 @@
         string LoginOrPasswordContainInvalidSymbols { get; }
 
         string UserDataChanged { get; }
+
+        string UserActions { get; }
+        string ShowMore { get; }
     }
 }

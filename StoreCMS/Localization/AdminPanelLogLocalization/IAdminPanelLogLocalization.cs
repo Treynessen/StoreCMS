@@ -45,6 +45,8 @@
         string SynonymForStringEditedTo { get; }
         string SynonymForStringDeleted { get; }
 
+        string UserDataEdited { get; }
+
         string SettingsEdited { get; }
     }
 }

@@ -27,5 +27,8 @@
         public string LoginOrPasswordContainInvalidSymbols => "Логин или пароль содержит недопустимые символы";
 
         public string UserDataChanged => "Данные пользователя изменены";
+
+        public string UserActions => "Действия пользователя";
+        public string ShowMore => "Показать ещё";
     }
 }

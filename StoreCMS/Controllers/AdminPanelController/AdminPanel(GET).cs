@@ -80,6 +80,8 @@ namespace Treynessen.Controllers
                     return UserProfile();
                 case AdminPanelPages.Settings:
                     return Settings();
+                case AdminPanelPages.GetUserLog:
+                    return GetUserLog(model.itemID, model.CurrentLogDate, HttpContext);
                 default:
                     return MainPage();
             }

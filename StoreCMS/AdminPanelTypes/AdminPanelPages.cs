@@ -62,6 +62,7 @@
 
         EditSettings,
 
-        LoginForm
+        LoginForm,
+        GetUserLog
     }
 }
