@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Functions;
 using Treynessen.Extensions;
+using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
 {
@@ -17,23 +18,29 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult GetUserLog(int? userID, DateTime? currentLogDate, HttpContext context)
         {
-            if (!userID.HasValue || !currentLogDate.HasValue)
+            if (!userID.HasValue || !currentLogDate.HasValue || (context.Items["User"] as User).ID != userID.Value)
                 return Content(string.Empty);
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToLogsFolder = $"{env.GetLogsFolderFullPath()}{userID.Value}\\";
             if(!System.IO.Directory.Exists(pathToLogsFolder))
                 return Content(string.Empty);
             Regex fileNameRegex = new Regex(@"(?<Type1>\d{1,2}).(?<Type2>\d{1,2}).(?<Type3>\d{4}).xml$");
-            DateTime[] dates = (from pathToLog in System.IO.Directory.GetFiles(pathToLogsFolder)
-                                 let match = fileNameRegex.Match(pathToLog)
-                                 where match.Success
-                                 let date = new DateTime(Convert.ToInt32(match.Groups[3].Value), Convert.ToInt32(match.Groups[2].Value), Convert.ToInt32(match.Groups[1].Value))
-                                 where currentLogDate.Value.CompareTo(date) == 1
-                                 select date).OrderByDescending(t => t.Date).ToArray();
-            string fileName = dates.Length > 0 ? $"{dates[0].Day}.{dates[0].Month}.{dates[0].Year}" : string.Empty;
-            if (string.IsNullOrEmpty(fileName))
+            string fileName = null;
+            try
+            {
+                DateTime fileDate = (from pathToLog in System.IO.Directory.GetFiles(pathToLogsFolder)
+                                     let match = fileNameRegex.Match(pathToLog)
+                                     where match.Success
+                                     let date = new DateTime(Convert.ToInt32(match.Groups[3].Value), Convert.ToInt32(match.Groups[2].Value), Convert.ToInt32(match.Groups[1].Value))
+                                     where currentLogDate.Value.CompareTo(date) == 1
+                                     select date).Max();
+                fileName = $"{fileDate.Day}.{fileDate.Month}.{fileDate.Year}";
+                context.Response.Headers.Add("file-date", $"{fileDate.Year}-{fileDate.Month}-{fileDate.Day}");
+            }
+            catch (InvalidOperationException)
+            {
                 return Content(string.Empty);
-            context.Response.Headers.Add("file-date", $"{dates[0].Year}-{dates[0].Month}-{dates[0].Day}");
+            }
             string logData = OtherFunctions.GetFileContent($"{pathToLogsFolder}{fileName}.xml");
             StringBuilder contentBuilder = new StringBuilder();
             contentBuilder.Append($"<p class=\"date\">{fileName}:</p>");
