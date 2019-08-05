@@ -160,6 +160,14 @@ namespace Treynessen.Controllers
                     }
                     else return StatusCode(422);
 
+                case AdminPanelPages.AddUser:
+                    DatabaseInteraction.AddUser(db, model.UserModel, HttpContext, out int userAdditionStatusCode);
+                    return StatusCode(userAdditionStatusCode);
+
+                case AdminPanelPages.EditUser:
+                    DatabaseInteraction.EditUser(db, model.itemID, model.UserModel, HttpContext, out int userEditionStatusCode);
+                    return StatusCode(userEditionStatusCode);
+
                 case AdminPanelPages.AddUserType:
                     DatabaseInteraction.AddUserType(db, model.UserTypeModel, HttpContext, out bool userTypeAdded);
                     if (userTypeAdded) return StatusCode(201);
@@ -181,8 +189,8 @@ namespace Treynessen.Controllers
                     else return StatusCode(422);
 
                 case AdminPanelPages.EditUserData:
-                    DatabaseInteraction.EditUser(db, model.itemID, model.UserModel, HttpContext, out int userEditionStatusCode);
-                    return StatusCode(userEditionStatusCode);
+                    DatabaseInteraction.EditUserData(db, model.UserModel, HttpContext, out int userDataEditionStatusCode);
+                    return StatusCode(userDataEditionStatusCode);
 
                 case AdminPanelPages.EditSettings:
                     return EditSettings(db, model.SettingsModel, HttpContext);

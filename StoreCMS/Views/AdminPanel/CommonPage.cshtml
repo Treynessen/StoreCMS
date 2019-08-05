@@ -33,6 +33,10 @@
     {
         pages.Add(AdminPanelPages.FileManager, localization.FileManager);
     }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Users, user, Context))
+    {
+        pages.Add(AdminPanelPages.Users, localization.Users);
+    }
     if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserTypes, user, Context))
     {
         pages.Add(AdminPanelPages.UserTypes, localization.UserTypes);
@@ -64,17 +68,17 @@
     <meta name="viewport" content="width=device-width">
 </head>
 <body>
-    <div class="commonContainer">
-        <ul class="menuBlock">
+    <div class="common-container">
+        <ul class="menu-block">
             @foreach (var p in pages)
             {
                 if (pageID == p.Key)
                 {
-            <li class="withPadding">@Html.Raw(p.Value)</li>
+            <li class="with-padding">@Html.Raw(p.Value)</li>
                 }
                 else
                 {
-            <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="withPadding">@Html.Raw(p.Value)</a></li>
+            <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="with-padding">@Html.Raw(p.Value)</a></li>
                 }
             }
         </ul>

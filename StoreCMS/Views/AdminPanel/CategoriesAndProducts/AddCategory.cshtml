@@ -3,6 +3,7 @@
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/work_with_page.css";
     Context.Items["PageName"] = localization.AddCategoryPageName;
+    User user = Context.Items["User"] as User;
     UsualPage[] pages = Context.Items["UsualPages"] as UsualPage[];
     Template[] templates = Context.Items["Templates"] as Template[];
 }
@@ -96,7 +97,14 @@
                 function responseHandler(request, formElement) {
                     if (request.status == 201) {
                         alert('@Html.Raw(localization.CategoryAdded)');
-                        location.replace(request.getResponseHeader('location'));
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
+                        {
+                        @:location.replace(request.getResponseHeader('location'));
+                        }
+                        else
+                        {
+                        @:location.replace(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.Categories)');
+                        }
                     }
                     else if (request.status == 422) {
                         errorHandler(formElement);

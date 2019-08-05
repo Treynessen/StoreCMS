@@ -21,6 +21,10 @@
         public string AccessLevelToProductImages => "Уровень доступа к изображениям товара";
         public string AccessLevelToAddProductImage => "Уровень доступа к добавлению изображения товара";
         public string AccessLevelToDeleteProductImage => "Уровень доступа к удалению изображения товара";
+        public string AccessLevelToRedirections => "Уровень доступа к списку перенаправлений";
+        public string AccessLevelToAddRedirection => "Уровень доступа к добавлению перенаправления";
+        public string AccessLevelToEditRedirection => "Уровень доступа к изменению перенаправления";
+        public string AccessLevelToDeleteRedirection => "Уровень доступа к удалению перенаправления";
         public string AccessLevelToTemplates => "Уровень доступа к списку шаблонов";
         public string AccessLevelToAddTemplate => "Уровень доступа к добавлению шаблона";
         public string AccessLevelToEditTemplate => "Уровень доступа к изменению шаблона";
@@ -37,6 +41,22 @@
         public string AccessLevelToEditStyle => "Уровень доступа к изменению стиля css";
         public string AccessLevelToEditScript => "Уровень доступа к изменению скрипта js";
         public string AccessLevelToDeleteFileOrFolder => "Уровень доступа к удалению директории или файла";
+        public string AccessLevelToUsers => "Уровень доступа к списку пользователей";
+        public string AccessLevelToAddUser => "Уровень доступа к добавлению пользователя";
+        public string AccessLevelToEditUser => "Уровень доступа к изменению пользователя";
+        public string AccessLevelToDeleteUser => "Уровень доступа к удалению пользователя";
+        public string AccessLevelToUserActions => "Уровень доступа к списку действий пользователей";
+        public string AccessLevelToUserTypes => "Уровень доступа к списку типов пользователей";
+        public string AccessLevelToAddUserType => "Уровень доступа к добавлению типа пользователей";
+        public string AccessLevelToEditUserType => "Уровень доступа к изменению типа пользователей";
+        public string AccessLevelToDeleteUserType => "Уровень доступа к удалению типа пользователей";
+        public string AccessLevelToSynonymsForStrings => "Уровень доступа к списку синонимов для строк";
+        public string AccessLevelToAddSynonymForString => "Уровень доступа к добавлению синонима для строки";
+        public string AccessLevelToEditSynonymForString => "Уровень доступа к изменению синонима для строки";
+        public string AccessLevelToDeleteSynonymForString => "Уровень доступа к удалению синонима для строки";
+        public string AccessLevelToUserProfile => "Уровень доступа к профилю пользователя";
+        public string AccessLevelToEditUserData => "Уровень доступа к изменению данных пользователя";
+        public string AccessLevelToGetUserLog => "Уровень доступа к логам пользователя";
         public string AccessLevelToSettings => "Уровень доступа к настройкам";
         public string AccessLevelToEditSettings => "Уровень доступа к изменению настроек";
 

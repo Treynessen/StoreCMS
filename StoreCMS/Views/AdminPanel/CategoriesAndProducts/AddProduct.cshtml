@@ -2,6 +2,7 @@
 @{
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/work_with_page.css";
+    User user = Context.Items["User"] as User;
     CategoryPage categoryPage = Context.Items["CategoryPage"] as CategoryPage;
     Context.Items["PageName"] = $"{localization.AddProductPageName} {categoryPage?.PageName}";
     Template[] templates = Context.Items["Templates"] as Template[];
@@ -135,7 +136,14 @@
                 function responseHandler(request, formElement) {
                     if (request.status == 201) {
                         alert('@Html.Raw(localization.ProductAdded)');
-                        location.replace(request.getResponseHeader('location'));
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
+                        {
+                        @:location.replace(request.getResponseHeader('location'));
+                        }
+                        else
+                        {
+                        @:location.replace(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@categoryPage?.ID');
+                        }
                     }
                     else if (request.status == 422) {
                         errorHandler(formElement);

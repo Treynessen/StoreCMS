@@ -56,77 +56,77 @@ div.images-list {
     overflow-y: auto;
 }
 
-div.image-block {
-    display: inline-flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    border: 1px solid;
-    width: 19.5%;
-    max-width: 19.5%;
-    height: 25vh;
-    max-height: 25vh;
-    overflow: hidden;
-}
-
-    div.image-block:not(:first-child) {
-        margin-left: .6%;
-    }
-
-    div.image-block:nth-child(5n+1) {
-        margin-left: 0;
-    }
-
-    div.image-block:nth-child(n+6) {
-        margin-top: .6%;
-    }
-
-    div.image-block > div {
-        flex-grow: 1;
-        width: 100%;
-        max-width: 100%;
-        border-bottom: 1px solid;
-        position: relative;
-        overflow: hidden;
-    }
-
-        div.image-block > div > img {
-            display: block;
-            position: absolute;
-            margin: auto;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-        }
-
-    div.image-block > label {
-        display: block;
-        margin: 0;
-        width: 100%;
-        max-width: 100%;
-        height: 5vh;
-        max-height: 3vh;
-        font-size: 2vh;
-        border-bottom: 1px solid;
-        overflow: hidden;
-        text-align: center;
-    }
-
-    div.image-block > form > input[type=submit] {
-        display: block;
-        border: none;
+    div.images-list > div.image-block {
+        display: inline-flex;
+        flex-direction: column;
         box-sizing: border-box;
-        width: 100%;
-        max-width: 100%;
-        height: 4vh;
-        max-height: 4vh;
-        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
-        font-size: 1.1rem;
-        padding: .8vh;
-        background-color: #00c0ff;
+        border: 1px solid;
+        width: 19.5%;
+        max-width: 19.5%;
+        height: 25vh;
+        max-height: 25vh;
+        overflow: hidden;
     }
 
-        div.image-block > form > input[type=submit]:hover {
-            background: #00a8ff;
-            cursor: pointer;
+        div.images-list > div.image-block:not(:first-child) {
+            margin-left: .6%;
         }
+
+        div.images-list > div.image-block:nth-child(5n+1) {
+            margin-left: 0;
+        }
+
+        div.images-list > div.image-block:nth-child(n+6) {
+            margin-top: .6%;
+        }
+
+        div.images-list > div.image-block > div {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 100%;
+            border-bottom: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+            div.images-list > div.image-block > div > img {
+                display: block;
+                position: absolute;
+                margin: auto;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                right: 0;
+            }
+
+        div.images-list > div.image-block > label {
+            display: block;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
+            height: 5vh;
+            max-height: 3vh;
+            font-size: 2vh;
+            border-bottom: 1px solid;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        div.images-list > div.image-block > form > input[type=submit] {
+            display: block;
+            border: none;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
+            height: 4vh;
+            max-height: 4vh;
+            font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+            font-size: 1.1rem;
+            padding: .8vh;
+            background-color: #00c0ff;
+        }
+
+            div.images-list > div.image-block > form > input[type=submit]:hover {
+                background: #00a8ff;
+                cursor: pointer;
+            }

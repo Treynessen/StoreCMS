@@ -11,6 +11,7 @@
         public string Templates => "Шаблоны";
         public string Chunks => "Части шаблонов";
         public string FileManager => "Файлы";
+        public string Users => "Пользователи";
         public string UserTypes => "Типы пользователей";
         public string SynonymsForStrings => "Синонимы к строкам";
         public string UserProfile => "Профиль";

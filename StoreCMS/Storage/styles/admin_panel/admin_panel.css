@@ -1,4 +1,4 @@
-﻿div.commonContainer {
+﻿div.common-container {
     display: flex;
     width: 100%;
     max-width: 100%;
@@ -6,7 +6,7 @@
     max-height: 100vh;
 }
 
-ul.menuBlock {
+div.common-container > ul.menu-block {
     list-style-type: none;
     width: 25%;
     min-width: 25%;
@@ -17,40 +17,40 @@ ul.menuBlock {
     overflow-y: auto;
 }
 
-.menuBlock li {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    font-size: 2.2rem;
-    color: #00599e;
-    font-weight: bold;
-    text-align: center;
-    background-color: #00a8ff;
-    border-bottom: 1px solid;
-}
-
-    .menuBlock li > a {
+    div.common-container > ul.menu-block > li {
         display: block;
-        text-decoration: none;
+        width: 100%;
+        max-width: 100%;
+        font-size: 2.2rem;
         color: #00599e;
-        font-weight: normal;
-        background-color: #00c0ff;
+        font-weight: bold;
+        text-align: center;
+        background-color: #00a8ff;
+        border-bottom: 1px solid;
     }
 
-        .menuBlock li > a:hover {
+        div.common-container > ul.menu-block > li > a {
             display: block;
             text-decoration: none;
-            transition-property: background-color;
-            transition-timing-function: ease;
-            transition-duration: 300ms;
-            background-color: #00a8ff;
+            color: #00599e;
+            font-weight: normal;
+            background-color: #00c0ff;
         }
 
-.withPadding {
+            div.common-container > ul.menu-block > li > a:hover {
+                display: block;
+                text-decoration: none;
+                transition-property: background-color;
+                transition-timing-function: ease;
+                transition-duration: 300ms;
+                background-color: #00a8ff;
+            }
+
+.with-padding {
     padding: 2.5% 0;
 }
 
-content {
+div.common-container > content {
     flex-grow: 1;
     background-color: #fff;
     padding: .5%;

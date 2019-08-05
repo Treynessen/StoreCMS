@@ -37,6 +37,10 @@
         string FileDeleted { get; }
         string FolderDeleted { get; }
 
+        string UserAdded { get; }
+        string UserEdited { get; }
+        string UserDeleted { get; }
+
         string UserTypeAdded { get; }
         string UserTypeEdited { get; }
         string UserTypeDeleted { get; }

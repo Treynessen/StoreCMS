@@ -72,6 +72,10 @@ namespace Treynessen.Controllers
                     return EditCssFile(model.Path);
                 case AdminPanelPages.EditScript:
                     return EditScriptFile(model.Path);
+                case AdminPanelPages.Users:
+                    return Users();
+                case AdminPanelPages.UserActions:
+                    return UserActions(model.itemID);
                 case AdminPanelPages.UserTypes:
                     return UserTypes();
                 case AdminPanelPages.SynonymsForStrings:

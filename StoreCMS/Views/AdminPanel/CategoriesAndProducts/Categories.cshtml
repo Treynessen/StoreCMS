@@ -38,9 +38,18 @@
     @foreach (var c in Model)
     {
                     <tr>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CategoryProducts, user, Context))
+                        {
                         <td id="category-@c.ID-id" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.ID)</td>
                         <td id="category-@c.ID-page-name" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.PageName)</td>
                         <td id="category-@c.ID-url" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.RequestPath)</td>
+                        }
+                        else
+                        {
+                        <td id="category-@c.ID-id">@Html.Raw(c.ID)</td>
+                        <td id="category-@c.ID-page-name">@Html.Raw(c.PageName)</td>
+                        <td id="category-@c.ID-url">@Html.Raw(c.RequestPath)</td>
+                        }
                         <td>
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
                 {

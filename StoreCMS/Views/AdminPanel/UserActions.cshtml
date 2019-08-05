@@ -1,0 +1,44 @@
+﻿@model User
+@inject IUserActionsLocalization localization
+@{
+    User user = Context.Items["User"] as User;
+    Layout = "CommonPage";
+    Context.Items["PageName"] = $"{Model.Login}: {localization.PageName}";
+    Context.Items["PageStyle"] = "/styles/admin_panel/user_actions.css";
+}
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <p class="head">@Html.Raw(localization.UserActions)</p>
+            @if (Model.AdminPanelLogs.Count > 0)
+            {
+            <p class="date">@(DateTime.Now.Day.ToString()).@(DateTime.Now.Month.ToString()).@(DateTime.Now.Year.ToString()):</p>
+            }
+            @foreach (var log in Model.AdminPanelLogs)
+            {
+            <p class="log"><b>@log.Time.ToShortTimeString()</b> - @Html.Raw(log.Info)</p>
+            }
+            <form id="get-log">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.GetUserLog)">
+                <input type="hidden" name="itemID" value="@Model.ID">
+                <input type="hidden" id="date" name="CurrentLogDate">
+                <input type="submit" id="get-log-button" value="@Html.Raw(localization.ShowMore)">
+            </form>
+            <script>
+                function responseHandler(request) {
+                    if (request.responseText != '') {
+                        getLogForm.insertAdjacentHTML('beforebegin', request.responseText);
+                        dateInput.value = request.getResponseHeader('file-date');
+                    }
+                    else {
+                        this.getLogForm.parentNode.removeChild(getLogForm)
+                    }
+                }
+                var getLogForm = document.getElementById('get-log');
+                var dateInput = document.getElementById('date');
+                let date = new Date(@DateTime.Now.Year, @(DateTime.Now.Month - 1), @DateTime.Now.Day);
+                dateInput.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString() + '-' + date.getDate().toString();
+                let getLogButton = document.getElementById('get-log-button');
+                getLogButton.addEventListener('click', createSendDataEventHandler('GET', 'get-log', responseHandler));
+                @if (Model.AdminPanelLogs.Count == 0) {
+                @:getLogButton.click();
+                }
+            </script>

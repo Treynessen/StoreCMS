@@ -9,6 +9,7 @@
         Templates,
         Chunks,
         FileManager,
+        Users,
         UserTypes,
         SynonymsForStrings, // Для поиска товара
         UserProfile,
@@ -49,6 +50,11 @@
         EditStyle,
         EditScript,
         DeleteFileOrFolder,
+        
+        AddUser,
+        EditUser,
+        DeleteUser,
+        UserActions,
 
         AddUserType,
         EditUserType,

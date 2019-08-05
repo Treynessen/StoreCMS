@@ -30,7 +30,7 @@
                     }
                 }
             </script>
-            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddSynonymForString, user, Context))
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddRedirection, user, Context))
             {
             <form id="add-redirection" class="container">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddRedirection)">

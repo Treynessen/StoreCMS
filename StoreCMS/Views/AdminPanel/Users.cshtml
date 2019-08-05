@@ -1,0 +1,149 @@
+﻿@model User[]
+@using Microsoft.EntityFrameworkCore
+@inject CMSDatabase db
+@inject IUsersLocalization localization
+@{
+    Layout = "CommonPage";
+    User user = Context.Items["User"] as User;
+    Context.Items["PageName"] = localization.PageName;
+    Context.Items["PageStyle"] = "/styles/admin_panel/users.css";
+    UserType[] userTypes = db.UserTypes.AsNoTracking().ToArray();
+}
+<script src="/scripts/admin_panel/send_data.js"></script>
+            <script>
+                function errorMsg() {
+                    alert('@Html.Raw(localization.IncorrectInput)');
+                }
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        if (request.method == 'delete') {
+                            alert('@Html.Raw(localization.UserDeleted)');
+                        }
+                        else {
+                            alert('@Html.Raw(localization.UserEdited)');
+                        }
+                        location.reload();
+                    }
+                    else if (request.status == 201) {
+                        alert('@Html.Raw(localization.UserAdded)');
+                        location.reload();
+                    }
+                    else if (request.status == 409) {
+                        alert('@Html.Raw(localization.UserWithSameLoginAlreadyExists)');
+                    }
+                    else if (request.status == 422) {
+                        errorMsg();
+                    }
+                }
+            </script>
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddUser, user, Context))
+            {
+            <form id="add-user" class="container">
+                <div>
+                    <label for="user-login">@Html.Raw(localization.Login)</label>
+                    <input type="text" id="user-login" name="UserModel.Login" required>
+                </div>
+                <div>
+                    <label for="user-password">@Html.Raw(localization.Password)</label>
+                    <input type="password" id="user-password" name="UserModel.NewPassword" required>
+                </div>
+                <div>
+                    <label for="user-type">@Html.Raw(localization.UserType)</label>
+                    <select id="user-type" name="UserModel.UserTypeId" required>
+                        <option value="1" selected>@(userTypes[0].Name)</option>
+                        @for (int i = 1; i < userTypes.Length; ++i)
+                        {
+                            <option value="@(i + 1)">@(userTypes[i].Name)</option>
+                        }
+                    </select>
+                </div>
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddUser)">
+                <div class="action">
+                    <input type="submit" id="add-button" value="@Html.Raw(localization.Add)">
+                </div>
+            </form>
+            <script>
+                let addButton = document.getElementById('add-button');
+                addButton.addEventListener('click', (e) => {
+                    if (document.getElementById('user-password').value.length < 5) {
+                        alert('@Html.Raw(localization.PasswordTooShort)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if (document.getElementById('user-login').value == '') {
+                        errorMsg();
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                addButton.addEventListener('click', createSendDataEventHandler('POST', 'add-user', responseHandler, errorMsg));
+            </script>
+            }
+            @foreach (var u in Model)
+            {
+            <form id="user-@(u.ID)" class="container">
+                <div>
+                    <label for="user-login">@Html.Raw(localization.Login)</label>
+                    <input type="text" value="@Html.Raw(u.Login)" disabled>
+                </div>
+                <div>
+                    <label for="user-access-level">@Html.Raw(localization.UserType)</label>
+                    @if (u.ID == 1)
+                    {
+                    <select id="access-level" name="UserModel.UserTypeId" required disabled>
+                        <option value="1" selected>@(userTypes[0].Name)</option>
+                    </select>
+                    }
+                    else
+                    {
+                    <select id="access-level" name="UserModel.UserTypeId" required>
+                    @for (int i = 0; i < userTypes.Length; ++i)
+                    {
+                        if ((int)u.UserType.ID == i + 1)
+                        {
+                        <option value="@(i + 1)" selected>@(userTypes[i].Name)</option>
+                        }
+                        else
+                        {
+                        <option value="@(i + 1)">@(userTypes[i].Name)</option>
+                        }
+                    }
+                    </select>
+                    }
+                </div>
+                <input type="hidden" id="pageID-@(u.ID)" name="pageID">
+                <input type="hidden" name="itemID" value="@u.ID">
+                <div class="actions">
+                @if (u.ID == 1 || !SecurityFunctions.HasAccessTo(AdminPanelPages.EditUser, user, Context))
+                {
+                    <input type="submit" value="@Html.Raw(localization.Edit)" disabled>
+                }
+                else
+                {
+                    <input type="submit" id="edit-button-@(u.ID)" value="@Html.Raw(localization.Edit)">
+                    <script>
+                        let editButton_@(u.ID) = document.getElementById('edit-button-@(u.ID)');
+                        editButton_@(u.ID).addEventListener('click', () => { document.getElementById('pageID-@u.ID').setAttribute('value', '@((int)AdminPanelPages.EditUser)'); });
+                        editButton_@(u.ID).addEventListener('click', createSendDataEventHandler('POST', 'user-@(u.ID)', responseHandler, errorMsg));
+                    </script>
+                }
+                @if (u.ID == 1 || !SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteUser, user, Context))
+                {
+                    <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
+                }
+                else
+                {
+                    <input type="submit" id="delete-button-@(u.ID)" value="@Html.Raw(localization.Delete)">
+                    <script>
+                        let deleteButton_@(u.ID) = document.getElementById('delete-button-@(u.ID)');
+                        deleteButton_@(u.ID).addEventListener('click', () => { document.getElementById('pageID-@u.ID').setAttribute('value', '@((int)AdminPanelPages.DeleteUser)'); });
+                        deleteButton_@(u.ID).addEventListener('click', createSendDataEventHandler('DELETE', 'user-@(u.ID)', responseHandler, errorMsg));
+                    </script>
+                }
+                </div>
+            </form>
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserActions, user, Context))
+            {
+            <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.UserActions)&itemID=@u.ID" class="user-actions">@Html.Raw(localization.UserActions)</a>
+            }
+        }

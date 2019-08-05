@@ -4,9 +4,9 @@
         if (formElement.checkValidity()) {
             let formData = new FormData();
             let searchString = ''; // Для GET-методов
-            let getMethod = requestMethod.toLowerCase() == 'get';
+            let isGetMethod = requestMethod.toLowerCase() == 'get';
             for (let element of formElement.elements) {
-                if (getMethod) {
+                if (isGetMethod) {
                     if (searchString == '')
                         searchString = '?' + element.name + '=' + element.value;
                     else searchString += '&' + element.name + '=' + element.value;
@@ -14,6 +14,7 @@
                 else formData.append(element.name, element.value);
             }
             let request = new XMLHttpRequest();
+            request.method = requestMethod.toLowerCase();
             request.open(requestMethod, location.origin + location.pathname + searchString, false);
             request.send(formData);
             if (typeof responseHandler === 'function') {

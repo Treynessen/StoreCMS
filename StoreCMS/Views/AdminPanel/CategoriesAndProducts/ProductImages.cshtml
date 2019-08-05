@@ -36,52 +36,52 @@
                 document.getElementById('upload-file-button').addEventListener('change', createSendFileEventHandler('upload-image', responseHandler, errorHandler, '.jpeg', '.jpg')); 
             </script>
 }
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+            {
+            <script>
+                function errorHandler() {
+                    alert('@Html.Raw(localization.ImageNotFound)');
+                }
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.ImageDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        errorHandler();
+                    }
+                }
+            </script>
+            }
             <div class="images-list">
     @{
-        int imageID = 0;
+            int imageID = 0;
     }
-    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
-    {
-            <script>
-                    function errorHandler() {
-                        alert('@Html.Raw(localization.ImageNotFound)');
-                    }
-                    function responseHandler(request) {
-                        if (request.status == 200) {
-                            alert('@Html.Raw(localization.ImageDeleted)');
-                            location.reload();
-                        }
-                        else if (request.status == 404) {
-                            errorHandler();
-                        }
-                    }
-                </script>
-    }
-    @foreach (var m in Model)
-    {
-            <div class="image-block">
+                @foreach (var m in Model)
+                {
+                <div class="image-block">
                     <div><image src="@m" max-width="290" max-height="175" quality="80"></image></div>
                     <label>@m.Substring(m.LastIndexOf('/') + 1)</label>
                     <form id="delete-image-@(imageID + 1)">
-                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
-                {
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+                    {
                         <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProductImage)">
                         <input type="hidden" name="itemID" value="@product?.ID">
                         <input type="hidden" name="imageID" value="@imageID">
-                        <input id="delete-image-button-@(imageID + 1)" type="submit" value="@Html.Raw(localization.DeleteProductImage)" />
-                }
-                else
-                {
+                        <input id="delete-image-button-@(imageID + 1)" type="submit" value="@Html.Raw(localization.DeleteProductImage)">
+                    }
+                    else
+                    {
                         <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" disabled />
-                }
+                    }
                     </form>
-                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
-                {
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+                    {
                     <script>
                         document.getElementById('delete-image-button-@(imageID + 1)').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-image-@(imageID + 1)', responseHandler, errorHandler));
                     </script>
-                }
+                    }
                 </div>
-        imageID++;
-    }
-        </div>
+                imageID++;
+                }
+            </div>

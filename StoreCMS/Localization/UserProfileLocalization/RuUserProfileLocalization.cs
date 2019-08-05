@@ -2,6 +2,8 @@
 {
     public class RuUserProfileLocalization : IUserProfileLocalization
     {
+        public string PageName => "Профиль пользователя";
+
         public string Login => "Логин";
         public string NewPassword => "Новый пароль";
         public string PasswordReplay => "Повтор пароля";

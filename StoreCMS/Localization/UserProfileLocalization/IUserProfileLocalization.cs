@@ -2,6 +2,8 @@
 {
     public interface IUserProfileLocalization
     {
+        string PageName { get; }
+
         string Login { get; }
         string NewPassword { get; }
         string PasswordReplay { get; }

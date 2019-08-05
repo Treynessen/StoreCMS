@@ -6,6 +6,8 @@ namespace Treynessen.Database
     {
         private static bool CorrectLogin(string login)
         {
+            if (string.IsNullOrEmpty(login))
+                return false;
             string availableSymbols = "qwertyuiopasdfghjklzxcvbnm1234567890-_";
             foreach (var symbol in login)
             {

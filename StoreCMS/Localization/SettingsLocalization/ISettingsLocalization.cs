@@ -21,6 +21,10 @@
         string AccessLevelToProductImages { get; }
         string AccessLevelToAddProductImage { get; }
         string AccessLevelToDeleteProductImage { get; }
+        string AccessLevelToRedirections { get; }
+        string AccessLevelToAddRedirection { get; }
+        string AccessLevelToEditRedirection { get; }
+        string AccessLevelToDeleteRedirection { get; }
         string AccessLevelToTemplates { get; }
         string AccessLevelToAddTemplate { get; }
         string AccessLevelToEditTemplate { get; }
@@ -37,6 +41,22 @@
         string AccessLevelToEditStyle { get; }
         string AccessLevelToEditScript { get; }
         string AccessLevelToDeleteFileOrFolder { get; }
+        string AccessLevelToUsers { get; }
+        string AccessLevelToAddUser { get; }
+        string AccessLevelToEditUser { get; }
+        string AccessLevelToDeleteUser { get; }
+        string AccessLevelToUserActions { get; }
+        string AccessLevelToUserTypes { get; }
+        string AccessLevelToAddUserType { get; }
+        string AccessLevelToEditUserType { get; }
+        string AccessLevelToDeleteUserType { get; }
+        string AccessLevelToSynonymsForStrings { get; }
+        string AccessLevelToAddSynonymForString { get; }
+        string AccessLevelToEditSynonymForString { get; }
+        string AccessLevelToDeleteSynonymForString { get; }
+        string AccessLevelToUserProfile { get; }
+        string AccessLevelToEditUserData { get; }
+        string AccessLevelToGetUserLog { get; }
         string AccessLevelToSettings { get; }
         string AccessLevelToEditSettings { get; }
 

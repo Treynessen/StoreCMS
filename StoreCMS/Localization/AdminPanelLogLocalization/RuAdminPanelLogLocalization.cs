@@ -37,6 +37,10 @@
         public string FileDeleted => "файл удален";
         public string FolderDeleted => "папка удалена";
 
+        public string UserAdded => "пользователь добавлен";
+        public string UserEdited => "пользователь изменен";
+        public string UserDeleted => "пользователь удален";
+
         public string UserTypeAdded => "тип пользователя добавлен";
         public string UserTypeEdited => "тип пользователя изменен";
         public string UserTypeDeleted => "тип пользователя удален";
