@@ -35,7 +35,7 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
-            Redirection match = db.Redirections.FirstOrDefault(r => r.RequestPathHash == OtherFunctions.GetHashFromString(model.RequestPath)
+            Redirection match = db.Redirections.FirstOrDefault(r => r.ID != itemID.Value && r.RequestPathHash == OtherFunctions.GetHashFromString(model.RequestPath)
             && r.RequestPath.Equals(model.RequestPath, StringComparison.Ordinal) && r.RedirectionPath.Equals(model.RedirectionPath, StringComparison.Ordinal));
             if (match != null)
             {

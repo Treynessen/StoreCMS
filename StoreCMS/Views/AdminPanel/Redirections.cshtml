@@ -73,7 +73,7 @@
                     <input type="text" id="redirection-@pair.ID" name="RedirectionModel.RedirectionPath" value="@pair?.RedirectionPath">
                 </div>
                 <div class="actions">
-                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSynonymForString, user, Context))
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditRedirection, user, Context))
                 {
                     <input type="submit" id="edit-button-@pair.ID" value="@Html.Raw(localization.Edit)">
                     <script>
@@ -86,7 +86,7 @@
                 {
                     <input type="submit" value="@Html.Raw(localization.Edit)" disabled>
                 }
-                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteSynonymForString, user, Context))
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteRedirection, user, Context))
                 {
     <input type="submit" id="delete-button-@pair.ID" value="@Html.Raw(localization.Delete)">
                     <script>

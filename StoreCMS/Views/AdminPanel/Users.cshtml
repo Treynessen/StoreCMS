@@ -53,7 +53,7 @@
                         <option value="1" selected>@(userTypes[0].Name)</option>
                         @for (int i = 1; i < userTypes.Length; ++i)
                         {
-                            <option value="@(i + 1)">@(userTypes[i].Name)</option>
+                            <option value="@(userTypes[i].ID)">@(userTypes[i].Name)</option>
                         }
                     </select>
                 </div>
@@ -99,13 +99,13 @@
                     <select id="access-level" name="UserModel.UserTypeId" required>
                     @for (int i = 0; i < userTypes.Length; ++i)
                     {
-                        if ((int)u.UserType.ID == i + 1)
+                        if ((int)u.UserType.ID == userTypes[i].ID)
                         {
-                        <option value="@(i + 1)" selected>@(userTypes[i].Name)</option>
+                        <option value="@(userTypes[i].ID)" selected>@(userTypes[i].Name)</option>
                         }
                         else
                         {
-                        <option value="@(i + 1)">@(userTypes[i].Name)</option>
+                        <option value="@(userTypes[i].ID)">@(userTypes[i].Name)</option>
                         }
                     }
                     </select>
@@ -142,7 +142,7 @@
                 }
                 </div>
             </form>
-            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserActions, user, Context))
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.GetUserLog, user, Context))
             {
             <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.UserActions)&itemID=@u.ID" class="user-actions">@Html.Raw(localization.UserActions)</a>
             }

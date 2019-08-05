@@ -22,6 +22,10 @@ namespace Treynessen.Database
                 statusCode = 404;
                 return;
             }
+            if (user == context.Items["User"])
+            {
+                context.Items["User"] = null;
+            }
             db.Remove(user);
             db.SaveChanges();
             statusCode = 200;

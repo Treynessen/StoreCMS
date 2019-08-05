@@ -5,6 +5,10 @@
     align-items: center;
 }
 
+    form.container:nth-child(3) {
+        margin-top: 0;
+    }
+
     form.container > div {
         flex-grow: 1;
         margin: .3% 2% .5% .5%;

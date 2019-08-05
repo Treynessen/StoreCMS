@@ -11,6 +11,8 @@ namespace Treynessen.LogManagement
         {
             if (user == null)
                 user = context.Items["User"] as User;
+            if (user == null)
+                return;
             db.AdminPanelLogs.Add(new AdminPanelLog
             {
                 Info = info,

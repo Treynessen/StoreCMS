@@ -57,7 +57,6 @@ namespace Treynessen.AdminPanelTypes
         public AccessLevel? AddUser { get; set; }
         public AccessLevel? EditUser { get; set; }
         public AccessLevel? DeleteUser { get; set; }
-        public AccessLevel? UserActions { get; set; }
 
         public AccessLevel? AddUserType { get; set; }
         public AccessLevel? EditUserType { get; set; }

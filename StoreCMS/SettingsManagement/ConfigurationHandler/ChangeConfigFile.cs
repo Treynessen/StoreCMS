@@ -65,7 +65,6 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.AddUser}\": \"{(model.AccessSettings.AddUser.HasValue ? (int)model.AccessSettings.AddUser.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditUser}\": \"{(model.AccessSettings.EditUser.HasValue ? (int)model.AccessSettings.EditUser.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.DeleteUser}\": \"{(model.AccessSettings.DeleteUser.HasValue ? (int)model.AccessSettings.DeleteUser.Value : (int)AccessLevel.VeryHigh)}\",\n");
-            configContentBuilder.Append($"\t\t\"{AdminPanelPages.UserActions}\": \"{(model.AccessSettings.UserActions.HasValue ? (int)model.AccessSettings.UserActions.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.UserTypes}\": \"{(model.AccessSettings.UserTypes.HasValue ? (int)model.AccessSettings.UserTypes.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.AddUserType}\": \"{(model.AccessSettings.AddUserType.HasValue ? (int)model.AccessSettings.AddUserType.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditUserType}\": \"{(model.AccessSettings.EditUserType.HasValue ? (int)model.AccessSettings.EditUserType.Value : (int)AccessLevel.VeryHigh)}\",\n");

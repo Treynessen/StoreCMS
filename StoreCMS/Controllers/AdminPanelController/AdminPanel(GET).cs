@@ -25,8 +25,16 @@ namespace Treynessen.Controllers
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
             if (!SecurityFunctions.HasAccessTo(AdminPanelPages.MainPage, user, HttpContext))
                 return LoginForm();
-            if (!SecurityFunctions.HasAccessTo(model.PageId, user, HttpContext))
-                model.PageId = AdminPanelPages.MainPage;
+            if (model.PageId.HasValue && model.PageId.Value == AdminPanelPages.UserActions)
+            {
+                if (!SecurityFunctions.HasAccessTo(AdminPanelPages.GetUserLog, user, HttpContext))
+                    model.PageId = AdminPanelPages.MainPage;
+            }
+            else
+            {
+                if (!SecurityFunctions.HasAccessTo(model.PageId, user, HttpContext))
+                    model.PageId = AdminPanelPages.MainPage;
+            }
 
             HttpContext.Items["User"] = user;
 

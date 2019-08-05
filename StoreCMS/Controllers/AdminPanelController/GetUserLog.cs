@@ -18,7 +18,7 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult GetUserLog(int? userID, DateTime? currentLogDate, HttpContext context)
         {
-            if (!userID.HasValue || !currentLogDate.HasValue || (context.Items["User"] as User).ID != userID.Value)
+            if (!userID.HasValue || !currentLogDate.HasValue)
                 return Content(string.Empty);
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToLogsFolder = $"{env.GetLogsFolderFullPath()}{userID.Value}\\";

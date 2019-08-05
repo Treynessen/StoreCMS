@@ -14,7 +14,7 @@
 		"PageNotFoundTemplateId": "0"
 	},
 	"AdminPanelAccessSettings": {
-		"MainPage": "3",
+		"MainPage": "5",
 		"Pages": "5",
 		"AddPage": "5",
 		"EditPage": "5",
@@ -30,8 +30,8 @@
 		"ProductImages": "5",
 		"AddProductImage": "5",
 		"DeleteProductImage": "5",
-		"Redirections": "1",
-		"AddRedirection": "1",
+		"Redirections": "5",
+		"AddRedirection": "5",
 		"EditRedirection": "5",
 		"DeleteRedirection": "5",
 		"Templates": "5",
@@ -54,7 +54,6 @@
 		"AddUser": "5",
 		"EditUser": "5",
 		"DeleteUser": "5",
-		"UserActions": "5",
 		"UserTypes": "5",
 		"AddUserType": "5",
 		"EditUserType": "5",

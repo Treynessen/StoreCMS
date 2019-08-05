@@ -5,6 +5,10 @@
     margin-top: 1vh;
 }
 
+    form.container:nth-child(3) {
+        margin-top: 0;
+    }
+
     form.container[id=add-user-type] {
         align-items: stretch;
         margin-top: 0;

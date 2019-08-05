@@ -3,6 +3,7 @@
     Layout = "CommonPage";
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/work_with_template.css";
     Context.Items["PageName"] = localization.AddTemplatePageName;
+    User user = Context.Items["User"] as User;
 }
 <script src="/scripts/admin_panel/send_data.js"></script>
             <script src="/scripts/admin_panel/insert_tab.js"></script>
@@ -29,7 +30,14 @@
                 function responseHandler(request, formElement) {
                     if (request.status == 201) {
                         alert('@Html.Raw(localization.TemplateCreated)');
-                        location.replace(request.getResponseHeader('location'));
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditTemplate, user, Context))
+                        {
+                        @:location.replace(request.getResponseHeader('location'));
+                        }
+                        else
+                        {
+                        @:location.replace(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.Templates)');
+                        }
                     }
                     else if (request.status == 422) {
                         errorHandler(formElement);

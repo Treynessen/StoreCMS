@@ -22,6 +22,10 @@ namespace Treynessen.Database
                 successfullyCompleted = false;
                 return;
             }
+            if (userType == (context.Items["User"] as User).UserType)
+            {
+                context.Items["User"] = null;
+            }
             db.UserTypes.Remove(userType);
             db.SaveChanges();
             successfullyCompleted = true;
