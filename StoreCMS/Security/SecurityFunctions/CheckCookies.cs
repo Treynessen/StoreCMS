@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -17,7 +16,14 @@ namespace Treynessen.Security
             if (string.IsNullOrEmpty(userName))
                 return null;
 
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(userName, StringComparison.Ordinal));
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(
+                cu => cu.UserName.Equals(userName, StringComparison.Ordinal)
+                // loginKey - это случайно сгенерированный в методе SecurityFunctions.GetRandomKey ключ 
+                && cu.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.Ordinal)
+                // Проверка ip-адреса
+                && cu.IPAdress.Equals(context.Connection.RemoteIpAddress.ToString(), StringComparison.Ordinal)
+                && cu.UserAgent.Equals(context.Request.Headers["User-Agent"], StringComparison.Ordinal)
+            );
 
             if (connectedUser == null)
                 return null;
@@ -30,18 +36,6 @@ namespace Treynessen.Security
                 db.SaveChanges();
                 return null;
             }
-
-            // Проверка ip-адреса
-            // ...
-
-            // loginKey - это случайно сгенерированный в методе SecurityFunctions.GetRandomKey ключ 
-            string userLoginKey = context.Request.Cookies["loginKey"];
-
-            if (!connectedUser.LoginKey.Equals(context.Request.Cookies["loginKey"], StringComparison.Ordinal))
-                return null;
-
-            if (!connectedUser.UserAgent.Equals(context.Request.Headers["User-Agent"], StringComparison.Ordinal))
-                return null;
 
             connectedUser.LastActionTime = DateTime.Now;
             db.Update(connectedUser);

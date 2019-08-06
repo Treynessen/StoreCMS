@@ -6,14 +6,14 @@ namespace Treynessen.Database.Entities
 {
     public class ConnectedUser
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ID { get; set; }
+        [Required]
         public string UserName { get; set; }
         [Required]
         public string LoginKey { get; set; }
         [Required]
         public DateTime LastActionTime { get; set; }
-        // Сделать Required
+        [Required]
         public string IPAdress { get; set; }
         [Required]
         public string UserAgent { get; set; }

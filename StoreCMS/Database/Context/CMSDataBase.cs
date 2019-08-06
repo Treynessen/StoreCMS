@@ -10,6 +10,9 @@ namespace Treynessen.Database.Context
 
         public DbSet<ConnectedUser> ConnectedUsers { get; set; }
 
+        public DbSet<Visitor> Visitors { get; set; }
+        public DbSet<VisitedPage> VisitedPages { get; set; }
+
         public DbSet<UsualPage> UsualPages { get; set; }
         public DbSet<CategoryPage> CategoryPages { get; set; }
         public DbSet<ProductPage> ProductPages { get; set; }
@@ -36,8 +39,9 @@ namespace Treynessen.Database.Context
             modelBuilder.Entity<UsualPage>().HasIndex(up => up.RequestPathHash);
             modelBuilder.Entity<CategoryPage>().HasIndex(cp => cp.RequestPathHash);
             modelBuilder.Entity<ProductPage>().HasIndex(pp => pp.RequestPathHash);
-            modelBuilder.Entity<Image>().HasIndex(img => img.ShortPathHash);
             modelBuilder.Entity<Redirection>().HasIndex(r => r.RequestPathHash);
+            modelBuilder.Entity<Visitor>().HasIndex(r => r.IpStringHash);
+            modelBuilder.Entity<Image>().HasIndex(img => img.ShortPathHash);
         }
     }
 }

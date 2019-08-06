@@ -20,10 +20,13 @@ namespace Treynessen.Controllers
             switch (page)
             {
                 case UsualPage up:
+                    SetVisitInfo(up.ID, PagesManagement.PageType.Usual);
                     return UsualPage(up);
                 case CategoryPage cp:
+                    SetVisitInfo(cp.ID, PagesManagement.PageType.Category);
                     return CategoryPage(cp, model);
                 case ProductPage pp:
+                    SetVisitInfo(pp.ID, PagesManagement.PageType.Product);
                     return ProductPage(pp);
                 default:
                     return Redirect(HttpContext.Items["Redirection"] as string);

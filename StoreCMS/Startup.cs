@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Treynessen;
 using Treynessen.Translit;
 using Treynessen.Security;
 using Treynessen.Extensions;
@@ -12,8 +13,11 @@ using Treynessen.SettingsManagement;
 
 public class Startup
 {
+    IServiceCollection ser;
+
     public void ConfigureServices(IServiceCollection services)
     {
+        ser = services;
         services.AddScoped(provider =>
         {
             IHostingEnvironment env = services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>();
@@ -49,6 +53,8 @@ public class Startup
         services.AddTransient<ISettingsLocalization>(provider => new RuSettingsLocalization());
 
         services.AddTransient<IAdminPanelLogLocalization>(provider => new RuAdminPanelLogLocalization());
+
+        services.AddHostedService<TimedHostedService>();
 
         services.AddMvc();
     }

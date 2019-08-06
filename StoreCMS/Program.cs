@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
-using Treynessen.Database;
-using Treynessen.AdminPanelTypes;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -60,7 +58,7 @@ public class Program
             User user = new User
             {
                 Login = "admin",
-                Password = "admin",
+                Password = SecurityFunctions.GetPasswordHash("admin"),
                 UserType = userType,
                 IdleTime = 10
             };

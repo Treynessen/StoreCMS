@@ -15,7 +15,7 @@ namespace Treynessen.Database
         // На стороне клиента, в куках, сохраняем логин и ключ для входа
         public static void AddConnectedUser(CMSDatabase db, User user, HttpContext context)
         {
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserName.Equals(user.Login, StringComparison.Ordinal));
+            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserID == user.ID);
 
             // Если пользователь уже был залогинен, то обновляем его данные
             // Это сделано, если вдруг пользователь заходит с другого браузера
@@ -25,10 +25,11 @@ namespace Treynessen.Database
             // добавить в else блоке
             if (connectedUser != null)
             {
-                // connectedUser.IPAdress = ...
+                connectedUser.UserName = SecurityFunctions.GetMd5Hash(SecurityFunctions.GetMd5Hash(user.Login + SecurityFunctions.GetRandomKey(10, 20)));
+                connectedUser.LoginKey = SecurityFunctions.GetRandomKey(15, 30);
                 connectedUser.LastActionTime = DateTime.Now;
                 connectedUser.UserAgent = context.Request.Headers["User-Agent"];
-                connectedUser.LoginKey = SecurityFunctions.GetRandomKey(7, 13);
+                connectedUser.IPAdress = context.Connection.RemoteIpAddress.ToString();
                 db.SaveChanges();
             }
 
@@ -36,12 +37,12 @@ namespace Treynessen.Database
             {
                 connectedUser = new ConnectedUser
                 {
-                    UserName = user.Login,
-                    // IPAdress = ...
+                    UserName = SecurityFunctions.GetMd5Hash(SecurityFunctions.GetMd5Hash(user.Login + SecurityFunctions.GetRandomKey(10, 20))),
+                    LoginKey = SecurityFunctions.GetRandomKey(15, 30),
+                    IPAdress = context.Connection.RemoteIpAddress.ToString(),
                     LastActionTime = DateTime.Now,
                     UserAgent = context.Request.Headers["User-Agent"],
-                    User = user,
-                    LoginKey = SecurityFunctions.GetRandomKey(7, 13)
+                    User = user
                 };
                 db.ConnectedUsers.Add(connectedUser);
                 db.SaveChanges();
@@ -50,7 +51,7 @@ namespace Treynessen.Database
             LogManagementFunctions.AddAdminPanelLog(
                 db: db,
                 context: context,
-                info: (context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn,
+                info: $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn}. IP: {context.Connection.RemoteIpAddress.ToString()}",
                 user: user
             );
 

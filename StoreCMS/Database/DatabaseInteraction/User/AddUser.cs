@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Treynessen.Security;
 using Treynessen.Localization;
 using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
@@ -28,7 +29,7 @@ namespace Treynessen.Database
             User user = new User
             {
                 Login = model.Login,
-                Password = model.NewPassword,
+                Password = SecurityFunctions.GetPasswordHash(model.NewPassword),
                 IdleTime = 10,
                 UserTypeID = model.UserTypeId.Value
             };

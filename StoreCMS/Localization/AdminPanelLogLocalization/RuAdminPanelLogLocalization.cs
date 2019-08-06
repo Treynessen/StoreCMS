@@ -3,6 +3,7 @@
     public class RuAdminPanelLogLocalization : IAdminPanelLogLocalization
     {
         public string LoggedIn => "Выполнен вход";
+        public string FailedLoginAttempt => "Неудачная попытка входа";
 
         public string PageAdded => "страница добавлена";
         public string PageEdited => "страница изменена";

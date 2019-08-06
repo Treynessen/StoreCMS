@@ -3,6 +3,7 @@
     public interface IAdminPanelLogLocalization
     {
         string LoggedIn { get; }
+        string FailedLoginAttempt { get; }
 
         string PageAdded { get; }
         string PageEdited { get; }

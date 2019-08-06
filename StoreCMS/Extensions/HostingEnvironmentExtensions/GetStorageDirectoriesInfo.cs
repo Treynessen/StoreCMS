@@ -13,12 +13,12 @@ namespace Treynessen.Extensions
                 storageDirectoriesInfo = new DirectoryInfo[]
                 {
                     new DirectoryInfo(GetStorageFolderFullPath(env), true, true),
-                    new DirectoryInfo($"{GetStorageFolderFullPath(env)}images\\", true, true),
-                    new DirectoryInfo($"{GetStorageFolderFullPath(env)}images\\products\\", false, false),
-                    new DirectoryInfo($"{GetStorageFolderFullPath(env)}styles\\", true, true),
-                    new DirectoryInfo($"{GetStorageFolderFullPath(env)}styles\\admin_panel\\", false, false),
-                    new DirectoryInfo($"{GetStorageFolderFullPath(env)}scripts\\", true, true),
-                    new DirectoryInfo($"{GetStorageFolderFullPath(env)}scripts\\admin_panel\\", false, false)
+                    new DirectoryInfo(GetImagesFolderFullPath(env), true, true),
+                    new DirectoryInfo(GetProductsImagesFolderFullPath(env), false, false),
+                    new DirectoryInfo(GetStylesFolderFullPath(env), true, true),
+                    new DirectoryInfo($"{GetStylesFolderFullPath(env)}admin_panel\\", false, false),
+                    new DirectoryInfo(GetScriptsFolderFullPath(env), true, true),
+                    new DirectoryInfo($"{GetScriptsFolderFullPath(env)}admin_panel\\", false, false)
                 };
             }
             return storageDirectoriesInfo;

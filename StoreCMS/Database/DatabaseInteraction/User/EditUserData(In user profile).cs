@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Treynessen.Security;
 using Treynessen.Localization;
 using Treynessen.LogManagement;
 using Treynessen.AdminPanelTypes;
@@ -28,7 +29,7 @@ namespace Treynessen.Database
                 statusCode = 404;
                 return;
             }
-            else if (editableUser != context.Items["User"] as User || !editableUser.Password.Equals(model.CurrentPassword))
+            else if (editableUser != context.Items["User"] as User || !editableUser.Password.Equals(SecurityFunctions.GetPasswordHash(model.CurrentPassword)))
             {
                 statusCode = 403;
                 return;
@@ -40,7 +41,7 @@ namespace Treynessen.Database
             }
             editableUser.Login = model.Login;
             if (!string.IsNullOrEmpty(model.NewPassword))
-                editableUser.Password = model.NewPassword;
+                editableUser.Password = SecurityFunctions.GetPasswordHash(model.NewPassword);
             editableUser.IdleTime = model.IdleTime;
             editableUser.Email = model.Email;
             db.SaveChanges();

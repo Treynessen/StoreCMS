@@ -3,7 +3,6 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS.runtimeconfig.dev.json
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS.dll
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\bin\Debug\netcoreapp2.1\StoreCMS.pdb
-D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.csprojAssemblyReference.cache
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.csproj.CoreCompileInputs.cache
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.RazorAssemblyInfo.cache
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.RazorAssemblyInfo.cs
@@ -54,3 +53,4 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Vi
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\UserProfile.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\Users.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\Razor\Views\AdminPanel\UserActions.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Debug\netcoreapp2.1\StoreCMS.csprojAssemblyReference.cache
