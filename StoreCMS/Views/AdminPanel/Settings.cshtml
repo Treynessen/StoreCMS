@@ -29,6 +29,8 @@
     List<KeyValuePair<AdminPanelPages, IHtmlContent>> settingList = new List<KeyValuePair<AdminPanelPages, IHtmlContent>>()
 {
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.MainPage, Html.Raw(localization.AccessLevelToAdminPanel)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.GetVisitors, Html.Raw(localization.AccessLevelToGetVisitors)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.GetVisitorActions, Html.Raw(localization.AccessLevelToGetVisitorActions)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Pages, Html.Raw(localization.AccessLevelToPages)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddPage, Html.Raw(localization.AccessLevelToAddPage)),
 new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditPage, Html.Raw(localization.AccessLevelToEditPage)),

@@ -20,7 +20,7 @@ form#get-visitors > input[type=submit] {
         cursor: pointer;
     }
 
-tr:not(:first-child) {
+tr.with-script {
     cursor: pointer;
 }
 

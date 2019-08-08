@@ -14,7 +14,9 @@
 		"PageNotFoundTemplateId": "0"
 	},
 	"AdminPanelAccessSettings": {
-		"MainPage": "5",
+		"MainPage": "3",
+		"GetVisitors": "3",
+		"GetVisitorActions": "3",
 		"Pages": "5",
 		"AddPage": "5",
 		"EditPage": "5",

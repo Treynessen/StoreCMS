@@ -41,7 +41,7 @@ namespace Treynessen.Controllers
                     case PageType.Product:
                         ProductPage productPage = db.ProductPages.AsNoTracking().FirstOrDefault(pp => pp.ID == visitedPage.VisitedPageId);
                         if (productPage != null)
-                            contentBuilder.Append($"<p>{localization.VisitedCategoryPage}: <b>{productPage.PageName} (ID-{productPage.ID.ToString()})</b></p>\n");
+                            contentBuilder.Append($"<p>{localization.VisitedProductPage}: <b>{productPage.PageName} (ID-{productPage.ID.ToString()})</b></p>\n");
                         break;
                 }
             }

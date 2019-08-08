@@ -9,7 +9,7 @@ namespace Treynessen.Controllers
         [NonAction]
         public IActionResult GetVisitors()
         {
-            return View("GetVisitors", db.Visitors.AsNoTracking().ToArray());
+            return View("MainPage/GetVisitors", db.Visitors.AsNoTracking().ToArray());
         }
     }
 }

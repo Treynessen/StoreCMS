@@ -6,6 +6,8 @@
 
         string AccessLevelSettings { get; }
         string AccessLevelToAdminPanel { get; }
+        string AccessLevelToGetVisitors { get; }
+        string AccessLevelToGetVisitorActions { get; }
         string AccessLevelToPages { get; }
         string AccessLevelToAddPage { get; }
         string AccessLevelToEditPage { get; }

@@ -26,6 +26,8 @@ namespace Treynessen.SettingsManagement
 
             configContentBuilder.Append("\t\"AdminPanelAccessSettings\": {\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.MainPage}\": \"{(model.AccessSettings.MainPage.HasValue ? (int)model.AccessSettings.MainPage.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.GetVisitors}\": \"{(model.AccessSettings.GetVisitors.HasValue ? (int)model.AccessSettings.GetVisitors.Value : (int)AccessLevel.VeryHigh)}\",\n");
+            configContentBuilder.Append($"\t\t\"{AdminPanelPages.GetVisitorActions}\": \"{(model.AccessSettings.GetVisitorActions.HasValue ? (int)model.AccessSettings.GetVisitorActions.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.Pages}\": \"{(model.AccessSettings.Pages.HasValue ? (int)model.AccessSettings.Pages.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.AddPage}\": \"{(model.AccessSettings.AddPage.HasValue ? (int)model.AccessSettings.AddPage.Value : (int)AccessLevel.VeryHigh)}\",\n");
             configContentBuilder.Append($"\t\t\"{AdminPanelPages.EditPage}\": \"{(model.AccessSettings.EditPage.HasValue ? (int)model.AccessSettings.EditPage.Value : (int)AccessLevel.VeryHigh)}\",\n");

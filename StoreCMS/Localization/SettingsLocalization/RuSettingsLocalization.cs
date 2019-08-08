@@ -6,6 +6,8 @@
 
         public string AccessLevelSettings => "Настройка уровней доступа";
         public string AccessLevelToAdminPanel => "Уровень доступа к панели администратора";
+        public string AccessLevelToGetVisitors => "Уровень доступа к получению посетителей";
+        public string AccessLevelToGetVisitorActions => "Уровень доступа к получению действий посетителя";
         public string AccessLevelToPages => "Уровень доступа к списку страниц";
         public string AccessLevelToAddPage => "Уровень доступа к добавлению страницы";
         public string AccessLevelToEditPage => "Уровень доступа к изменению страницы";

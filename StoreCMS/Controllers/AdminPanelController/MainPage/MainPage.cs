@@ -9,7 +9,7 @@ namespace Treynessen.Controllers
         public IActionResult MainPage()
         {
             HttpContext.Items["pageID"] = AdminPanelPages.MainPage;
-            return View("MainPage");
+            return View("MainPage/MainPage");
         }
     }
 }

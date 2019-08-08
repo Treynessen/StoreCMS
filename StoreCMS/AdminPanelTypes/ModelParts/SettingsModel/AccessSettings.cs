@@ -5,6 +5,8 @@ namespace Treynessen.AdminPanelTypes
     public class AccessSettings
     {
         public AccessLevel? MainPage { get; set; }
+        public AccessLevel? GetVisitors { get; set; }
+        public AccessLevel? GetVisitorActions { get; set; }
         public AccessLevel? Pages { get; set; }
         public AccessLevel? Categories { get; set; }
         public AccessLevel? Redirections { get; set; }
