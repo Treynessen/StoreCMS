@@ -13,6 +13,7 @@ using Treynessen.SettingsManagement;
 
 public class Startup
 {
+    public static string Info { get; set; }
     IServiceCollection ser;
 
     public void ConfigureServices(IServiceCollection services)
@@ -40,6 +41,8 @@ public class Startup
 
         services.AddTransient<ILoginFormLocalization>(provider => new RuLoginFormLocalization());
         services.AddTransient<IAdminPanelPageLocalization>(provider => new RuAdminPanelPageLocalization());
+        services.AddTransient<IMainPageLocalization>(provider => new RuMainPageLocalization());
+        services.AddTransient<IVisitorsLocalization>(provider => new RuVisitorsLocalization());
         services.AddTransient<IPagesLocalization>(provider => new RuPagesLocalization());
         services.AddTransient<ICategoriesAndProductsLocalization>(provider => new RuCategoriesAndProductsLocalization());
         services.AddTransient<IRedirectionsLocalization>(provider => new RuRedirectionsLocalization());

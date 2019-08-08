@@ -92,6 +92,10 @@ namespace Treynessen.Controllers
                     return UserProfile();
                 case AdminPanelPages.Settings:
                     return Settings();
+                case AdminPanelPages.GetVisitors:
+                    return GetVisitors();
+                case AdminPanelPages.GetVisitorActions:
+                    return GetVisitorActions(model.itemID);
                 case AdminPanelPages.GetUserLog:
                     return GetUserLog(model.itemID, model.CurrentLogDate, HttpContext);
                 default:

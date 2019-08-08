@@ -69,6 +69,8 @@
         EditSettings,
 
         LoginForm,
+        GetVisitors,
+        GetVisitorActions,
         GetUserLog
     }
 }

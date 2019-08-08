@@ -58,3 +58,4 @@ D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Release\netcoreapp2.1\StoreC
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Release\netcoreapp2.1\Razor\Views\Chunks\45345345.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Release\netcoreapp2.1\Razor\Views\Templates\345.g.cshtml.cs
 D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Release\netcoreapp2.1\Razor\Views\Templates\234.g.cshtml.cs
+D:\Users\trane\Desktop\github\StoreCMS\StoreCMS\obj\Release\netcoreapp2.1\Razor\Views\AdminPanel\GetVisitors.g.cshtml.cs

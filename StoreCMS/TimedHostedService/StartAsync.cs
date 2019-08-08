@@ -10,7 +10,7 @@ namespace Treynessen
         public Task StartAsync(CancellationToken cancellationToken)
         {
             DateTime nextDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
-            timer = new Timer(DailyTask, null, DateTime.Now - nextDay, new TimeSpan(24, 0, 0));
+            timer = new Timer(DailyTask, null, nextDay - DateTime.Now, new TimeSpan(24, 0, 0));
             return Task.CompletedTask;
         }
     }
