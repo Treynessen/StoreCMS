@@ -30,6 +30,7 @@
         public string ProductBreadcrumb => "Название товара";
         public string Price => "Цена";
         public string OldPrice => "Старая цена";
+        public string Barcode => "Штрих-код";
         public string ShortDescription => "Краткое описание";
         public string SpecialProduct => "Специальный товар";
         public string AddParagraphTag => "Добавить тег &lt;p&gt; к строкам";

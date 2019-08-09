@@ -81,6 +81,21 @@
             <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="with-padding">@Html.Raw(p.Value)</a></li>
                 }
             }
+            <li>
+                <form id="exit">
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.Exit)">
+                    <input type="submit" id="exit-button" value="@Html.Raw(localization.Exit)">
+                </form>
+                <script src="/scripts/admin_panel/send_data.js"></script>
+                <script>
+                    function responseFromExitRequest(request) {
+                        if (request.status == 200) {
+                            location.reload();
+                        }
+                    }
+                    document.getElementById('exit-button').addEventListener('click', createSendDataEventHandler('DELETE', 'exit', responseFromExitRequest));
+                </script>
+            </li>
         </ul>
         <content>
             @RenderBody()

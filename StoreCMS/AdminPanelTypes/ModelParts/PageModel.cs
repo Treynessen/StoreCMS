@@ -24,6 +24,7 @@ namespace Treynessen.AdminPanelTypes
         public string ShortDescription { get; set; }
         public bool SpecialProduct { get; set; }
         public bool AddParagraphTag { get; set; }
+        public string Barcode { get; set; }
 
         public bool IsMainPage { get; set; }
     }

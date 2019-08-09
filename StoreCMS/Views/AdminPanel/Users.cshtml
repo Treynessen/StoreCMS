@@ -9,8 +9,7 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/users.css";
     UserType[] userTypes = db.UserTypes.AsNoTracking().ToArray();
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script>
+<script>
                 function errorMsg() {
                     alert('@Html.Raw(localization.IncorrectInput)');
                 }

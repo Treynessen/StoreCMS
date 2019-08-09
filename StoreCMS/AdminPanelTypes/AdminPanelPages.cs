@@ -71,6 +71,8 @@
         LoginForm,
         GetVisitors,
         GetVisitorActions,
-        GetUserLog
+        GetUserLog,
+
+        Exit
     }
 }

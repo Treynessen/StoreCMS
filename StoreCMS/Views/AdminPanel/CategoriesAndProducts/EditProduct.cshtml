@@ -6,8 +6,7 @@
     Context.Items["PageName"] = $"{localization.EditProductPageName} {Model.PageName}";
     Template[] templates = Context.Items["Templates"] as Template[];
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/insert_tab.js"></script>
+<script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="edit-product" class="page-container">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditProduct)">
@@ -33,34 +32,12 @@
                                 <input type="number" id="OldPrice" name="PageModel.OldPrice" min="0" value="@Model?.OldPrice" />
                             </div>
                         </div>
+                        @*BARCODE*@
+                        <label for="Barcode">@Html.Raw(localization.Barcode)</label>
+                        <input type="text" id="Barcode" name="PageModel.Barcode" value="@Model?.Barcode" />
                         @*SHORT DESCRIPTION*@
                         <label for="ShortDescription">@Html.Raw(localization.ShortDescription)</label>
                         <textarea class="short-description" rows="3" id="ShortDescription" name="PageModel.ShortDescription">@Model?.ShortDescription</textarea>
-                        @*IS SPECIAL PRODUCT?*@
-                        <div class="checkbox-block">
-                            @if (Model == null || !Model.SpecialProduct)
-                            {
-                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="false" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="true" checked />
-                            }
-                            <script>
-                                let specialProductCheckbox = document.getElementById('SpecialProduct');
-                                specialProductCheckbox.addEventListener('click', checkboxEventHandler);
-                            </script>
-                            <label for="SpecialProduct">@Html.Raw(localization.SpecialProduct)</label>
-                        </div>
-                        @*ADD PARAGRAPH TAG?*@
-                        <div class="checkbox-block">
-                            <input type="checkbox" id="AddParagraphTag" name="PageModel.AddParagraphTag" value="true" checked />
-                            <script>
-                                let addParagraphTagCheckbox = document.getElementById('AddParagraphTag');
-                                addParagraphTagCheckbox.addEventListener('click', checkboxEventHandler);
-                            </script>
-                            <label for="AddParagraphTag">@Html.Raw(localization.AddParagraphTag)</label>
-                        </div>
                     </div>
                     <div class="right-block">
                         @*TEMPLATE*@
@@ -111,6 +88,22 @@
                             </script>
                             <label for="Published">@Html.Raw(localization.Published)</label>
                         </div>
+                        @*IS SPECIAL PRODUCT?*@
+                        <div class="checkbox-block">
+                            @if (Model == null || !Model.SpecialProduct)
+                            {
+                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="false" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="SpecialProduct" name="PageModel.SpecialProduct" value="true" checked />
+                            }
+                            <script>
+                                let specialProductCheckbox = document.getElementById('SpecialProduct');
+                                specialProductCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="SpecialProduct">@Html.Raw(localization.SpecialProduct)</label>
+                        </div>
                         @*IS INDEX?*@
                         <div class="checkbox-block">
                             @if (Model == null || Model.IsIndex)
@@ -142,6 +135,15 @@
                                 isFollowCheckbox.addEventListener('click', checkboxEventHandler);
                             </script>
                             <label for="IsFollow">@Html.Raw(localization.IsFollow)</label>
+                        </div>
+                        @*ADD PARAGRAPH TAG?*@
+                        <div class="checkbox-block">
+                            <input type="checkbox" id="AddParagraphTag" name="PageModel.AddParagraphTag" value="true" checked />
+                            <script>
+                                let addParagraphTagCheckbox = document.getElementById('AddParagraphTag');
+                                addParagraphTagCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="AddParagraphTag">@Html.Raw(localization.AddParagraphTag)</label>
                         </div>
                     </div>
                 </div>

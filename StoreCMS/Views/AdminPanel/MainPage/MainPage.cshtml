@@ -11,7 +11,6 @@
             <p>@Html.Raw($"{localization.SiteVisitsToday}: <b>{numOfVisitors.ToString()}</b>")</p>
             @if (numOfVisitors > 0 && SecurityFunctions.HasAccessTo(AdminPanelPages.GetVisitors, user, Context))
             {
-            <script src="/scripts/admin_panel/send_data.js"></script>
             <form id="get-visitors">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.GetVisitors)">
                 <input type="submit" id="get-visitors-button" value="@Html.Raw(localization.GetVisitorList)">

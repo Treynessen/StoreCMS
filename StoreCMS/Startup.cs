@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,12 +15,8 @@ using Treynessen.SettingsManagement;
 
 public class Startup
 {
-    public static string Info { get; set; }
-    IServiceCollection ser;
-
     public void ConfigureServices(IServiceCollection services)
     {
-        ser = services;
         services.AddScoped(provider =>
         {
             IHostingEnvironment env = services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>();
@@ -64,15 +62,27 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
-        //app.Use(async (context, next) =>
-        //{
-        //    context.Items["DateTime"] = System.DateTime.Now;
-        //    await next.Invoke();
-        //});
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
+        app.Use(async (context, next) =>
+        {
+            ConfigurationHandler config = context.RequestServices.GetRequiredService<ConfigurationHandler>();
+            Task.Run(() =>
+            {
+                try
+                {
+                    int valueToRun = Convert.ToInt32(config.GetConfigValue("ForcedGarbageCollection:ValueToRun"));
+                    if (valueToRun > 0 && GC.GetTotalMemory(false) / 1000000 >= valueToRun)
+                    {
+                        GC.Collect();
+                    }
+                }
+                catch (FormatException) { }
+            });
+            await next.Invoke();
+        });
         app.UseStaticFiles();
         app.UseMvc(routeBuilder =>
         {

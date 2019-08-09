@@ -86,6 +86,11 @@
         public string BDConnectionSettings => "Настройки подключения к БД";
         public string ConnectionString => "Параметры подключения к БД";
 
+        public string ForcedGarbageCollection => "Принудительная сборка мусора";
+        public string ValueToRun => "Значение для запуска";
+        public string InputZeroToDisable => "0 - для отключения";
+        public string ValueInMegabytes => "Значение в мегабайтах";
+
         public string SaveButton => "Сохранить";
 
         public string SettingsSaved => "Настройки сохранены";

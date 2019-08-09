@@ -8,8 +8,7 @@
     UsualPage[] pages = Context.Items["UsualPages"] as UsualPage[];
     Template[] templates = Context.Items["Templates"] as Template[];
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/insert_tab.js"></script>
+<script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="add-page" class="page-container">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddPage)">

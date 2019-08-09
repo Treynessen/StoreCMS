@@ -16,5 +16,6 @@
         public string SynonymsForStrings => "Синонимы к строкам";
         public string UserProfile => "Профиль";
         public string Settings => "Настройки";
+        public string Exit => "Выйти";
     }
 }

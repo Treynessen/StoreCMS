@@ -86,6 +86,11 @@
         string BDConnectionSettings { get; }
         string ConnectionString { get; }
 
+        string ForcedGarbageCollection { get; }
+        string ValueToRun { get; }
+        string InputZeroToDisable { get; }
+        string ValueInMegabytes { get; }
+
         string SaveButton { get; }
 
         string SettingsSaved { get; }

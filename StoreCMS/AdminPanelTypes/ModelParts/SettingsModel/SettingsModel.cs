@@ -3,6 +3,7 @@
     public class SettingsModel
     {
         public string DbConnectionString { get; set; }
+        public uint ValueToRunForcedGarbageCollection { get; set; }
         public string ProductBlockTemplate { get; set; }
         public int? MaxNumberOfSymbolsInSearchQuery { get; set; }
         public int? SearchPageTemplateId { get; set; }

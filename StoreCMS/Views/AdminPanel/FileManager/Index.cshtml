@@ -9,8 +9,7 @@
     // Key - название, Value - путь
     User user = Context.Items["User"] as User;
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script>
+<script>
                 function fileOrFolderDeletionResponse(request) {
                     if (request.status == 200) {
                         alert('@Html.Raw(localization.Deleted)');

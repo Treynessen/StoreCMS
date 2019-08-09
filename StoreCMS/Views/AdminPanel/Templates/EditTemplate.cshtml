@@ -5,8 +5,7 @@
     Context.Items["PageStyle"] = "/styles/admin_panel/templates/work_with_template.css";
     Context.Items["PageName"] = $"{localization.EditTemplatePageName} {Model?.Name}";
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/insert_tab.js"></script>
+<script src="/scripts/admin_panel/insert_tab.js"></script>
             <form id="edit-template" class="page-container">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)">
                 <input type="hidden" name="itemID" value="@Model.ID">

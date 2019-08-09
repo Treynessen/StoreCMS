@@ -7,8 +7,7 @@
     User user = Context.Items["User"] as User;
     string path = Context.Items["PathToFile"] as string;
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/insert_tab.js"></script>
+<script src="/scripts/admin_panel/insert_tab.js"></script>
             <form id="edit-script" class="page-container">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditScript)" />
                 <input type="hidden" name="path" value="@Html.Raw(path)" />

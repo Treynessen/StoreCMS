@@ -80,6 +80,7 @@ namespace Treynessen.PagesManagement
                     page = productPage;
                     productPage.Price = model.Price;
                     productPage.OldPrice = model.OldPrice;
+                    productPage.Barcode = model.Barcode;
                     productPage.ShortDescription = model.ShortDescription;
                     productPage.SpecialProduct = model.SpecialProduct;
                     productPage.RequestPath = $"{productPage.PreviousPage.RequestPath}/";

@@ -6,7 +6,6 @@
     Context.Items["PageName"] = localization.PageName;
     Context.Items["PageStyle"] = "/styles/admin_panel/user_profile.css";
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditUserData, user, Context))
 {
             <form id="user-data">

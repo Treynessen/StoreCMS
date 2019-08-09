@@ -16,5 +16,6 @@
         string SynonymsForStrings { get; }
         string UserProfile { get; }
         string Settings { get; }
+        string Exit { get; }
     }
 }

@@ -7,8 +7,7 @@
     Context.Items["PageName"] = $"{localization.ProductImagesPageName} {product?.PageName}";
     User user = Context.Items["User"] as User;
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/send_file.js"></script>
+<script src="/scripts/admin_panel/send_file.js"></script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProductImage, user, Context))
 {
             <form id="upload-image" class="upload-image">

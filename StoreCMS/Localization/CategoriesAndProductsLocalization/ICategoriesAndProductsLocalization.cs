@@ -30,6 +30,7 @@
         string ProductBreadcrumb { get; }
         string Price { get; }
         string OldPrice { get; }
+        string Barcode { get; }
         string ShortDescription { get; }
         string SpecialProduct { get; }
         string AddParagraphTag { get; }

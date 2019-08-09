@@ -5,7 +5,7 @@
         public static string GetPasswordHash(string password)
         {
             string salt = "salt";
-            for(int i = 1; i <= 20; ++i)
+            for (int i = 1; i <= 20; ++i)
             {
                 password = GetMd5Hash(password + salt);
             }

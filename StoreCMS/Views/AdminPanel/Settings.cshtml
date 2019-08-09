@@ -93,8 +93,7 @@ Html.Raw($"4 - {localization.HighAccessLevel}"),
 Html.Raw($"5 - {localization.VeryHighAccessLevel}")
 };
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/insert_tab.js"></script>
+<script src="/scripts/admin_panel/insert_tab.js"></script>
             <form id="save-settings">
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                 {
@@ -121,6 +120,21 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                         else
                         {
                         <td><input type="text" value="@Html.Raw(configuration.GetConfigValue("DBSettings:ConnectionString"))" disabled></td>
+                        }
+                        </tr>
+                </table>
+                @*IMMEDIATE GARBAGE COLLECTION*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.ForcedGarbageCollection)</td></tr>
+                    <tr>
+                        <td>@Html.Raw(localization.ValueToRun) (@Html.Raw(localization.InputZeroToDisable))</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="number" name="SettingsModel.ValueToRunForcedGarbageCollection" value="@Html.Raw(configuration.GetConfigValue("ForcedGarbageCollection:ValueToRun"))" placeholder="@Html.Raw(localization.ValueInMegabytes)"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("ForcedGarbageCollection:ValueToRun"))" disabled></td>
                         }
                         </tr>
                 </table>

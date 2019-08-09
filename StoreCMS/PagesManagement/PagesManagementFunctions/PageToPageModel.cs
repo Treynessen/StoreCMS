@@ -27,6 +27,7 @@ namespace Treynessen.PagesManagement
                     model.PageType = PageType.Product;
                     model.Price = pp.Price;
                     model.OldPrice = pp.OldPrice;
+                    model.Barcode = pp.Barcode;
                     model.ShortDescription = pp.ShortDescription;
                     model.SpecialProduct = pp.SpecialProduct;
                     model.PreviousPageID = pp.PreviousPageID;

@@ -13,6 +13,9 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append("{\n\t\"DbSettings\": {\n\t\t\"ConnectionString\": ");
             configContentBuilder.Append($"\"{model.DbConnectionString}\"\n" + "\t},\n");
 
+            configContentBuilder.Append("\t\"ForcedGarbageCollection\": {\n");
+            configContentBuilder.Append($"\t\t\"ValueToRun\": \"{model.ValueToRunForcedGarbageCollection}\"\n" + "\t},\n");
+
             configContentBuilder.Append("\t\"CategoryPageSettings\": {\n");
             configContentBuilder.Append($"\t\t\"NumberOfProductsOnPage\": \"{(model.NumberOfProductsOnPage ?? 1)}\",\n");
             configContentBuilder.Append($"\t\t\"PaginationStyleName\": \"{model.PaginationStyleName}\"\n" + "\t},\n");

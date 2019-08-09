@@ -18,6 +18,11 @@ namespace Treynessen.Controllers
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
             User user = SecurityFunctions.CheckCookies(db, HttpContext);
+            if (pageID == AdminPanelPages.Exit)
+            {
+                DatabaseInteraction.Exit(db, user, HttpContext, out int exitStatusCode);
+                return StatusCode(exitStatusCode);
+            }
             if (!SecurityFunctions.HasAccessTo(pageID, user, HttpContext))
                 return RedirectToAction(nameof(AdminPanel));
 

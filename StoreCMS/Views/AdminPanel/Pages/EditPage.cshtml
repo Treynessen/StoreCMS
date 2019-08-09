@@ -8,8 +8,7 @@
     Template[] templates = Context.Items["Templates"] as Template[];
     bool isMainPage = Context.Items["isMainPage"] == null ? false : (bool)Context.Items["isMainPage"];
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <script src="/scripts/admin_panel/insert_tab.js"></script>
+<script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
             <form id="edit-page" class="page-container">
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditPage)">

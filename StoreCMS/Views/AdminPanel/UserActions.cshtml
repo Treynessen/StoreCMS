@@ -6,8 +6,7 @@
     Context.Items["PageName"] = $"{Model.Login}: {localization.PageName}";
     Context.Items["PageStyle"] = "/styles/admin_panel/user_actions.css";
 }
-<script src="/scripts/admin_panel/send_data.js"></script>
-            <p class="head">@Html.Raw(localization.UserActions)</p>
+<p class="head">@Html.Raw(localization.UserActions)</p>
             @if (Model.AdminPanelLogs.Count > 0)
             {
             <p class="date">@(DateTime.Now.Day.ToString()).@(DateTime.Now.Month.ToString()).@(DateTime.Now.Year.ToString()):</p>

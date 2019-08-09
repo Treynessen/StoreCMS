@@ -46,9 +46,35 @@ div.common-container > ul.menu-block {
                 background-color: #00a8ff;
             }
 
-.with-padding {
-    padding: 2.5% 0;
-}
+        div.common-container > ul.menu-block > li > form#exit > input[type=submit]#exit-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            font-size: 2.2rem;
+            font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+            color: #00599e;
+            font-weight: normal;
+            background-color: #00c0ff;
+            border: unset;
+            border-radius: unset;
+            margin: 0;
+            padding: 2.5% 0;
+            cursor: pointer;
+        }
+
+            div.common-container > ul.menu-block > li > form#exit > input[type=submit]#exit-button:hover {
+                display: block;
+                text-decoration: none;
+                transition-property: background-color;
+                transition-timing-function: ease;
+                transition-duration: 300ms;
+                background-color: #00a8ff;
+            }
+
+        .with-padding {
+            padding: 2.5% 0;
+        }
 
 div.common-container > content {
     flex-grow: 1;
