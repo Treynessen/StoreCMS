@@ -19,7 +19,7 @@ namespace Treynessen.Controllers
             {
                 ConfigurationHandler config = HttpContext.RequestServices.GetService<ConfigurationHandler>();
                 // Получаем список продуктов
-                IQueryable<ProductPage> categoryProducts = db.ProductPages.Where(pp => pp.PreviousPageID == categoryPage.ID);
+                IQueryable<ProductPage> categoryProducts = db.ProductPages.Where(pp => pp.Published && pp.PreviousPageID == categoryPage.ID);
                 // Производим сортировку, если задано значение
                 if (model.Orderby.HasValue)
                 {

@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
-using Treynessen.Localization;
-using Treynessen.LogManagement;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
@@ -25,13 +23,6 @@ namespace Treynessen.Database
             db.ConnectedUsers.Remove(connectedUser);
             db.SaveChanges();
             statusCode = 200;
-
-            LogManagementFunctions.AddAdminPanelLog(
-                db: db,
-                context: context,
-                info: $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn}. IP: {context.Connection.RemoteIpAddress.ToString()}",
-                user: user
-            );
         }
     }
 }

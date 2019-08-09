@@ -39,8 +39,8 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:Content]", Replacement = "@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:PageDescription]", Replacement = "@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:PageKeywords]", Replacement = "@(Model != null ? Html.Raw(Model.PageKeywords) : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:IsIndex]", Replacement = "@(Model != null ? (Model.IsIndex ? \"index\" : \"noindex\") : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:IsFollow]", Replacement = "@(Model != null ? (Model.IsFollow ? \"follow\" : \"nofollow\") : Html.Raw(string.Empty))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:RobotsIndex]", Replacement = "@(Model != null ? (Model.IsIndex ? Html.Raw(\"index\") : Html.Raw(\"noindex\")) : Html.Raw(string.Empty))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:RobotsFollow]", Replacement = "@(Model != null ? (Model.IsFollow ? Html.Raw(\"follow\") : Html.Raw(\"nofollow\")) : Html.Raw(string.Empty))" });
             // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[ProductList]", Replacement = "@{ if (products != null) { foreach (var p in products) { try { @await Html.PartialAsync(@\"" + $"{env.GetProductBlockCshtmlShortPath()}" + "\", p); } catch { } } } }" });
             insertionReplacements.AddLast(new InsertionReplacement

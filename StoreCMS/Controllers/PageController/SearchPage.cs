@@ -68,8 +68,8 @@ namespace Treynessen.Controllers
                     foreach (var s in subSearchQuery)
                     {
                         if (query == null)
-                            query = db.ProductPages.Where(pp => pp.PageName.Contains(s, StringComparison.InvariantCultureIgnoreCase));
-                        else query = query.Where(pp => pp.PageName.Contains(s, StringComparison.InvariantCultureIgnoreCase));
+                            query = db.ProductPages.Where(pp => pp.Published && pp.PageName.Contains(s, StringComparison.InvariantCultureIgnoreCase));
+                        else query = query.Where(pp => pp.Published && pp.PageName.Contains(s, StringComparison.InvariantCultureIgnoreCase));
                     }
                     if (query != null)
                         queries.AddLast(query);
