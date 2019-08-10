@@ -9,7 +9,7 @@ namespace Treynessen.Database.Entities
         public int ID { get; set; }
         [Required]
         public string IPAdress { get; set; }
-        public int IpStringHash { get; set; }
+        public int IPStringHash { get; set; }
         [Required]
         public DateTime FirstVisit { get; set; }
         [Required]

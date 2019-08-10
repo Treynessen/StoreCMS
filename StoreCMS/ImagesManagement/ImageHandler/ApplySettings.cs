@@ -1,10 +1,10 @@
 ﻿using System.IO;
+using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
-using Treynessen.Database;
 using Treynessen.Functions;
 using Treynessen.Extensions;
 
@@ -62,7 +62,11 @@ namespace Treynessen.ImagesManagement
                     Width = (uint)sourceImageWidth.Value
                 };
                 db.Images.Add(image);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException) { }
             }
         }
     }

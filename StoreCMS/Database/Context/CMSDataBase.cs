@@ -36,12 +36,39 @@ namespace Treynessen.Database.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UsualPage>().HasIndex(up => up.RequestPathHash);
-            modelBuilder.Entity<CategoryPage>().HasIndex(cp => cp.RequestPathHash);
-            modelBuilder.Entity<ProductPage>().HasIndex(pp => pp.RequestPathHash);
+            modelBuilder.Entity<UsualPage>(entity =>
+            {
+                entity.HasIndex(up => up.RequestPath).IsUnique();
+                entity.HasIndex(up => up.RequestPathHash);
+            });
+            modelBuilder.Entity<CategoryPage>(entity =>
+            {
+                entity.HasIndex(cp => cp.RequestPath).IsUnique();
+                entity.HasIndex(cp => cp.RequestPathHash);
+            });
+            modelBuilder.Entity<ProductPage>(entity =>
+            {
+                entity.HasIndex(pp => pp.RequestPath).IsUnique();
+                entity.HasIndex(pp => pp.RequestPathHash);
+            });
+            modelBuilder.Entity<Visitor>(entity =>
+            {
+                entity.HasIndex(v => v.IPAdress).IsUnique();
+                entity.HasIndex(v => v.IPStringHash);
+            });
+            modelBuilder.Entity<Image>(entity =>
+            {
+                entity.HasIndex(img => img.ShortPath).IsUnique();
+                entity.HasIndex(img => img.ShortPathHash);
+            });
+            modelBuilder.Entity<ConnectedUser>(entity =>
+            {
+                entity.HasIndex(cu => new { cu.UserName, cu.LoginKey, cu.IPAdress, cu.UserAgent }).IsUnique();
+                entity.HasIndex(cu => cu.UserID).IsUnique();
+            });
+            modelBuilder.Entity<User>().HasIndex(u => u.Login).IsUnique();
+            modelBuilder.Entity<SynonymForString>().HasIndex(sfs => new { sfs.String, sfs.Synonym }).IsUnique();
             modelBuilder.Entity<Redirection>().HasIndex(r => r.RequestPathHash);
-            modelBuilder.Entity<Visitor>().HasIndex(r => r.IpStringHash);
-            modelBuilder.Entity<Image>().HasIndex(img => img.ShortPathHash);
         }
     }
 }

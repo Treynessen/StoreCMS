@@ -49,20 +49,14 @@ namespace Treynessen.ImagesManagement
             for (int i = imageID.Value; i < numOfImages; ++i)
             {
                 RenameImageAndDependencies(
-                            pathToImages: imagesPath,
-                            oldImageName: $"{product.Alias}_{(i + 1).ToString()}",
-                            newImageName: $"{product.Alias}{(i == 0 ? string.Empty : $"_{i.ToString()}")}",
-                            imageExtension: ".jpg"
+                    db: db,
+                    env: env,
+                    pathToImages: imagesPath,
+                    oldImageName: $"{product.Alias}_{(i + 1).ToString()}",
+                    newImageName: $"{product.Alias}{(i == 0 ? string.Empty : $"_{i.ToString()}")}",
+                    imageExtension: ".jpg",
+                    saveChangesInDB: false
                 );
-                string shortPathToImage = $"{shortPathToImages}{product.Alias}_{(i + 1).ToString()}.jpg";
-                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage)
-                && img.ShortPath.Equals(shortPathToImage, StringComparison.Ordinal));
-                if (image != null)
-                {
-                    image.ShortPath = $"{shortPathToImages}{product.Alias}{(i == 0 ? string.Empty : $"_{i.ToString()}")}.jpg";
-                    image.ShortPathHash = OtherFunctions.GetHashFromString(image.ShortPath);
-                    image.FullName = image.ShortPath.Substring(image.ShortPath.LastIndexOf('/') + 1);
-                }
             }
             db.SaveChanges();
             successfullyDeleted = true;

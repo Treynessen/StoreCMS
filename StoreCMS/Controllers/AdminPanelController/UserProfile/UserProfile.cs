@@ -12,6 +12,7 @@ namespace Treynessen.Controllers
             HttpContext.Items["pageID"] = AdminPanelPages.UserProfile;
             User user = HttpContext.Items["User"] as User;
             db.Entry(user).Collection(u => u.AdminPanelLogs).Load();
+            user.AdminPanelLogs.Reverse();
             return View("UserProfile", user.AdminPanelLogs);
         }
     }

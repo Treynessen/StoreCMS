@@ -22,6 +22,7 @@ namespace Treynessen.Controllers
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Users}");
             }
             user.AdminPanelLogs = db.AdminPanelLogs.AsNoTracking().Where(al => al.UserId == user.ID).ToList();
+            user.AdminPanelLogs.Reverse();
             return View("UserActions", user);
         }
     }

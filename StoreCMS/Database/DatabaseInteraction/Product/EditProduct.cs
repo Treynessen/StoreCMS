@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Treynessen.Functions;
 using Treynessen.Extensions;
 using Treynessen.Localization;
 using Treynessen.LogManagement;
@@ -71,26 +70,16 @@ namespace Treynessen.Database
                     {
                         string oldImageName = $"{oldName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
                         string newImageName = $"{newName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";
-                        // Изменяем данные в БД
-                        Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString($"{shortPathToImages}{newImageName}.jpg")
-                        && img.ShortPath.Equals($"{shortPathToImages}{newImageName}.jpg", StringComparison.Ordinal));
-                        if (image != null)
-                            db.Images.Remove(image);
-                        image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString($"{shortPathToImages}{oldImageName}.jpg")
-                        && img.ShortPath.Equals($"{shortPathToImages}{oldImageName}.jpg", StringComparison.Ordinal));
-                        if (image != null)
-                        {
-                            image.ShortPath = image.ShortPath.Replace(oldImageName, newImageName);
-                            image.ShortPathHash = OtherFunctions.GetHashFromString(image.ShortPath);
-                            image.FullName = image.ShortPath.Substring(image.ShortPath.LastIndexOf('/') + 1);
-                        }
                         try
                         {
                             ImagesManagementFunctions.RenameImageAndDependencies(
+                                db: db,
+                                env: env,
                                 pathToImages: pathToImages,
                                 oldImageName: oldImageName,
                                 newImageName: newImageName,
-                                imageExtension: ".jpg"
+                                imageExtension: ".jpg",
+                                saveChangesInDB: false
                             );
                         }
                         catch (IOException)
@@ -103,19 +92,22 @@ namespace Treynessen.Database
                             renameErrors.AddLast(new KeyValuePair<string, string>(oldImageName, newImageName));
                         }
                     }
-                    db.SaveChanges();
                     if (renameErrors.Count > 0)
                     {
                         foreach (var e in renameErrors)
                         {
                             ImagesManagementFunctions.RenameImageAndDependencies(
+                                db: db,
+                                env: env,
                                 pathToImages: pathToImages,
                                 oldImageName: e.Key,
                                 newImageName: e.Value,
-                                imageExtension: ".jpg"
+                                imageExtension: ".jpg",
+                                saveChangesInDB: false
                             );
                         }
                     }
+                    db.SaveChanges();
                 }
             }
             successfullyCompleted = true;

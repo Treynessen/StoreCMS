@@ -27,7 +27,15 @@ namespace Treynessen.Database
 
                 SynonymForString synonymForString = new SynonymForString { String = model.String, Synonym = model.Synonym };
                 db.SynonymsForStrings.Add(synonymForString);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                    successfullyCompleted = false;
+                    return;
+                }
                 successfullyCompleted = true;
 
 

@@ -33,7 +33,15 @@ namespace Treynessen.Database
                 IdleTime = 10,
                 UserTypeID = model.UserTypeId.Value
             };
-            db.Users.Add(user);
+            try
+            {
+                db.Users.Add(user);
+            }
+            catch (DbUpdateException)
+            {
+                statusCode = 409;
+                return;
+            }
             db.SaveChanges();
             statusCode = 201;
 

@@ -15,6 +15,7 @@ namespace Treynessen
             foreach (var user in db.Users.ToArray())
             {
                 db.Entry(user).Collection(u => u.AdminPanelLogs).Load();
+                user.AdminPanelLogs.Reverse();
                 LogManagementFunctions.UserLogsToLogFile(user, DateTime.Now, env.GetLogsFolderFullPath());
                 db.Entry(user).State = EntityState.Detached;
                 foreach(var log in user.AdminPanelLogs)

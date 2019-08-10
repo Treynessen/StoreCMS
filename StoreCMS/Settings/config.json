@@ -1,6 +1,6 @@
 {
 	"DbSettings": {
-		"ConnectionString": "Server=localhost;Database=for_test;Trusted_Connection=True;MultipleActiveResultSets=true;"
+		"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True;MultipleActiveResultSets=true;"
 	},
 	"ForcedGarbageCollection": {
 		"ValueToRun": "100"

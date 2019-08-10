@@ -16,17 +16,28 @@ namespace Treynessen.Controllers
         {
             string ip = HttpContext.Connection.RemoteIpAddress.ToString();
             int ipStringHash = OtherFunctions.GetHashFromString(ip);
-            Visitor visitor = db.Visitors.FirstOrDefault(v => v.IpStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
+            Visitor visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
             if (visitor == null)
             {
                 visitor = new Visitor
                 {
                     IPAdress = ip,
-                    IpStringHash = ipStringHash,
+                    IPStringHash = ipStringHash,
                     FirstVisit = DateTime.Now,
                     LastVisit = DateTime.Now
                 };
                 db.Visitors.Add(visitor);
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                    db.Entry(visitor).State = EntityState.Detached;
+                    // При одновременных запросах от одного пользователя может быть произведено одновременное добавление посетителя в БД,
+                    // поэтому, если выбивает исключение, то отменяем добавление посетителя и производим ещё один поиск в БД
+                    visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
+                }
             }
             else
             {

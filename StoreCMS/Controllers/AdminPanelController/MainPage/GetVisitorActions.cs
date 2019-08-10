@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,10 +20,11 @@ namespace Treynessen.Controllers
             Visitor visitor = db.Visitors.AsNoTracking().FirstOrDefault(v => v.ID == visitorID.Value);
             if (visitor == null)
                 return Content(string.Empty);
-            VisitedPage[] visitedPages = db.VisitedPages.AsNoTracking().Where(vp => vp.VisitorId == visitorID.Value).ToArray();
+            List<VisitedPage> visitedPages = db.VisitedPages.AsNoTracking().Where(vp => vp.VisitorId == visitorID.Value).ToList();
+            visitedPages.Reverse();
             IVisitorsLocalization localization = HttpContext.RequestServices.GetRequiredService<IVisitorsLocalization>();
             StringBuilder contentBuilder = new StringBuilder();
-            if (visitedPages.Length > 0)
+            if (visitedPages.Count > 0)
                 contentBuilder.Append($"<p>{localization.ActionsOfUser} {visitor.IPAdress}:</p>");
             foreach (var visitedPage in visitedPages)
             {
