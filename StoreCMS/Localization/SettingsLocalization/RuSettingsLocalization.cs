@@ -83,9 +83,6 @@
         public string PageNotFoundTemplate => "Шаблон страницы 404";
         public string WithoutTemplate => "Без шаблона";
 
-        public string BDConnectionSettings => "Настройки подключения к БД";
-        public string ConnectionString => "Параметры подключения к БД";
-
         public string ForcedGarbageCollection => "Принудительная сборка мусора";
         public string ValueToRun => "Значение для запуска";
         public string InputZeroToDisable => "0 - для отключения";

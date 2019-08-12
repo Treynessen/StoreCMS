@@ -26,7 +26,15 @@ public class Startup
         services.AddDbContext<CMSDatabase>(options =>
         {
             ConfigurationHandler configHandler = services.BuildServiceProvider().GetRequiredService<ConfigurationHandler>();
-            options.UseSqlServer(configHandler.DbConfiguration["ConnectionString"]);
+            switch (configHandler.DbConfiguration["Database"].ToLower())
+            {
+                case "mssql":
+                    options.UseSqlServer(configHandler.DbConfiguration["ConnectionString"]);
+                    break;
+                case "mysql":
+                    options.UseMySQL(configHandler.DbConfiguration["ConnectionString"]);
+                    break;
+            }
         });
 
         services.AddTransient(provider =>

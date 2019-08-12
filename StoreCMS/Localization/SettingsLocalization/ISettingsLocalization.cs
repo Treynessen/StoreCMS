@@ -83,9 +83,6 @@
         string PageNotFoundTemplate { get; }
         string WithoutTemplate { get; }
 
-        string BDConnectionSettings { get; }
-        string ConnectionString { get; }
-
         string ForcedGarbageCollection { get; }
         string ValueToRun { get; }
         string InputZeroToDisable { get; }

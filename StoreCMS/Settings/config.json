@@ -1,5 +1,6 @@
 {
 	"DbSettings": {
+		"Database": "mssql",
 		"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True;MultipleActiveResultSets=true;"
 	},
 	"ForcedGarbageCollection": {

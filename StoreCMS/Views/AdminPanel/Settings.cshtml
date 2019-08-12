@@ -108,21 +108,6 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                     document.getElementById('ProductBlockTemplate').addEventListener('keydown', insertTabEventHandler);
                 </script>
                 }
-                @*DB SETTINGS*@
-                <table>
-                    <tr><td colspan="2">@Html.Raw(localization.BDConnectionSettings)</td></tr>
-                    <tr>
-                        <td>@Html.Raw(localization.ConnectionString)</td>
-                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
-                        {
-                        <td><input type="text" name="SettingsModel.DbConnectionString" value="@Html.Raw(configuration.GetConfigValue("DBSettings:ConnectionString"))"></td>
-                        }
-                        else
-                        {
-                        <td><input type="text" value="@Html.Raw(configuration.GetConfigValue("DBSettings:ConnectionString"))" disabled></td>
-                        }
-                        </tr>
-                </table>
                 @*IMMEDIATE GARBAGE COLLECTION*@
                 <table>
                     <tr><td colspan="2">@Html.Raw(localization.ForcedGarbageCollection)</td></tr>

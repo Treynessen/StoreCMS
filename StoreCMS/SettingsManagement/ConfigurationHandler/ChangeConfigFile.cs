@@ -10,8 +10,9 @@ namespace Treynessen.SettingsManagement
         public void ChangeConfigFile(SettingsModel model)
         {
             StringBuilder configContentBuilder = new StringBuilder();
-            configContentBuilder.Append("{\n\t\"DbSettings\": {\n\t\t\"ConnectionString\": ");
-            configContentBuilder.Append($"\"{model.DbConnectionString}\"\n" + "\t},\n");
+            configContentBuilder.Append("{\n\t\"DbSettings\": {\n");
+            configContentBuilder.Append($"\t\t\"Database\": \"{DbConfiguration["Database"]}\",\n");
+            configContentBuilder.Append($"\t\t\"ConnectionString\": \"{DbConfiguration["ConnectionString"].Replace("\\", "\\\\")}\"\n" + "\t},\n");
 
             configContentBuilder.Append("\t\"ForcedGarbageCollection\": {\n");
             configContentBuilder.Append($"\t\t\"ValueToRun\": \"{model.ValueToRunForcedGarbageCollection}\"\n" + "\t},\n");
