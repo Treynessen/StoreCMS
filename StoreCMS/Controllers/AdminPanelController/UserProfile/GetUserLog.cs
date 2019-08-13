@@ -21,7 +21,7 @@ namespace Treynessen.Controllers
             if (!userID.HasValue || !currentLogDate.HasValue)
                 return Content(string.Empty);
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-            string pathToLogsFolder = $"{env.GetLogsFolderFullPath()}{userID.Value}\\";
+            string pathToLogsFolder = $"{env.GetLogsFolderFullPath()}{userID.Value}/";
             if(!System.IO.Directory.Exists(pathToLogsFolder))
                 return Content(string.Empty);
             Regex fileNameRegex = new Regex(@"(?<Type1>\d{1,2}).(?<Type2>\d{1,2}).(?<Type3>\d{4}).xml$");

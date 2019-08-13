@@ -50,7 +50,7 @@ namespace Treynessen.ImagesManagement
                     else sourceImage.Save(CreatedImageFullPath);
                 }
             }
-            CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length - 1).Replace('\\', '/');
+            CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length - 1);
             if (addImageInfoToDB)
             {
                 Database.Entities.Image image = new Database.Entities.Image

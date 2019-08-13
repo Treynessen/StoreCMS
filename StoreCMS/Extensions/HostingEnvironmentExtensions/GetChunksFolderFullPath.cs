@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetChunksFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(chunksFolderFullPath))
-                chunksFolderFullPath = $"{env.ContentRootPath}\\Views\\Chunks\\";
+                chunksFolderFullPath = $"{env.ContentRootPath}/Views/Chunks/";
             return chunksFolderFullPath;
         }
     }

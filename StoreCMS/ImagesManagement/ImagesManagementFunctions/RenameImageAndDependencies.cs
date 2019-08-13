@@ -19,8 +19,8 @@ namespace Treynessen.ImagesManagement
             if (string.IsNullOrEmpty(pathToImages) || string.IsNullOrEmpty(oldImageName)
                 || string.IsNullOrEmpty(newImageName) || !Directory.Exists(pathToImages))
                 return;
-            if (!pathToImages[pathToImages.Length - 1].Equals('\\'))
-                pathToImages = pathToImages.Insert(pathToImages.Length, "\\");
+            if (!pathToImages[pathToImages.Length - 1].Equals('/'))
+                pathToImages = pathToImages.Insert(pathToImages.Length, "/");
             string[] images = Directory.GetFiles(pathToImages, $"*{oldImageName}*{imageExtension}");
             Regex regex = new Regex($"{oldImageName}(_\\d+x\\d+)?(_q\\d{{1,3}})?{imageExtension}");
             images = (from img in images
@@ -31,8 +31,8 @@ namespace Treynessen.ImagesManagement
                 string fileEnding = img.Substring(pathToImages.Length + oldImageName.Length);
                 File.Move(img, $"{pathToImages}{newImageName}{fileEnding}");
             }
-            string shortPathToOldImage = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/") + oldImageName + imageExtension;
-            string shortPathToNewImage = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/") + newImageName + imageExtension;
+            string shortPathToOldImage = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/") + oldImageName + imageExtension;
+            string shortPathToNewImage = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/") + newImageName + imageExtension;
             // Изменяем данные в БД
             // Если в БД есть неудаленная информация, то удаляем её
             Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToNewImage) && img.ShortPath.Equals(shortPathToNewImage, StringComparison.Ordinal));

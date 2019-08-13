@@ -76,7 +76,7 @@ namespace Treynessen.Database
                         if (image != null)
                             db.Images.Remove(image);
                     }
-                    string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{p.PreviousPageID}{p.ID}\\";
+                    string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{p.PreviousPageID}{p.ID}/";
                     if (Directory.Exists(pathToImages))
                         Directory.Delete(pathToImages, true);
                 }

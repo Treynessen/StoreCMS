@@ -27,9 +27,9 @@ namespace Treynessen.FileManagerManagement
             redirectPath = path = path.Substring(0, path.Length - fileOrFolderFullName.Length);
             if (!string.IsNullOrEmpty(path))
             {
-                path = path.Replace('>', '\\');
-                if (!path[path.Length - 1].Equals('\\'))
-                    path = path.Insert(path.Length, "\\");
+                path = path.Replace('>', '/');
+                if (!path[path.Length - 1].Equals('/'))
+                    path = path.Insert(path.Length, "/");
                 if (redirectPath[redirectPath.Length - 1].Equals('>'))
                     redirectPath = redirectPath.Substring(0, redirectPath.Length - 1);
             }
@@ -92,12 +92,12 @@ namespace Treynessen.FileManagerManagement
                 LogManagementFunctions.AddAdminPanelLog(
                     db: db,
                     context: context,
-                    info: $"{pathToFile}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileDeleted}"
+                    info: $"{pathToFile.Substring(env.GetStorageFolderFullPath().Length - 1)}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileDeleted}"
                 );
             }
             else
             {
-                string pathToFolder = $"{path}{fileOrFolderFullName}\\";
+                string pathToFolder = $"{path}{fileOrFolderFullName}/";
                 if (!Directory.Exists(pathToFolder))
                 {
                     redirectPath = null;
@@ -115,7 +115,7 @@ namespace Treynessen.FileManagerManagement
                 LogManagementFunctions.AddAdminPanelLog(
                     db: db,
                     context: context,
-                    info: $"{pathToFolder}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FolderDeleted}"
+                    info: $"{pathToFolder.Substring(env.GetStorageFolderFullPath().Length - 1)}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FolderDeleted}"
                 );
             }
         }

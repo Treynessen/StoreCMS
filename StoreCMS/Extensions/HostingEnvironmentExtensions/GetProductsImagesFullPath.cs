@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetProductsImagesFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(productsImagesFolderFullPath))
-                productsImagesFolderFullPath = $"{env.GetImagesFolderFullPath()}products\\";
+                productsImagesFolderFullPath = $"{env.GetImagesFolderFullPath()}products/";
             return productsImagesFolderFullPath;
         }
     }

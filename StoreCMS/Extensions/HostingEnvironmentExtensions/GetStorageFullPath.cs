@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetStorageFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(storageFolderFullPath))
-                storageFolderFullPath = $"{env.ContentRootPath}\\Storage\\";
+                storageFolderFullPath = $"{env.ContentRootPath}/Storage/";
             return storageFolderFullPath;
         }
     }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Treynessen;
 using Treynessen.Translit;
 using Treynessen.Security;
@@ -32,7 +33,7 @@ public class Startup
                     options.UseSqlServer(configHandler.DbConfiguration["ConnectionString"]);
                     break;
                 case "mysql":
-                    options.UseMySQL(configHandler.DbConfiguration["ConnectionString"]);
+                    options.UseMySql(configHandler.DbConfiguration["ConnectionString"]);
                     break;
             }
         });

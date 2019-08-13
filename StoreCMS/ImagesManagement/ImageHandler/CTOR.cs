@@ -28,10 +28,9 @@ namespace Treynessen.ImagesManagement
         {
             this.db = db;
             this.env = env;
-            pathToImage = pathToImage.Replace('/', '\\');
-            if (pathToImage[pathToImage.Length - 1].Equals('\\'))
+            if (pathToImage[pathToImage.Length - 1].Equals('/'))
                 return;
-            pathToImageFolder = pathToImage.Substring(0, pathToImage.LastIndexOf('\\') + 1);
+            pathToImageFolder = pathToImage.Substring(0, pathToImage.LastIndexOf('/') + 1);
             sourceImageName = pathToImage.Substring(pathToImageFolder.Length);
             if (!sourceImageName.Contains("."))
                 return;
@@ -43,14 +42,14 @@ namespace Treynessen.ImagesManagement
                 return;
             if (!itsFullPath)
             {
-                if (pathToImageFolder[0].Equals('\\'))
+                if (pathToImageFolder[0].Equals('/'))
                     pathToImageFolder = pathToImageFolder.Substring(1);
                 pathToImageFolder = env.GetStorageFolderFullPath() + pathToImageFolder;
             }
             sourceImageFullName = sourceImageName + sourceImageExtension;
             sourceImageFullPath = pathToImageFolder + sourceImageFullName;
             isExisted = File.Exists(sourceImageFullPath);
-            sourceImageShortPath = sourceImageFullPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
+            sourceImageShortPath = sourceImageFullPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
             // Если изображения не существует, то удаляем зависимые изображения, если таковые имеются и информацию из БД
             if (!isExisted)
             {

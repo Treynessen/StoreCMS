@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetScriptsFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(scriptsFolderFullPath))
-                scriptsFolderFullPath = $"{env.GetStorageFolderFullPath()}scripts\\";
+                scriptsFolderFullPath = $"{env.GetStorageFolderFullPath()}scripts/";
             return scriptsFolderFullPath;
         }
     }

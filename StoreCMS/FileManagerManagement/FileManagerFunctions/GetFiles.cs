@@ -64,7 +64,7 @@ namespace Treynessen.FileManagerManagement
             })
             .Select(pathToFile =>
             {
-                string shortPath = pathToFile.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '>');
+                string shortPath = pathToFile.Substring(env.GetStorageFolderFullPath().Length).Replace('/', '>');
                 string fileName = shortPath.Substring(shortPath.LastIndexOf('>') + 1);
                 string fileExtension = fileName.Substring(fileName.LastIndexOf('.'));
                 string name = fileName.Substring(0, fileName.Length - fileExtension.Length);

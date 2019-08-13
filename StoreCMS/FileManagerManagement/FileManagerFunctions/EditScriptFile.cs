@@ -29,9 +29,9 @@ namespace Treynessen.FileManagerManagement
             path = path.Substring(0, path.Length - scriptFileFullName.Length);
             if (!string.IsNullOrEmpty(path))
             {
-                path = path.Replace('>', '\\');
-                if (!path[path.Length - 1].Equals('\\'))
-                    path = path.Insert(path.Length, "\\");
+                path = path.Replace('>', '/');
+                if (!path[path.Length - 1].Equals('/'))
+                    path = path.Insert(path.Length, "/");
             }
             path = $"{env.GetStorageFolderFullPath()}{path}";
             string pathToFile = path + scriptFileFullName;
@@ -59,12 +59,12 @@ namespace Treynessen.FileManagerManagement
                 writer.Write(model.FileContent);
             }
             successfullyCompleted = true;
-            redirectPath = scriptFileFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('\\', '>');
+            redirectPath = scriptFileFullPath.Substring(env.GetStorageFolderFullPath().Length).Replace('/', '>');
 
             LogManagementFunctions.AddAdminPanelLog(
                 db: db,
                 context: context,
-                info: $"{pathToFile}{(!oldScriptFileName.Equals(model.FileName, StringComparison.Ordinal) ? $" -> {scriptFileFullPath}" : string.Empty)}: " +
+                info: $"{pathToFile.Substring(env.GetStorageFolderFullPath().Length - 1)}{(!oldScriptFileName.Equals(model.FileName, StringComparison.Ordinal) ? $" -> {scriptFileFullPath.Substring(env.GetStorageFolderFullPath().Length - 1)}" : string.Empty)}: " +
                 $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileEdited}"
             );
         }

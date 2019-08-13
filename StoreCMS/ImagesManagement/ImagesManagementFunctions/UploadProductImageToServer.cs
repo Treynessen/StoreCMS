@@ -34,7 +34,7 @@ namespace Treynessen.ImagesManagement
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
+            string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}/";
             Directory.CreateDirectory(imagesPath);
             string fullImageName = FileManagerManagementFunctions.GetUniqueFileOrFolderName(imagesPath, product.Alias, ".jpg");
             string pathToFile = $"{imagesPath}{fullImageName}";
@@ -47,7 +47,7 @@ namespace Treynessen.ImagesManagement
                         // Если остались зависимости от предыдущего изображения, то удаляем их
                         DeleteDependentImages(imagesPath, fullImageName);
                         // Добавляем или изменяем информацию в БД
-                        string shortPathToImage = pathToFile.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
+                        string shortPathToImage = pathToFile.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
                         Database.Entities.Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage)
                         && img.ShortPath.Equals(shortPathToImage, StringComparison.Ordinal));
                         if (image == null)

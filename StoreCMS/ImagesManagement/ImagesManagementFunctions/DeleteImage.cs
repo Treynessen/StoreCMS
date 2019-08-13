@@ -15,8 +15,8 @@ namespace Treynessen.ImagesManagement
         {
             if (string.IsNullOrEmpty(pathToImageFolder) || string.IsNullOrEmpty(imageFullName))
                 return;
-            if (!pathToImageFolder[pathToImageFolder.Length - 1].Equals('\\'))
-                pathToImageFolder = pathToImageFolder.Insert(pathToImageFolder.Length, "\\");
+            if (!pathToImageFolder[pathToImageFolder.Length - 1].Equals('/'))
+                pathToImageFolder = pathToImageFolder.Insert(pathToImageFolder.Length, "/");
             if (!Directory.Exists(pathToImageFolder))
                 return;
             string pathToFile = $"{pathToImageFolder}{imageFullName}";
@@ -24,7 +24,7 @@ namespace Treynessen.ImagesManagement
                 return;
             File.Delete(pathToFile);
             // Удаляем информацию об изображении из БД
-            string shortPathToImage = pathToImageFolder.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/") + imageFullName;
+            string shortPathToImage = pathToImageFolder.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/") + imageFullName;
             Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage) && img.ShortPath.Equals(shortPathToImage, StringComparison.Ordinal));
             if (image != null)
             {

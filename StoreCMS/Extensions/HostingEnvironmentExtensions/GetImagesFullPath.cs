@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetImagesFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(imagesFolderFullPath))
-                imagesFolderFullPath = $"{env.GetStorageFolderFullPath()}images\\";
+                imagesFolderFullPath = $"{env.GetStorageFolderFullPath()}images/";
             return imagesFolderFullPath;
         }
     }

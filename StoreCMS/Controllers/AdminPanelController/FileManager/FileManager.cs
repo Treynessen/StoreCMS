@@ -27,7 +27,7 @@ namespace Treynessen.Controllers
                 Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*$");
                 if (!regex.IsMatch(path))
                     return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.FileManager}");
-                fullPath = env.GetStorageFolderFullPath() + path.Replace('>', '\\').Insert(path.Length, "\\");
+                fullPath = env.GetStorageFolderFullPath() + path.Replace('>', '/').Insert(path.Length, "/");
             }
             // Проверяем можно ли зайти в текущую директорию
             if(!FileManagerManagementFunctions.HasAccessToFolder(fullPath, env))

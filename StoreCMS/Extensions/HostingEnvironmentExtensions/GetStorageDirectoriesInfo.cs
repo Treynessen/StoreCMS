@@ -16,9 +16,9 @@ namespace Treynessen.Extensions
                     new DirectoryInfo(GetImagesFolderFullPath(env), true, true),
                     new DirectoryInfo(GetProductsImagesFolderFullPath(env), false, false),
                     new DirectoryInfo(GetStylesFolderFullPath(env), true, true),
-                    new DirectoryInfo($"{GetStylesFolderFullPath(env)}admin_panel\\", false, false),
+                    new DirectoryInfo($"{GetStylesFolderFullPath(env)}admin_panel/", false, false),
                     new DirectoryInfo(GetScriptsFolderFullPath(env), true, true),
-                    new DirectoryInfo($"{GetScriptsFolderFullPath(env)}admin_panel\\", false, false)
+                    new DirectoryInfo($"{GetScriptsFolderFullPath(env)}admin_panel/", false, false)
                 };
             }
             return storageDirectoriesInfo;

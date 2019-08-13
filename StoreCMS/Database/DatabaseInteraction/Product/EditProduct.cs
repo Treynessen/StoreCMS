@@ -50,7 +50,7 @@ namespace Treynessen.Database
             if (!editableProduct.Alias.Equals(editedProduct.Alias, StringComparison.Ordinal))
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{editedProduct.PreviousPageID}{editedProduct.ID}\\";
+                string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{editedProduct.PreviousPageID}{editedProduct.ID}/";
                 if (Directory.Exists(pathToImages))
                 {
                     string oldName = editableProduct.Alias;
@@ -65,7 +65,7 @@ namespace Treynessen.Database
                     // изображения. В итоге замена имени через File.Move(старый_путь, старый_путь.Replace(oldName, newName))
                     // может привести к переносу изображений в другую директорию.
                     LinkedList<KeyValuePair<string, string>> renameErrors = new LinkedList<KeyValuePair<string, string>>();
-                    string shortPathToImages = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
+                    string shortPathToImages = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
                     for (int i = 0; i < numOfImages; ++i)
                     {
                         string oldImageName = $"{oldName}{(i == 0 ? string.Empty : $"_{i.ToString()}")}";

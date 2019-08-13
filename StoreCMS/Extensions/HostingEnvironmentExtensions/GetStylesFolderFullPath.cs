@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetStylesFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(stylesFolderFullPath))
-                stylesFolderFullPath = $"{env.GetStorageFolderFullPath()}styles\\";
+                stylesFolderFullPath = $"{env.GetStorageFolderFullPath()}styles/";
             return stylesFolderFullPath;
         }
     }

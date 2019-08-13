@@ -24,9 +24,9 @@ namespace Treynessen.Controllers
             path = path.Substring(0, path.Length - scriptFileFullName.Length);
             if (!string.IsNullOrEmpty(path))
             {
-                path = path.Replace('>', '\\');
-                if (!path[path.Length - 1].Equals('\\'))
-                    path = path.Insert(path.Length, "\\");
+                path = path.Replace('>', '/');
+                if (!path[path.Length - 1].Equals('/'))
+                    path = path.Insert(path.Length, "/");
             }
             path = $"{env.GetStorageFolderFullPath()}{path}";
             string pathToFile = path + scriptFileFullName;

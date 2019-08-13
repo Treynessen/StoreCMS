@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetConfigsFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(configsFolderFullPath))
-                configsFolderFullPath = $"{env.ContentRootPath}\\Settings\\";
+                configsFolderFullPath = $"{env.ContentRootPath}/Settings/";
             return configsFolderFullPath;
         }
     }

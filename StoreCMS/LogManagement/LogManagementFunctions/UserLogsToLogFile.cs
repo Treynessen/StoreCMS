@@ -9,7 +9,7 @@ namespace Treynessen.LogManagement
     {
         public static void UserLogsToLogFile(User user, DateTime currentDay, string pathToLogsFolder)
         {
-            string pathToUserLogs = $"{pathToLogsFolder}{user.ID.ToString()}\\";
+            string pathToUserLogs = $"{pathToLogsFolder}{user.ID.ToString()}/";
             if (!Directory.Exists(pathToUserLogs))
                 Directory.CreateDirectory(pathToUserLogs);
             DateTime previousDay = DateTime.Now.AddDays(-1);

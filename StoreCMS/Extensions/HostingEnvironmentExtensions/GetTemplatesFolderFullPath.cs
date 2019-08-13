@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetTemplatesFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(templatesFolderFullPath))
-                templatesFolderFullPath = $"{env.ContentRootPath}\\Views\\Templates\\";
+                templatesFolderFullPath = $"{env.ContentRootPath}/Views/Templates/";
             return templatesFolderFullPath;
         }
     }

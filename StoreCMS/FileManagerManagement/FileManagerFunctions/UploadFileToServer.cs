@@ -29,9 +29,9 @@ namespace Treynessen.FileManagerManagement
                     successfulUpload = false;
                     return;
                 }
-                path = path.Replace('>', '\\');
-                if (!path[path.Length - 1].Equals('\\'))
-                    path = path.Insert(path.Length, "\\");
+                path = path.Replace('>', '/');
+                if (!path[path.Length - 1].Equals('/'))
+                    path = path.Insert(path.Length, "/");
                 path = $"{env.GetStorageFolderFullPath()}{path}";
             }
             if (!Directory.Exists(path) || !HasAccessToFolder(path, env))
@@ -74,7 +74,7 @@ namespace Treynessen.FileManagerManagement
             LogManagementFunctions.AddAdminPanelLog(
                 db: db,
                 context: context,
-                info: $"{fileName}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileUploadedTo} {path}"
+                info: $"{fileName}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FileUploadedTo} {path.Substring(env.GetStorageFolderFullPath().Length - 1)}"
             );
         }
     }

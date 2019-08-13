@@ -15,20 +15,20 @@ namespace Treynessen.FileManagerManagement
             return Directory.GetDirectories(path)
             .Where(directory =>
             {
-                if (!directory[directory.Length - 1].Equals('\\'))
-                    directory = directory.Insert(directory.Length, "\\");
+                if (!directory[directory.Length - 1].Equals('/'))
+                    directory = directory.Insert(directory.Length, "/");
                 return HasAccessToFolder(directory, env);
             })
             .Select(directory =>
             {
                 string shortPathToFolder = directory.Substring(env.GetStorageFolderFullPath().Length);
-                if (shortPathToFolder[shortPathToFolder.Length - 1].Equals('\\'))
+                if (shortPathToFolder[shortPathToFolder.Length - 1].Equals('/'))
                     shortPathToFolder = shortPathToFolder.Substring(0, shortPathToFolder.Length - 1);
-                string folderName = shortPathToFolder.Substring(shortPathToFolder.LastIndexOf('\\') + 1);
-                shortPathToFolder = shortPathToFolder.Replace('\\', '>');
+                string folderName = shortPathToFolder.Substring(shortPathToFolder.LastIndexOf('/') + 1);
+                shortPathToFolder = shortPathToFolder.Replace('/', '>');
                 bool canDelete = true;
-                if (!directory[directory.Length - 1].Equals('\\'))
-                    directory = directory.Insert(directory.Length, "\\");
+                if (!directory[directory.Length - 1].Equals('/'))
+                    directory = directory.Insert(directory.Length, "/");
                 foreach (var directoryInfo in env.GetStorageDirectoriesInfo())
                 {
                     if (directory.Equals(directoryInfo.Path, StringComparison.OrdinalIgnoreCase))

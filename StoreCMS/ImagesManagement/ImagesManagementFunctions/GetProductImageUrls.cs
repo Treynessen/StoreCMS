@@ -15,7 +15,7 @@ namespace Treynessen.ImagesManagement
             string[] productImages = new string[0];
             if (product != null)
             {
-                string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID}{product.ID}\\";
+                string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID}{product.ID}/";
                 if (Directory.Exists(imagesPath))
                 {
                     productImages = Directory.GetFiles(imagesPath, $"*{product.Alias}*.jpg");
@@ -26,7 +26,7 @@ namespace Treynessen.ImagesManagement
                                          where regex.IsMatch(img)
                                          let imageNameEnding = regex.Match(img).Value.Substring(product.Alias.Length)
                                          orderby imageNameEnding.Length == 4 ? 0 : Convert.ToInt32(imageNameEnding.Substring(1, imageNameEnding.IndexOf('.') - 1))
-                                         select img.Substring(env.GetStorageFolderFullPath().Length - 1).Replace('\\', '/')).Skip(skipImages).ToArray();
+                                         select img.Substring(env.GetStorageFolderFullPath().Length - 1)).Skip(skipImages).ToArray();
                     }
                 }
             }

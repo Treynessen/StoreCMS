@@ -31,7 +31,7 @@ namespace Treynessen.ImagesManagement
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}\\";
+            string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}/";
             string imageFullName = $"{product.Alias}{(imageID == 0 ? string.Empty : $"_{imageID.Value}")}.jpg";
             if (!File.Exists(imagesPath + imageFullName))
             {
@@ -45,7 +45,7 @@ namespace Treynessen.ImagesManagement
             int numOfImages = (from img in images
                                where imagesChecker.IsMatch(img)
                                select img).Count();
-            string shortPathToImages = imagesPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Replace('\\', '/').Insert(0, "/");
+            string shortPathToImages = imagesPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
             for (int i = imageID.Value; i < numOfImages; ++i)
             {
                 RenameImageAndDependencies(

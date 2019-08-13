@@ -30,7 +30,7 @@ namespace Treynessen.Database
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-            string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID}{product.ID}\\";
+            string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID}{product.ID}/";
             if (Directory.Exists(pathToImages))
                 Directory.Delete(pathToImages, true);
             // Удаляем данные об изображениях из БД

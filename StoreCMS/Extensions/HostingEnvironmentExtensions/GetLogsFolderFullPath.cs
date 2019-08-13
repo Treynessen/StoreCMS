@@ -8,7 +8,7 @@ namespace Treynessen.Extensions
         public static string GetLogsFolderFullPath(this IHostingEnvironment env)
         {
             if (string.IsNullOrEmpty(logsFolderFullPath))
-                logsFolderFullPath = $"{env.ContentRootPath}\\Logs\\";
+                logsFolderFullPath = $"{env.ContentRootPath}/Logs/";
             return logsFolderFullPath;
         }
     }
