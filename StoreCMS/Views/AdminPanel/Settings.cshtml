@@ -115,7 +115,7 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                         <td>@Html.Raw(localization.ValueToRun) (@Html.Raw(localization.InputZeroToDisable))</td>
                         @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                         {
-                        <td class="without-padding"><input type="number" name="SettingsModel.ValueToRunForcedGarbageCollection" value="@Html.Raw(configuration.GetConfigValue("ForcedGarbageCollection:ValueToRun"))" placeholder="@Html.Raw(localization.ValueInMegabytes)"></td>
+                        <td class="without-padding"><input type="number" name="SettingsModel.ValueToRunForcedGarbageCollection" value="@Html.Raw(configuration.GetConfigValue("ForcedGarbageCollectionSettings:ValueToRun"))" placeholder="@Html.Raw(localization.ValueInMegabytes)"></td>
                         }
                         else
                         {

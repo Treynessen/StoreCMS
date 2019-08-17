@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Treynessen;
 using Treynessen.Translit;
 using Treynessen.Security;
@@ -67,6 +67,8 @@ public class Startup
         services.AddHostedService<TimedHostedService>();
 
         services.AddMvc();
+
+        services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders =ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -75,6 +77,7 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+        app.UseForwardedHeaders();
         app.Use(async (context, next) =>
         {
             ConfigurationHandler config = context.RequestServices.GetRequiredService<ConfigurationHandler>();
@@ -82,7 +85,7 @@ public class Startup
             {
                 try
                 {
-                    int valueToRun = Convert.ToInt32(config.GetConfigValue("ForcedGarbageCollection:ValueToRun"));
+                    int valueToRun = Convert.ToInt32(config.GetConfigValue("ForcedGarbageCollectionSettings:ValueToRun"));
                     if (valueToRun > 0 && GC.GetTotalMemory(false) / 1000000 >= valueToRun)
                     {
                         GC.Collect();

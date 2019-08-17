@@ -74,6 +74,7 @@ namespace Treynessen.Database
                 else if (editedPage is CategoryPage cp)
                 {
                     cp.ProductsCount = (editablePage as CategoryPage).ProductsCount;
+                    cp.LastProductTemplateID = (editablePage as CategoryPage).LastProductTemplateID;
                 }
             }
             else

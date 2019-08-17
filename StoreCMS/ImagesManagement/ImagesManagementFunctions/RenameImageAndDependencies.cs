@@ -31,8 +31,8 @@ namespace Treynessen.ImagesManagement
                 string fileEnding = img.Substring(pathToImages.Length + oldImageName.Length);
                 File.Move(img, $"{pathToImages}{newImageName}{fileEnding}");
             }
-            string shortPathToOldImage = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/") + oldImageName + imageExtension;
-            string shortPathToNewImage = pathToImages.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/") + newImageName + imageExtension;
+            string shortPathToOldImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + oldImageName + imageExtension;
+            string shortPathToNewImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + newImageName + imageExtension;
             // Изменяем данные в БД
             // Если в БД есть неудаленная информация, то удаляем её
             Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToNewImage) && img.ShortPath.Equals(shortPathToNewImage, StringComparison.Ordinal));

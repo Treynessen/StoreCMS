@@ -32,7 +32,7 @@ namespace Treynessen.ImagesManagement
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
             string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}/";
-            string imageFullName = $"{product.Alias}{(imageID == 0 ? string.Empty : $"_{imageID.Value}")}.jpg";
+            string imageFullName = $"{product.Alias}{(imageID == 1 ? string.Empty : $"_{imageID.Value}")}.jpg";
             if (!File.Exists(imagesPath + imageFullName))
             {
                 successfullyDeleted = false;
@@ -45,15 +45,15 @@ namespace Treynessen.ImagesManagement
             int numOfImages = (from img in images
                                where imagesChecker.IsMatch(img)
                                select img).Count();
-            string shortPathToImages = imagesPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
-            for (int i = imageID.Value; i < numOfImages; ++i)
+            string shortPathToImages = imagesPath.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/");
+            for (int i = imageID.Value; i <= numOfImages; ++i)
             {
                 RenameImageAndDependencies(
                     db: db,
                     env: env,
                     pathToImages: imagesPath,
                     oldImageName: $"{product.Alias}_{(i + 1).ToString()}",
-                    newImageName: $"{product.Alias}{(i == 0 ? string.Empty : $"_{i.ToString()}")}",
+                    newImageName: $"{product.Alias}{(i == 1 ? string.Empty : $"_{i.ToString()}")}",
                     imageExtension: ".jpg",
                     saveChangesInDB: false
                 );

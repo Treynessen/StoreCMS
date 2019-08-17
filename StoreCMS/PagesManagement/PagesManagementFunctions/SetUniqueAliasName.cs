@@ -32,8 +32,9 @@ namespace Treynessen.PagesManagement
                 .Where(pp => pp.GetType() == page.GetType() ? pp.ID != page.ID : true)
                 .Select(pp => pp.RequestPath).ToList();
 
-            int index = 0;
+            int index = 1;
             bool has = false;
+            bool putUnderscore = false;
             string currentPath = page.RequestPath;
 
             do
@@ -43,13 +44,7 @@ namespace Treynessen.PagesManagement
                 CancellationTokenSource productPageTokenSource = new CancellationTokenSource();
 
                 has = false;
-                string checkPath = $"{currentPath}{(index == 0 ? string.Empty : index.ToString())}";
-                if (index == int.MaxValue)
-                {
-                    page.Alias += index.ToString();
-                    currentPath = page.RequestPath;
-                    index = 1;
-                }
+                string checkPath = $"{currentPath}{(index == 1 && !putUnderscore ? string.Empty : index.ToString())}";
 
                 var hasInUsualPagesTask = ContainedInCollection(usualPageUrls, checkPath, usualPageTokenSource.Token, categoryPageTokenSource, productPageTokenSource);
                 var hasInCategoryPagesTask = ContainedInCollection(categoryPageUrls, checkPath, categoryPageTokenSource.Token, usualPageTokenSource, productPageTokenSource);
@@ -58,17 +53,24 @@ namespace Treynessen.PagesManagement
                 if (hasInUsualPagesTask.Result || hasInCategoryPagesTask.Result || hasInProductPagesTask.Result)
                     has = true;
 
-                if (has && index == 0)
+                if (has && !putUnderscore && index == 1)
                 {
-                    page.RequestPath = page.RequestPath.Substring(0, page.RequestPath.Length - page.Alias.Length);
+                    int oldAliasLength = page.Alias.Length;
                     page.Alias = OtherFunctions.GetNameWithUnderscore(page.Alias);
-                    page.RequestPath += page.Alias;
+                    page.RequestPath = page.RequestPath.Substring(0, page.RequestPath.Length - oldAliasLength) + page.Alias;
                     currentPath = page.RequestPath;
+                    putUnderscore = true;
                 }
-                if (!has && index != 0)
+                if (!has && !(index == 1 && !putUnderscore))
                 {
                     page.Alias += index.ToString();
-                    page.RequestPath = currentPath + index.ToString();
+                    page.RequestPath = checkPath;
+                }
+                if (index == int.MaxValue)
+                {
+                    page.Alias += index.ToString();
+                    currentPath = checkPath;
+                    index = 0;
                 }
                 ++index;
                 usualPageTokenSource.Dispose();

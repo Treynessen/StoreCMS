@@ -3,7 +3,10 @@
 		"Database": "mssql",
 		"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True;MultipleActiveResultSets=true;"
 	},
-	"ForcedGarbageCollection": {
+	"LanguageSettings": {
+		"CurrentLanguage": "ru-RU"
+	},
+	"ForcedGarbageCollectionSettings": {
 		"ValueToRun": "100"
 	},
 	"CategoryPageSettings": {

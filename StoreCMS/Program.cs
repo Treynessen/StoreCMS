@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Globalization;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
+using Treynessen.SettingsManagement;
 
 public class Program
 {
@@ -17,6 +19,12 @@ public class Program
             .Build();
         using (var scope = host.Services.CreateScope())
         {
+            ConfigurationHandler config = scope.ServiceProvider.GetRequiredService<ConfigurationHandler>();
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(config.GetConfigValue("LanguageSettings:CurrentLanguage"));
+            }
+            catch { }
             CMSDatabase db = scope.ServiceProvider.GetRequiredService<CMSDatabase>();
             SetDeafaultUserType(db);
             SetDeafaultUser(db);

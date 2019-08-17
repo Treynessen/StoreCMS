@@ -44,7 +44,7 @@ namespace Treynessen.Controllers
             string logData = OtherFunctions.GetFileContent($"{pathToLogsFolder}{fileName}.xml");
             StringBuilder contentBuilder = new StringBuilder();
             contentBuilder.Append($"<p class=\"date\">{fileName}:</p>");
-            Regex logRegex = new Regex("<event time=\"(?<Type1>\\d{1,2}:\\d{2})\"><detail>(?<Type2>.*)</detail></event>");
+            Regex logRegex = new Regex("<event time=\"(?<Type1>.*)\"><detail>(?<Type2>.*)</detail></event>");
             foreach (var match in logRegex.Matches(logData) as IEnumerable<Match>)
             {
                 contentBuilder.Append($"<p class=\"log\"><b>{match.Groups[1].Value}</b> - {match.Groups[2].Value}</p>\n");

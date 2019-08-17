@@ -14,7 +14,10 @@ namespace Treynessen.SettingsManagement
             configContentBuilder.Append($"\t\t\"Database\": \"{DbConfiguration["Database"]}\",\n");
             configContentBuilder.Append($"\t\t\"ConnectionString\": \"{DbConfiguration["ConnectionString"].Replace("\\", "\\\\")}\"\n" + "\t},\n");
 
-            configContentBuilder.Append("\t\"ForcedGarbageCollection\": {\n");
+            configContentBuilder.Append("\t\"LanguageSettings\": {\n");
+            configContentBuilder.Append($"\t\t\"CurrentLanguage\": \"{configuration["LanguageSettings:CurrentLanguage"]}\"\n" + "\t},\n");
+
+            configContentBuilder.Append("\t\"ForcedGarbageCollectionSettings\": {\n");
             configContentBuilder.Append($"\t\t\"ValueToRun\": \"{model.ValueToRunForcedGarbageCollection}\"\n" + "\t},\n");
 
             configContentBuilder.Append("\t\"CategoryPageSettings\": {\n");

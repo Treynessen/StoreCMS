@@ -47,7 +47,7 @@ namespace Treynessen.ImagesManagement
                         // Если остались зависимости от предыдущего изображения, то удаляем их
                         DeleteDependentImages(imagesPath, fullImageName);
                         // Добавляем или изменяем информацию в БД
-                        string shortPathToImage = pathToFile.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
+                        string shortPathToImage = pathToFile.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/");
                         Database.Entities.Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage)
                         && img.ShortPath.Equals(shortPathToImage, StringComparison.Ordinal));
                         if (image == null)

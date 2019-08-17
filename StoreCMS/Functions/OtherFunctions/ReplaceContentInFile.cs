@@ -6,7 +6,8 @@ namespace Treynessen.Functions
 {
     public static partial class OtherFunctions
     {
-        public static void ReplaceContentInFile(string path, LinkedList<KeyValuePair<string, string>> listOfChanges, string fileContent = null)
+        public static void 
+            ContentInFile(string path, LinkedList<KeyValuePair<string, string>> listOfChanges, string fileContent = null)
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
                 return;

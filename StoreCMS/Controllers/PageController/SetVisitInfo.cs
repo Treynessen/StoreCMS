@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.Functions;
 using Treynessen.PagesManagement;
-using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 
 namespace Treynessen.Controllers
@@ -14,9 +13,23 @@ namespace Treynessen.Controllers
         [NonAction]
         public void SetVisitInfo(int pageID, PageType pageType)
         {
+            bool hasCookieInfo = false;
+            Visitor visitor = null;
             string ip = HttpContext.Connection.RemoteIpAddress.ToString();
             int ipStringHash = OtherFunctions.GetHashFromString(ip);
-            Visitor visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
+            string logIDKeyInCookie = $"log_id-{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}";
+            try
+            {
+                int logID = Convert.ToInt32(HttpContext.Request.Cookies[logIDKeyInCookie]);
+                visitor = db.Visitors.FirstOrDefault(v => v.ID == logID);
+                if (visitor == null)
+                    throw new NullReferenceException();
+                hasCookieInfo = true;
+            }
+            catch
+            {
+                visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
+            }
             if (visitor == null)
             {
                 visitor = new Visitor
@@ -50,6 +63,8 @@ namespace Treynessen.Controllers
                 Visitor = visitor
             });
             db.SaveChanges();
+            if (!hasCookieInfo)
+                HttpContext.Response.Cookies.Append(logIDKeyInCookie, visitor.ID.ToString());
         }
     }
 }

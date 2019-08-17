@@ -18,17 +18,13 @@ namespace Treynessen.FileManagerManagement
             catch (DirectoryNotFoundException) { }
             if (filesOrFolders == null || filesOrFolders.Length == 0)
                 return $"{fileName}{fileExtension}";
-            bool has = true;
-            int index = 0;
-            while (has)
+            bool has = false;
+            bool putUnderscore = false;
+            int index = 1;
+            do
             {
                 has = false;
-                if (index == int.MaxValue)
-                {
-                    fileName += index.ToString();
-                    index = 0;
-                }
-                string current = $"{path}{fileName}{(index == 0 ? string.Empty : $"{index.ToString()}")}{fileExtension}";
+                string current = $"{path}{fileName}{(index == 1 && !putUnderscore ? string.Empty : $"{index.ToString()}")}{fileExtension}";
                 foreach (var f in filesOrFolders)
                 {
                     if (f.Equals(current, StringComparison.OrdinalIgnoreCase))
@@ -37,18 +33,24 @@ namespace Treynessen.FileManagerManagement
                         break;
                     }
                 }
-                if (index == 0 && has)
+                if (has && !putUnderscore && index == 1)
                 {
                     fileName += "_";
+                    putUnderscore = true;
                 }
                 if (!has)
                 {
-                    if (index > 0)
+                    if (!(index == 1 && !putUnderscore))
                         fileName += $"{index.ToString()}";
                     fileName += fileExtension;
                 }
+                if (index == int.MaxValue)
+                {
+                    fileName += index.ToString();
+                    index = 0;
+                }
                 ++index;
-            }
+            } while (has);
             return fileName;
         }
     }

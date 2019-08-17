@@ -49,7 +49,7 @@ namespace Treynessen.ImagesManagement
             sourceImageFullName = sourceImageName + sourceImageExtension;
             sourceImageFullPath = pathToImageFolder + sourceImageFullName;
             isExisted = File.Exists(sourceImageFullPath);
-            sourceImageShortPath = sourceImageFullPath.Replace(env.GetStorageFolderFullPath(), string.Empty).Insert(0, "/");
+            sourceImageShortPath = sourceImageFullPath.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/");
             // Если изображения не существует, то удаляем зависимые изображения, если таковые имеются и информацию из БД
             if (!isExisted)
             {
