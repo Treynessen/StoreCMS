@@ -78,7 +78,7 @@ namespace Treynessen.FileManagerManagement
                     }
                 }
                 return fileManagerObject;
-            });
+            }).OrderBy(o => o.Name);
         }
     }
 }

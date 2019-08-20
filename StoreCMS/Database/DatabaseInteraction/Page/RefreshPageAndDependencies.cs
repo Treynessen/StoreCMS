@@ -24,7 +24,6 @@ namespace Treynessen.Database
                     if (up.PreviousPage == null || up.PreviousPage.RequestPath.Equals("/", StringComparison.Ordinal))
                         up.RequestPath = $"/{up.Alias}";
                     else up.RequestPath = $"{up.PreviousPage.RequestPath}/{up.Alias}";
-                    up.RequestPath = up.PreviousPage == null ? $"/{up.Alias}" : $"{up.PreviousPage.RequestPath}/{up.Alias}";
                     up.BreadcrumbsHtml = PagesManagementFunctions.GetBreadcrumbsHTML(up);
                     break;
                 case CategoryPage cp:

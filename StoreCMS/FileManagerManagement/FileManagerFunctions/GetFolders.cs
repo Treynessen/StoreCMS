@@ -38,7 +38,7 @@ namespace Treynessen.FileManagerManagement
                     }
                 }
                 return new FileManagerObject { Name = folderName, ShortPath = shortPathToFolder, Type = FileManagerObjectType.Folder, CanDelete = canDelete };
-            });
+            }).OrderBy(o => o.Name);
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen;
 using Treynessen.Translit;
@@ -68,7 +69,7 @@ public class Startup
 
         services.AddMvc();
 
-        services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders =ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
+        services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
