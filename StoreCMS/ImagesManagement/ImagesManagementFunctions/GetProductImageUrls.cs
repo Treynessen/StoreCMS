@@ -15,7 +15,7 @@ namespace Treynessen.ImagesManagement
             string[] productImages = new string[0];
             if (product != null)
             {
-                string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID}{product.ID}/";
+                string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.ID}/";
                 if (Directory.Exists(imagesPath))
                 {
                     productImages = Directory.GetFiles(imagesPath, $"*{product.Alias}*.jpg");

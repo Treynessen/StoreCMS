@@ -50,7 +50,7 @@ namespace Treynessen.Database
             if (!editableProduct.Alias.Equals(editedProduct.Alias, StringComparison.Ordinal))
             {
                 IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
-                string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{editedProduct.PreviousPageID}{editedProduct.ID}/";
+                string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{editedProduct.ID}/";
                 if (Directory.Exists(pathToImages))
                 {
                     string oldName = editableProduct.Alias;

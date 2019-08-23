@@ -1,6 +1,6 @@
 {
 	"DbSettings": {
-		"Database": "mssql",
+		"Database": "mysql",
 		"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True;MultipleActiveResultSets=true;"
 	},
 	"LanguageSettings": {
@@ -10,20 +10,20 @@
 		"ValueToRun": "100"
 	},
 	"CategoryPageSettings": {
-		"NumberOfProductsOnPage": "8",
+		"NumberOfProductsOnPage": "11",
 		"PaginationStyleName": "pagination"
 	},
 	"SearchPageSettings": {
-		"SearchPageTemplateId": "0",
+		"SearchPageTemplateId": "6",
 		"MaxNumberOfSymbolsInSearchQuery": "100"
 	},
 	"PageNotFoundSettings": {
-		"PageNotFoundTemplateId": "0"
+		"PageNotFoundTemplateId": "4"
 	},
 	"AdminPanelAccessSettings": {
-		"MainPage": "3",
-		"GetVisitors": "3",
-		"GetVisitorActions": "3",
+		"MainPage": "5",
+		"GetVisitors": "5",
+		"GetVisitorActions": "5",
 		"Pages": "5",
 		"AddPage": "5",
 		"EditPage": "5",

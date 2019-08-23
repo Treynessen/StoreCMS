@@ -1,15 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen;
 using Treynessen.Translit;
 using Treynessen.Security;
 using Treynessen.Extensions;
+using Treynessen.Middlewares;
 using Treynessen.Localization;
 using Treynessen.Database.Context;
 using Treynessen.RequestManagement;
@@ -78,24 +76,9 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
+        app.UseSitemap();
         app.UseForwardedHeaders();
-        app.Use(async (context, next) =>
-        {
-            ConfigurationHandler config = context.RequestServices.GetRequiredService<ConfigurationHandler>();
-            Task.Run(() =>
-            {
-                try
-                {
-                    int valueToRun = Convert.ToInt32(config.GetConfigValue("ForcedGarbageCollectionSettings:ValueToRun"));
-                    if (valueToRun > 0 && GC.GetTotalMemory(false) / 1000000 >= valueToRun)
-                    {
-                        GC.Collect();
-                    }
-                }
-                catch (FormatException) { }
-            });
-            await next.Invoke();
-        });
+        app.UseForcedGarbageCollection();
         app.UseStaticFiles();
         app.UseMvc(routeBuilder =>
         {

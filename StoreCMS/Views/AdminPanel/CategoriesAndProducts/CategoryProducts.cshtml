@@ -38,7 +38,7 @@
                 @foreach (var p in Model)
                 {
                 <tr>
-                    <td><image src="@Html.Raw($"{env.GetProductsImagesFolderSrc()}{p.PreviousPageID.ToString()}{p.ID.ToString()}/{p.Alias}.jpg")" max-height="150" max-width="150" quality="50"></image></td>
+                    <td><image src="@Html.Raw($"{env.GetProductsImagesFolderSrc()}{p.ID}/{p.Alias}.jpg")" max-height="150" max-width="150" quality="50"></image></td>
                     <td>@Html.Raw($"{p.PageName} <b>(ID{p.ID.ToString()})</b>")</td>
                     <td>@Html.Raw(p.RequestPath)</td>
                     <td>

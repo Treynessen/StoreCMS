@@ -31,7 +31,7 @@ namespace Treynessen.ImagesManagement
                 return;
             }
             IHostingEnvironment env = context.RequestServices.GetService<IHostingEnvironment>();
-            string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.PreviousPageID.ToString()}{product.ID.ToString()}/";
+            string imagesPath = $"{env.GetProductsImagesFolderFullPath()}{product.ID}/";
             string imageFullName = $"{product.Alias}{(imageID == 1 ? string.Empty : $"_{imageID.Value}")}.jpg";
             if (!File.Exists(imagesPath + imageFullName))
             {

@@ -19,7 +19,8 @@ namespace Treynessen.Controllers
             {
                 ConfigurationHandler config = HttpContext.RequestServices.GetService<ConfigurationHandler>();
                 // Получаем список продуктов
-                IQueryable<ProductPage> categoryProducts = db.ProductPages.Where(pp => pp.Published && pp.PreviousPageID == categoryPage.ID);
+                // Без OrderBy(pp => pp.ID) Mysql на Windows игнорирует сортировку по ID по умолчанию
+                IQueryable<ProductPage> categoryProducts = db.ProductPages.Where(pp => pp.Published && pp.PreviousPageID == categoryPage.ID).OrderBy(pp => pp.ID);
                 // Производим сортировку, если задано значение
                 if (model.Orderby.HasValue)
                 {

@@ -22,7 +22,7 @@ namespace Treynessen.ImagesManagement
             if (!pathToImages[pathToImages.Length - 1].Equals('/'))
                 pathToImages = pathToImages.Insert(pathToImages.Length, "/");
             string[] images = Directory.GetFiles(pathToImages, $"*{oldImageName}*{imageExtension}");
-            Regex regex = new Regex($"{oldImageName}(_\\d+x\\d+)?(_q\\d{{1,3}})?{imageExtension}");
+            Regex regex = new Regex($"{oldImageName}(_\\d+x\\d+)?(_q\\d{{1,3}})?{imageExtension}$");
             images = (from img in images
                       where regex.IsMatch(img)
                       select img).ToArray();

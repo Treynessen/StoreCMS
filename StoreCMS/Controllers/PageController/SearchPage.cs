@@ -80,7 +80,7 @@ namespace Treynessen.Controllers
                     IQueryable<ProductPage> finalQuery = queries.First.Value;
                     for (var it = queries.First.Next; it != null; it = it.Next)
                     {
-                        finalQuery = finalQuery.Union(it.Value);
+                        finalQuery = finalQuery.Union(it.Value).OrderBy(pp => pp.ID);
                     }
 
                     // Получаем количество товаров на странице

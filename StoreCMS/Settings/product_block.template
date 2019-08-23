@@ -1,8 +1,0 @@
-<a class="product" href="[Page:Url]">[Product:IfStock(<div class="stock"></div>)][Product:IfSpecial(<div class="best"></div>)]
-	<image src="[Product:MainImageUrl]" width="150" height="115" quality="90"></image>
-	<div class="product-info">
-		<span class="product-name">[Product:Name]</span>
-		<div class="short-description"><span>[Product:ShortDescription]</span></div>
-	</div>
-	<div class="product-price">[Product:CurrentPrice]</div>
-</a>
