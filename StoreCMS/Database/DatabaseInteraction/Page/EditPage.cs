@@ -86,7 +86,7 @@ namespace Treynessen.Database
 
             // Обновляем все зависимые страницы, если изменилось имя страницы и/или url страницы
             if (!editablePage.PageName.Equals(editedPage.PageName, StringComparison.InvariantCulture)
-                || !editablePage.Alias.Equals(editedPage.RequestPath, StringComparison.Ordinal))
+                || !editablePage.RequestPath.Equals(editedPage.RequestPath, StringComparison.Ordinal))
             {
                 if (editedPage is UsualPage)
                 {

@@ -37,8 +37,8 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:Url]", Replacement = "@(Model != null ? Html.Raw(Model.RequestPath) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:Breadcrumbs]", Replacement = "@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:Content]", Replacement = "@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:PageDescription]", Replacement = "@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))" });
-            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:PageKeywords]", Replacement = "@(Model != null ? Html.Raw(Model.PageKeywords) : Html.Raw(string.Empty))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:Description]", Replacement = "@(Model != null ? Html.Raw(Model.PageDescription) : Html.Raw(string.Empty))" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:Keywords]", Replacement = "@(Model != null ? Html.Raw(Model.PageKeywords) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:RobotsIndex]", Replacement = "@(Model != null ? (Model.IsIndex ? Html.Raw(\"index\") : Html.Raw(\"noindex\")) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Page:RobotsFollow]", Replacement = "@(Model != null ? (Model.IsFollow ? Html.Raw(\"follow\") : Html.Raw(\"nofollow\")) : Html.Raw(string.Empty))" });
             // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
