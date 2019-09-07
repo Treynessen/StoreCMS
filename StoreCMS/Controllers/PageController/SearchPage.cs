@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,22 +41,38 @@ namespace Treynessen.Controllers
             {
                 if (model.Search.Length > maxSymbols)
                     model.Search = model.Search.Substring(0, maxSymbols);
-                // Создаем список из всех возможных вариаций текущего запроса, основываясь на заданных синонимах в таблице SynonymsForStrings
                 LinkedList<string> searchQueryList = new LinkedList<string>();
                 searchQueryList.AddLast(model.Search);
-                SynonymForString[] synonymsForStrings = db.SynonymsForStrings.Where(s => model.Search.Contains(s.String, StringComparison.InvariantCultureIgnoreCase)
-                || model.Search.Contains(s.Synonym, StringComparison.InvariantCultureIgnoreCase)).AsNoTracking().ToArray();
-                foreach (var synonymForString in synonymsForStrings)
+                // Получаем все выражения и синонимы, которые встретились в поисковом запросе. Создаем для каждого выражения и синонима регулярное выражение
+                var synonymsForStringsWithRegex = db.SynonymsForStrings.Where(s => model.Search.Contains(s.String, StringComparison.InvariantCultureIgnoreCase)
+                || model.Search.Contains(s.Synonym, StringComparison.InvariantCultureIgnoreCase)).AsNoTracking()
+                .Select(s => new
+                {
+                    s.String,
+                    s.Synonym,
+                    StringRegex = new Regex($"(?(^{s.String})" +
+                        $"(?({s.String}$)^{s.String}$|^{s.String} )" +
+                        $"|(?({s.String}$) {s.String}$| {s.String} ))", 
+                        RegexOptions.IgnoreCase
+                    ),
+                    SynonymRegex = new Regex($"(?(^{s.Synonym})" +
+                        $"(?({s.Synonym}$)^{s.Synonym}$|^{s.Synonym} )" +
+                        $"|(?({s.Synonym}$) {s.Synonym}$| {s.Synonym} ))",
+                        RegexOptions.IgnoreCase
+                    )
+                }).ToArray();
+                // На основе всех совпадений из таблицы SynonymsForStrings создаем все возможные вариации текущего запроса
+                foreach (var synonymForStringWithRegex in synonymsForStringsWithRegex)
                 {
                     for (var it = searchQueryList.First; it != null; it = it?.Next)
                     {
-                        if (it.Value.Contains(synonymForString.String, StringComparison.InvariantCultureIgnoreCase))
+                        if (synonymForStringWithRegex.StringRegex.IsMatch(it.Value))
                         {
-                            searchQueryList.AddFirst(it.Value.Replace(synonymForString.String, synonymForString.Synonym, StringComparison.InvariantCultureIgnoreCase));
+                            searchQueryList.AddFirst(it.Value.Replace(synonymForStringWithRegex.String, synonymForStringWithRegex.Synonym, StringComparison.InvariantCultureIgnoreCase));
                         }
-                        else if (it.Value.Contains(synonymForString.Synonym, StringComparison.InvariantCultureIgnoreCase))
+                        else if (synonymForStringWithRegex.SynonymRegex.IsMatch(it.Value))
                         {
-                            searchQueryList.AddFirst(it.Value.Replace(synonymForString.Synonym, synonymForString.String, StringComparison.InvariantCultureIgnoreCase));
+                            searchQueryList.AddFirst(it.Value.Replace(synonymForStringWithRegex.Synonym, synonymForStringWithRegex.String, StringComparison.InvariantCultureIgnoreCase));
                         }
                     }
                 }
