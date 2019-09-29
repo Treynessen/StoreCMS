@@ -21,9 +21,9 @@ namespace Treynessen.Functions
             {
                 if (!availableSymbols.Contains(char.ToLower(symbol)))
                 {
-                    if (symbol == ' ')
+                    if (symbol.Equals(' ') || symbol.Equals(',') || symbol.Equals('(') || symbol.Equals(')'))
                         builder.Append('_');
-                    else if (symbol == '/' || symbol == '\\')
+                    else if (symbol.Equals('/') || symbol.Equals('\\') || symbol.Equals('.') || symbol.Equals(':'))
                         builder.Append('-');
                     else
                     {

@@ -61,6 +61,11 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:CurrentPrice]", Replacement = "@(Model is ProductPage && (Model as ProductPage).OldPrice != 0 ? Html.Raw(\"<span>\" + OtherFunctions.PriceFormatting((Model as ProductPage).Price) + \"</span><span>\" + OtherFunctions.PriceFormatting((Model as ProductPage).OldPrice) + \"</span>\") : Html.Raw(\"<span>\" + OtherFunctions.PriceFormatting((Model as ProductPage).Price) + \"</span>\"))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:Barcode]", Replacement = "@(Model is ProductPage ? Html.Raw((Model as ProductPage).Barcode) : Html.Raw(string.Empty))" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[Product:MainImageUrl]", Replacement = $"@(Model is ProductPage ? \"{env.GetProductsImagesFolderSrc()}\" + Model.ID.ToString() + \"/\" + Model.Alias + \".jpg\" : string.Empty)" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[HOUR]", Replacement = "@(DateTime.Now.Hour)" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[MINUTE]", Replacement = "@(DateTime.Now.Minute)" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[SECOND]", Replacement = "@(DateTime.Now.Second)" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[DAY]", Replacement = "@(DateTime.Now.Day)" });
+            insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[MONTH]", Replacement = "@(DateTime.Now.Month)" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[YEAR]", Replacement = "@(DateTime.Now.Year)" });
         }
     }

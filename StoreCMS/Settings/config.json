@@ -1,7 +1,7 @@
 {
 	"DbSettings": {
-		"Database": "mssql",
-		"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=store_cms;Trusted_Connection=True;MultipleActiveResultSets=true;"
+		"Database": "mysql",
+		"ConnectionString": "server=localhost;UserId=root;Password=1234567890;database=instrumentshop_db;"
 	},
 	"LanguageSettings": {
 		"CurrentLanguage": "ru-RU"
