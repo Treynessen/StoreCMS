@@ -79,7 +79,7 @@ public class Startup
         app.UseSitemap();
         app.UseForwardedHeaders();
         app.UseForcedGarbageCollection();
-        app.UseStaticFiles();
+        app.UseStaticFiles(new StaticFileOptions() { OnPrepareResponse = sfr => sfr.Context.Response.Headers.Add("Cache-Control", "private, max-age=604800") });
         app.UseMvc(routeBuilder =>
         {
             routeBuilder.MapRoute(
