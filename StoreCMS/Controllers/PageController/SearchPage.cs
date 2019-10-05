@@ -51,13 +51,15 @@ namespace Treynessen.Controllers
                     s.String,
                     s.Synonym,
                     StringRegex = new Regex($"(?(^{s.String})" +
-                        $"(?({s.String}$)^{s.String}$|^{s.String} )" +
-                        $"|(?({s.String}$) {s.String}$| {s.String} ))", 
+                        $"(?(^{s.String}$)(^{s.String}$)|(^{s.String} ))" + // если проверяемое выражение начинается и заканчивается со String или, если начинает, но не заканчивается на String
+                        $"|(?( {s.String}$)( {s.String}$)|( {s.String} ))" + // если проверяемое выражение не начинается со String, но заканчивается на нем или, если не начинает и не заканчивается на String
+                        ")", 
                         RegexOptions.IgnoreCase
                     ),
-                    SynonymRegex = new Regex($"(?(^{s.Synonym})" +
-                        $"(?({s.Synonym}$)^{s.Synonym}$|^{s.Synonym} )" +
-                        $"|(?({s.Synonym}$) {s.Synonym}$| {s.Synonym} ))",
+                    SynonymRegex = new Regex($"(?(^{s.Synonym})" + // так же, как и сверху, только для Synonym
+                        $"(?(^{s.Synonym}$)(^{s.Synonym}$)|(^{s.Synonym} ))" +
+                        $"|(?( {s.Synonym}$)( {s.Synonym}$)|( {s.Synonym} ))" +
+                        ")",
                         RegexOptions.IgnoreCase
                     )
                 }).ToArray();
