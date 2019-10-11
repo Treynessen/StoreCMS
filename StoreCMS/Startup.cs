@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,7 @@ using Treynessen.Security;
 using Treynessen.Extensions;
 using Treynessen.Middlewares;
 using Treynessen.Localization;
+using Treynessen.LogManagement;
 using Treynessen.Database.Context;
 using Treynessen.RequestManagement;
 using Treynessen.SettingsManagement;
@@ -17,6 +20,8 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         services.AddScoped(provider =>
         {
             IHostingEnvironment env = services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>();
@@ -70,12 +75,13 @@ public class Startup
         services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
     }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAccessor)
     {
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
+        loggerFactory.AddFile(env.GetLogsFolderFullPath(), "errors.log", httpContextAccessor);
         app.UseSitemap();
         app.UseForwardedHeaders();
         app.UseForcedGarbageCollection();

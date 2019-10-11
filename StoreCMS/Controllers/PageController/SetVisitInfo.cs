@@ -39,6 +39,9 @@ namespace Treynessen.Controllers
                     try
                     {
                         db.SaveChanges();
+                        // ===
+                        TempMethod(HttpContext, HttpContext.Request.Headers["User-Agent"], ip);
+                        // ===
                     }
                     catch (DbUpdateException)
                     {

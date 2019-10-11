@@ -82,7 +82,7 @@ namespace Treynessen.Controllers
                 LinkedList<IQueryable<ProductPage>> queries = new LinkedList<IQueryable<ProductPage>>();
                 foreach (var searchQuery in searchQueryList)
                 {
-                    string[] subSearchQuery = searchQuery.Split(' ');
+                    string[] subSearchQuery = searchQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     IQueryable<ProductPage> query = null;
                     foreach (var s in subSearchQuery)
                     {
