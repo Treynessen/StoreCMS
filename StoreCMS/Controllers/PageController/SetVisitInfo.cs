@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Treynessen.Functions;
 using Treynessen.PagesManagement;
@@ -11,21 +12,33 @@ namespace Treynessen.Controllers
 {
     public partial class PageController : Controller
     {
-        private static Regex ignoredAgents = new Regex("rambler|googlebot|aport|yahoo|msnbot|turtle|mail.ru|omsktele|yetibot|picsearch" +
-            "|sape.bot|sape_context|gigabot|snapbot|alexa.com|megadownload.net|askpeter.info|igde.ru|ask.com|qwartabot" +
-            "|yanga.co.uk|scoutjet|similarpages|oozbot|shrinktheweb.com|aboutusbot|followsite.com|dataparksearch|google-sitemaps" +
-            "|appEngine-google|feedfetcher-google|liveinternet.ru|xml-sitemaps.com|agama|metadatalabs.com|h1.hrn.ru|googlealert.com" +
-            "|seo-rus.com|yaDirectBot|yandeG|yandex|yandexSomething|Copyscape.com|AdsBot-Google|domaintools.com|Nigma.ru|bing.com|dotnetdotcom",
-            RegexOptions.IgnoreCase);
+        private static Regex correctUserAgents = new Regex("(?<!(bot|favicon|compatible)(.*)?)(windows nt|linux|android|iphone|mac|os x)(?!(.*)?(bot|favicon|compatible))", RegexOptions.IgnoreCase);
 
         [NonAction]
         public void SetVisitInfo(int pageID, PageType pageType)
         {
-            if (!ignoredAgents.IsMatch(HttpContext.Request.Headers["User-Agent"]))
+            Visitor visitor = null;
+            // Если в кукисах пользователя хранится информация о последнем заходе, тогда проверяем её
+            // Если она равна текущей дате, тогда выполняем поиск посетителя по ID
+            if (HttpContext.Request.Cookies.ContainsKey("VisitorID")
+                && HttpContext.Request.Cookies.ContainsKey("LastVisit")
+                && HttpContext.Request.Cookies["LastVisit"].Equals(DateTime.Now.ToShortDateString()))
+            {
+                try
+                {
+                    int visitorID = Convert.ToInt32(HttpContext.Request.Cookies["VisitorID"]);
+                    visitor = db.Visitors.FirstOrDefault(v => v.ID == visitorID);
+                }
+                catch { }
+            }
+            // Если у пользователя нет информации о последнем визите или, если его ID не был найден в БД, тогда
+            // ищем пользователя по IP
+            if (visitor == null && correctUserAgents.IsMatch(HttpContext.Request.Headers["User-Agent"]))
             {
                 string ip = HttpContext.Connection.RemoteIpAddress.ToString();
                 int ipStringHash = OtherFunctions.GetHashFromString(ip);
-                Visitor visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
+                visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
+                // Если пользователь не найден, тогда добавляем его
                 if (visitor == null)
                 {
                     visitor = new Visitor
@@ -39,9 +52,6 @@ namespace Treynessen.Controllers
                     try
                     {
                         db.SaveChanges();
-                        // ===
-                        TempMethod(HttpContext, HttpContext.Request.Headers["User-Agent"], ip);
-                        // ===
                     }
                     catch (DbUpdateException)
                     {
@@ -51,6 +61,14 @@ namespace Treynessen.Controllers
                         visitor = db.Visitors.FirstOrDefault(v => v.IPStringHash == ipStringHash && v.IPAdress.Equals(ip, StringComparison.Ordinal));
                     }
                 }
+                DateTime dtNow = DateTime.Now;
+                DateTime nextDay = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day).AddDays(1);
+                CookieOptions cookieOptions = new CookieOptions { MaxAge = nextDay - dtNow };
+                HttpContext.Response.Cookies.Append("VisitorID", visitor.ID.ToString(), cookieOptions);
+                HttpContext.Response.Cookies.Append("LastVisit", DateTime.Now.ToShortDateString().ToString(), cookieOptions);
+            }
+            if (visitor != null)
+            {
                 visitor.LastVisit = DateTime.Now;
                 db.VisitedPages.Add(new VisitedPage
                 {
