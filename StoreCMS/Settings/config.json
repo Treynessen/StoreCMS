@@ -1,7 +1,7 @@
 {
 	"DbSettings": {
 		"Database": "mysql",
-		"ConnectionString": "server=localhost;UserId=root;Password=1234567890;database=instrumentshop_db;"
+		"ConnectionString": "server=localhost;UserId=root;Password=1234567890;database=test_db;"
 	},
 	"LanguageSettings": {
 		"CurrentLanguage": "ru-RU"

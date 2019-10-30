@@ -31,8 +31,6 @@ namespace Treynessen.Database
             }
             IHostingEnvironment env = context.RequestServices.GetRequiredService<IHostingEnvironment>();
             string pathToImages = $"{env.GetProductsImagesFolderFullPath()}{product.ID}/";
-            if (Directory.Exists(pathToImages))
-                Directory.Delete(pathToImages, true);
             // Удаляем данные об изображениях из БД
             string[] images = ImagesManagementFunctions.GetProductImageUrls(product, env);
             for (int i = 0; i < images.Length; ++i)
@@ -46,6 +44,9 @@ namespace Treynessen.Database
             --product.PreviousPage.ProductsCount;
             db.ProductPages.Remove(product);
             db.SaveChanges();
+            // Удаляем папку с изображениями товара
+            if (Directory.Exists(pathToImages))
+                Directory.Delete(pathToImages, true);
             successfullyDeleted = true;
 
             LogManagementFunctions.AddAdminPanelLog(
