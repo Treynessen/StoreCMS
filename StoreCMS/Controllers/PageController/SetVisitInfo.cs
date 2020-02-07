@@ -12,21 +12,19 @@ namespace Treynessen.Controllers
 {
     public partial class PageController : Controller
     {
-        private static Regex correctUserAgents = new Regex("(?<!(bot|favicon|compatible)(.*)?)(windows nt|linux|android|iphone|mac|os x)(?!(.*)?(bot|favicon|compatible))", RegexOptions.IgnoreCase);
+        private static Regex correctUserAgents = new Regex("(?<!(bot|favicon|compatible|preview)(.*)?)(windows nt|linux|android|iphone|mac|os x)(?!(.*)?(bot|favicon|compatible|preview))", RegexOptions.IgnoreCase);
 
         [NonAction]
-        public void SetVisitInfo(int pageID, PageType pageType)
+        public void SetVisitorInfo(int pageID, PageType pageType)
         {
             Visitor visitor = null;
             // Если в кукисах пользователя хранится информация о последнем заходе, тогда проверяем её
             // Если она равна текущей дате, тогда выполняем поиск посетителя по ID
-            if (HttpContext.Request.Cookies.ContainsKey("VisitorID")
-                && HttpContext.Request.Cookies.ContainsKey("LastVisit")
-                && HttpContext.Request.Cookies["LastVisit"].Equals(DateTime.Now.ToShortDateString()))
+            if (HttpContext.Request.Cookies.ContainsKey("visitor_id"))
             {
                 try
                 {
-                    int visitorID = Convert.ToInt32(HttpContext.Request.Cookies["VisitorID"]);
+                    int visitorID = Convert.ToInt32(HttpContext.Request.Cookies["visitor_id"]);
                     visitor = db.Visitors.FirstOrDefault(v => v.ID == visitorID);
                 }
                 catch { }
@@ -51,6 +49,7 @@ namespace Treynessen.Controllers
                     db.Visitors.Add(visitor);
                     try
                     {
+                        // Если тут возникнет исключение, тогда в лог ошибок будет сделана соответствующая запись
                         db.SaveChanges();
                     }
                     catch (DbUpdateException)
@@ -64,8 +63,7 @@ namespace Treynessen.Controllers
                 DateTime dtNow = DateTime.Now;
                 DateTime nextDay = new DateTime(dtNow.Year, dtNow.Month, dtNow.Day).AddDays(1);
                 CookieOptions cookieOptions = new CookieOptions { MaxAge = nextDay - dtNow };
-                HttpContext.Response.Cookies.Append("VisitorID", visitor.ID.ToString(), cookieOptions);
-                HttpContext.Response.Cookies.Append("LastVisit", DateTime.Now.ToShortDateString().ToString(), cookieOptions);
+                HttpContext.Response.Cookies.Append("visitor_id", visitor.ID.ToString(), cookieOptions);
             }
             if (visitor != null)
             {

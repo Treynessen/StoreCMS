@@ -37,7 +37,7 @@ namespace Treynessen.LogManagement
                 mutex.WaitOne();
                 using (StreamWriter writer = new StreamWriter(path, true))
                 {
-                    writer.WriteLine($"FROM {request.Scheme}://{request.Host}{request.Path} {request.Method} REQUEST: {formatter(state, exception)}");
+                    writer.WriteLine($"{DateTime.Now} - FROM {request.Scheme}://{request.Host}{request.Path} {request.Method} REQUEST:\n{formatter(state, exception)}\n");
                 }
                 mutex.ReleaseMutex();
             }

@@ -1,0 +1,5 @@
+@model Page
+<div class="content-block">
+<div class="navigation-menu">@(Model != null ? Html.Raw(Model.BreadcrumbsHtml) : Html.Raw(string.Empty)) → @(Model != null ? Html.Raw(Model.PageName) : Html.Raw(string.Empty))</div>
+@(Model != null ? Html.Raw(Model.Content) : Html.Raw(string.Empty))
+</div>

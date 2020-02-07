@@ -22,21 +22,21 @@ namespace Treynessen.Controllers
                 case UsualPage up:
                     try
                     {
-                        SetVisitInfo(up.ID, PagesManagement.PageType.Usual);
+                        SetVisitorInfo(up.ID, PagesManagement.PageType.Usual);
                     }
                     catch { }
                     return UsualPage(up);
                 case CategoryPage cp:
                     try
                     {
-                        SetVisitInfo(cp.ID, PagesManagement.PageType.Category);
+                        SetVisitorInfo(cp.ID, PagesManagement.PageType.Category);
                     }
                     catch { }
                     return CategoryPage(cp, model);
                 case ProductPage pp:
                     try
                     {
-                        SetVisitInfo(pp.ID, PagesManagement.PageType.Product);
+                        SetVisitorInfo(pp.ID, PagesManagement.PageType.Product);
                     }
                     catch { }
                     return ProductPage(pp);
