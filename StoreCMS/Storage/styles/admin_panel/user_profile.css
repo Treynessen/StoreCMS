@@ -1,0 +1,81 @@
+﻿form#user-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    form#user-data > div.row {
+        width: 35%;
+    }
+
+        form#user-data > div.row:not(:first-child) {
+            margin-top: 1.5vh;
+        }
+
+        form#user-data > div.row > label {
+            display: inline;
+        }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+form#user-data > input[type="submit"] {
+    display: block;
+    width: 35%;
+    border: none;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.4rem;
+    padding: .5vh;
+    border-radius: 3px;
+    background-color: #00c0ff;
+    margin-top: 1.5vh;
+}
+
+    form#user-data > input[type="submit"]:hover {
+        background: #00a8ff;
+        cursor: pointer;
+    }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+p.head {
+    margin: 3vh 0 1vh;
+    font-size: 4vh;
+    font-weight: bold;
+}
+
+    p.head:nth-child(2) {
+        margin-top: 0;
+    }
+
+p.date {
+    margin: 1vh 0 0;
+    font-size: 2.5vh;
+    font-weight: bold;
+}
+
+p.log {
+    margin: .5vh 0 0;
+    font-size: 2vh;
+}
+
+form#get-log > input[type=submit] {
+    display: block;
+    border-style: none;
+    background-color: transparent;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 2vh;
+    font-weight: bold;
+    padding: 0;
+    margin-top: .5vh;
+}
+
+    form#get-log > input[type=submit]:hover {
+        color: #00599e;
+        cursor: pointer;
+    }
