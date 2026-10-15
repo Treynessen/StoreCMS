@@ -21,15 +21,15 @@ namespace Treynessen.ImagesManagement
                 return;
             if (!pathToImages[pathToImages.Length - 1].Equals('/'))
                 pathToImages = pathToImages.Insert(pathToImages.Length, "/");
-            string[] images = Directory.GetFiles(pathToImages, $"*{oldImageName}*{imageExtension}");
-            Regex regex = new Regex($"{oldImageName}(_\\d+x\\d+)?(_q\\d{{1,3}})?{imageExtension}$");
+            string[] images = Directory.GetFiles(pathToImages);
+            Regex regex = new Regex($"\\A{Regex.Escape(oldImageName)}(_\\d+x\\d+)?(_q\\d{{1,3}})?{Regex.Escape(imageExtension)}\\z");
             images = (from img in images
-                      where regex.IsMatch(img)
+                      where regex.IsMatch(Path.GetFileName(img))
                       select img).ToArray();
             foreach (var img in images)
             {
-                string fileEnding = img.Substring(pathToImages.Length + oldImageName.Length);
-                File.Move(img, $"{pathToImages}{newImageName}{fileEnding}");
+                string fileEnding = Path.GetFileName(img).Substring(oldImageName.Length);
+                File.Move(img, Path.Combine(pathToImages, newImageName + fileEnding));
             }
             string shortPathToOldImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + oldImageName + imageExtension;
             string shortPathToNewImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + newImageName + imageExtension;

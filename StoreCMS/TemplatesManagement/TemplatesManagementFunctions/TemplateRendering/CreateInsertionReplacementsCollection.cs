@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
@@ -9,12 +9,9 @@ namespace Treynessen.TemplatesManagement
 {
     public static partial class TemplatesManagementFunctions
     {
-        private static LinkedList<InsertionReplacement> insertionReplacements = new LinkedList<InsertionReplacement>();
-
-        private static void CreateInsertionReplacementsCollection(CMSDatabase db, string source, string skipChunkName, IHostingEnvironment env)
+        private static LinkedList<InsertionReplacement> CreateInsertionReplacementsCollection(CMSDatabase db, string source, string skipChunkName, IHostingEnvironment env)
         {
-            if (insertionReplacements.Count > 0)
-                insertionReplacements.Clear();
+            var insertionReplacements = new LinkedList<InsertionReplacement>();
             foreach (var c in GetChunks(db, source, skipChunkName))
             {
                 // Вызывать в catch функцию, записывающую информацию об ошибке в лог-файл
@@ -70,6 +67,7 @@ namespace Treynessen.TemplatesManagement
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[DAY]", Replacement = "@(DateTime.Now.Day)" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[MONTH]", Replacement = "@(DateTime.Now.Month)" });
             insertionReplacements.AddLast(new InsertionReplacement { Insertion = "[YEAR]", Replacement = "@(DateTime.Now.Year)" });
+            return insertionReplacements;
         }
     }
 }

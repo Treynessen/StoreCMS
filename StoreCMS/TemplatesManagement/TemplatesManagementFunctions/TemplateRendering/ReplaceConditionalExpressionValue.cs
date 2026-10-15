@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 
 namespace Treynessen.TemplatesManagement
 {
@@ -6,7 +7,7 @@ namespace Treynessen.TemplatesManagement
     {
         private static string[] tagHelpers = { "image", "page-buttons" };
 
-        private static string ReplaceConditionalExpressionValue(string value)
+        private static string ReplaceConditionalExpressionValue(string value, LinkedList<InsertionReplacement> insertionReplacements)
         {
             bool replaceConditionalExpression = false;
             int beginIndex = -1;
@@ -60,11 +61,11 @@ namespace Treynessen.TemplatesManagement
                 if (endIndex + currentConditionalExpression.RightSide.Length < value.Length)
                     rightSubvalue = value.Substring(endIndex + currentConditionalExpression.RightSide.Length);
                 if (!string.IsNullOrEmpty(leftSubvalue))
-                    leftSubvalue = ReplaceConditionalExpressionValue(leftSubvalue);
-                middleSubvalue = ReplaceConditionalExpressionValue(middleSubvalue);
+                    leftSubvalue = ReplaceConditionalExpressionValue(leftSubvalue, insertionReplacements);
+                middleSubvalue = ReplaceConditionalExpressionValue(middleSubvalue, insertionReplacements);
                 middleSubvalue = " if" + $" ({currentConditionalExpression.Checker}) " + "{ " + middleSubvalue + " } ";
                 if (!string.IsNullOrEmpty(rightSubvalue))
-                    rightSubvalue = ReplaceConditionalExpressionValue(rightSubvalue);
+                    rightSubvalue = ReplaceConditionalExpressionValue(rightSubvalue, insertionReplacements);
                 return leftSubvalue + middleSubvalue + rightSubvalue;
             }
             // Тег хелперы
@@ -78,9 +79,9 @@ namespace Treynessen.TemplatesManagement
                 if (tagHelperRightIndex < value.Length)
                     rightSubvalue = value.Substring(tagHelperRightIndex);
                 if (!string.IsNullOrEmpty(leftSubvalue))
-                    leftSubvalue = ReplaceConditionalExpressionValue(leftSubvalue);
+                    leftSubvalue = ReplaceConditionalExpressionValue(leftSubvalue, insertionReplacements);
                 if (!string.IsNullOrEmpty(rightSubvalue))
-                    rightSubvalue = ReplaceConditionalExpressionValue(rightSubvalue);
+                    rightSubvalue = ReplaceConditionalExpressionValue(rightSubvalue, insertionReplacements);
                 return leftSubvalue + middleSubvalue + rightSubvalue;
             }
             // Обычные замены из коллекции
@@ -101,9 +102,9 @@ namespace Treynessen.TemplatesManagement
                             middleSubvalue = middleSubvalue.Substring(0, middleSubvalue.Length - 2);
                         string rightSubvalue = value.Substring(rightSideIndex);
                         if (!string.IsNullOrEmpty(leftSubvalue))
-                            leftSubvalue = ReplaceConditionalExpressionValue(leftSubvalue);
+                            leftSubvalue = ReplaceConditionalExpressionValue(leftSubvalue, insertionReplacements);
                         if (!string.IsNullOrEmpty(rightSubvalue))
-                            rightSubvalue = ReplaceConditionalExpressionValue(rightSubvalue);
+                            rightSubvalue = ReplaceConditionalExpressionValue(rightSubvalue, insertionReplacements);
                         return leftSubvalue + middleSubvalue + rightSubvalue;
                     }
                 }

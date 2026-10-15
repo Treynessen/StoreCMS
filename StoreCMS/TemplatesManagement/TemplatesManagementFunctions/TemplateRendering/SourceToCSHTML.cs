@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
@@ -17,9 +17,9 @@ namespace Treynessen.TemplatesManagement
 
             cshtmlContentBuilder.Replace("@", "@@");
 
-            CreateInsertionReplacementsCollection(db, source, skipChunkName, env);
+            var insertionReplacements = CreateInsertionReplacementsCollection(db, source, skipChunkName, env);
 
-            ReplaceConditionalExpressions(cshtmlContentBuilder);
+            ReplaceConditionalExpressions(cshtmlContentBuilder, insertionReplacements);
 
             foreach (var r in insertionReplacements)
             {

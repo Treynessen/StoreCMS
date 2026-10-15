@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ProductionRoot Condition="'$(ProductionRoot)' == ''">../../StoreCMS</ProductionRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(ProductionRoot)/TemplatesManagement/TemplatesManagementFunctions/TemplateRendering/*.cs" Link="Production/Rendering/%(Filename)%(Extension)" />
+    <Compile Include="$(ProductionRoot)/TemplatesManagement/TemplatesManagementFunctions/WriteCshtmlContentToFile.cs" Link="Production/WriteCshtmlContentToFile.cs" />
+    <Compile Include="$(ProductionRoot)/Functions/OtherFunctions/GetFileContent.cs" Link="Production/GetFileContent.cs" />
+    <Compile Include="$(ProductionRoot)/Database/DatabaseInteraction/Chunk/*.cs" Link="Production/Chunks/%(Filename)%(Extension)" />
+    <None Update="Expected.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

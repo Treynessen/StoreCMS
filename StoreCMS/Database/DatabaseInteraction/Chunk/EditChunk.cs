@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -111,20 +110,17 @@ namespace Treynessen.Database
                 .Where(tc => tc.ID != itemID.Value
                 && (tc.TemplateSource.Contains($"[#{editableChunk.Name}]") || tc.TemplateSource.Contains($"[#{editedChunk.Name}]")))
                 .ToList();
-                var renderTask = Task.Run(() =>
+                foreach (var t in templates)
                 {
-                    foreach (var t in templates)
-                    {
-                        string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
-                            db: db,
-                            source: t.TemplateSource,
-                            modelType: "Page",
-                            env: env,
-                            skipChunkName: null
-                        );
-                        TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), t.Name, cshtmlContent);
-                    }
-                });
+                    string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
+                        db: db,
+                        source: t.TemplateSource,
+                        modelType: "Page",
+                        env: env,
+                        skipChunkName: null
+                    );
+                    TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), t.Name, cshtmlContent);
+                }
                 foreach (var c in chunks)
                 {
                     string cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
@@ -159,7 +155,6 @@ namespace Treynessen.Database
                     }
                 }
 
-                renderTask.Wait();
             }
         }
     }

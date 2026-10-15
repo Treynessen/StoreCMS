@@ -1,4 +1,5 @@
-﻿using System.Text;
+using System.Text;
+using System.Collections.Generic;
 
 namespace Treynessen.TemplatesManagement
 {
@@ -10,7 +11,7 @@ namespace Treynessen.TemplatesManagement
             new ConditionalExpressionInfo{LeftSide = "[Product:IfStock(", RightSide=")]", Checker = "Model is ProductPage && (Model as ProductPage).Price > 0 && (Model as ProductPage).OldPrice > 0"}
         };
 
-        private static void ReplaceConditionalExpressions(StringBuilder cshtmlContentBuilder)
+        private static void ReplaceConditionalExpressions(StringBuilder cshtmlContentBuilder, LinkedList<InsertionReplacement> insertionReplacements)
         {
             string source = cshtmlContentBuilder.ToString();
             int beginIndex = 0;
@@ -24,7 +25,7 @@ namespace Treynessen.TemplatesManagement
                     // Получаем значение условной конструкции в скобках
                     string value = source.Substring(beginIndex + currentConditionalExpression.LeftSide.Length, endIndex - beginIndex - currentConditionalExpression.LeftSide.Length);
                     // Делаем рендер этого значения
-                    string newValue = ReplaceConditionalExpressionValue(value);
+                    string newValue = ReplaceConditionalExpressionValue(value, insertionReplacements);
                     // Заменяем
                     string conditionalExpressionInsertion = $"{currentConditionalExpression.LeftSide}{value}{currentConditionalExpression.RightSide}";
                     string conditionalExpressionReplacement = "@{ if(" + $"{currentConditionalExpression.Checker}" + ") { " + $"{newValue}" + " } }";

@@ -1,6 +1,5 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -58,20 +57,17 @@ namespace Treynessen.Database
             var templates = db.Templates.AsNoTracking().Where(t => t.TemplateSource.Contains($"[#{chunk.Name}]")).ToList();
             var chunks = db.Chunks.AsNoTracking().Where(tc => tc.ID != chunk.ID && (tc.TemplateSource.Contains($"[#{chunk.Name}]"))).ToList();
             // Делаем рендер, содержащих данный чанк, шаблонов и чанков 
-            var renderTask = Task.Run(() =>
+            foreach (var t in templates)
             {
-                foreach (var t in templates)
-                {
-                    string _cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
-                        db: db,
-                        source: t.TemplateSource,
-                        modelType: "Page",
-                        env: env,
-                        skipChunkName: null
-                    );
-                    TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), t.Name, _cshtmlContent);
-                }
-            });
+                string _cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
+                    db: db,
+                    source: t.TemplateSource,
+                    modelType: "Page",
+                    env: env,
+                    skipChunkName: null
+                );
+                TemplatesManagementFunctions.WriteCshtmlContentToFile(env.GetTemplatesFolderFullPath(), t.Name, _cshtmlContent);
+            }
             foreach (var c in chunks)
             {
                 string _cshtmlContent = TemplatesManagementFunctions.SourceToCSHTML(
@@ -106,7 +102,6 @@ namespace Treynessen.Database
                     writer.Write(productBlockCshtmlTemplate);
                 }
             }
-            renderTask.Wait();
         }
     }
 }
