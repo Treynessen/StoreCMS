@@ -4,9 +4,9 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        private static bool CorrectPassword(string password)
+        public static bool CorrectPassword(string password)
         {
-            if (string.IsNullOrEmpty(password) || password.Length < 5)
+            if (string.IsNullOrEmpty(password) || password.Length < 5 || password.Equals("admin", StringComparison.OrdinalIgnoreCase))
                 return false;
             string availableSymbols = "qwertyuiopasdfghjklzxcvbnm1234567890-_!@#$%&?*№~=";
             foreach (var symbol in password)

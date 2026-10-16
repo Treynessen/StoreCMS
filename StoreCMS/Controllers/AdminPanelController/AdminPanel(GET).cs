@@ -14,7 +14,7 @@ namespace Treynessen.Controllers
             // Проверяем кукисы пользователя на наличие информации о предыдущем входе
             // Если кукисы некорректны, либо вышло время возможного бездействия, то
             // отправляем пользователя на логин форму
-            User user = SecurityFunctions.CheckCookies(db, HttpContext);
+            User user = GetAuthenticatedUser();
             if (user == null)
                 return LoginForm();
             // Создаем объект для проверки уровней доступа и передаем его в контейнер Items

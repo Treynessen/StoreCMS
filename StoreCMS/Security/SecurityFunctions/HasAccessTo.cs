@@ -12,6 +12,8 @@ namespace Treynessen.Security
         {
             if (user == null)
                 return false;
+            if (user.RequirePasswordChange)
+                return false;
             if (!page.HasValue)
                 return false;
             if (!Enum.IsDefined(typeof(AdminPanelPages), page.Value))

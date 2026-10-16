@@ -7,6 +7,7 @@ namespace Treynessen.Database.Context
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<SecurityInstallation> SecurityInstallation { get; set; }
 
         public DbSet<ConnectedUser> ConnectedUsers { get; set; }
 
@@ -31,11 +32,12 @@ namespace Treynessen.Database.Context
         public CMSDatabase(DbContextOptions<CMSDatabase> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SecurityInstallation>().Property(s => s.ID).ValueGeneratedNever();
+            modelBuilder.Entity<User>().Property(u => u.Password).IsConcurrencyToken();
             modelBuilder.Entity<UsualPage>(entity =>
             {
                 entity.HasIndex(up => up.RequestPath).IsUnique();

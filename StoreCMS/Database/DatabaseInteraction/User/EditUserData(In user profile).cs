@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Security;
 using Treynessen.Localization;
 using Treynessen.LogManagement;
@@ -29,7 +30,7 @@ namespace Treynessen.Database
                 statusCode = 404;
                 return;
             }
-            else if (editableUser != context.Items["User"] as User || !editableUser.Password.Equals(SecurityFunctions.GetPasswordHash(model.CurrentPassword)))
+            else if (editableUser != context.Items["User"] as User || !SecurityFunctions.VerifyPassword(editableUser, model.CurrentPassword))
             {
                 statusCode = 403;
                 return;
@@ -44,7 +45,12 @@ namespace Treynessen.Database
                 editableUser.Password = SecurityFunctions.GetPasswordHash(model.NewPassword);
             editableUser.IdleTime = model.IdleTime;
             editableUser.Email = model.Email;
-            db.SaveChanges();
+            try { db.SaveChanges(); }
+            catch (DbUpdateConcurrencyException)
+            {
+                statusCode = 409;
+                return;
+            }
             statusCode = 200;
 
             LogManagementFunctions.AddAdminPanelLog(

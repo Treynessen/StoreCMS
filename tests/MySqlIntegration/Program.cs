@@ -23,6 +23,8 @@ using Treynessen.Translit;
 internal class IntegrationProgram
 {
     static string connectionString;
+    static string isolatedDatabase;
+    static string localAdminConnection;
     static int checks;
     static string prefix="it"+Guid.NewGuid().ToString("N").Substring(0,10);
     static DbContextOptions<CMSDatabase> Options()=>new DbContextOptionsBuilder<CMSDatabase>().UseMySql(connectionString).Options;
@@ -42,6 +44,7 @@ internal class IntegrationProgram
             }
             else password=ReadPassword();
             var builder=new MySqlConnectionStringBuilder{Server="127.0.0.1",Port=3306,UserID="root",Password=password,ConnectionTimeout=5};
+            localAdminConnection=builder.ConnectionString;
             using(var connection=new MySqlConnection(builder.ConnectionString))
             {
                 connection.Open();
@@ -49,6 +52,15 @@ internal class IntegrationProgram
                 using(var reader=command.ExecuteReader()){reader.Read();Console.WriteLine("Local MySQL verified; port="+reader.GetValue(1)+"; version="+reader.GetString(2)+"; user="+reader.GetString(3));}
                 using(var command=new MySqlCommand("SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='test'",connection))
                 {Console.WriteLine("Dedicated database test exists: "+(Convert.ToInt32(command.ExecuteScalar())==1));}
+                if(args.Contains("--isolated"))
+                {
+                    // [Комментарий ИИ-агента]: Для повторной проверки первого этапа создаётся собственная новая БД; существующая test не меняется.
+                    string database="storecms_stage1_test_"+Guid.NewGuid().ToString("N");
+                    using(var command=new MySqlCommand("CREATE DATABASE `"+database+"` CHARACTER SET utf8 COLLATE utf8_general_ci",connection))command.ExecuteNonQuery();
+                    isolatedDatabase=database;
+                    builder.Database=database;connectionString=builder.ConnectionString;
+                    Run();return 0;
+                }
                 if(args.Contains("--preflight"))return 0;
                 if(args.Contains("--verify-clean"))
                 {
@@ -90,6 +102,20 @@ internal class IntegrationProgram
             Console.WriteLine("Completed checks: "+checks+"; run prefix: "+prefix);
             return 1;
         }
+        finally
+        {
+            if(isolatedDatabase!=null)
+            {
+                try
+                {
+                    // [Комментарий ИИ-агента]: Удаляется только БД, успешно созданная этим прогоном в режиме --isolated.
+                    using(var connection=new MySqlConnection(localAdminConnection))
+                    {connection.Open();using(var command=new MySqlCommand("DROP DATABASE `"+isolatedDatabase+"`",connection))command.ExecuteNonQuery();}
+                    Console.WriteLine("Removed owned stage-one integration database");
+                }
+                catch{Console.WriteLine("Cleanup incomplete for owned stage-one integration database");}
+            }
+        }
     }
     static string ReadPassword()
     {
@@ -108,9 +134,10 @@ internal class IntegrationProgram
         string shared=prefix+"shared",leaf=prefix+"leaf",parent=prefix+"parent";
         try
         {
-            Console.WriteLine("CHECK: construct real EF context (EnsureCreated)");
+            Console.WriteLine("CHECK: construct real EF context and explicitly create test schema if empty");
             using(var db=new CMSDatabase(Options()))
             {
+                db.Database.EnsureCreated();
                 Check(db.Database.CanConnect(),"EF Core/Pomelo connects to test");
                 var role=new UserType{Name=prefix,AccessLevel=AccessLevel.VeryHigh};db.UserTypes.Add(role);
                 var user=new User{Login=prefix,Password=SecurityFunctions.GetPasswordHash(Guid.NewGuid().ToString()),IdleTime=10,UserType=role};db.Users.Add(user);db.SaveChanges();roleId=role.ID;userId=user.ID;

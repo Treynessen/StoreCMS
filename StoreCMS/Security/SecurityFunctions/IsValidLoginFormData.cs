@@ -20,7 +20,7 @@ namespace Treynessen.Security
             }
             user = db.Users.FirstOrDefault(u => u.Login.Equals(data.Login, StringComparison.Ordinal));
             if (user == null) return false;
-            if (!user.Password.Equals(GetPasswordHash(data.Password), StringComparison.Ordinal))
+            if (!VerifyPassword(user, data.Password))
             {
                 LogManagementFunctions.AddAdminPanelLog(
                     db: db,

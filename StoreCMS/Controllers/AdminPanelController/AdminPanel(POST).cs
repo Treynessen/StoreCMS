@@ -28,7 +28,9 @@ namespace Treynessen.Controllers
 
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
-            user = SecurityFunctions.CheckCookies(db, HttpContext);
+            user = GetAuthenticatedUser();
+            if (model.PageId == AdminPanelPages.ChangeInitialPassword)
+                return ChangeInitialPassword(user, model.UserModel);
             if (!SecurityFunctions.HasAccessTo(model.PageId, user, HttpContext))
                 return RedirectToAction(nameof(AdminPanel));
 

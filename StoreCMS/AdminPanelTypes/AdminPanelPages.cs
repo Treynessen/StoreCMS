@@ -73,6 +73,7 @@
         GetVisitorActions,
         GetUserLog,
 
-        Exit
+        Exit,
+        ChangeInitialPassword
     }
 }
