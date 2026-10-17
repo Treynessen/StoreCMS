@@ -31,7 +31,8 @@
                     </script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddSynonymForString, user, Context))
 {
-                    <form id="add-synonym-for-string" class="container">
+                    <form id="add-synonym-for-string" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
                         <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddSynonymForString)">
                         <div class="string">
                             <label for="string">@Html.Raw(localization.String)</label>
@@ -60,7 +61,8 @@
 }
 @foreach (var pair in Model)
 {
-                    <form id="synonym-for-string-@pair.ID" class="container">
+                    <form id="synonym-for-string-@pair.ID" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
                         <input type="hidden" id="pageID-@pair.ID" name="pageID">
                         <input type="hidden" name="itemID" value="@pair.ID">
                         <div class="string">

@@ -2,13 +2,15 @@
 <!doctype html>
 <html>
 <head>
+    @await Html.PartialAsync("_Antiforgery")
     <title>@Html.Raw(localization.Title)</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
     <link rel="stylesheet" type="text/css" href="/styles/admin_panel/login_form.css" />
 </head>
 <body>
-    <form id="login-form" class="login-form-block">
+    <form id="login-form" class="login-form-block" method="post" data-admin-ajax>
+        @Html.AntiForgeryToken()
         <input type="hidden" name="pageID" value="@((int)AdminPanelPages.LoginForm)">
         <label for="Login">@Html.Raw(localization.UserName)</label>
         <input type="text" id="Login" name="Login" autocomplete="off" value="@Model?.Login" required>
@@ -16,7 +18,7 @@
         <input type="password" id="Password" name="Password" value="@Model?.Password" required>
         <input type="submit" id="submit-button" value="@Html.Raw(localization.Enter)" />
     </form>
-    <script src="/scripts/admin_panel/send_data.js?v=2.3.1"></script>
+    <script src="/scripts/admin_panel/send_data.js?v=2.3.2-f02"></script>
     <script>
         function errorHandler(formElement) {
             let errorMsgElement = document.getElementById('error-msg');

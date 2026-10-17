@@ -14,15 +14,27 @@ namespace Treynessen.Database
     public static partial class DatabaseInteraction
     {
         public static void AddUser(CMSDatabase db, UserModel model, HttpContext context, out int statusCode)
+            => AddUser(db, model, context, out statusCode, out _);
+
+        public static void AddUser(CMSDatabase db, UserModel model, HttpContext context, out int statusCode, out string validationError)
         {
-            if (!CorrectLogin(model.Login) || !CorrectPassword(model.NewPassword) || !model.UserTypeId.HasValue 
-                || db.UserTypes.FirstOrDefault(ut => ut.ID == model.UserTypeId.Value) == null)
+            validationError = null;
+            if (model == null) validationError = "user_data_required";
+            else if (string.IsNullOrEmpty(model.Login)) validationError = "user_login_required";
+            else if (!CorrectLogin(model.Login)) validationError = "user_login_invalid";
+            else if (string.IsNullOrEmpty(model.NewPassword)) validationError = "user_password_required";
+            else if (!CorrectPassword(model.NewPassword)) validationError = "user_password_invalid";
+            else if (!model.UserTypeId.HasValue) validationError = "user_role_required";
+            else if (db.UserTypes.FirstOrDefault(ut => ut.ID == model.UserTypeId.Value) == null)
+                validationError = "user_role_invalid";
+            if (validationError != null)
             {
                 statusCode = 422;
                 return;
             }
             if (db.Users.AsNoTracking().FirstOrDefault(u => u.Login.Equals(model.Login, StringComparison.Ordinal)) != null)
             {
+                validationError = "user_login_taken";
                 statusCode = 409;
                 return;
             }

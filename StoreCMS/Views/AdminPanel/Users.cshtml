@@ -10,7 +10,11 @@
     UserType[] userTypes = db.UserTypes.AsNoTracking().ToArray();
 }
 <script>
-                function errorMsg() {
+                function errorMsg(formElement) {
+                    if (formElement && !formElement.checkValidity()) {
+                        formElement.reportValidity();
+                        return;
+                    }
                     alert('@Html.Raw(localization.IncorrectInput)');
                 }
                 function responseHandler(request) {
@@ -37,7 +41,8 @@
             </script>
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddUser, user, Context))
             {
-            <form id="add-user" class="container">
+            <form id="add-user" class="container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <div>
                     <label for="user-login">@Html.Raw(localization.Login)</label>
                     <input type="text" id="user-login" name="UserModel.Login" required>
@@ -64,13 +69,18 @@
             <script>
                 let addButton = document.getElementById('add-button');
                 addButton.addEventListener('click', (e) => {
-                    if (document.getElementById('user-password').value.length < 5) {
+                    if (document.getElementById('user-password').value == '') {
+                        alert('Введите пароль.');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if (document.getElementById('user-password').value.length < 5) {
                         alert('@Html.Raw(localization.PasswordTooShort)');
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }
                     else if (document.getElementById('user-login').value == '') {
-                        errorMsg();
+                        alert('Введите логин.');
                         e.preventDefault();
                         e.stopImmediatePropagation();
                     }
@@ -80,7 +90,8 @@
             }
             @foreach (var u in Model)
             {
-            <form id="user-@(u.ID)" class="container">
+            <form id="user-@(u.ID)" class="container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <div>
                     <label for="user-login">@Html.Raw(localization.Login)</label>
                     <input type="text" value="@Html.Raw(u.Login)" disabled>

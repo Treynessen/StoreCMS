@@ -40,7 +40,8 @@
                     </script>
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddUserType, user, Context))
 {
-                    <form id="add-user-type" class="container">
+                    <form id="add-user-type" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
                         <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddUserType)">
                         <div class="user-type-name">
                             <label for="user-type">@Html.Raw(localization.UserTypeName)</label>
@@ -72,7 +73,8 @@
 }
 @foreach (var userType in Model)
 {
-                    <form id="user-type-@userType.ID" class="container">
+                    <form id="user-type-@userType.ID" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
                         <input type="hidden" id="pageID-@userType.ID" name="pageID">
                         <input type="hidden" name="itemID" value="@userType.ID">
                         <div class="user-type-name">

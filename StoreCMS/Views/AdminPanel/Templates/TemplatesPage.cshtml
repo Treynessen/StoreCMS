@@ -43,7 +43,8 @@
                     }
                     @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteTemplate, user, Context))
                     {
-        <form id="delete-template-@t.ID">
+        <form id="delete-template-@t.ID" method="post" data-admin-ajax>
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplate)">
                             <input type="hidden" name="itemID" value="@t.ID">
                             <input id="delete-button-@t.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteTemplate)" />

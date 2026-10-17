@@ -15,12 +15,19 @@ namespace Treynessen.Database
     public static partial class DatabaseInteraction
     {
         public static void EditUserData(CMSDatabase db, UserModel model, HttpContext context, out int statusCode)
+            => EditUserData(db, model, context, out statusCode, out _);
+
+        public static void EditUserData(CMSDatabase db, UserModel model, HttpContext context, out int statusCode, out string validationError)
         {
-            if (model == null || !model.ID.HasValue
-                || !CorrectLogin(model.Login)
-                || (!string.IsNullOrEmpty(model.NewPassword) && !CorrectPassword(model.NewPassword))
-                || model.IdleTime < 10 || model.IdleTime > 10080
-            )
+            validationError = null;
+            if (model == null) validationError = "user_data_required";
+            else if (!model.ID.HasValue) validationError = "user_id_required";
+            else if (string.IsNullOrEmpty(model.Login)) validationError = "user_login_required";
+            else if (!CorrectLogin(model.Login)) validationError = "user_login_invalid";
+            else if (!string.IsNullOrEmpty(model.NewPassword) && !CorrectPassword(model.NewPassword))
+                validationError = "user_password_invalid";
+            else if (model.IdleTime < 10 || model.IdleTime > 10080) validationError = "user_idle_time_invalid";
+            if (validationError != null)
             {
                 statusCode = 422;
                 return;
@@ -38,6 +45,7 @@ namespace Treynessen.Database
             }
             else if (!editableUser.Login.Equals(model.Login, StringComparison.Ordinal) && db.Users.FirstOrDefault(u => u.Login.Equals(model.Login, StringComparison.Ordinal)) != null)
             {
+                validationError = "user_login_taken";
                 statusCode = 409;
                 return;
             }

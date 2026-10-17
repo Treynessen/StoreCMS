@@ -8,7 +8,8 @@
 }
 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditUserData, user, Context))
 {
-            <form id="user-data">
+            <form id="user-data" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <div class="row">
                     <label for="Login">@Html.Raw(localization.Login):</label>
                     <input type="text" id="Login" name="UserModel.Login" value="@user.Login">

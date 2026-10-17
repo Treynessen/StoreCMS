@@ -8,7 +8,8 @@
     string path = Context.Items["PathToFile"] as string;
 }
 <script src="/scripts/admin_panel/insert_tab.js"></script>
-            <form id="edit-style" class="page-container">
+            <form id="edit-style" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditStyle)" />
                 <input type="hidden" name="path" value="@Html.Raw(path)" />
                 <div class="name-block">

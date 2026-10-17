@@ -10,7 +10,8 @@
 }
 <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
-            <form id="edit-category" class="page-container">
+            <form id="edit-category" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditCategory)">
                 <input type="hidden" name="itemID" value="@Model.ID">
                 <input id="save-button" type="submit" value="@Html.Raw(localization.SaveButton)" />

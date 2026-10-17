@@ -57,6 +57,7 @@
 <!doctype html>
 <html>
 <head>
+    @await Html.PartialAsync("_Antiforgery")
     <title>@Html.Raw(pageName == null ? string.Empty : $"{pageName} - ")@Html.Raw(localization.Title)</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
@@ -82,11 +83,12 @@
                 }
             }
             <li>
-                <form id="exit">
+                <form id="exit" method="post" data-admin-ajax>
+                    @Html.AntiForgeryToken()
                     <input type="hidden" name="pageID" value="@((int)AdminPanelPages.Exit)">
                     <input type="submit" id="exit-button" value="@Html.Raw(localization.Exit)">
                 </form>
-                <script src="/scripts/admin_panel/send_data.js?v=2.3.1"></script>
+                <script src="/scripts/admin_panel/send_data.js?v=2.3.2-f02"></script>
                 <script>
                     function responseFromExitRequest(request) {
                         if (request.status == 200) {

@@ -60,7 +60,8 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProduct, user, Context))
                 {
-            <form id="delete-product-@p.ID">
+            <form id="delete-product-@p.ID" method="post" data-admin-ajax>
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProduct)">
                             <input type="hidden" name="itemID" value="@p.ID">
                             <input id="delete-product-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteProduct)" />

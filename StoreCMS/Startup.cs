@@ -70,6 +70,7 @@ public class Startup
 
         services.AddHostedService<TimedHostedService>();
 
+        AdminAntiforgery.Configure(services);
         services.AddMvc();
 
         services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);

@@ -24,6 +24,7 @@
                 }
                 try {
                     request.open('PUT', location.origin + location.pathname, false);
+                    if (!setAdminPanelCsrfHeader(request, 'PUT')) return;
                     request.send(data);
                 }
                 catch (error) {

@@ -12,10 +12,17 @@ namespace Treynessen.Database
     public static partial class DatabaseInteraction
     {
         public static void EditUser(CMSDatabase db, int? userID, UserModel model, HttpContext context, out int statusCode)
+            => EditUser(db, userID, model, context, out statusCode, out _);
+
+        public static void EditUser(CMSDatabase db, int? userID, UserModel model, HttpContext context, out int statusCode, out string validationError)
         {
-            if (!userID.HasValue || !model.UserTypeId.HasValue
-                || db.UserTypes.AsNoTracking().FirstOrDefault(ut => ut.ID == model.UserTypeId.Value) == null
-            )
+            validationError = null;
+            if (!userID.HasValue) validationError = "user_id_required";
+            else if (model == null) validationError = "user_data_required";
+            else if (!model.UserTypeId.HasValue) validationError = "user_role_required";
+            else if (db.UserTypes.AsNoTracking().FirstOrDefault(ut => ut.ID == model.UserTypeId.Value) == null)
+                validationError = "user_role_invalid";
+            if (validationError != null)
             {
                 statusCode = 422;
                 return;

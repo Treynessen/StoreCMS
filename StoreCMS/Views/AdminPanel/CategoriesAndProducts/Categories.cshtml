@@ -60,7 +60,8 @@
                 }
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteCategory, user, Context))
                 {
-                <form id="delete-category-@c.ID">
+                <form id="delete-category-@c.ID" method="post" data-admin-ajax>
+                                @Html.AntiForgeryToken()
                                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteCategory)">
                                 <input type="hidden" name="itemID" value="@c.ID">
                                 <input id="delete-category-button-@c.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteCategory)" />

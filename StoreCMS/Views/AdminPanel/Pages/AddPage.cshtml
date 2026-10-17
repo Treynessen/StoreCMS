@@ -10,7 +10,8 @@
 }
 <script src="/scripts/admin_panel/insert_tab.js"></script>
             <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
-            <form id="add-page" class="page-container">
+            <form id="add-page" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddPage)">
                 @*SAVE BUTTON*@
                 <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />

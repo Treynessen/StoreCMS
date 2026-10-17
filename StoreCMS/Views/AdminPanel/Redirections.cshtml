@@ -31,7 +31,8 @@
             </script>
             @if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddRedirection, user, Context))
             {
-            <form id="add-redirection" class="container">
+            <form id="add-redirection" class="container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddRedirection)">
                 <div class="link">
                     <label for="link">@Html.Raw(localization.Link)</label>
@@ -60,7 +61,8 @@
             }
             @foreach (var pair in Model)
             {
-            <form id="redirection-@pair.ID" class="container">
+            <form id="redirection-@pair.ID" class="container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="itemID" value="@pair.ID">
                 <input type="hidden" id="pageID-@pair.ID" name="pageID">
                 <div class="link">

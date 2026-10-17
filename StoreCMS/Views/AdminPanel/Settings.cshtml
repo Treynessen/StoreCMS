@@ -94,7 +94,8 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
 };
 }
 <script src="/scripts/admin_panel/insert_tab.js"></script>
-            <form id="save-settings">
+            <form id="save-settings" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
                 {
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditSettings)">

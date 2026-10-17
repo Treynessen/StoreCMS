@@ -40,11 +40,12 @@ function fixture(status, options = {}) {
             this.url = url;
             if (options.throwAt === 'open') throw new Error('network');
         }
+        setRequestHeader() {}
         send() { sends++; if (options.throwAt === 'send') throw new Error('network'); }
         getResponseHeader(name) { return name === 'Content-Type' ? (options.html ? 'text/html; charset=utf-8' : '') : '/admin?itemID=2'; }
     }
     const sandbox = { FormData, XMLHttpRequest, alert: msg => messages.push(msg),
-        document: { getElementById: () => form },
+        document: { getElementById: () => form, querySelector: () => ({ content: 'fixture-token' }), addEventListener() {} },
         location: { origin: 'https://localhost', pathname: '/admin', reload: () => reloads++, replace: target => { redirects++; targets.push(target); }, assign: target => { redirects++; targets.push(target); } } };
     vm.createContext(sandbox);
     for (const file of ['send_data.js', 'send_file.js']) {

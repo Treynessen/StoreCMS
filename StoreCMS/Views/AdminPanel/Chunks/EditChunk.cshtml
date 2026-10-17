@@ -6,7 +6,8 @@
     Context.Items["PageName"] = $"{localization.EditChunkPageName} {Model?.Name}";
 }
 <script src="/scripts/admin_panel/insert_tab.js"></script>
-            <form id="edit-chunk" class="page-container">
+            <form id="edit-chunk" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditChunk)">
                 <input type="hidden" name="itemID" value="@Model.ID">
                 <div class="name-block">
