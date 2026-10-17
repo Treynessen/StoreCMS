@@ -61,11 +61,13 @@
                         </div>
                     </form>
                     <script>
-                        function responseFromAdding() {
-                            alert('@Html.Raw(localization.UserTypeAdded)');
-                            location.reload();
+                        function responseFromAdding(request) {
+                            if (request.status === 201) {
+                                alert('@Html.Raw(localization.UserTypeAdded)');
+                                location.reload();
+                            }
                         }
-                        document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-user-type', responseFromAdding, errorMsg));
+                        document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-user-type', responseFromAdding, errorMsg, 201));
                     </script>
 }
 @foreach (var userType in Model)

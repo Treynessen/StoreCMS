@@ -23,8 +23,10 @@ namespace Treynessen.Controllers
                 DatabaseInteraction.Exit(db, user, HttpContext, out int exitStatusCode);
                 return StatusCode(exitStatusCode);
             }
+            if (user == null)
+                return StatusCode(401);
             if (!SecurityFunctions.HasAccessTo(pageID, user, HttpContext))
-                return RedirectToAction(nameof(AdminPanel));
+                return StatusCode(403);
 
             HttpContext.Items["User"] = user;
             HttpContext.Items["LogLocalization"] = localization;
@@ -92,7 +94,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(404);
 
                 default:
-                    return RedirectToAction(nameof(AdminPanel));
+                    return StatusCode(400);
             }
         }
     }

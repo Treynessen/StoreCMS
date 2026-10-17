@@ -100,9 +100,11 @@ Html.Raw($"5 - {localization.VeryHighAccessLevel}")
                 <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditSettings)">
                 <input id="save-settings-button" type="submit" value="@Html.Raw(localization.SaveButton)">
                 <script>
-                    function responseHandler() {
-                        alert('@Html.Raw(localization.SettingsSaved)');
-                        location.reload();
+                    function responseHandler(request) {
+                        if (request.status === 200) {
+                            alert('@Html.Raw(localization.SettingsSaved)');
+                            location.reload();
+                        }
                     }
                     document.getElementById('save-settings-button').addEventListener('click', createSendDataEventHandler('POST', 'save-settings', responseHandler));
                     document.getElementById('ProductBlockTemplate').addEventListener('keydown', insertTabEventHandler);

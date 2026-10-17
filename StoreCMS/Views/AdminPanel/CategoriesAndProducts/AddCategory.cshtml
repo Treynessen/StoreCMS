@@ -109,6 +109,6 @@
                         errorHandler(formElement);
                     }
                 }
-                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-category', responseHandler, errorHandler));
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-category', responseHandler, errorHandler, 201));
                 document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
             </script>

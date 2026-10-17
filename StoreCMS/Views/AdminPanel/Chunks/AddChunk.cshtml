@@ -42,6 +42,6 @@
                         errorHandler(formElement);
                     }
                 }
-                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-chunk', responseHandler, errorHandler));
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-chunk', responseHandler, errorHandler, 201));
                 document.getElementById('TemplateSource').addEventListener('keydown', insertTabEventHandler);
             </script>

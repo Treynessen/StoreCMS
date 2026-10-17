@@ -17,8 +17,10 @@ namespace Treynessen.Controllers
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
             User user = GetAuthenticatedUser();
+            if (user == null)
+                return StatusCode(401);
             if (!SecurityFunctions.HasAccessTo(pageID, user, HttpContext))
-                return RedirectToAction(nameof(AdminPanel));
+                return StatusCode(403);
 
             HttpContext.Items["User"] = user;
             HttpContext.Items["LogLocalization"] = localization;
@@ -36,7 +38,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(415);
 
                 default:
-                    return RedirectToAction(nameof(AdminPanel));
+                    return StatusCode(400);
             }
         }
     }

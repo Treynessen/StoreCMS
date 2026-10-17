@@ -151,7 +151,7 @@
                         errorHandler(formElement);
                     }
                 }
-                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-product', responseHandler, errorHandler));
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-product', responseHandler, errorHandler, 201));
                 document.getElementById('ShortDescription').addEventListener('keydown', insertTabEventHandler);
                 document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
             </script>

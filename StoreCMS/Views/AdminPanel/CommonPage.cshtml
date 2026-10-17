@@ -86,7 +86,7 @@
                     <input type="hidden" name="pageID" value="@((int)AdminPanelPages.Exit)">
                     <input type="submit" id="exit-button" value="@Html.Raw(localization.Exit)">
                 </form>
-                <script src="/scripts/admin_panel/send_data.js"></script>
+                <script src="/scripts/admin_panel/send_data.js?v=2.3.1"></script>
                 <script>
                     function responseFromExitRequest(request) {
                         if (request.status == 200) {

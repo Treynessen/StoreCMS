@@ -75,7 +75,7 @@
                         e.stopImmediatePropagation();
                     }
                 });
-                addButton.addEventListener('click', createSendDataEventHandler('POST', 'add-user', responseHandler, errorMsg));
+                addButton.addEventListener('click', createSendDataEventHandler('POST', 'add-user', responseHandler, errorMsg, 201));
             </script>
             }
             @foreach (var u in Model)

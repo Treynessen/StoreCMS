@@ -72,6 +72,8 @@
 
 ### 06. P1 — отсутствует проверка CSRF-токенов
 
+**Подготовка 2.3.1, 2026-10-17:** устраняются ложный успех Settings/добавления роли и цепочки 302→HTML 200 при отказе изменяющего запроса. Общие XHR-помощники допускают callback только для контрактного 200/201, отдельно показывают HTTP/сетевой отказ; статусы 401/403/default 400 явные. Это подготовка интерфейса и HTTP-контрактов, **не исправление CSRF**: валидации antiforgery и токенов ещё нет. Детали и фактические проверки — tests/AdminHttpErrorRegression и PROGRESS.md.
+
 **Подтверждено отсутствие защиты:** [Controllers/AdminPanelController/AdminPanel(POST).cs:13](<C:/Users/user/Documents/Codex/StoreCMS/StoreCMS/Controllers/AdminPanelController/AdminPanel(POST).cs:13>), [Controllers/AdminPanelController/AdminPanel(PUT).cs:14](<C:/Users/user/Documents/Codex/StoreCMS/StoreCMS/Controllers/AdminPanelController/AdminPanel(PUT).cs:14>), [Controllers/AdminPanelController/AdminPanel(DELETE).cs:15](<C:/Users/user/Documents/Codex/StoreCMS/StoreCMS/Controllers/AdminPanelController/AdminPanel(DELETE).cs:15>). В коде не найдены antiforgery-фильтры или серверная проверка токена. Даже если токен появился бы в форме автоматически, без проверки это не решает проблему.
 
 Включить проверку для изменяющих запросов и передавать токен из AJAX. Проверить также вход и выход. Практический межсайтовый сценарий зависит от поведения браузера и SameSite; современные браузерные ограничения снижают часть риска, но не заменяют серверную защиту.

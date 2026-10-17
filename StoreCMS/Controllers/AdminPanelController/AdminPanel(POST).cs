@@ -28,10 +28,12 @@ namespace Treynessen.Controllers
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
             user = GetAuthenticatedUser();
+            if (user == null)
+                return StatusCode(401);
             if (model.PageId == AdminPanelPages.ChangeInitialPassword)
                 return ChangeInitialPassword(user, model.UserModel);
             if (!SecurityFunctions.HasAccessTo(model.PageId, user, HttpContext))
-                return RedirectToAction(nameof(AdminPanel));
+                return StatusCode(403);
 
             HttpContext.Items["User"] = user;
 
@@ -197,7 +199,7 @@ namespace Treynessen.Controllers
                     return EditSettings(db, model.SettingsModel, HttpContext);
 
                 default:
-                    return RedirectToAction(nameof(AdminPanel));
+                    return StatusCode(400);
             }
         }
     }

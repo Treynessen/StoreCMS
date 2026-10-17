@@ -55,7 +55,7 @@
                         errorMsg();
                     }
                 }
-                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-redirection', responseFromAdding, errorMsg));
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-redirection', responseFromAdding, errorMsg, 201));
             </script>
             }
             @foreach (var pair in Model)

@@ -30,6 +30,22 @@ namespace Treynessen.Controllers
                 return;
             }
             var user = GetAuthenticatedUser();
+            string method = HttpContext.Request.Method;
+            if (user != null && (method == "POST" || method == "PUT" || method == "DELETE"))
+            {
+                context.ActionArguments.TryGetValue("model", out object requestModel);
+                context.ActionArguments.TryGetValue("pageID", out object requestPage);
+                AdminPanelPages? page = method == "POST" ? (requestModel as Model)?.PageId
+                    : requestPage is AdminPanelPages value ? value : (AdminPanelPages?)null;
+                // [Комментарий ИИ-агента]: Некорректный селектор и неверный HTTP-метод отделяем от отказа прав; без сессии сохраняется 401 диспетчера.
+                bool invalidPage = (ModelState.TryGetValue(nameof(Model.PageId), out var directPage) && directPage.Errors.Count > 0)
+                    || (ModelState.TryGetValue("model.PageId", out var prefixedPage) && prefixedPage.Errors.Count > 0);
+                if (invalidPage || !SupportsAdminPanelMutation(page, method))
+                {
+                    context.Result = StatusCode(400);
+                    return;
+                }
+            }
             if (user != null && user.RequirePasswordChange)
             {
                 if (HttpContext.Request.Method == "GET")
