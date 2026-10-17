@@ -1,7 +1,10 @@
-﻿using System.Linq;
+using System.Data;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
+using Treynessen.Security;
 
 namespace Treynessen.Database
 {
@@ -9,19 +12,18 @@ namespace Treynessen.Database
     {
         public static void Exit(CMSDatabase db, User user, HttpContext context, out int statusCode)
         {
-            if (user == null)
+            if (SessionToken.TryHash(context.Request.Cookies[SessionCookies.Name], out string hash))
             {
-                statusCode = 404;
-                return;
+                var session = db.ConnectedUsers.AsNoTracking().SingleOrDefault(s => s.TokenHash == hash);
+                if (session != null)
+                    using (var transaction = db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                    {
+                        SessionStore.LockUser(db, session.UserID);
+                        SessionStore.Delete(db, hash);
+                        transaction.Commit();
+                    }
             }
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserID == user.ID);
-            if (connectedUser == null)
-            {
-                statusCode = 404;
-                return;
-            }
-            db.ConnectedUsers.Remove(connectedUser);
-            db.SaveChanges();
+            SessionCookies.ClearLegacy(context);
             statusCode = 200;
         }
     }

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Database.Entities;
 
 namespace Treynessen.Database.Context
@@ -65,7 +65,11 @@ namespace Treynessen.Database.Context
             });
             modelBuilder.Entity<ConnectedUser>(entity =>
             {
-                entity.HasIndex(cu => new { cu.UserName, cu.LoginKey, cu.IPAdress, cu.UserAgent }).IsUnique();
+                entity.Property(cu => cu.TokenHash).HasColumnType("char(64) CHARACTER SET ascii COLLATE ascii_bin").IsRequired();
+                entity.Property(cu => cu.LastActionUtc).HasColumnType("datetime(6)");
+                entity.Property(cu => cu.IPAdress).HasMaxLength(45);
+                entity.Property(cu => cu.UserAgent).HasMaxLength(255);
+                entity.HasIndex(cu => cu.TokenHash).IsUnique();
                 entity.HasIndex(cu => cu.UserID).IsUnique();
             });
             modelBuilder.Entity<User>().HasIndex(u => u.Login).IsUnique();

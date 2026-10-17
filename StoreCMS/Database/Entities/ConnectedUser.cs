@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Treynessen.Database.Entities
@@ -7,11 +7,9 @@ namespace Treynessen.Database.Entities
     {
         public int ID { get; set; }
         [Required]
-        public string UserName { get; set; }
+        public string TokenHash { get; set; }
         [Required]
-        public string LoginKey { get; set; }
-        [Required]
-        public DateTime LastActionTime { get; set; }
+        public DateTime LastActionUtc { get; set; }
         [Required]
         public string IPAdress { get; set; }
         [Required]

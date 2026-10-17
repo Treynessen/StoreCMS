@@ -30,7 +30,7 @@ namespace Treynessen.Security
 
                     user.Password = SecurityFunctions.GetPasswordHash(newPassword);
                     user.RequirePasswordChange = false;
-                    db.ConnectedUsers.RemoveRange(db.ConnectedUsers.Where(c => c.UserID == userId));
+                    SessionStore.RevokeAll(db, userId);
                     state.LegacyPasswordResetCompleted = true;
                     db.SaveChanges();
                     transaction.Commit();

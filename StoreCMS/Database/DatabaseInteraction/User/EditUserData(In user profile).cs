@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace Treynessen.Database
     {
         public static void EditUserData(CMSDatabase db, UserModel model, HttpContext context, out int statusCode)
         {
-            if (!model.ID.HasValue
+            if (model == null || !model.ID.HasValue
                 || !CorrectLogin(model.Login)
                 || (!string.IsNullOrEmpty(model.NewPassword) && !CorrectPassword(model.NewPassword))
                 || model.IdleTime < 10 || model.IdleTime > 10080
@@ -30,7 +31,7 @@ namespace Treynessen.Database
                 statusCode = 404;
                 return;
             }
-            else if (editableUser != context.Items["User"] as User || !SecurityFunctions.VerifyPassword(editableUser, model.CurrentPassword))
+            else if (editableUser.ID != (context.Items["User"] as User)?.ID || !SecurityFunctions.VerifyPassword(editableUser, model.CurrentPassword))
             {
                 statusCode = 403;
                 return;
@@ -40,20 +41,35 @@ namespace Treynessen.Database
                 statusCode = 409;
                 return;
             }
-            editableUser.Login = model.Login;
-            if (!string.IsNullOrEmpty(model.NewPassword))
-                editableUser.Password = SecurityFunctions.GetPasswordHash(model.NewPassword);
-            editableUser.IdleTime = model.IdleTime;
-            editableUser.Email = model.Email;
-            try { db.SaveChanges(); }
+            bool changingPassword = !string.IsNullOrEmpty(model.NewPassword);
+            string newHash = changingPassword ? SecurityFunctions.GetPasswordHash(model.NewPassword) : null;
+            try
+            {
+                using (var transaction = db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    var current = SessionStore.LockUser(db, editableUser.ID);
+                    if (current == null || current.Password != editableUser.Password)
+                    { statusCode = 409; return; }
+                    if (!SessionStore.IsCurrent(db, context, current, AdminSessionPolicy.Instance, DateTime.UtcNow))
+                    { statusCode = 403; return; }
+                    editableUser.Login = model.Login;
+                    if (changingPassword) editableUser.Password = newHash;
+                    editableUser.IdleTime = model.IdleTime;
+                    editableUser.Email = model.Email;
+                    db.SaveChanges();
+                    if (changingPassword) SessionStore.RevokeAll(db, editableUser.ID);
+                    transaction.Commit();
+                }
+            }
             catch (DbUpdateConcurrencyException)
             {
                 statusCode = 409;
                 return;
             }
             statusCode = 200;
+            if (changingPassword) SessionCookies.ClearLegacy(context);
 
-            LogManagementFunctions.AddAdminPanelLog(
+            LogManagementFunctions.TryAddCommittedAdminPanelLog(
                 db: db,
                 context: context,
                 info: $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.UserDataEdited}"

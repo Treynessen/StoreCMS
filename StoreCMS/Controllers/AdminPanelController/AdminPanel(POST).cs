@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
 using Treynessen.Database;
@@ -20,8 +20,7 @@ namespace Treynessen.Controllers
             {
                 if (SecurityFunctions.IsValidLoginFormData(db, loginFormModel, HttpContext, out user))
                 {
-                    DatabaseInteraction.AddConnectedUser(db, user, HttpContext);
-                    return StatusCode(200);
+                    return StatusCode(DatabaseInteraction.AddConnectedUser(db, user, HttpContext) ? 200 : 409);
                 }
                 else return StatusCode(401);
             }

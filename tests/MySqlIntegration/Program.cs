@@ -34,16 +34,16 @@ internal class IntegrationProgram
         try
         {
             int credentialArg=Array.IndexOf(args,"--credential-config");
-            string password;
+            string password; uint testPort=3306;
             if(credentialArg>=0)
             {
                 var config=new ConfigurationBuilder().AddJsonFile(Path.GetFullPath(args[credentialArg+1])).Build();
                 var credentials=new MySqlConnectionStringBuilder(config["DbSettings:ConnectionString"]);
                 if(credentials.UserID!="root")throw new InvalidOperationException("Credential identity mismatch");
-                password=credentials.Password;
+                password=credentials.Password; testPort=credentials.Port;
             }
             else password=ReadPassword();
-            var builder=new MySqlConnectionStringBuilder{Server="127.0.0.1",Port=3306,UserID="root",Password=password,ConnectionTimeout=5};
+            var builder=new MySqlConnectionStringBuilder{Server="127.0.0.1",Port=testPort,UserID="root",Password=password,ConnectionTimeout=5};
             localAdminConnection=builder.ConnectionString;
             using(var connection=new MySqlConnection(builder.ConnectionString))
             {

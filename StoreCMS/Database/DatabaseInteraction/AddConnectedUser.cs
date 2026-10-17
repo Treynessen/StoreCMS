@@ -1,6 +1,7 @@
-﻿using System;
-using System.Linq;
+using System;
+using System.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Treynessen.Security;
 using Treynessen.Localization;
 using Treynessen.LogManagement;
@@ -11,53 +12,31 @@ namespace Treynessen.Database
 {
     public static partial class DatabaseInteraction
     {
-        // На стороне сервера хранится логин, ключ для входа, ip-адрес, информация о браузере и время последнего действия
-        // На стороне клиента, в куках, сохраняем логин и ключ для входа
-        public static void AddConnectedUser(CMSDatabase db, User user, HttpContext context)
+        public static bool AddConnectedUser(CMSDatabase db, User user, HttpContext context)
         {
-            ConnectedUser connectedUser = db.ConnectedUsers.FirstOrDefault(cu => cu.UserID == user.ID);
-
-            // Если пользователь уже был залогинен, то обновляем его данные
-            // Это сделано, если вдруг пользователь заходит с другого браузера
-            // С того же самого браузера, с которого он залогинился, пользователь
-            // не попадет в этот блок кода, т.к. его либо сразу пропустит в админку, либо 
-            // удалится запись из-за длительного бездействия и тогда его данные нужно будет
-            // добавить в else блоке
-            if (connectedUser != null)
+            if (!context.Request.IsHttps || user == null) return false;
+            string token = SessionToken.Create();
+            SessionToken.TryHash(token, out string hash);
+            using (var transaction = db.Database.BeginTransaction(IsolationLevel.ReadCommitted))
             {
-                connectedUser.UserName = SecurityFunctions.GetMd5Hash(SecurityFunctions.GetMd5Hash(user.Login + SecurityFunctions.GetRandomKey(10, 20)));
-                connectedUser.LoginKey = SecurityFunctions.GetRandomKey(15, 30);
-                connectedUser.LastActionTime = DateTime.Now;
-                connectedUser.UserAgent = context.Request.Headers["User-Agent"];
-                connectedUser.IPAdress = context.Connection.RemoteIpAddress.ToString();
-                db.SaveChanges();
-            }
-
-            else
-            {
-                connectedUser = new ConnectedUser
+                var current = SessionStore.LockUser(db, user.ID);
+                // [Комментарий ИИ-агента]: Проверка пароля до блокировки не разрешает выдать сессию после его конкурентной смены.
+                if (current == null || !string.Equals(current.Password, user.Password, StringComparison.Ordinal)) return false;
+                SessionStore.RevokeAll(db, user.ID);
+                string agent = context.Request.Headers["User-Agent"].ToString();
+                db.ConnectedUsers.Add(new ConnectedUser
                 {
-                    UserName = SecurityFunctions.GetMd5Hash(SecurityFunctions.GetMd5Hash(user.Login + SecurityFunctions.GetRandomKey(10, 20))),
-                    LoginKey = SecurityFunctions.GetRandomKey(15, 30),
-                    IPAdress = context.Connection.RemoteIpAddress.ToString(),
-                    LastActionTime = DateTime.Now,
-                    UserAgent = context.Request.Headers["User-Agent"],
-                    User = user
-                };
-                db.ConnectedUsers.Add(connectedUser);
+                    TokenHash = hash, LastActionUtc = DateTime.UtcNow, UserID = user.ID,
+                    IPAdress = context.Connection.RemoteIpAddress?.ToString() ?? "",
+                    UserAgent = agent.Length > 255 ? agent.Substring(0, 255) : agent
+                });
                 db.SaveChanges();
+                transaction.Commit();
             }
-
-            LogManagementFunctions.AddAdminPanelLog(
-                db: db,
-                context: context,
-                info: $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn}. IP: {context.Connection.RemoteIpAddress.ToString()}",
-                user: user
-            );
-
-            // Использовать вместо userName хэш?
-            context.Response.Cookies.Append("userName", connectedUser.UserName);
-            context.Response.Cookies.Append("loginKey", connectedUser.LoginKey);
+            SessionCookies.Write(context, token);
+            LogManagementFunctions.TryAddCommittedAdminPanelLog(db, context,
+                $"{(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.LoggedIn}. IP: {context.Connection.RemoteIpAddress}", user);
+            return true;
         }
     }
 }

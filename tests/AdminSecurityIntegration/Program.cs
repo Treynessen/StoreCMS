@@ -30,7 +30,7 @@ using Treynessen.Database.Entities;
 using Treynessen.Security;
 using Treynessen.SettingsManagement;
 
-internal static class SecurityIntegration
+internal static partial class SecurityIntegration
 {
     private static string credentialPath, sourceRoot, serverConnection;
     private static readonly List<string> ownedDatabases = new List<string>();
@@ -56,7 +56,7 @@ internal static class SecurityIntegration
             var supplied = new MySqlConnectionStringBuilder(config["DbSettings:ConnectionString"]);
             if (supplied.UserID != "root") throw new InvalidOperationException("Local test credential identity must be root");
             // [Комментарий ИИ-агента]: Реквизиты используются только в памяти. Хост, порт и база из файла не переносятся в тестовое подключение.
-            serverConnection = new MySqlConnectionStringBuilder { Server = "127.0.0.1", Port = 3306, UserID = "root", Password = supplied.Password, ConnectionTimeout = 5, Pooling = false }.ConnectionString;
+            serverConnection = new MySqlConnectionStringBuilder { Server = "127.0.0.1", Port = supplied.Port, UserID = "root", Password = supplied.Password, ConnectionTimeout = 5, Pooling = false }.ConnectionString;
             if (args.Contains("--initialize-worker"))
             {
                 string database = args[Array.IndexOf(args, "--database") + 1];
@@ -64,11 +64,19 @@ internal static class SecurityIntegration
                 using (var db = new CMSDatabase(Options(ForDatabase(database)))) MySqlSecurityInstallation.Initialize(db);
                 Console.WriteLine("Worker initialized isolated database"); return 0;
             }
+            if (args.Contains("--session-worker"))
+            {
+                string database = args[Array.IndexOf(args, "--database") + 1];
+                if (!Regex.IsMatch(database, "\\Astorecms_security_test_[a-f0-9]{32}\\z")) throw new InvalidOperationException("Test database guard");
+                using (var db = new CMSDatabase(Options(ForDatabase(database))))
+                    return DatabaseInteraction.AddConnectedUser(db, db.Users.Single(), SessionContext()) ? 0 : 1;
+            }
             if (sourceIndex < 0) throw new InvalidOperationException("Source root required for views and SQL script");
             sourceRoot = Path.GetFullPath(args[sourceIndex + 1]);
             using (var connection = new MySqlConnection(serverConnection))
             { connection.Open(); Console.WriteLine("Local isolated MySQL connected; version=" + connection.ServerVersion); }
-            Run().GetAwaiter().GetResult();
+            if (args.Contains("--sessions-only")) SessionChecks().GetAwaiter().GetResult();
+            else Run().GetAwaiter().GetResult();
             Console.WriteLine("Completed integration checks: " + checks); return 0;
         }
         catch (Exception error)
@@ -305,13 +313,13 @@ internal static class SecurityIntegration
         {
             Check(firstHost != null && secondHost != null, "two HTTP application hosts start in parallel on initialized database");
             string address = firstHost.ServerFeatures.Get<IServerAddressesFeature>().Addresses.Single();
-            var handler = new HttpClientHandler { AllowAutoRedirect = false, CookieContainer = new CookieContainer() };
+            var handler = new HttpClientHandler { AllowAutoRedirect = false, CookieContainer = new CookieContainer(), ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true };
             using (var client = new HttpClient(handler) { BaseAddress = new Uri(address) })
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("StoreCMS-security-tests/1.0");
                 const string path = "/private/control-room";
                 var login = await Send(client, path, "POST", AdminPanelPages.LoginForm, "Login", "admin", "Password", "admin");
-                Check(login.StatusCode == HttpStatusCode.OK && handler.CookieContainer.GetCookies(new Uri(new Uri(address), path)).Count == 2, "HTTP admin/admin login issues existing cookies at custom panel URL");
+                Check(login.StatusCode == HttpStatusCode.OK && handler.CookieContainer.GetCookies(new Uri(new Uri(address), path)).Cast<Cookie>().Count(c => c.Name == SessionCookies.Name) == 1, "HTTPS admin/admin login issues one session cookie at custom panel URL");
                 var page = await client.GetAsync(path + "?pageID=" + (int)AdminPanelPages.Settings);
                 string body = await page.Content.ReadAsStringAsync();
                 Check(page.StatusCode == HttpStatusCode.OK && body.Contains("UserModel.ConfirmPassword") && body.Contains("action=\"" + path + "\""), "GET settings returns only mandatory change form with current URL");
@@ -330,6 +338,7 @@ internal static class SecurityIntegration
                 Check((await Change(client, path, "admin", NewPassword, "Mismatch")).StatusCode == HttpStatusCode.UnprocessableEntity, "password confirmation checked on server");
                 var changed = await Change(client, path, "admin", NewPassword, NewPassword);
                 Check(changed.StatusCode == HttpStatusCode.Redirect && changed.Headers.Location.ToString() == path, "valid change redirects to current custom panel URL");
+                Check((await Send(client, path, "POST", AdminPanelPages.LoginForm, "Login", "admin", "Password", NewPassword)).StatusCode == HttpStatusCode.OK, "new password login required after initial change");
                 var home = await client.GetAsync(path);
                 string html = await home.Content.ReadAsStringAsync();
                 Check(home.StatusCode == HttpStatusCode.OK && html.Contains("admin") && !html.Contains("UserModel.ConfirmPassword"), "real administrative Razor home works after password change");
@@ -355,9 +364,19 @@ internal static class SecurityIntegration
         for (int i = 0; i < fields.Length; i += 2) values.Add(new KeyValuePair<string, string>(fields[i], fields[i + 1]));
         return client.SendAsync(new HttpRequestMessage(new HttpMethod(method), path) { Content = new FormUrlEncodedContent(values) });
     }
+    internal static System.Security.Cryptography.X509Certificates.X509Certificate2 TestCertificate()
+    {
+        using (var rsa = System.Security.Cryptography.RSA.Create(2048))
+        {
+            var request = new System.Security.Cryptography.X509Certificates.CertificateRequest("CN=localhost", rsa, System.Security.Cryptography.HashAlgorithmName.SHA256, System.Security.Cryptography.RSASignaturePadding.Pkcs1);
+            using (var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddDays(-1), DateTimeOffset.UtcNow.AddDays(1)))
+                return new System.Security.Cryptography.X509Certificates.X509Certificate2(certificate.Export(System.Security.Cryptography.X509Certificates.X509ContentType.Pfx));
+        }
+    }
+
     private static IWebHost StartHost()
     {
-        var host = new WebHostBuilder().UseKestrel().UseUrls("http://127.0.0.1:0").UseContentRoot(HttpRoot)
+        var host = new WebHostBuilder().UseKestrel(options => options.Listen(IPAddress.Loopback, 0, listen => listen.UseHttps(TestCertificate()))).UseContentRoot(HttpRoot)
             .UseSetting(WebHostDefaults.ApplicationKey, typeof(AdminPanelController).Assembly.GetName().Name)
             .UseStartup<SecurityTestStartup>().Build();
         using (var scope = host.Services.CreateScope()) MySqlSecurityInstallation.Initialize(scope.ServiceProvider.GetRequiredService<CMSDatabase>());
@@ -373,7 +392,7 @@ internal static class SecurityIntegration
             var user = new User { ID = 42, Login = "existing-owner", Password = new string('a', 32), IdleTime = 20, Email = "test@example.invalid", UserType = new UserType { Name = "Owner", AccessLevel = AccessLevel.VeryHigh } };
             db.Users.Add(user);
             db.AdminPanelLogs.Add(new AdminPanelLog { User = user, Info = "Existing linked data", Time = DateTime.UtcNow });
-            db.ConnectedUsers.Add(new ConnectedUser { User = user, UserName = "legacy-test-name", LoginKey = "legacy-test-token", IPAdress = "127.0.0.1", UserAgent = "integration", LastActionTime = DateTime.Now });
+            db.ConnectedUsers.Add(new ConnectedUser { User = user, TokenHash = new string('a', 64), IPAdress = "127.0.0.1", UserAgent = "integration", LastActionUtc = DateTime.UtcNow });
             db.SaveChanges();
         }
         Execute(connection, "DROP TABLE SecurityInstallation");
@@ -411,10 +430,10 @@ internal static class SecurityIntegration
         Check(Count(connection, "SELECT COUNT(*) FROM Users") == 1 && Count(connection, "SELECT COUNT(*) FROM Users WHERE Login='admin'") == 0, "upgraded legacy database never receives admin/admin");
     }
 
-    private static void ApplySecurityUpgrade(string connection)
+    private static void ApplySecurityUpgrade(string connection, string scriptPath = "tools/sql/UpgradeSecurityV1.sql")
     {
-        string script = File.ReadAllText(Path.Combine(sourceRoot, "tools/sql/UpgradeSecurityV1.sql"));
-        using (var c = new MySqlConnection(connection))
+        string script = File.ReadAllText(Path.Combine(sourceRoot, scriptPath));
+        using (var c = new MySqlConnection(new MySqlConnectionStringBuilder(connection) { AllowUserVariables = true }.ConnectionString))
         {
             c.Open(); var buffer = new StringBuilder(); string delimiter = ";";
             foreach (string line in script.Split('\n'))
@@ -438,7 +457,7 @@ internal static class SecurityIntegration
             var user = new User { ID = 42, Login = "storage-owner", Password = new string('a', 32), IdleTime = 20,
                 UserType = new UserType { Name = "Owner", AccessLevel = AccessLevel.VeryHigh } };
             db.Users.Add(user);
-            db.ConnectedUsers.Add(new ConnectedUser { User = user, UserName = "storage-session", LoginKey = "storage-token", IPAdress = "127.0.0.1", UserAgent = "fixture", LastActionTime = DateTime.Now });
+            db.ConnectedUsers.Add(new ConnectedUser { User = user, TokenHash = new string('b', 64), IPAdress = "127.0.0.1", UserAgent = "fixture", LastActionUtc = DateTime.UtcNow });
             db.AdminPanelLogs.Add(new AdminPanelLog { User = user, Info = "Preserve storage fixture", Time = DateTime.UtcNow });
             db.SaveChanges();
         }
@@ -522,7 +541,7 @@ internal static class SecurityIntegration
             Execute(connection, "CREATE TABLE `" + table + "` LIKE storage_original");
             // [Комментарий ИИ-агента]: У MyISAM меньше предел длины ключа; только тестовая копия сессий не нуждается в составном индексе для проверки отказа.
             if (table == "ConnectedUsers")
-                Execute(connection, "ALTER TABLE ConnectedUsers DROP INDEX IX_ConnectedUsers_UserName_LoginKey_IPAdress_UserAgent");
+                Execute(connection, "ALTER TABLE ConnectedUsers DROP INDEX IX_ConnectedUsers_TokenHash");
             Execute(connection, "ALTER TABLE `" + table + "` ENGINE=MyISAM");
             Execute(connection, "INSERT INTO `" + table + "` SELECT * FROM storage_original");
             Check(Count(connection, "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name='" + table + "' AND engine='MyISAM'") == 1, "actual MyISAM fixture: " + table);

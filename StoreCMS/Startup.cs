@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
@@ -82,8 +82,8 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
         loggerFactory.AddFile(env.GetLogsFolderFullPath(), "errors.log", httpContextAccessor);
-        app.UseSitemap();
         app.UseForwardedHeaders();
+        app.UseSitemap();
         app.UseForcedGarbageCollection();
         app.UseStaticFiles(new StaticFileOptions() { OnPrepareResponse = sfr => sfr.Context.Response.Headers.Add("Cache-Control", "private, max-age=604800") });
         app.UseMvc(routeBuilder =>

@@ -7,6 +7,7 @@ using Treynessen.Security;
 
 namespace Treynessen.Controllers
 {
+    [TypeFilter(typeof(SessionExceptionFilter))]
     public partial class AdminPanelController
     {
         private User GetAuthenticatedUser()
@@ -22,6 +23,12 @@ namespace Treynessen.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            HttpContext.Response.Headers["Cache-Control"] = "no-store";
+            if (!HttpContext.Request.IsHttps)
+            {
+                context.Result = StatusCode(403, "Для административной панели требуется HTTPS.");
+                return;
+            }
             var user = GetAuthenticatedUser();
             if (user != null && user.RequirePasswordChange)
             {
@@ -45,9 +52,12 @@ namespace Treynessen.Controllers
         [NonAction]
         private IActionResult ChangeInitialPassword(User user, UserModel model)
         {
-            DatabaseInteraction.ChangeInitialPassword(db, user, model, out int statusCode);
+            DatabaseInteraction.ChangeInitialPassword(db, user, model, out int statusCode, HttpContext);
             if (statusCode == 200)
+            {
+                SessionCookies.ClearLegacy(HttpContext);
                 return LocalRedirect(HttpContext.Request.PathBase.Add(HttpContext.Request.Path).Value);
+            }
             HttpContext.Response.StatusCode = statusCode;
             ViewData["PasswordChangeError"] = "Пароль не изменён. Проверьте текущий пароль и повтор нового. Новый пароль должен отличаться от admin и содержать не менее 5 допустимых символов.";
             return View("ChangeInitialPassword");

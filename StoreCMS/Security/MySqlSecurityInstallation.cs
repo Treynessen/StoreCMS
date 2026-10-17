@@ -30,11 +30,13 @@ namespace Treynessen.Security
                     Validate(db);
                     if (!db.SecurityInstallation.AsNoTracking().Single(s => s.ID == 1).LegacyPasswordResetCompleted)
                         throw new InvalidOperationException("Complete the one-time legacy password replacement before starting StoreCMS.");
+                    SessionStorageCompatibility.Validate(db);
                     return;
                 }
 
                 // [Комментарий ИИ-агента]: При прерывании DDL следующий запуск отклонит непустую БД без маркера установки.
                 db.Database.EnsureCreated();
+                SessionStorageCompatibility.Validate(db);
                 using (var transaction = db.Database.BeginTransaction())
                 {
                     var role = new UserType { Name = "Admin", AccessLevel = AccessLevel.VeryHigh };
