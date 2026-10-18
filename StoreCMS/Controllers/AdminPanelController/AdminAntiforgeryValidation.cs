@@ -57,6 +57,7 @@ namespace Treynessen.Controllers
 
             var executed = await next();
             OnActionExecuted(executed);
+            ApplyNativePostRedirect(context, executed);
         }
     }
 }

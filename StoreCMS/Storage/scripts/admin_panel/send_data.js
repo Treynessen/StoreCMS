@@ -114,6 +114,7 @@ function createSendDataEventHandler(requestMethod, formId, responseHandler, vali
             request.method = requestMethod.toLowerCase();
             try {
                 request.open(requestMethod, location.origin + location.pathname + searchString, false);
+                if (request.method === 'post') request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 if (!setAdminPanelCsrfHeader(request, requestMethod)) return;
                 request.send(formData);
             }

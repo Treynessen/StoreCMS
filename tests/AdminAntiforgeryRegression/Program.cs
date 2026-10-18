@@ -299,11 +299,13 @@ internal static partial class AntiforgeryRegression
         Check(await Probe(client, current) == 400, "password relogin changes context");
         Sql("UPDATE Users SET RequirePasswordChange=1 WHERE ID=1");
         string initial = await HtmlToken(client, "/private/control-room");
+        client.DefaultRequestHeaders.Accept.ParseAdd("text/html");
         using (var response = await Send(client, "POST", "/private/control-room", "59", AdminAntiforgery.FieldName, initial,
             "UserModel.CurrentPassword", changed, "UserModel.NewPassword", password, "UserModel.ConfirmPassword", password)) {
             Check(response.StatusCode == HttpStatusCode.Redirect, "initial password keeps HTML redirect");
             Check(string.IsNullOrEmpty(receivedHeader), "ordinary password form sends hidden token without AJAX header");
         }
+        client.DefaultRequestHeaders.Accept.Clear();
         await HtmlToken(client, "/private/control-room", true);
         Check(Scalar("SELECT COUNT(*) FROM ConnectedUsers") == "0", "initial password revokes sessions");
         Check(jar.GetCookies(origin)[AdminAntiforgery.CookieName].Value == stableCookie, "no cookie races on logout/password");
@@ -342,9 +344,10 @@ internal static partial class AntiforgeryRegression
                     services.AddTransient<IAdminPanelLogLocalization>(_ => new RuAdminPanelLogLocalization());
                     var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>()).Build();
                     services.AddTransient(_ => new AccessLevelConfiguration(config.GetSection("Access")));
-                    services.AddMvc(mvc => mvc.Filters.Add(new MutationBoundaryFilter())).AddApplicationPart(typeof(AdminPanelController).Assembly);
+                    services.AddMvc(mvc => { mvc.Filters.Add(new MutationBoundaryFilter()); mvc.Filters.Add(new PrgResultFilter()); }).AddApplicationPart(typeof(AdminPanelController).Assembly);
                 })
                 .Configure(app => {
+                    app.UsePathBase("/audit-base");
                     // [Комментарий ИИ-агента]: Проба отдельно проверяет криптографию; реальная обязательная проверка находится в фильтре production-контроллера.
                     app.Use(async (context, next) => {
                         System.Threading.Interlocked.Increment(ref serverRequests);
@@ -365,6 +368,7 @@ internal static partial class AntiforgeryRegression
                 {
                     routes.MapRoute("admin", "admin", new { controller = "AdminPanel", action = "AdminPanel" });
                     routes.MapRoute("custom", "private/control-room", new { controller = "AdminPanel", action = "AdminPanel" });
+                    routes.MapRoute("escaped", "private/space room", new { controller = "AdminPanel", action = "AdminPanel" });
                 }); }).Build())
             {
                 host.Start();
@@ -388,6 +392,7 @@ internal static partial class AntiforgeryRegression
                 }) { BaseAddress = origin })
                 {
                     await EnforcementFlows(client, jar, origin);
+                    await NativePrgFlows(client, jar);
                     await TokenFlows(client, jar, origin, root);
                     var operations = new Dictionary<string, string[]> {
                         {"POST", new[] {"13","14","16","18","20","21","26","27","29","30","32","33","36","37","38","39","40","42","43","46","47","49","50","52","53","59"}},

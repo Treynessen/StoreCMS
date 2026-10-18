@@ -71,6 +71,7 @@ function fixture(options = {}) {
         check(req.method === method.toLowerCase(), 'HTTP method preserved');
         check(!req.url.includes(token) && !req.url.includes('__RequestVerificationToken'), 'token absent from URL');
         if (method !== 'GET') {
+            check((req.headers['X-Requested-With'] === 'XMLHttpRequest') === (method === 'POST'), 'explicit AJAX marker for POST only');
             check(req.headers['X-CSRF-TOKEN'] === token, 'actual sender supplies meta request token');
             check(req.data.entries.some(e => e[0] === '__RequestVerificationToken' && e[1] === token), 'FormData preserves hidden token');
         }
