@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +9,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.EntityFrameworkCore;
@@ -75,6 +78,9 @@ internal static class HttpErrorRegression
         for (int i = 0; i < fields.Length; i += 2) data.Add(fields[i], fields[i + 1]);
         using (var request = new HttpRequestMessage(new HttpMethod(method), path))
         {
+            // [Комментарий ИИ-агента]: Регрессия HTTP-контрактов после 2.3.3 использует актуальный штатный токен из отдельного тестового endpoint.
+            if (client.BaseAddress.Scheme == "https")
+                request.Headers.Add(AdminAntiforgery.HeaderName, await client.GetStringAsync("/__http_fixture_token"));
             request.Content = new FormUrlEncodedContent(data);
             requests++;
             return await client.SendAsync(request);
@@ -161,6 +167,8 @@ internal static class HttpErrorRegression
                 })
                 .ConfigureServices(services =>
                 {
+                    services.AddDataProtection().UseEphemeralDataProtectionProvider();
+                    AdminAntiforgery.Configure(services);
                     services.AddSingleton(options);
                     services.AddScoped<CMSDatabase>();
                     services.AddTransient<IAdminPanelLogLocalization>(_ => new RuAdminPanelLogLocalization());
@@ -168,11 +176,21 @@ internal static class HttpErrorRegression
                     services.AddTransient(_ => new AccessLevelConfiguration(config.GetSection("Access")));
                     services.AddMvc().AddApplicationPart(typeof(AdminPanelController).Assembly);
                 })
-                .Configure(app => app.UseMvc(routes =>
+                .Configure(app => {
+                    // [Комментарий ИИ-агента]: Этот маршрут существует только в тестовом host, выдаёт токен без бизнес-операций и не входит в приложение.
+                    app.Use(async (context, next) => {
+                        if (context.Request.Path == "/__http_fixture_token" && context.Request.IsHttps) {
+                            context.Response.Headers["Cache-Control"] = "no-store";
+                            await context.Response.WriteAsync(context.RequestServices.GetRequiredService<IAntiforgery>().GetAndStoreTokens(context).RequestToken);
+                            return;
+                        }
+                        await next();
+                    });
+                    app.UseMvc(routes =>
                 {
                     routes.MapRoute("admin", "admin", new { controller = "AdminPanel", action = "AdminPanel" });
                     routes.MapRoute("custom", "private/control-room", new { controller = "AdminPanel", action = "AdminPanel" });
-                })).Build())
+                }); }).Build())
             {
                 host.Start();
                 var addresses = host.ServerFeatures.Get<IServerAddressesFeature>().Addresses;

@@ -78,6 +78,10 @@ internal static partial class AntiforgeryRegression
         for (int i = 0; i < fields.Length; i += 2) data.Add(fields[i], fields[i + 1]);
         using (var request = new HttpRequestMessage(new HttpMethod(method), path))
         {
+            // [Комментарий ИИ-агента]: Старые бизнес-регрессии теперь отправляют актуальный токен; отрицательные CSRF-проверки используют отдельный RawMutation без автоподстановки.
+            if (client.BaseAddress.Scheme == "https" && !client.DefaultRequestHeaders.Contains(AdminAntiforgery.HeaderName)
+                && !data.ContainsKey(AdminAntiforgery.FieldName))
+                request.Headers.Add(AdminAntiforgery.HeaderName, await CurrentToken(client));
             request.Content = new FormUrlEncodedContent(data);
             requests++;
             return await client.SendAsync(request);
@@ -303,7 +307,7 @@ internal static partial class AntiforgeryRegression
         await HtmlToken(client, "/private/control-room", true);
         Check(Scalar("SELECT COUNT(*) FROM ConnectedUsers") == "0", "initial password revokes sessions");
         Check(jar.GetCookies(origin)[AdminAntiforgery.CookieName].Value == stableCookie, "no cookie races on logout/password");
-        // [Комментарий ИИ-агента]: Отсутствие токена в реальной мутации допустимо именно на 2.3.2, в отличие от отдельной проверочной пробы.
+        // [Комментарий ИИ-агента]: Повторный вход после HTML GET использует актуальную пару токенов.
         await Status(client, "POST", "/admin", "54", 200, "Login", "fixture", "Password", password);
         await Status(client, "DELETE", "/admin", "58", 200);
     }
@@ -332,15 +336,16 @@ internal static partial class AntiforgeryRegression
                     services.AddTransient<IUserTypesLocalization>(_ => new RuUserTypesLocalization());
                     services.AddTransient<IUserProfileLocalization>(_ => new RuUserProfileLocalization());
                     services.AddTransient<IUsersLocalization>(_ => new RuUsersLocalization());
+                    services.AddSingleton<Treynessen.Translit.EnRuTranslit>();
                     services.AddSingleton(options);
                     services.AddScoped<CMSDatabase>();
                     services.AddTransient<IAdminPanelLogLocalization>(_ => new RuAdminPanelLogLocalization());
                     var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>()).Build();
                     services.AddTransient(_ => new AccessLevelConfiguration(config.GetSection("Access")));
-                    services.AddMvc().AddApplicationPart(typeof(AdminPanelController).Assembly);
+                    services.AddMvc(mvc => mvc.Filters.Add(new MutationBoundaryFilter())).AddApplicationPart(typeof(AdminPanelController).Assembly);
                 })
                 .Configure(app => {
-                    // [Комментарий ИИ-агента]: Проверка пары выполняется только отдельной тестовой пробой; реальные мутации контроллера не получают обязательной CSRF-валидации.
+                    // [Комментарий ИИ-агента]: Проба отдельно проверяет криптографию; реальная обязательная проверка находится в фильтре production-контроллера.
                     app.Use(async (context, next) => {
                         System.Threading.Interlocked.Increment(ref serverRequests);
                         if (context.Request.Path == "/__csrf_probe") {
@@ -382,6 +387,7 @@ internal static partial class AntiforgeryRegression
                     ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
                 }) { BaseAddress = origin })
                 {
+                    await EnforcementFlows(client, jar, origin);
                     await TokenFlows(client, jar, origin, root);
                     var operations = new Dictionary<string, string[]> {
                         {"POST", new[] {"13","14","16","18","20","21","26","27","29","30","32","33","36","37","38","39","40","42","43","46","47","49","50","52","53","59"}},
