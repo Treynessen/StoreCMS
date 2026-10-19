@@ -1,4 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
+using Microsoft.AspNetCore.DataProtection;
+using Treynessen.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,14 @@ namespace Treynessen.Controllers
             if (product == null)
                 return Redirect($"{HttpContext.Request.Path}?pageID={(int)AdminPanelPages.Categories}");
             IHostingEnvironment env = HttpContext.RequestServices.GetService<IHostingEnvironment>();
-            string[] productImages = ImagesManagementFunctions.GetProductImageUrls(product, env);
+            string folder = $"{env.GetProductsImagesFolderFullPath()}{product.ID}/";
+            string[] productImages;
+            using (ProductImageOperations.Acquire(folder))
+            {
+                productImages = ImagesManagementFunctions.GetProductImageUrls(product, env);
+                var provider = HttpContext.RequestServices.GetRequiredService<IDataProtectionProvider>();
+                HttpContext.Items["ProductImageTokens"] = ProductImageOperations.CreateTokens(product, folder, productImages, provider);
+            }
             HttpContext.Items["ProductPage"] = product;
             return View("CategoriesAndProducts/ProductImages", productImages);
         }

@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../../StoreCMS/ImagesManagement/ProductImageCoordination.cs" Link="Production/ProductImageCoordination.cs" />
     <Compile Include="../../StoreCMS/ImagesManagement/ImagesManagementFunctions/DeleteDependentImages.cs" Link="Production/DeleteDependentImages.cs" />
     <Compile Include="../../StoreCMS/ImagesManagement/ImagesManagementFunctions/RenameImageAndDependencies.cs" Link="Production/RenameImageAndDependencies.cs" />
     <Compile Include="../../StoreCMS/Functions/OtherFunctions/GetHashFromString.cs" Link="Production/GetHashFromString.cs" />

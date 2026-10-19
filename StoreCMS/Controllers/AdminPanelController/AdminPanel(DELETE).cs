@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Treynessen.Security;
 using Treynessen.Database;
@@ -13,7 +13,7 @@ namespace Treynessen.Controllers
     public partial class AdminPanelController : Controller
     {
         [HttpDelete]
-        public IActionResult AdminPanel(AdminPanelPages pageID, int? itemID, int? imageID, string path)
+        public IActionResult AdminPanel(AdminPanelPages pageID, int? itemID, int? imageID, string path, string imageName = null, string imageToken = null)
         {
             AccessLevelConfiguration accessLevelConfiguration = HttpContext.RequestServices.GetService<AccessLevelConfiguration>();
             HttpContext.Items["AccessLevelConfiguration"] = accessLevelConfiguration;
@@ -49,9 +49,7 @@ namespace Treynessen.Controllers
                     else return StatusCode(404);
 
                 case AdminPanelPages.DeleteProductImage:
-                    ImagesManagementFunctions.DeleteProductImage(db, itemID, imageID, HttpContext, out bool productImageDeleted);
-                    if (productImageDeleted) return StatusCode(200);
-                    else return StatusCode(404);
+                    return StatusCode(ImagesManagementFunctions.DeleteProductImage(db, itemID, imageName, imageToken, HttpContext));
 
                 case AdminPanelPages.DeleteRedirection:
                     DatabaseInteraction.DeleteRedirection(db, itemID, HttpContext, out bool redirectionDeleted);

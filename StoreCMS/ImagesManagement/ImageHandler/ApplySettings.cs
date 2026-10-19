@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
@@ -19,54 +19,57 @@ namespace Treynessen.ImagesManagement
         {
             if (!isExisted)
                 return;
-            string createdImageFullName = sourceImageName;
-            if (widthSetting.HasValue && heightSetting.HasValue)
-                createdImageFullName += $"_{widthSetting.Value}x{heightSetting.Value}";
-            if (qualitySetting.HasValue)
-                createdImageFullName += $"_q{qualitySetting.Value}";
-            createdImageFullName += sourceImageExtension;
-            CreatedImageFullPath = pathToImageFolder + createdImageFullName;
-            if (!File.Exists(CreatedImageFullPath))
+            using (ProductImageOperations.Acquire(pathToImageFolder))
             {
-                using (Image<Rgba32> sourceImage = Image.Load(sourceImageFullPath))
+                string createdImageFullName = sourceImageName;
+                if (widthSetting.HasValue && heightSetting.HasValue)
+                    createdImageFullName += $"_{widthSetting.Value}x{heightSetting.Value}";
+                if (qualitySetting.HasValue)
+                    createdImageFullName += $"_q{qualitySetting.Value}";
+                createdImageFullName += sourceImageExtension;
+                CreatedImageFullPath = pathToImageFolder + createdImageFullName;
+                if (!File.Exists(CreatedImageFullPath))
                 {
-                    if (widthSetting.HasValue && heightSetting.HasValue)
-                        sourceImage.Mutate(x => x.Resize(widthSetting.Value, heightSetting.Value));
-                    if (qualitySetting.HasValue)
+                    using (Image<Rgba32> sourceImage = Image.Load(sourceImageFullPath))
                     {
-                        IImageEncoder imageEncoder = null;
-                        switch (sourceImageExtension.ToLower())
+                        if (widthSetting.HasValue && heightSetting.HasValue)
+                            sourceImage.Mutate(x => x.Resize(widthSetting.Value, heightSetting.Value));
+                        if (qualitySetting.HasValue)
                         {
-                            case ".jpg":
-                            case ".jpeg":
-                                var jpegEncoder = new JpegEncoder();
-                                jpegEncoder.Quality = qualitySetting.Value;
-                                imageEncoder = jpegEncoder;
-                                break;
-                                // Настройки сжатия для png
+                            IImageEncoder imageEncoder = null;
+                            switch (sourceImageExtension.ToLower())
+                            {
+                                case ".jpg":
+                                case ".jpeg":
+                                    var jpegEncoder = new JpegEncoder();
+                                    jpegEncoder.Quality = qualitySetting.Value;
+                                    imageEncoder = jpegEncoder;
+                                    break;
+                                    // Настройки сжатия для png
+                            }
+                            sourceImage.Save(CreatedImageFullPath, imageEncoder);
                         }
-                        sourceImage.Save(CreatedImageFullPath, imageEncoder);
+                        else sourceImage.Save(CreatedImageFullPath);
                     }
-                    else sourceImage.Save(CreatedImageFullPath);
                 }
-            }
-            CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length - 1);
-            if (addImageInfoToDB)
-            {
-                Database.Entities.Image image = new Database.Entities.Image
+                CreatedImageSrc = CreatedImageFullPath.Substring(env.GetStorageFolderFullPath().Length - 1);
+                if (addImageInfoToDB)
                 {
-                    ShortPath = sourceImageShortPath,
-                    ShortPathHash = OtherFunctions.GetHashFromString(sourceImageShortPath),
-                    FullName = sourceImageShortPath.Substring(sourceImageShortPath.LastIndexOf('/') + 1),
-                    Height = (uint)sourceImageHeight.Value,
-                    Width = (uint)sourceImageWidth.Value
-                };
-                db.Images.Add(image);
-                try
-                {
-                    db.SaveChanges();
+                    Database.Entities.Image image = new Database.Entities.Image
+                    {
+                        ShortPath = sourceImageShortPath,
+                        ShortPathHash = OtherFunctions.GetHashFromString(sourceImageShortPath),
+                        FullName = sourceImageShortPath.Substring(sourceImageShortPath.LastIndexOf('/') + 1),
+                        Height = (uint)sourceImageHeight.Value,
+                        Width = (uint)sourceImageWidth.Value
+                    };
+                    db.Images.Add(image);
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateException) { }
                 }
-                catch (DbUpdateException) { }
             }
         }
     }

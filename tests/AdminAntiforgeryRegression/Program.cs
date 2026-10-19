@@ -338,6 +338,7 @@ internal static partial class AntiforgeryRegression
                     services.AddTransient<IUserTypesLocalization>(_ => new RuUserTypesLocalization());
                     services.AddTransient<IUserProfileLocalization>(_ => new RuUserProfileLocalization());
                     services.AddTransient<IUsersLocalization>(_ => new RuUsersLocalization());
+                    services.AddTransient<ICategoriesAndProductsLocalization>(_ => new RuCategoriesAndProductsLocalization());
                     services.AddSingleton<Treynessen.Translit.EnRuTranslit>();
                     services.AddSingleton(options);
                     services.AddScoped<CMSDatabase>();

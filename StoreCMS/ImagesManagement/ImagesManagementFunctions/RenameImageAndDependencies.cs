@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -19,36 +19,40 @@ namespace Treynessen.ImagesManagement
             if (string.IsNullOrEmpty(pathToImages) || string.IsNullOrEmpty(oldImageName)
                 || string.IsNullOrEmpty(newImageName) || !Directory.Exists(pathToImages))
                 return;
-            if (!pathToImages[pathToImages.Length - 1].Equals('/'))
-                pathToImages = pathToImages.Insert(pathToImages.Length, "/");
-            string[] images = Directory.GetFiles(pathToImages);
-            Regex regex = new Regex($"\\A{Regex.Escape(oldImageName)}(_\\d+x\\d+)?(_q\\d{{1,3}})?{Regex.Escape(imageExtension)}\\z");
-            images = (from img in images
-                      where regex.IsMatch(Path.GetFileName(img))
-                      select img).ToArray();
-            foreach (var img in images)
+            using (ProductImageOperations.Acquire(pathToImages))
             {
-                string fileEnding = Path.GetFileName(img).Substring(oldImageName.Length);
-                File.Move(img, Path.Combine(pathToImages, newImageName + fileEnding));
+                if (!pathToImages[pathToImages.Length - 1].Equals('/'))
+                    pathToImages = pathToImages.Insert(pathToImages.Length, "/");
+                string[] images = Directory.GetFiles(pathToImages);
+                Regex regex = new Regex($"\\A{Regex.Escape(oldImageName)}(_\\d+x\\d+)?(_q\\d{{1,3}})?{Regex.Escape(imageExtension)}\\z");
+                images = (from img in images
+                          where regex.IsMatch(Path.GetFileName(img))
+                          select img).ToArray();
+                if (images.Length > 0) ProductImageOperations.Invalidate(pathToImages);
+                foreach (var img in images)
+                {
+                    string fileEnding = Path.GetFileName(img).Substring(oldImageName.Length);
+                    File.Move(img, Path.Combine(pathToImages, newImageName + fileEnding));
+                }
+                string shortPathToOldImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + oldImageName + imageExtension;
+                string shortPathToNewImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + newImageName + imageExtension;
+                // Изменяем данные в БД
+                // Если в БД есть неудаленная информация, то удаляем её
+                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToNewImage) && img.ShortPath.Equals(shortPathToNewImage, StringComparison.Ordinal));
+                if (image != null && db.Entry(image).State != EntityState.Modified)
+                    db.Remove(image);
+                image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToOldImage) && img.ShortPath.Equals(shortPathToOldImage, StringComparison.Ordinal));
+                if (image != null)
+                {
+                    if (db.Entry(image).State == EntityState.Deleted)
+                        db.Entry(image).State = EntityState.Modified;
+                    image.ShortPath = shortPathToNewImage;
+                    image.ShortPathHash = OtherFunctions.GetHashFromString(shortPathToNewImage);
+                    image.FullName = shortPathToNewImage.Substring(shortPathToNewImage.LastIndexOf('/') + 1);
+                }
+                if (saveChangesInDB)
+                    db.SaveChanges();
             }
-            string shortPathToOldImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + oldImageName + imageExtension;
-            string shortPathToNewImage = pathToImages.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + newImageName + imageExtension;
-            // Изменяем данные в БД
-            // Если в БД есть неудаленная информация, то удаляем её
-            Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToNewImage) && img.ShortPath.Equals(shortPathToNewImage, StringComparison.Ordinal));
-            if (image != null && db.Entry(image).State != EntityState.Modified)
-                db.Remove(image);
-            image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToOldImage) && img.ShortPath.Equals(shortPathToOldImage, StringComparison.Ordinal));
-            if (image != null)
-            {
-                if (db.Entry(image).State == EntityState.Deleted)
-                    db.Entry(image).State = EntityState.Modified;
-                image.ShortPath = shortPathToNewImage;
-                image.ShortPathHash = OtherFunctions.GetHashFromString(shortPathToNewImage);
-                image.FullName = shortPathToNewImage.Substring(shortPathToNewImage.LastIndexOf('/') + 1);
-            }
-            if (saveChangesInDB)
-                db.SaveChanges();
         }
     }
 }

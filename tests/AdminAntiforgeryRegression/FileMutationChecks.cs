@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Treynessen.Database.Context;
 using Treynessen.Database.Entities;
 using Treynessen.Security;
+using System.Text.RegularExpressions;
+using System.Net;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -92,7 +94,13 @@ internal static partial class AntiforgeryRegression
                 Check(File.ReadAllText(Path.Combine(folder,"fixture.js")).Contains("233"),"script edited");
                 await FileStatus(client,"DELETE","/admin","41",200,"Path",name+">fixture.css");
                 Check(!File.Exists(Path.Combine(folder,"fixture.css")),"real file deleted");
-                await FileStatus(client,"DELETE","/admin","25",200,"itemID",productId.ToString(),"imageID","1");
+                await FileStatus(client,"DELETE","/admin","25",409,"itemID",productId.ToString(),"imageID","1");
+                string html = await client.GetStringAsync("/admin?pageID=23&itemID=" + productId);
+                string imageName = WebUtility.HtmlDecode(Regex.Match(html, "name=\"imageName\" value=\"([^\"]+)\"").Groups[1].Value);
+                string imageToken = WebUtility.HtmlDecode(Regex.Match(html, "name=\"imageToken\" value=\"([^\"]+)\"").Groups[1].Value);
+                Check(imageName == "csrf-fixture.jpg" && !string.IsNullOrEmpty(imageToken), "реальная Razor-форма содержит имя и отдельный токен набора");
+                await FileStatus(client,"DELETE","/admin","25",200,"itemID",productId.ToString(),"imageName",imageName,"imageToken",imageToken);
+                await FileStatus(client,"DELETE","/admin","25",409,"itemID",productId.ToString(),"imageName",imageName,"imageToken",imageToken);
                 Check(!File.Exists(Path.Combine(productFolder,"csrf-fixture.jpg")) && Scalar("SELECT COUNT(*) FROM Images") == "0","real image and metadata deleted");
             }
             finally { client.DefaultRequestHeaders.Remove(AdminAntiforgery.HeaderName); }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Treynessen.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Treynessen.ImagesManagement;
 using Treynessen.Database.Context;
@@ -30,29 +32,33 @@ namespace Treynessen.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-
-            ImageHandler imageHandler = null;
-            if (!string.IsNullOrEmpty(FullPath))
-                imageHandler = new ImageHandler(FullPath, true, db, env);
-            else if (!string.IsNullOrEmpty(Src))
-                imageHandler = new ImageHandler(Src, false, db, env);
-            else return;
-            if (Quality.HasValue)
-                imageHandler.ImageComprassion(Quality.Value);
-            try
+            if (string.IsNullOrEmpty(FullPath) && string.IsNullOrEmpty(Src)) return;
+            using (ProductImageOperations.Acquire(Path.GetDirectoryName(!string.IsNullOrEmpty(FullPath) ? FullPath
+                : Path.Combine(env.GetStorageFolderFullPath(), (Src ?? "").TrimStart('/')))))
             {
-                imageHandler.ImageResizing(Width, Height, MaxWidth, MaxHeight).ApplySettings();
+                ImageHandler imageHandler = null;
+                if (!string.IsNullOrEmpty(FullPath))
+                    imageHandler = new ImageHandler(FullPath, true, db, env);
+                else if (!string.IsNullOrEmpty(Src))
+                    imageHandler = new ImageHandler(Src, false, db, env);
+                else return;
+                if (Quality.HasValue)
+                    imageHandler.ImageComprassion(Quality.Value);
+                try
+                {
+                    imageHandler.ImageResizing(Width, Height, MaxWidth, MaxHeight).ApplySettings();
+                }
+                catch { } // Если произошла ошибка, то возвращаем пользователю пустую ссылку на изображение
+                string src = imageHandler.CreatedImageSrc;
+                output.TagName = "img";
+                output.Attributes.SetAttribute("src", src);
+                if (!string.IsNullOrEmpty(Alt))
+                    output.Attributes.SetAttribute("alt", Alt);
+                if (!string.IsNullOrEmpty(Style))
+                    output.Attributes.SetAttribute("style", Style);
+                if (!string.IsNullOrEmpty(Class))
+                    output.Attributes.SetAttribute("class", Class);
             }
-            catch { } // Если произошла ошибка, то возвращаем пользователю пустую ссылку на изображение
-            string src = imageHandler.CreatedImageSrc;
-            output.TagName = "img";
-            output.Attributes.SetAttribute("src", src);
-            if (!string.IsNullOrEmpty(Alt))
-                output.Attributes.SetAttribute("alt", Alt);
-            if (!string.IsNullOrEmpty(Style))
-                output.Attributes.SetAttribute("style", Style);
-            if (!string.IsNullOrEmpty(Class))
-                output.Attributes.SetAttribute("class", Class);
         }
     }
 }

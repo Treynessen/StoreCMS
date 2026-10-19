@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +14,7 @@ namespace Treynessen.ImagesManagement
         private CMSDatabase db;
 
         private IHostingEnvironment env;
-        
+
         private string pathToImageFolder;
         private string sourceImageName;
         private string sourceImageExtension;
@@ -48,23 +48,26 @@ namespace Treynessen.ImagesManagement
             }
             sourceImageFullName = sourceImageName + sourceImageExtension;
             sourceImageFullPath = pathToImageFolder + sourceImageFullName;
-            isExisted = File.Exists(sourceImageFullPath);
-            sourceImageShortPath = sourceImageFullPath.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/");
-            // Если изображения не существует, то удаляем зависимые изображения, если таковые имеются и информацию из БД
-            if (!isExisted)
+            using (ProductImageOperations.Acquire(pathToImageFolder))
             {
-                // Удаляем информацию об изображении из БД
-                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(sourceImageShortPath) 
-                && img.ShortPath.Equals(sourceImageShortPath, StringComparison.Ordinal));
-                if (image != null)
+                isExisted = File.Exists(sourceImageFullPath);
+                sourceImageShortPath = sourceImageFullPath.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/");
+                // Если изображения не существует, то удаляем зависимые изображения, если таковые имеются и информацию из БД
+                if (!isExisted)
                 {
-                    db.Images.Remove(image);
-                    db.SaveChanges();
-                }
+                    // Удаляем информацию об изображении из БД
+                    Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(sourceImageShortPath)
+                    && img.ShortPath.Equals(sourceImageShortPath, StringComparison.Ordinal));
+                    if (image != null)
+                    {
+                        db.Images.Remove(image);
+                        db.SaveChanges();
+                    }
 
-                ImagesManagementFunctions.DeleteDependentImages(pathToImageFolder, sourceImageFullName);
+                    ImagesManagementFunctions.DeleteDependentImages(pathToImageFolder, sourceImageFullName);
+                }
+                else GetSourceImageInfo();
             }
-            else GetSourceImageInfo();
         }
     }
 }
