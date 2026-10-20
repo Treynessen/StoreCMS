@@ -110,7 +110,7 @@ namespace Treynessen.TemplatesManagement
                 }
             }
             // Текст
-            return $"@Html.Raw(\"{value.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("@@", "@")}\")";
+            return $"@Html.Raw(\"{value.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r", "\\r").Replace("\n", "\\n").Replace("@@", "@")}\")";
         }
     }
 }

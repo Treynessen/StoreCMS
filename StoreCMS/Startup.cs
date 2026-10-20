@@ -72,6 +72,8 @@ public class Startup
 
         AdminAntiforgery.Configure(services);
         services.AddMvc();
+        services.PostConfigure<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>(options =>
+            Treynessen.TemplatesManagement.GeneratedRazorFileProvider.WrapPhysicalProviders(options.FileProviders));
 
         services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
     }

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.2;net10.0</TargetFrameworks>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../StoreCMS/TemplatesManagement/TemplatesManagementFunctions/WriteCshtmlContentToFile.cs" Link="Production/WriteCshtmlContentToFile.cs" />
+  </ItemGroup>
+</Project>
