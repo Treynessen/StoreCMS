@@ -1,0 +1,105 @@
+﻿@model SynonymForString[]
+@inject ISynonymsForStringsLocalization localization
+@{
+    Layout = "CommonPage";
+    User user = Context.Items["User"] as User;
+    Context.Items["PageName"] = localization.PageName;
+    Context.Items["PageStyle"] = "/styles/admin_panel/synonyms_for_strings.css";
+}
+<script>
+                        function errorMsg() {
+                            alert('@Html.Raw(localization.ErrorMsg)');
+                        }
+                        function responseFromEditing(request) {
+                            if (request.status == 200) {
+                                alert('@Html.Raw(localization.SynonymForStringEdited)');
+                                location.reload();
+                            }
+                            else if (request.status == 422) {
+                                errorMsg();
+                            }
+                        }
+                        function responseFromDeleting(request) {
+                            if (request.status == 200) {
+                                alert('@Html.Raw(localization.SynonymForStringDeleted)');
+                                location.reload();
+                            }
+                            else if (request.status == 404) {
+                                alert('@Html.Raw(localization.SynonymForStringNotFound)');
+                            }
+                        }
+                    </script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddSynonymForString, user, Context))
+{
+                    <form id="add-synonym-for-string" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddSynonymForString)">
+                        <div class="string">
+                            <label for="string">@Html.Raw(localization.String)</label>
+                            <input type="text" id="string" name="SynonymForStringModel.String">
+                        </div>
+                        <div class="synonym">
+                            <label for="synonym">@Html.Raw(localization.Synonym)</label>
+                            <input type="text" id="synonym" name="SynonymForStringModel.Synonym">
+                        </div>
+                        <div class="action">
+                            <input type="submit" id="add-button" value="@Html.Raw(localization.Add)">
+                        </div>
+                    </form>
+                    <script>
+                        function responseFromAdding(request) {
+                            if (request.status == 201) {
+                                alert('@Html.Raw(localization.SynonymForStringAdded)');
+                                location.reload();
+                            }
+                            else if (request.status == 422) {
+                                errorMsg();
+                            }
+                        }
+                        document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-synonym-for-string', responseFromAdding, errorMsg, 201));
+                    </script>
+}
+@foreach (var pair in Model)
+{
+                    <form id="synonym-for-string-@pair.ID" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="pageID-@pair.ID" name="pageID">
+                        <input type="hidden" name="itemID" value="@pair.ID">
+                        <div class="string">
+                            <label for="string-@pair.ID">@Html.Raw(localization.String)</label>
+                            <input type="text" id="string-@pair.ID" name="SynonymForStringModel.String" value="@pair?.String">
+                        </div>
+                        <div class="synonym">
+                            <label for="synonym-@pair.ID">@Html.Raw(localization.Synonym)</label>
+                            <input type="text" id="synonym-@pair.ID" name="SynonymForStringModel.Synonym" value="@pair?.Synonym">
+                        </div>
+                        <div class="actions">
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSynonymForString, user, Context))
+            {
+                            <input type="submit" id="edit-button-@pair.ID" value="@Html.Raw(localization.Edit)">
+                            <script>
+                                let editButton_@(pair.ID) = document.getElementById('edit-button-@(pair.ID)');
+                                editButton_@(pair.ID).addEventListener('click', () => { document.getElementById('pageID-@pair.ID').setAttribute('value', '@((int)AdminPanelPages.EditSynonymForString)'); });
+                                editButton_@(pair.ID).addEventListener('click', createSendDataEventHandler('POST', 'synonym-for-string-@(pair.ID)', responseFromEditing, errorMsg));
+                            </script>
+            }
+            else
+            {
+                            <input type="submit" value="@Html.Raw(localization.Edit)" disabled>
+            }
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteSynonymForString, user, Context))
+            {
+                <input type="submit" id="delete-button-@pair.ID" value="@Html.Raw(localization.Delete)">
+                            <script>
+                                let deleteButton_@(pair.ID) = document.getElementById('delete-button-@(pair.ID)');
+                                deleteButton_@(pair.ID).addEventListener('click', () => { document.getElementById('pageID-@pair.ID').setAttribute('value', '@((int)AdminPanelPages.DeleteSynonymForString)'); });
+                                deleteButton_@(pair.ID).addEventListener('click', createSendDataEventHandler('DELETE', 'synonym-for-string-@(pair.ID)', responseFromDeleting, errorMsg));
+                            </script>
+            }
+            else
+            {
+                            <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
+            }
+                        </div>
+                    </form>
+}

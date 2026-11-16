@@ -1,0 +1,39 @@
+﻿@model Visitor[]
+@inject IVisitorsLocalization localization
+@if (Model.Length > 0)
+{
+    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.GetVisitorActions, Context.Items["User"] as User, Context))
+    {
+        <table>
+            <tr><td>@Html.Raw(localization.IPAdress)</td><td>@Html.Raw(localization.FirstVisit)</td><td>@Html.Raw(localization.LastVisit)</td></tr>
+            @foreach (var visitor in Model)
+            {
+                <tr class="with-script" onclick="createSendDataEventHandler('GET', 'visitor-@visitor.ID', visitorActionsResponseHandler)(event)">
+                    <td>
+                        @Html.Raw(visitor.IPAdress)
+                        <form id="visitor-@visitor.ID">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.GetVisitorActions)">
+                            <input type="hidden" name="itemID" value="@visitor.ID">
+                        </form>
+                    </td>
+                    <td>@Html.Raw(visitor.FirstVisit.ToShortTimeString())</td>
+                    <td>@Html.Raw(visitor.LastVisit.ToShortTimeString())</td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <table>
+            <tr><td>@Html.Raw(localization.IPAdress)</td><td>@Html.Raw(localization.FirstVisit)</td><td>@Html.Raw(localization.LastVisit)</td></tr>
+            @foreach (var visitor in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(visitor.IPAdress)</td>
+                    <td>@Html.Raw(visitor.FirstVisit.ToShortTimeString())</td>
+                    <td>@Html.Raw(visitor.LastVisit.ToShortTimeString())</td>
+                </tr>
+            }
+        </table>
+    }
+}

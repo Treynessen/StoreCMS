@@ -1,0 +1,44 @@
+﻿@inject ILoginFormLocalization localization
+<!doctype html>
+<html>
+<head>
+    @await Html.PartialAsync("_Antiforgery")
+    <title>@Html.Raw(localization.Title)</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/login_form.css" />
+</head>
+<body>
+    <form id="login-form" class="login-form-block" method="post" data-admin-ajax>
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.LoginForm)">
+        <label for="Login">@Html.Raw(localization.UserName)</label>
+        <input type="text" id="Login" name="Login" autocomplete="off" value="@Model?.Login" required>
+        <label for="Password">@Html.Raw(localization.Password)</label>
+        <input type="password" id="Password" name="Password" value="@Model?.Password" required>
+        <input type="submit" id="submit-button" value="@Html.Raw(localization.Enter)" />
+    </form>
+    <script src="/scripts/admin_panel/send_data.js?v=2.3.4-prg"></script>
+    <script>
+        function errorHandler(formElement) {
+            let errorMsgElement = document.getElementById('error-msg');
+            if (errorMsgElement === null) {
+                errorMsgElement = document.createElement('span');
+                errorMsgElement.setAttribute('id', 'error-msg');
+                formElement.insertBefore(errorMsgElement, formElement.firstChild);
+            }
+            errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
+        }
+        function responseHandler(request, formElement) {
+            if (request.status == 200) {
+                location.reload();
+            }
+            else if (request.status == 401) {
+                errorHandler(formElement);
+            }
+        }
+        let submitButton = document.getElementById('submit-button');
+        submitButton.addEventListener('click', createSendDataEventHandler('POST', 'login-form', responseHandler, errorHandler));
+    </script>
+</body>
+</html>

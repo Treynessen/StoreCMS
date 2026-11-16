@@ -1,0 +1,78 @@
+﻿table:not(:last-child) {
+    margin-bottom: 1vh;
+}
+
+td {
+    padding: 0;
+    white-space: nowrap;
+}
+
+tr:first-child > td{
+    padding: 0.5vh 0;
+}
+
+tr:not(:first-child) > td:first-child {
+    padding-left: 0.5vh;
+}
+
+td > input[type="text"], input[type="number"] {
+    border: none;
+    padding: 2vh 0.8vh;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+tr:not(:first-child) > td.without-padding {
+    padding: 0;
+}
+
+tr.with-padding > td{
+    padding: 0.8vh;
+}
+
+    td.without-padding > textarea {
+        display: block;
+        width: 100%;
+        height: 10vh;
+        outline: none;
+        resize: none;
+        font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+        font-size: 1rem;
+        padding: .7vh;
+        background-color: #ebebeb;
+        border: 0;
+        box-sizing: border-box;
+    }
+
+        td.without-padding > textarea:focus {
+            outline: none;
+            background-color: #dadada;
+            border-color: #a9a7a7;
+            transition-property: background-color, border-color;
+            transition-timing-function: ease;
+            transition-duration: 500ms;
+        }
+
+form > input[type=submit] {
+    display: block;
+    border: none;
+    font-family: "Century Gothic", 'Times New Roman', Arial, sans-serif;
+    font-size: 1.4rem;
+    padding: .8vh;
+    border-radius: 5px;
+    background-color: #00c0ff;
+    margin: 0 0 1vh auto;
+}
+
+form > input[type="submit"]:hover {
+    background: #00a8ff;
+    cursor: pointer;
+}

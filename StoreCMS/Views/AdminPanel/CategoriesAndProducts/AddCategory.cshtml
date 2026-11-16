@@ -1,0 +1,115 @@
+﻿@inject ICategoriesAndProductsLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/work_with_page.css";
+    Context.Items["PageName"] = localization.AddCategoryPageName;
+    User user = Context.Items["User"] as User;
+    UsualPage[] pages = Context.Items["UsualPages"] as UsualPage[];
+    Template[] templates = Context.Items["Templates"] as Template[];
+}
+<script src="/scripts/admin_panel/insert_tab.js"></script>
+            <script src="/scripts/admin_panel/checkbox_event_handler.js"></script>
+            <form id="add-category" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddCategory)">
+                @*SAVE BUTTON*@
+                <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+                <div class="blocks">
+                    <div class="left-block">
+                        @*TITLE*@
+                        <label for="Title">@Html.Raw(localization.CategoryTitle)*</label>
+                        <input type="text" id="Title" name="PageModel.Title" required />
+                        @*BREADCRUMB*@
+                        <label for="PageName">@Html.Raw(localization.CategoryBreadcrumb)*</label>
+                        <input type="text" id="PageName" name="PageModel.PageName" required />
+                        @*PAGE DESCRIPTION*@
+                        <label for="PageDescription">@Html.Raw(localization.PageDescription)</label>
+                        <input type="text" id="PageDescription" name="PageModel.PageDescription" maxlength="160">
+                        @*PAGE KEYWORDS*@
+                        <label for="PageKeywords">@Html.Raw(localization.PageKeywords)</label>
+                        <input type="text" id="PageKeywords" name="PageModel.PageKeywords" />
+                    </div>
+                    <div class="right-block">
+                        @*TEMPLATES LIST*@
+                        <label for="TemplateId">@Html.Raw(localization.Template)</label>
+                        <select id="TemplateId" name="PageModel.TemplateId">
+                            <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                            @foreach (var t in templates)
+                            {
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
+                            }
+                        </select>
+                        @*PREVIOUS PAGE*@
+                        <label for="PreviousPage">@Html.Raw(localization.PreviousPage)</label>
+                        <select id="PreviousPage" name="PageModel.PreviousPageID">
+                            <option selected>@Html.Raw(localization.WithoutPreviousPage)</option>
+                            @foreach (var p in pages)
+                            {
+                                <option value="@p.ID">@Html.Raw(p.PageName)</option>
+                            }
+                        </select>
+                        @*ALIAS*@
+                        <label for="Alias">@Html.Raw(localization.Alias)</label>
+                        <input type="text" id="Alias" name="PageModel.Alias" value="@Model?.Alias" />
+                        @*PUBLISHED?*@
+                        <div class="checkbox-block">
+                            <input type="checkbox" id="Published" name="PageModel.Published" value="true" checked />
+                            <script>
+                                let publishedCheckbox = document.getElementById('Published');
+                                publishedCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="Published">@Html.Raw(localization.Published)</label>
+                        </div>
+                        @*IS INDEX?*@
+                        <div class="checkbox-block">
+                            <input type="checkbox" id="IsIndex" name="PageModel.IsIndex" value="true" checked />
+                            <script>
+                                let isIndexCheckbox = document.getElementById('IsIndex');
+                                isIndexCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="IsIndex">@Html.Raw(localization.IsIndex)</label>
+                        </div>
+                        @*IS FOLLOW?*@
+                        <div class="checkbox-block">
+                            <input type="checkbox" id="IsFollow" name="PageModel.IsFollow" value="true" checked />
+                            <script>
+                                let isFollowCheckbox = document.getElementById('IsFollow');
+                                isFollowCheckbox.addEventListener('click', checkboxEventHandler);
+                            </script>
+                            <label for="IsFollow">@Html.Raw(localization.IsFollow)</label>
+                        </div>
+                    </div>
+                </div>
+                @*CONTENT*@
+                <label for="Content">@Html.Raw(localization.Content)</label>
+                <textarea id="Content" name="PageModel.Content"></textarea>
+            </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
+                }
+                function responseHandler(request, formElement) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.CategoryAdded)');
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
+                        {
+                        @:location.replace(request.getResponseHeader('location'));
+                        }
+                        else
+                        {
+                        @:location.replace(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.Categories)');
+                        }
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
+                }
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-category', responseHandler, errorHandler, 201));
+                document.getElementById('Content').addEventListener('keydown', insertTabEventHandler);
+            </script>

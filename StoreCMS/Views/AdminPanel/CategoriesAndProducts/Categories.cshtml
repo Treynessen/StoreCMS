@@ -1,0 +1,76 @@
+﻿@model CategoryPage[]
+@inject ICategoriesAndProductsLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/categories.css";
+    Context.Items["PageName"] = localization.CategoriesPageName;
+    User user = Context.Items["User"] as User;
+}
+<script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.CategoryDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.CategoryNotFound)');
+                    }
+                }
+            </script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddCategory, user, Context))
+{
+    
+            <div class="add-category-button">
+                <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddCategory)">@Html.Raw(localization.AddCategory)</a>
+            </div>
+}
+            <script>
+                let url = location.origin + location.pathname;
+            </script>
+            <table>
+                <tr>
+                    <td>ID</td>
+                        <td>@Html.Raw(localization.Name)</td>
+                        <td>URL</td>
+                        <td>@Html.Raw(localization.Actions)</td>
+                    </tr>
+    @foreach (var c in Model)
+    {
+                    <tr>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.CategoryProducts, user, Context))
+                        {
+                        <td id="category-@c.ID-id" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.ID)</td>
+                        <td id="category-@c.ID-page-name" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.PageName)</td>
+                        <td id="category-@c.ID-url" onclick="location.assign(url + '?pageID=@((int)AdminPanelPages.CategoryProducts)&itemID=@c.ID')">@Html.Raw(c.RequestPath)</td>
+                        }
+                        else
+                        {
+                        <td id="category-@c.ID-id">@Html.Raw(c.ID)</td>
+                        <td id="category-@c.ID-page-name">@Html.Raw(c.PageName)</td>
+                        <td id="category-@c.ID-url">@Html.Raw(c.RequestPath)</td>
+                        }
+                        <td>
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditCategory, user, Context))
+                {
+                            <form method="get">
+                                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditCategory)" />
+                                <input type="hidden" name="itemID" value="@c.ID">
+                                <input type="submit" class="action-button" value="@Html.Raw(localization.EditCategory)" />
+                            </form>
+                }
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteCategory, user, Context))
+                {
+                <form id="delete-category-@c.ID" method="post" data-admin-ajax>
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteCategory)">
+                                <input type="hidden" name="itemID" value="@c.ID">
+                                <input id="delete-category-button-@c.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteCategory)" />
+                            </form>
+                            <script>
+                                document.getElementById('delete-category-button-@c.ID').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-category-@c.ID', responseHandler));
+                            </script>
+                }
+                        </td>
+                    </tr>
+    }
+                </table>

@@ -1,0 +1,59 @@
+﻿@model Template[]
+@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/index.css";
+    Context.Items["PageName"] = localization.TemplatesPageName;
+    User user = Context.Items["User"] as User;
+}
+<script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.TemplateDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.TemplateNotFound)');
+                    }
+                }
+            </script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddTemplate, user, Context))
+{
+            <div class="add-template-button"><a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddTemplate)">@Html.Raw(localization.AddTemplate)</a></div>
+}
+            <table>
+                <tr>
+                    <td>ID</td>
+                    <td>@Html.Raw(localization.TemplateName)</td>
+                    <td>@Html.Raw(localization.Actions)</td>
+                </tr>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(t.ID)</td>
+                    <td>@Html.Raw(t.Name)</td>
+                    <td>
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditTemplate, user, Context))
+                    {
+                        <form method="get">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)" />
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.EditTemplate)" />
+                        </form>
+                    }
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteTemplate, user, Context))
+                    {
+        <form id="delete-template-@t.ID" method="post" data-admin-ajax>
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteTemplate)">
+                            <input type="hidden" name="itemID" value="@t.ID">
+                            <input id="delete-button-@t.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeleteTemplate)" />
+                        </form>
+                        <script>
+                            document.getElementById('delete-button-@t.ID').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-template-@t.ID', responseHandler ));
+                        </script>
+                    }
+                    </td>
+                </tr>
+            }
+            </table>

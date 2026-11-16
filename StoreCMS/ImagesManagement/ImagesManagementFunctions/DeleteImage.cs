@@ -1,0 +1,41 @@
+using System;
+using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using Treynessen.Functions;
+using Treynessen.Extensions;
+using Treynessen.Database.Context;
+using Treynessen.Database.Entities;
+
+namespace Treynessen.ImagesManagement
+{
+    public static partial class ImagesManagementFunctions
+    {
+        public static void DeleteImage(string pathToImageFolder, string imageFullName, CMSDatabase db, IWebHostEnvironment env)
+        {
+            if (string.IsNullOrEmpty(pathToImageFolder) || string.IsNullOrEmpty(imageFullName))
+                return;
+            pathToImageFolder = Path.GetFullPath(pathToImageFolder).Replace('\\', '/');
+            using (ProductImageOperations.Acquire(pathToImageFolder))
+            {
+                if (!pathToImageFolder[pathToImageFolder.Length - 1].Equals('/'))
+                    pathToImageFolder = pathToImageFolder.Insert(pathToImageFolder.Length, "/");
+                if (!Directory.Exists(pathToImageFolder))
+                    return;
+                string pathToFile = $"{pathToImageFolder}{imageFullName}";
+                ProductImageOperations.Invalidate(pathToImageFolder);
+                if (File.Exists(pathToFile)) File.Delete(pathToFile);
+                // Удаляем информацию об изображении из БД
+                string shortPathToImage = pathToImageFolder.Substring(env.GetStorageFolderFullPath().Length).Insert(0, "/") + imageFullName;
+                Image image = db.Images.FirstOrDefault(img => img.ShortPathHash == OtherFunctions.GetHashFromString(shortPathToImage) && img.ShortPath == shortPathToImage);
+                if (image != null)
+                {
+                    db.Images.Remove(image);
+                    db.SaveChanges();
+                }
+                // Если у изображения были зависимости (сжатые или ресайзнутые вариации), то удаляем их
+                DeleteDependentImages(pathToImageFolder, imageFullName);
+            }
+        }
+    }
+}

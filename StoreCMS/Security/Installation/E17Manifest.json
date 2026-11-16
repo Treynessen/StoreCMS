@@ -1,0 +1,5510 @@
+{
+  "contract": "E17-SingleAccount-v1",
+  "sourceSqlSha256": "df764a8909a32fed658886891907a1a5393e0bee0e19a857bc08ef64976b8a21",
+  "sourceModelSha256": "9783fd5a8909801441ee3738fa98666ec9c6c722373a98077cdbf739092d08f9",
+  "checkTemplates": "E1.4 audited PostgreSQL 18 deparse, verified against E1.3 CHECK domains",
+  "facts": {
+    "relations": [
+      {
+        "table": "__EFMigrationsHistory",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "Chunks",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "Images",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "Redirections",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "SecurityInstallation",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "SynonymsForStrings",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "Templates",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "UserTypes",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "Visitors",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "UsualPages",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "Users",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "VisitedPages",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "CategoryPages",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "AdminPanelLogs",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "ConnectedUsers",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      },
+      {
+        "table": "ProductPages",
+        "kind": "r",
+        "persistence": "p",
+        "partition": false,
+        "rls": false,
+        "forceRls": false,
+        "method": "heap",
+        "inherits": false,
+        "ownerIsCurrent": true
+      }
+    ],
+    "columns": [
+      {
+        "table": "__EFMigrationsHistory",
+        "column": "MigrationId",
+        "ordinal": 1,
+        "type": "character varying(150)",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "__EFMigrationsHistory",
+        "column": "ProductVersion",
+        "ordinal": 2,
+        "type": "character varying(32)",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Chunks",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Chunks",
+        "column": "Name",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Chunks",
+        "column": "TemplateSource",
+        "ordinal": 3,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Chunks",
+        "column": "TemplatePath",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Images",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Images",
+        "column": "ShortPath",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "Images",
+        "column": "ShortPathHash",
+        "ordinal": 3,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Images",
+        "column": "FullName",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Images",
+        "column": "Width",
+        "ordinal": 5,
+        "type": "bigint",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Images",
+        "column": "Height",
+        "ordinal": 6,
+        "type": "bigint",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Redirections",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Redirections",
+        "column": "RequestPathHash",
+        "ordinal": 2,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Redirections",
+        "column": "RequestPath",
+        "ordinal": 3,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "Redirections",
+        "column": "RedirectionPath",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "SchemaVersion",
+        "ordinal": 2,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "InitializedUtc",
+        "ordinal": 3,
+        "type": "timestamp(6) with time zone",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "LegacyPasswordResetCompleted",
+        "ordinal": 4,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SynonymsForStrings",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SynonymsForStrings",
+        "column": "String",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "SynonymsForStrings",
+        "column": "Synonym",
+        "ordinal": 3,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "Templates",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Templates",
+        "column": "Name",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Templates",
+        "column": "TemplateSource",
+        "ordinal": 3,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Templates",
+        "column": "TemplatePath",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UserTypes",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UserTypes",
+        "column": "Name",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UserTypes",
+        "column": "AccessLevel",
+        "ordinal": 3,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Visitors",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Visitors",
+        "column": "IPAdress",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "Visitors",
+        "column": "IPStringHash",
+        "ordinal": 3,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Visitors",
+        "column": "FirstVisit",
+        "ordinal": 4,
+        "type": "timestamp(6) without time zone",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Visitors",
+        "column": "LastVisit",
+        "ordinal": 5,
+        "type": "timestamp(6) without time zone",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "PreviousPageID",
+        "ordinal": 2,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "RequestPathHash",
+        "ordinal": 3,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "Title",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "PageName",
+        "ordinal": 5,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "Alias",
+        "ordinal": 6,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "RequestPath",
+        "ordinal": 7,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "UsualPages",
+        "column": "BreadcrumbsHtml",
+        "ordinal": 8,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "TemplateId",
+        "ordinal": 9,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "Content",
+        "ordinal": 10,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "Published",
+        "ordinal": 11,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "PageDescription",
+        "ordinal": 12,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "PageKeywords",
+        "ordinal": 13,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "UsualPages",
+        "column": "IsIndex",
+        "ordinal": 14,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "UsualPages",
+        "column": "IsFollow",
+        "ordinal": 15,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Users",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Users",
+        "column": "Login",
+        "ordinal": 2,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "Users",
+        "column": "Password",
+        "ordinal": 3,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Users",
+        "column": "RequirePasswordChange",
+        "ordinal": 4,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Users",
+        "column": "Email",
+        "ordinal": 5,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "Users",
+        "column": "IdleTime",
+        "ordinal": 6,
+        "type": "bigint",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "Users",
+        "column": "UserTypeID",
+        "ordinal": 7,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "VisitedPages",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "VisitedPages",
+        "column": "VisitorId",
+        "ordinal": 2,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "VisitedPages",
+        "column": "VisitedPageId",
+        "ordinal": 3,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "VisitedPages",
+        "column": "PageType",
+        "ordinal": 4,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "ProductsCount",
+        "ordinal": 2,
+        "type": "bigint",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "PreviousPageID",
+        "ordinal": 3,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "LastProductTemplateID",
+        "ordinal": 4,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "RequestPathHash",
+        "ordinal": 5,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Title",
+        "ordinal": 6,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "PageName",
+        "ordinal": 7,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Alias",
+        "ordinal": 8,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "RequestPath",
+        "ordinal": 9,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "BreadcrumbsHtml",
+        "ordinal": 10,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "TemplateId",
+        "ordinal": 11,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Content",
+        "ordinal": 12,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Published",
+        "ordinal": 13,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "PageDescription",
+        "ordinal": 14,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "PageKeywords",
+        "ordinal": 15,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "CategoryPages",
+        "column": "IsIndex",
+        "ordinal": 16,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "CategoryPages",
+        "column": "IsFollow",
+        "ordinal": 17,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "UserId",
+        "ordinal": 2,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "Time",
+        "ordinal": 3,
+        "type": "timestamp(6) without time zone",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "Info",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "TokenHash",
+        "ordinal": 2,
+        "type": "character varying(64)",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "LastActionUtc",
+        "ordinal": 3,
+        "type": "timestamp(6) with time zone",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "IPAdress",
+        "ordinal": 4,
+        "type": "character varying(45)",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "UserAgent",
+        "ordinal": 5,
+        "type": "character varying(255)",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "UserID",
+        "ordinal": 6,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "ID",
+        "ordinal": 1,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "d",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "Price",
+        "ordinal": 2,
+        "type": "bigint",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "OldPrice",
+        "ordinal": 3,
+        "type": "bigint",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "Barcode",
+        "ordinal": 4,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "ShortDescription",
+        "ordinal": 5,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "SpecialProduct",
+        "ordinal": 6,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "LastUpdate",
+        "ordinal": 7,
+        "type": "timestamp(6) without time zone",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "PreviousPageID",
+        "ordinal": 8,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "RequestPathHash",
+        "ordinal": 9,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "Title",
+        "ordinal": 10,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "PageName",
+        "ordinal": 11,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "Alias",
+        "ordinal": 12,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "RequestPath",
+        "ordinal": 13,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.C"
+      },
+      {
+        "table": "ProductPages",
+        "column": "BreadcrumbsHtml",
+        "ordinal": 14,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "TemplateId",
+        "ordinal": 15,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "Content",
+        "ordinal": 16,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "Published",
+        "ordinal": 17,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "PageDescription",
+        "ordinal": 18,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "PageKeywords",
+        "ordinal": 19,
+        "type": "text",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": "pg_catalog.default"
+      },
+      {
+        "table": "ProductPages",
+        "column": "IsIndex",
+        "ordinal": 20,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "ProductPages",
+        "column": "IsFollow",
+        "ordinal": 21,
+        "type": "boolean",
+        "typeSchema": "pg_catalog",
+        "notNull": true,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "SystemUserId",
+        "ordinal": 5,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "SystemUserTypeId",
+        "ordinal": 6,
+        "type": "integer",
+        "typeSchema": "pg_catalog",
+        "notNull": false,
+        "identity": "",
+        "generated": "",
+        "dropped": false,
+        "default": null,
+        "collation": null
+      }
+    ],
+    "constraints": [
+      {
+        "table": "__EFMigrationsHistory",
+        "kind": "p",
+        "columns": [
+          "MigrationId"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Chunks",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Images",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Redirections",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "SynonymsForStrings",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Templates",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "UserTypes",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Visitors",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "UsualPages",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Users",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "VisitedPages",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "CategoryPages",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "ProductPages",
+        "kind": "p",
+        "columns": [
+          "ID"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "kind": "f",
+        "columns": [
+          "UserId"
+        ],
+        "principalSchema": "public",
+        "principal": "Users",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "c",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "CategoryPages",
+        "kind": "f",
+        "columns": [
+          "LastProductTemplateID"
+        ],
+        "principalSchema": "public",
+        "principal": "Templates",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "a",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "CategoryPages",
+        "kind": "f",
+        "columns": [
+          "PreviousPageID"
+        ],
+        "principalSchema": "public",
+        "principal": "UsualPages",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "a",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "CategoryPages",
+        "kind": "f",
+        "columns": [
+          "TemplateId"
+        ],
+        "principalSchema": "public",
+        "principal": "Templates",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "a",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "CategoryPages",
+        "kind": "c",
+        "columns": [
+          "ProductsCount"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"ProductsCount\" >= 0) AND (\"ProductsCount\" <= '4294967295'::bigint)))"
+      },
+      {
+        "table": "ConnectedUsers",
+        "kind": "f",
+        "columns": [
+          "UserID"
+        ],
+        "principalSchema": "public",
+        "principal": "Users",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "c",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "kind": "c",
+        "columns": [
+          "TokenHash"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"TokenHash\")::text ~ '^[0-9a-f]{64}$'::text))"
+      },
+      {
+        "table": "Images",
+        "kind": "c",
+        "columns": [
+          "Height"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"Height\" >= 0) AND (\"Height\" <= '4294967295'::bigint)))"
+      },
+      {
+        "table": "Images",
+        "kind": "c",
+        "columns": [
+          "Width"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"Width\" >= 0) AND (\"Width\" <= '4294967295'::bigint)))"
+      },
+      {
+        "table": "ProductPages",
+        "kind": "f",
+        "columns": [
+          "PreviousPageID"
+        ],
+        "principalSchema": "public",
+        "principal": "CategoryPages",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "c",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "ProductPages",
+        "kind": "f",
+        "columns": [
+          "TemplateId"
+        ],
+        "principalSchema": "public",
+        "principal": "Templates",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "a",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "ProductPages",
+        "kind": "c",
+        "columns": [
+          "OldPrice"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"OldPrice\" >= 0) AND (\"OldPrice\" <= '4294967295'::bigint)))"
+      },
+      {
+        "table": "ProductPages",
+        "kind": "c",
+        "columns": [
+          "Price"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"Price\" >= 0) AND (\"Price\" <= '4294967295'::bigint)))"
+      },
+      {
+        "table": "Users",
+        "kind": "f",
+        "columns": [
+          "UserTypeID"
+        ],
+        "principalSchema": "public",
+        "principal": "UserTypes",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "r",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "Users",
+        "kind": "c",
+        "columns": [
+          "IdleTime"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"IdleTime\" >= 10) AND (\"IdleTime\" <= 10080)))"
+      },
+      {
+        "table": "UserTypes",
+        "kind": "c",
+        "columns": [
+          "AccessLevel"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"AccessLevel\" >= 1) AND (\"AccessLevel\" <= 5)))"
+      },
+      {
+        "table": "UsualPages",
+        "kind": "f",
+        "columns": [
+          "PreviousPageID"
+        ],
+        "principalSchema": "public",
+        "principal": "UsualPages",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "a",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "UsualPages",
+        "kind": "f",
+        "columns": [
+          "TemplateId"
+        ],
+        "principalSchema": "public",
+        "principal": "Templates",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "a",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "VisitedPages",
+        "kind": "f",
+        "columns": [
+          "VisitorId"
+        ],
+        "principalSchema": "public",
+        "principal": "Visitors",
+        "principalColumns": [
+          "ID"
+        ],
+        "delete": "c",
+        "update": "a",
+        "match": "s",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": true,
+        "expression": null
+      },
+      {
+        "table": "VisitedPages",
+        "kind": "c",
+        "columns": [
+          "PageType"
+        ],
+        "principalSchema": null,
+        "principal": null,
+        "principalColumns": [],
+        "delete": " ",
+        "update": " ",
+        "match": " ",
+        "deferrable": false,
+        "deferred": false,
+        "validated": true,
+        "enforced": true,
+        "period": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0,
+        "noInherit": false,
+        "expression": "CHECK (((\"PageType\" >= 1) AND (\"PageType\" <= 3)))"
+      }
+    ],
+    "nullConstraints": [
+      {
+        "table": "__EFMigrationsHistory",
+        "column": "MigrationId",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "__EFMigrationsHistory",
+        "column": "ProductVersion",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Chunks",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Chunks",
+        "column": "Name",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Chunks",
+        "column": "TemplatePath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Images",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Images",
+        "column": "ShortPath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Images",
+        "column": "ShortPathHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Images",
+        "column": "FullName",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Images",
+        "column": "Width",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Images",
+        "column": "Height",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Redirections",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Redirections",
+        "column": "RequestPathHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Redirections",
+        "column": "RequestPath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Redirections",
+        "column": "RedirectionPath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "SchemaVersion",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "InitializedUtc",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SecurityInstallation",
+        "column": "LegacyPasswordResetCompleted",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SynonymsForStrings",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SynonymsForStrings",
+        "column": "String",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "SynonymsForStrings",
+        "column": "Synonym",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Templates",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Templates",
+        "column": "Name",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Templates",
+        "column": "TemplatePath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UserTypes",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UserTypes",
+        "column": "Name",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UserTypes",
+        "column": "AccessLevel",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Visitors",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Visitors",
+        "column": "IPAdress",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Visitors",
+        "column": "IPStringHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Visitors",
+        "column": "FirstVisit",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Visitors",
+        "column": "LastVisit",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "RequestPathHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "Title",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "PageName",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "Alias",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "RequestPath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "Published",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "IsIndex",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "UsualPages",
+        "column": "IsFollow",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Users",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Users",
+        "column": "Login",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Users",
+        "column": "Password",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Users",
+        "column": "RequirePasswordChange",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Users",
+        "column": "IdleTime",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "Users",
+        "column": "UserTypeID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "VisitedPages",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "VisitedPages",
+        "column": "VisitorId",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "VisitedPages",
+        "column": "VisitedPageId",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "VisitedPages",
+        "column": "PageType",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "ProductsCount",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "RequestPathHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Title",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "PageName",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Alias",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "RequestPath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "Published",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "IsIndex",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "CategoryPages",
+        "column": "IsFollow",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "UserId",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "Time",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "AdminPanelLogs",
+        "column": "Info",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "TokenHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "LastActionUtc",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "IPAdress",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "UserAgent",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ConnectedUsers",
+        "column": "UserID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "ID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "Price",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "OldPrice",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "SpecialProduct",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "LastUpdate",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "PreviousPageID",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "RequestPathHash",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "Title",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "PageName",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "Alias",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "RequestPath",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "Published",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "IsIndex",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      },
+      {
+        "table": "ProductPages",
+        "column": "IsFollow",
+        "enforced": true,
+        "validated": true,
+        "deferrable": false,
+        "deferred": false,
+        "parent": false,
+        "local": true,
+        "ancestors": 0
+      }
+    ],
+    "indexes": [
+      {
+        "table": "__EFMigrationsHistory",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "MigrationId"
+        ],
+        "collations": [
+          "pg_catalog.default"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Chunks",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Images",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Redirections",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "SecurityInstallation",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "SynonymsForStrings",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Templates",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "UserTypes",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Visitors",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "UsualPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Users",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "VisitedPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "CategoryPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ProductPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": true,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "AdminPanelLogs",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "UserId"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "CategoryPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "LastProductTemplateID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "CategoryPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "PreviousPageID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "CategoryPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPath"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "CategoryPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPathHash"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "CategoryPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "TemplateId"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "TokenHash"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ConnectedUsers",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "UserID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Images",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ShortPath"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Images",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "ShortPathHash"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ProductPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "PreviousPageID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ProductPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPath"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ProductPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPathHash"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "ProductPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "TemplateId"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Redirections",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPathHash"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "SynonymsForStrings",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 2,
+        "totalCount": 2,
+        "columns": [
+          "String",
+          "Synonym"
+        ],
+        "collations": [
+          "pg_catalog.C",
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops",
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0,
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Users",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "Login"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Users",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "UserTypeID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "UsualPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "PreviousPageID"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "UsualPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPath"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "UsualPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "RequestPathHash"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "UsualPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "TemplateId"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "VisitedPages",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "VisitorId"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Visitors",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "IPAdress"
+        ],
+        "collations": [
+          "pg_catalog.C"
+        ],
+        "opclasses": [
+          "pg_catalog.text_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      },
+      {
+        "table": "Visitors",
+        "method": "btree",
+        "kind": "i",
+        "persistence": "p",
+        "primary": false,
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "immediate": true,
+        "nullsNotDistinct": false,
+        "exclusion": false,
+        "keyCount": 1,
+        "totalCount": 1,
+        "columns": [
+          "IPStringHash"
+        ],
+        "collations": [
+          null
+        ],
+        "opclasses": [
+          "pg_catalog.int4_ops"
+        ],
+        "options": [
+          0
+        ],
+        "expression": null,
+        "predicate": null
+      }
+    ],
+    "types": [
+      {
+        "name": "__EFMigrationsHistory",
+        "kind": "c",
+        "category": "C",
+        "relation": "__EFMigrationsHistory",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "___EFMigrationsHistory",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "__EFMigrationsHistory",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "Chunks",
+        "kind": "c",
+        "category": "C",
+        "relation": "Chunks",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_Chunks",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "Chunks",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "Images",
+        "kind": "c",
+        "category": "C",
+        "relation": "Images",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_Images",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "Images",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "Redirections",
+        "kind": "c",
+        "category": "C",
+        "relation": "Redirections",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_Redirections",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "Redirections",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "SecurityInstallation",
+        "kind": "c",
+        "category": "C",
+        "relation": "SecurityInstallation",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_SecurityInstallation",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "SecurityInstallation",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "SynonymsForStrings",
+        "kind": "c",
+        "category": "C",
+        "relation": "SynonymsForStrings",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_SynonymsForStrings",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "SynonymsForStrings",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "Templates",
+        "kind": "c",
+        "category": "C",
+        "relation": "Templates",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_Templates",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "Templates",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "UserTypes",
+        "kind": "c",
+        "category": "C",
+        "relation": "UserTypes",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_UserTypes",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "UserTypes",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "Visitors",
+        "kind": "c",
+        "category": "C",
+        "relation": "Visitors",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_Visitors",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "Visitors",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "UsualPages",
+        "kind": "c",
+        "category": "C",
+        "relation": "UsualPages",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_UsualPages",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "UsualPages",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "Users",
+        "kind": "c",
+        "category": "C",
+        "relation": "Users",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_Users",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "Users",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "VisitedPages",
+        "kind": "c",
+        "category": "C",
+        "relation": "VisitedPages",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_VisitedPages",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "VisitedPages",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "CategoryPages",
+        "kind": "c",
+        "category": "C",
+        "relation": "CategoryPages",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_CategoryPages",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "CategoryPages",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "AdminPanelLogs",
+        "kind": "c",
+        "category": "C",
+        "relation": "AdminPanelLogs",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_AdminPanelLogs",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "AdminPanelLogs",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "ConnectedUsers",
+        "kind": "c",
+        "category": "C",
+        "relation": "ConnectedUsers",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_ConnectedUsers",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "ConnectedUsers",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "ProductPages",
+        "kind": "c",
+        "category": "C",
+        "relation": "ProductPages",
+        "element": null,
+        "elementSchema": null,
+        "defined": true,
+        "notNull": false,
+        "default": null
+      },
+      {
+        "name": "_ProductPages",
+        "kind": "b",
+        "category": "A",
+        "relation": null,
+        "element": "ProductPages",
+        "elementSchema": "public",
+        "defined": true,
+        "notNull": false,
+        "default": null
+      }
+    ],
+    "sequences": [
+      {
+        "name": "AdminPanelLogs_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "AdminPanelLogs",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "CategoryPages_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "CategoryPages",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "Chunks_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "Chunks",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "ConnectedUsers_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "ConnectedUsers",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "Images_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "Images",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "ProductPages_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "ProductPages",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "Redirections_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "Redirections",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "SynonymsForStrings_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "SynonymsForStrings",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "Templates_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "Templates",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "Users_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "Users",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "UserTypes_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "UserTypes",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "UsualPages_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "UsualPages",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "VisitedPages_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "VisitedPages",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      },
+      {
+        "name": "Visitors_ID_seq",
+        "kind": "S",
+        "persistence": "p",
+        "type": "integer",
+        "start": 1,
+        "min": 1,
+        "max": 2147483647,
+        "increment": 1,
+        "cache": 1,
+        "cycle": false,
+        "table": "Visitors",
+        "tableSchema": "public",
+        "column": "ID",
+        "dependency": "i",
+        "usage": true,
+        "select": true,
+        "update": true,
+        "ownerIsCurrent": true
+      }
+    ],
+    "tablePrivileges": [
+      {
+        "table": "__EFMigrationsHistory",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "Chunks",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "Images",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "Redirections",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "SecurityInstallation",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "SynonymsForStrings",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "Templates",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "UserTypes",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "Visitors",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "UsualPages",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "Users",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "VisitedPages",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "CategoryPages",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "AdminPanelLogs",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "ConnectedUsers",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      },
+      {
+        "table": "ProductPages",
+        "select": true,
+        "insert": true,
+        "update": true,
+        "delete": true,
+        "truncate": true,
+        "references": true,
+        "trigger": true,
+        "maintain": true
+      }
+    ],
+    "environment": [
+      {
+        "connect": true,
+        "databaseCreate": true,
+        "temporary": true,
+        "schemaUsage": true,
+        "schemaCreate": true,
+        "super": false,
+        "createDb": false,
+        "createRole": false,
+        "bypassRls": false,
+        "replication": false,
+        "canLogin": true,
+        "encoding": "UTF8",
+        "databaseOwner": true,
+        "schemaOwner": false
+      }
+    ],
+    "unexpected": [],
+    "migrationHistory": [
+      {
+        "id": "20261021152323_InitialPostgreSql",
+        "version": "10.0.13"
+      },
+      {
+        "id": "20261024181344_SystemInstallationIdentity",
+        "version": "10.0.13"
+      }
+    ]
+  }
+}

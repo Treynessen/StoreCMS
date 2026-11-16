@@ -1,0 +1,152 @@
+@model List<AdminPanelLog>
+@inject IUserProfileLocalization localization
+@{
+    User user = Context.Items["User"] as User;
+    Layout = "CommonPage";
+    Context.Items["PageName"] = localization.PageName;
+    Context.Items["PageStyle"] = "/styles/admin_panel/user_profile.css";
+}
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditUserData, user, Context))
+{
+            <form id="user-data" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <label for="Login">@Html.Raw(localization.Login):</label>
+                    <input type="text" id="Login" name="UserModel.Login" value="@user.Login">
+                </div>
+                <div class="row">
+                    <label for="NewPassword">@Html.Raw(localization.NewPassword):</label>
+                    <input type="password" id="NewPassword" name="UserModel.NewPassword">
+                </div>
+                <div class="row">
+                    <label for="PasswordReplay">@Html.Raw(localization.PasswordReplay):</label>
+                    <input type="password" id="PasswordReplay" name="UserModel.ConfirmPassword">
+                </div>
+                <div class="row">
+                    <label for="IdleTime">@Html.Raw(localization.IdleTime):</label>
+                    <input type="number" id="IdleTime" name="UserModel.IdleTime" value="@user.IdleTime">
+                </div>
+                <div class="row">
+                    <label for="Email">@Html.Raw(localization.Email):</label>
+                    <input type="text" id="Email" name="UserModel.Email" value="@user.Email">
+                </div>
+                <div class="row">
+                    <label for="CurrentPassword">@Html.Raw(localization.CurrentPassword):</label>
+                    <input type="password" id="CurrentPassword" name="UserModel.CurrentPassword">
+                </div>
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditUserData)">
+                <input type="hidden" name="UserModel.ID" value="@user.ID">
+                <input type="submit" id="edit-button" value="@Html.Raw(localization.Save)">
+            </form>
+            <script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.UserDataChanged)' + (document.getElementById('NewPassword').value ? ' Войдите снова с новым паролем.' : ''));
+                        location.reload();
+                    }
+                    else if (request.status == 403) {
+                        alert('@Html.Raw(localization.CurrentPasswordIsIncorrect)');
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.UserNotFound)');
+                    }
+                    else if (request.status == 409) {
+                        alert('@Html.Raw(localization.UserWithSameLoginAlreadyExists)');
+                    }
+                    else if (request.status == 422) {
+                        alert('@Html.Raw(localization.LoginOrPasswordContainInvalidSymbols)');
+                    }
+                }
+                let editButton = document.getElementById('edit-button');
+                editButton.addEventListener('click', (e) => {
+                    let loginInput = document.getElementById('Login');
+                    if (loginInput.value == '') {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.Login)»:  @Html.Raw(localization.FieldDoesntHaveValue)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let newPasswordInput = document.getElementById('NewPassword');
+                    let passwordReplayInput = document.getElementById('PasswordReplay');
+                    if (newPasswordInput.value != passwordReplayInput.value) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.NewPassword)» @Html.Raw(localization.And) «@Html.Raw(localization.PasswordReplay)»: @Html.Raw(localization.PasswordsDontMatch)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if (newPasswordInput.value != '' && newPasswordInput.value.length < 5) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.NewPassword)»:  @Html.Raw(localization.PasswordTooShort)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let idleTimeInput = document.getElementById('IdleTime');
+                    if (idleTimeInput.value < 10) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.IdleTime)»: @Html.Raw(localization.MinimumIs10Minutes)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                    else if (idleTimeInput.value > 10080) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.IdleTime)»: @Html.Raw(localization.MaximumIs10080Minutes)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let regex = /.*@@.*\..*/
+                    let emailInput = document.getElementById('Email');
+                    if (emailInput.value != '' && !regex.test(emailInput.value)) {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.Email)»: @Html.Raw(localization.EmailIsIncorrect)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', (e) => {
+                    let currentPasswordInput = document.getElementById('CurrentPassword');
+                    if (currentPasswordInput.value == '') {
+                        alert('@Html.Raw(localization.ErrorIn) «@Html.Raw(localization.CurrentPassword)»: @Html.Raw(localization.FieldDoesntHaveValue)');
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                    }
+                });
+                editButton.addEventListener('click', createSendDataEventHandler('POST', 'user-data', responseHandler));
+            </script>
+}
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.GetUserLog, user, Context)) { 
+            <p class="head">@Html.Raw(localization.UserActions)</p>
+            @if(Model.Count > 0)
+            {
+            <p class="date">@(DateTime.Now.Day.ToString()).@(DateTime.Now.Month.ToString()).@(DateTime.Now.Year.ToString()):</p>
+            }
+            @foreach (var log in Model)
+            {
+            <p class="log"><b>@log.Time.ToShortTimeString()</b> - @Html.Raw(log.Info)</p>
+            }
+            <form id="get-log">
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.GetUserLog)">
+                <input type="hidden" name="itemID" value="@user.ID">
+                <input type="hidden" id="date" name="CurrentLogDate">
+                <input type="submit" id="get-log-button" value="@Html.Raw(localization.ShowMore)">
+            </form>
+            <script>
+                function getLogResponseHandler(request) {
+                    if (request.responseText != '') {
+                        getLogForm.insertAdjacentHTML('beforebegin', request.responseText);
+                        dateInput.value = request.getResponseHeader('file-date');
+                    }
+                    else {
+                        this.getLogForm.parentNode.removeChild(getLogForm)
+                    }
+                }
+                var getLogForm = document.getElementById('get-log');
+                var dateInput = document.getElementById('date');
+                let date = new Date(@DateTime.Now.Year, @(DateTime.Now.Month - 1), @DateTime.Now.Day);
+                dateInput.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString() + '-' + date.getDate().toString();
+                let getLogButton = document.getElementById('get-log-button');
+                getLogButton.addEventListener('click', createSendDataEventHandler('GET', 'get-log', getLogResponseHandler));
+                @if (Model.Count == 0) {
+                @:getLogButton.click();
+                }
+            </script>
+}

@@ -1,0 +1,89 @@
+@model string[]
+@inject ICategoriesAndProductsLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/categories_and_products/product_images.css";
+    ProductPage product = Context.Items["ProductPage"] as ProductPage;
+    Context.Items["PageName"] = $"{localization.ProductImagesPageName} {product?.PageName}";
+    User user = Context.Items["User"] as User;
+}
+<script src="/scripts/admin_panel/send_file.js?v=2.3.2"></script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddProductImage, user, Context))
+{
+            <form id="upload-image" class="upload-image" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddProductImage)">
+                <input type="hidden" name="itemID" value="@product?.ID">
+                <div class="input-file-button">
+                    <label for="upload-file-button">@Html.Raw(localization.UploadImage)</label>
+                    <input type="file" id="upload-file-button" name="uploadedFile" accept=".jpg, .jpeg" /> 
+                </div>
+            </form>
+            <script>
+                function errorHandler() {
+                    alert('@Html.Raw(localization.UnsuccessfullyImageUploaded)');
+                }
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.ImageUploaded)');
+                        location.reload();
+                    }
+                    else if (request.status == 415) {
+                        errorHandler();
+                    }
+                    
+                }
+                document.getElementById('upload-file-button').addEventListener('change', createSendFileEventHandler('upload-image', responseHandler, errorHandler, '.jpeg', '.jpg')); 
+            </script>
+}
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+            {
+            <script>
+                function errorHandler() {
+                    alert('@Html.Raw(localization.ImageNotFound)');
+                }
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.ImageDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        errorHandler();
+                    }
+                }
+            </script>
+            }
+            <div class="images-list">
+    @{
+            int imageID = 1;
+    }
+                @foreach (var m in Model)
+                {
+                <div class="image-block">
+                    <div><image src="@m" max-width="290" max-height="175" quality="80"></image></div>
+                    <label>@m.Substring(m.LastIndexOf('/') + 1)</label>
+                    <form id="delete-image-@(imageID + 1)" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+                    {
+                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeleteProductImage)">
+                        <input type="hidden" name="itemID" value="@product?.ID">
+                        <input type="hidden" name="imageName" value="@System.IO.Path.GetFileName(m)">
+                        <input type="hidden" name="imageToken" value="@((Context.Items["ProductImageTokens"] as System.Collections.Generic.Dictionary<string, string>)[m])">
+                        <input id="delete-image-button-@(imageID + 1)" type="submit" value="@Html.Raw(localization.DeleteProductImage)">
+                    }
+                    else
+                    {
+                        <input type="submit" value="@Html.Raw(localization.DeleteProductImage)" disabled />
+                    }
+                    </form>
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteProductImage, user, Context))
+                    {
+                    <script>
+                        document.getElementById('delete-image-button-@(imageID + 1)').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-image-@(imageID + 1)', responseHandler, errorHandler));
+                    </script>
+                    }
+                </div>
+                imageID++;
+                }
+            </div>

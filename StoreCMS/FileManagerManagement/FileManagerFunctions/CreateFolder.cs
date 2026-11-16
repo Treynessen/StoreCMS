@@ -1,0 +1,58 @@
+﻿using System.IO;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Treynessen.Functions;
+using Treynessen.Extensions;
+using Treynessen.Localization;
+using Treynessen.LogManagement;
+using Treynessen.Database.Context;
+
+namespace Treynessen.FileManagerManagement
+{
+    public static partial class FileManagerManagementFunctions
+    {
+        public static void CreateFolder(CMSDatabase db, string path, string folderName, HttpContext context, out bool successfullyCreated)
+        {
+            IWebHostEnvironment env = context.RequestServices.GetService<IWebHostEnvironment>();
+            if (string.IsNullOrEmpty(path))
+            {
+                path = env.GetStorageFolderFullPath();
+            }
+            else
+            {
+                Regex regex = new Regex(@"^((\w|-|_)+)(>(\w|-|_)+)*$");
+                if (!regex.IsMatch(path))
+                {
+                    successfullyCreated = false;
+                    return;
+                }
+                path = path.Replace('>', '/');
+                if (!path[path.Length - 1].Equals('/'))
+                    path = path.Insert(path.Length, "/");
+                path = $"{env.GetStorageFolderFullPath()}{path}";
+            }
+            if (!Directory.Exists(path) || !HasAccessToFolder(path, env))
+            {
+                successfullyCreated = false;
+                return;
+            }
+            folderName = OtherFunctions.GetCorrectName(folderName, context);
+            if (string.IsNullOrEmpty(folderName))
+            {
+                successfullyCreated = false;
+                return;
+            }
+            folderName = GetUniqueFileOrFolderName(path, folderName);
+            Directory.CreateDirectory($"{path}{folderName}");
+            successfullyCreated = true;
+
+            LogManagementFunctions.AddAdminPanelLog(
+                db: db,
+                context: context,
+                info: $"{folderName}: {(context.Items["LogLocalization"] as IAdminPanelLogLocalization)?.FolderCreatedIn} {path.Substring(env.GetStorageFolderFullPath().Length - 1)}"
+            );
+        }
+    }
+}

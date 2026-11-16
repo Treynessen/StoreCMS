@@ -1,0 +1,84 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Treynessen.AdminPanelTypes;
+using Treynessen.Database;
+using Treynessen.Database.Entities;
+using Treynessen.Security;
+
+namespace Treynessen.Controllers
+{
+    [TypeFilter(typeof(SessionExceptionFilter))]
+    public partial class AdminPanelController
+    {
+        private User GetAuthenticatedUser()
+        {
+            const string key = "StoreCMS.AuthenticatedUserChecked";
+            if (!HttpContext.Items.ContainsKey(key))
+            {
+                HttpContext.Items[key] = true;
+                HttpContext.Items["User"] = SecurityFunctions.CheckCookies(db, HttpContext);
+            }
+            return HttpContext.Items["User"] as User;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            HttpContext.Response.Headers["Cache-Control"] = "no-store";
+            if (!HttpContext.Request.IsHttps)
+            {
+                context.Result = StatusCode(403, "Для административной панели требуется HTTPS.");
+                return;
+            }
+            var user = GetAuthenticatedUser();
+            string method = HttpContext.Request.Method;
+            if (user != null && (method == "POST" || method == "PUT" || method == "DELETE"))
+            {
+                context.ActionArguments.TryGetValue("model", out object requestModel);
+                context.ActionArguments.TryGetValue("pageID", out object requestPage);
+                AdminPanelPages? page = method == "POST" ? (requestModel as Model)?.PageId
+                    : requestPage is AdminPanelPages value ? value : (AdminPanelPages?)null;
+                // [Комментарий ИИ-агента]: Некорректный селектор и неверный HTTP-метод отделяем от отказа прав; без сессии сохраняется 401 диспетчера.
+                bool invalidPage = (ModelState.TryGetValue(nameof(Model.PageId), out var directPage) && directPage.Errors.Count > 0)
+                    || (ModelState.TryGetValue("model.PageId", out var prefixedPage) && prefixedPage.Errors.Count > 0);
+                if (invalidPage || !SupportsAdminPanelMutation(page, method))
+                {
+                    context.Result = StatusCode(400);
+                    return;
+                }
+            }
+            if (user != null && user.RequirePasswordChange)
+            {
+                if (HttpContext.Request.Method == "GET")
+                    context.Result = View("ChangeInitialPassword");
+                else
+                {
+                    context.ActionArguments.TryGetValue("model", out object model);
+                    context.ActionArguments.TryGetValue("pageID", out object pageID);
+                    bool changing = HttpContext.Request.Method == "POST"
+                        && (model as Model)?.PageId == AdminPanelPages.ChangeInitialPassword;
+                    bool exiting = HttpContext.Request.Method == "DELETE"
+                        && pageID is AdminPanelPages && (AdminPanelPages)pageID == AdminPanelPages.Exit;
+                    if (!changing && !exiting)
+                        context.Result = StatusCode(403, "Сначала смените первоначальный пароль.");
+                }
+            }
+            base.OnActionExecuting(context);
+        }
+
+        [NonAction]
+        private IActionResult ChangeInitialPassword(User user, UserModel model)
+        {
+            DatabaseInteraction.ChangeInitialPassword(db, user, model, out int statusCode, HttpContext);
+            if (statusCode == 200)
+            {
+                SessionCookies.ClearLegacy(HttpContext);
+                return LocalRedirect(HttpContext.Request.PathBase.Add(HttpContext.Request.Path).Value);
+            }
+            HttpContext.Response.StatusCode = statusCode;
+            ViewData["PasswordChangeError"] = statusCode == 503
+                ? "Не удалось подтвердить смену пароля. Выполните новый вход для проверки состояния; не повторяйте запрос автоматически."
+                : "Пароль не изменён. Проверьте текущий пароль и повтор нового. Новый пароль должен отличаться от текущего и содержать не менее 5 допустимых символов.";
+            return View("ChangeInitialPassword");
+        }
+    }
+}

@@ -1,0 +1,107 @@
+﻿@inject IAdminPanelPageLocalization localization
+@{
+    User user = Context.Items["User"] as User;
+    AdminPanelPages pageID = (AdminPanelPages)Context.Items["pageID"];
+    string pageName = Context.Items["PageName"] as string;
+
+    Dictionary<AdminPanelPages, string> pages = new Dictionary<AdminPanelPages, string>();
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.MainPage, user, Context))
+    {
+        pages.Add(AdminPanelPages.MainPage, localization.MainPage);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Pages, user, Context))
+    {
+        pages.Add(AdminPanelPages.Pages, localization.Pages);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Categories, user, Context))
+    {
+        pages.Add(AdminPanelPages.Categories, localization.CategoriesAndProducts);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Redirections, user, Context))
+    {
+        pages.Add(AdminPanelPages.Redirections, localization.Redirections);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Templates, user, Context))
+    {
+        pages.Add(AdminPanelPages.Templates, localization.Templates);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Chunks, user, Context))
+    {
+        pages.Add(AdminPanelPages.Chunks, localization.Chunks);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.FileManager, user, Context))
+    {
+        pages.Add(AdminPanelPages.FileManager, localization.FileManager);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Users, user, Context))
+    {
+        pages.Add(AdminPanelPages.Users, localization.Users);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserTypes, user, Context))
+    {
+        pages.Add(AdminPanelPages.UserTypes, localization.UserTypes);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.SynonymsForStrings, user, Context))
+    {
+        pages.Add(AdminPanelPages.SynonymsForStrings, localization.SynonymsForStrings);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.UserProfile, user, Context))
+    {
+        pages.Add(AdminPanelPages.UserProfile, localization.UserProfile);
+    }
+    if (SecurityFunctions.HasAccessTo(AdminPanelPages.Settings, user, Context))
+    {
+        pages.Add(AdminPanelPages.Settings, localization.Settings);
+    }
+}
+<!doctype html>
+<html>
+<head>
+    @await Html.PartialAsync("_Antiforgery")
+    <title>@Html.Raw(pageName == null ? string.Empty : $"{pageName} - ")@Html.Raw(localization.Title)</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/common.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/admin_panel/admin_panel.css" />
+    @if (Context.Items["PageStyle"] != null)
+    {
+    <link rel="stylesheet" type="text/css" href="@Html.Raw(Context.Items["PageStyle"])" />
+    }
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <div class="common-container">
+        <ul class="menu-block">
+            @foreach (var p in pages)
+            {
+                if (pageID == p.Key)
+                {
+            <li class="with-padding">@Html.Raw(p.Value)</li>
+                }
+                else
+                {
+            <li><a href="@Context.Request.Path?pageID=@((int)p.Key)" class="with-padding">@Html.Raw(p.Value)</a></li>
+                }
+            }
+            <li>
+                <form id="exit" method="post" data-admin-ajax>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="pageID" value="@((int)AdminPanelPages.Exit)">
+                    <input type="submit" id="exit-button" value="@Html.Raw(localization.Exit)">
+                </form>
+                <script src="/scripts/admin_panel/send_data.js?v=2.3.4-prg"></script>
+                <script>
+                    function responseFromExitRequest(request) {
+                        if (request.status == 200) {
+                            location.reload();
+                        }
+                    }
+                    document.getElementById('exit-button').addEventListener('click', createSendDataEventHandler('DELETE', 'exit', responseFromExitRequest));
+                </script>
+            </li>
+        </ul>
+        <content>
+            @RenderBody()
+        </content>
+    </div>
+</body>
+</html>

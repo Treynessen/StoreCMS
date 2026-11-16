@@ -1,0 +1,48 @@
+﻿@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/work_with_template.css";
+    Context.Items["PageName"] = localization.AddTemplatePageName;
+    User user = Context.Items["User"] as User;
+}
+<script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="add-template" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddTemplate)">
+                <div class="name-block">
+                    <label for="Name">@Html.Raw(localization.Name)</label>
+                    <input type="text" id="Name" name="TemplateModel.Name" required />
+                </div>
+                <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
+                <textarea id="TemplateSource" name="TemplateModel.TemplateSource"></textarea>
+                <input id="add-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+            </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
+                }
+                function responseHandler(request, formElement) {
+                    if (request.status == 201) {
+                        alert('@Html.Raw(localization.TemplateCreated)');
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditTemplate, user, Context))
+                        {
+                        @:location.replace(request.getResponseHeader('location'));
+                        }
+                        else
+                        {
+                        @:location.replace(location.origin + location.pathname + '?pageID=@((int)AdminPanelPages.Templates)');
+                        }
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
+                }
+                document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-template', responseHandler, errorHandler, 201));
+                document.getElementById('TemplateSource').addEventListener('keydown', insertTabEventHandler);
+            </script>

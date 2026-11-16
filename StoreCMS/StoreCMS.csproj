@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+	<PreserveCompilationContext>true</PreserveCompilationContext>
+	<MvcRazorExcludeRefAssembliesFromPublish>false</MvcRazorExcludeRefAssembliesFromPublish>
+    <RootNamespace>Treynessen</RootNamespace>
+    <AssemblyName>StoreCMS</AssemblyName>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RazorCompileOnBuild>true</RazorCompileOnBuild>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+    <Content Update="Views/**/*.cshtml" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="ThirdParty/SkiaSharp/*.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.13" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageReference Include="SkiaSharp" Version="4.153.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.153.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- [Комментарий ИИ-агента]: Legacy MySQL-установка исключена; штатный host использует PostgreSQL-координатор. -->
+    <Compile Remove="Security/MySqlSecurityInstallation.cs;Security/LegacyPasswordReplacement.cs" />
+    <EmbeddedResource Include="Security/Installation/E17Manifest.json" LogicalName="StoreCMS.Installation.E17Manifest.json" />
+    <EmbeddedResource Include="Security/Installation/E17Schema.sql" LogicalName="StoreCMS.Installation.E17Schema.sql" />
+    <EmbeddedResource Include="Security/Installation/E13Manifest.json" LogicalName="StoreCMS.Installation.E13Manifest.json" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,42 @@
+﻿@model TemplateModel
+@inject ITemplatesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/templates/work_with_template.css";
+    Context.Items["PageName"] = $"{localization.EditTemplatePageName} {Model?.Name}";
+}
+<script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="edit-template" class="page-container" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditTemplate)">
+                <input type="hidden" name="itemID" value="@Model.ID">
+                <div class="name-block">
+                    <label for="Name">@Html.Raw(localization.Name)</label>
+                    <input type="text" id="Name" name="TemplateModel.Name" value="@Html.Raw(Model?.Name)" required />
+                </div>
+                <label for="TemplateSource">@Html.Raw(localization.TemplateCode)</label>
+                <textarea id="TemplateSource" name="TemplateModel.TemplateSource">@Html.Raw(Model?.TemplateSource)</textarea>
+                <input id="edit-button" type="submit" value="@Html.Raw(localization.SaveButton)" />
+            </form>
+            <script>
+                function errorHandler(formElement) {
+                    let errorMsgElement = document.getElementById('error-msg');
+                    if (errorMsgElement === null) {
+                        errorMsgElement = document.createElement('span');
+                        errorMsgElement.setAttribute('id', 'error-msg');
+                        formElement.insertBefore(errorMsgElement, formElement.firstChild);
+                    }
+                    errorMsgElement.textContent = '@Html.Raw(localization.IncorrectInput)';
+                }
+                function responseHandler(request, formElement) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.TemplateEdited)');
+                        location.reload();
+                    }
+                    else if (request.status == 422) {
+                        errorHandler(formElement);
+                    }
+                }
+                document.getElementById('edit-button').addEventListener('click', createSendDataEventHandler('POST', 'edit-template', responseHandler, errorHandler));
+                document.getElementById('TemplateSource').addEventListener('keydown', insertTabEventHandler);
+            </script>

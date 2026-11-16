@@ -1,0 +1,132 @@
+@model UserType[]
+@using Microsoft.AspNetCore.Html;
+@inject IUserTypesLocalization localization
+@inject CMSDatabase db
+@using Microsoft.EntityFrameworkCore
+@{
+    Layout = "CommonPage";
+    int? systemTypeId = db.SecurityInstallation.AsNoTracking().SingleOrDefault()?.SystemUserTypeId;
+    User user = Context.Items["User"] as User;
+    Context.Items["PageName"] = localization.PageName;
+    Context.Items["PageStyle"] = "/styles/admin_panel/user_types.css";
+    List<IHtmlContent> accessLevels = new List<IHtmlContent>()
+    {
+        Html.Raw($"1 - {localization.VeryLowAccessLevel}"),
+        Html.Raw($"2 - {localization.LowAccessLevel}"),
+        Html.Raw($"3 - {localization.MiddleAccessLevel}"),
+        Html.Raw($"4 - {localization.HighAccessLevel}"),
+        Html.Raw($"5 - {localization.VeryHighAccessLevel}")
+    };
+}
+<script>
+                        function errorMsg() {
+                            alert('@Html.Raw(localization.ErrorMsg)');
+                        }
+                        function responseFromEditing(request) {
+                            if (request.status == 200) {
+                                alert('@Html.Raw(localization.UserTypeEdited)');
+                                location.reload();
+                            }
+                            else if (request.status == 422) {
+                                errorMsg();
+                            }
+                        }
+                        function responseFromDeleting(request) {
+                            if (request.status == 200) {
+                                alert('@Html.Raw(localization.UserTypeDeleted)');
+                                location.reload();
+                            }
+                            else if (request.status == 404) {
+                                alert('@Html.Raw(localization.UserTypeNotFound)');
+                            }
+                        }
+                    </script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddUserType, user, Context))
+{
+                    <form id="add-user-type" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="pageID" value="@((int)AdminPanelPages.AddUserType)">
+                        <div class="user-type-name">
+                            <label for="user-type">@Html.Raw(localization.UserTypeName)</label>
+                            <input type="text" id="user-type" name="UserTypeModel.Name">
+                        </div>
+                        <div class="access-level">
+                            <label for="access-level">@Html.Raw(localization.AccessLevel)</label>
+                            <select id="access-level" name="UserTypeModel.AccessLevel">
+                                @for(int i = 1; i <= accessLevels.Count - 1; ++i)
+                                {
+                                <option value="@i">@accessLevels[i-1]</option>
+                                }
+                                <option value="@(accessLevels.Count)" selected>@accessLevels[accessLevels.Count - 1]</option>
+                            </select>
+                        </div>
+                        <div class="action">
+                            <input type="submit" id="add-button" value="@Html.Raw(localization.Add)">
+                        </div>
+                    </form>
+                    <script>
+                        function responseFromAdding(request) {
+                            if (request.status === 201) {
+                                alert('@Html.Raw(localization.UserTypeAdded)');
+                                location.reload();
+                            }
+                        }
+                        document.getElementById('add-button').addEventListener('click', createSendDataEventHandler('POST', 'add-user-type', responseFromAdding, errorMsg, 201));
+                    </script>
+}
+@foreach (var userType in Model)
+{
+                    <form id="user-type-@userType.ID" class="container" method="post" data-admin-ajax>
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="pageID-@userType.ID" name="pageID">
+                        <input type="hidden" name="itemID" value="@userType.ID">
+                        <div class="user-type-name">
+                            <label for="user-type-@userType.ID">@Html.Raw(localization.UserTypeName)</label>
+                            <input type="text" id="user-type-@userType.ID" name="UserTypeModel.Name" value="@userType.Name" @(userType.ID == systemTypeId ? "disabled" : string.Empty)>
+                        </div>
+                        <div class="access-level">
+                            <label for="access-level-@userType.ID">@Html.Raw(localization.AccessLevel)</label>
+                            <select id="access-level" name="UserTypeModel.AccessLevel" @(userType.ID == systemTypeId ? "disabled" : string.Empty)>
+                                @for (int i = 1; i <= accessLevels.Count; ++i)
+                                {
+                                    if ((int)userType.AccessLevel == i)
+                                    {
+                                <option value="@i" selected>@accessLevels[i - 1]</option>
+                                    }
+                                    else
+                                    {
+                                <option value="@i">@accessLevels[i - 1]</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="actions">
+            @if (userType.ID != systemTypeId && SecurityFunctions.HasAccessTo(AdminPanelPages.EditUserType, user, Context))
+            {
+                            <input type="submit" id="edit-user-type-button-@userType.ID" value="@Html.Raw(localization.Edit)">
+                            <script>
+                                let editButton_@(userType.ID) = document.getElementById('edit-user-type-button-@(userType.ID)');
+                                editButton_@(userType.ID).addEventListener('click', () => { document.getElementById('pageID-@userType.ID').setAttribute('value', '@((int)AdminPanelPages.EditUserType)'); });
+                                editButton_@(userType.ID).addEventListener('click', createSendDataEventHandler('POST', 'user-type-@(userType.ID)', responseFromEditing, errorMsg));
+                            </script>         
+            }
+            else
+            {
+                            <input type="submit" value="@Html.Raw(localization.Edit)" disabled>
+            }
+            @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeleteUserType, user, Context) && userType.ID != systemTypeId)
+            {
+                <input type="submit" id="delete-user-type-button-@userType.ID" value="@Html.Raw(localization.Delete)">
+                            <script>
+                                let deleteButton_@(userType.ID) = document.getElementById('delete-user-type-button-@(userType.ID)');
+                                deleteButton_@(userType.ID).addEventListener('click', () => { document.getElementById('pageID-@userType.ID').setAttribute('value', '@((int)AdminPanelPages.DeleteUserType)'); });
+                                deleteButton_@(userType.ID).addEventListener('click', createSendDataEventHandler('DELETE', 'user-type-@(userType.ID)', responseFromDeleting, errorMsg));
+                            </script>
+            }
+            else
+            {
+                <input type="submit" value="@Html.Raw(localization.Delete)" disabled>
+            }
+                        </div>
+                    </form>
+}

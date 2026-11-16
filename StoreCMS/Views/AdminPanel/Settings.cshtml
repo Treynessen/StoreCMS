@@ -1,0 +1,272 @@
+﻿@using Microsoft.AspNetCore.Html;
+@using Treynessen.Functions;
+@using Treynessen.Extensions;
+@using Treynessen.SettingsManagement;
+@inject ISettingsLocalization localization
+@inject ConfigurationHandler configuration
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@{
+    Layout = "CommonPage";
+    User user = Context.Items["User"] as User;
+    Context.Items["PageName"] = localization.PageName;
+    AccessLevelConfiguration accessLevelConfiguration = Context.Items["AccessLevelConfiguration"] as AccessLevelConfiguration;
+    Context.Items["PageStyle"] = "/styles/admin_panel/settings.css";
+    Template[] templates = Context.Items["Templates"] as Template[];
+    int? searchPageTemplateId = null;
+    try
+    {
+        searchPageTemplateId = Convert.ToInt32(configuration.GetConfigValue("SearchPageSettings:SearchPageTemplateId"));
+        searchPageTemplateId = templates.FirstOrDefault(t => t.ID == searchPageTemplateId.Value) != null ? searchPageTemplateId : null;
+    }
+    catch (FormatException) { }
+    int? pageNotFoundTemplateId = null;
+    try
+    {
+        pageNotFoundTemplateId = Convert.ToInt32(configuration.GetConfigValue("PageNotFoundSettings:PageNotFoundTemplateId"));
+        pageNotFoundTemplateId = templates.FirstOrDefault(t => t.ID == pageNotFoundTemplateId.Value) != null ? pageNotFoundTemplateId : null;
+    }
+    catch (FormatException) { }
+    List<KeyValuePair<AdminPanelPages, IHtmlContent>> settingList = new List<KeyValuePair<AdminPanelPages, IHtmlContent>>()
+{
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.MainPage, Html.Raw(localization.AccessLevelToAdminPanel)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.GetVisitors, Html.Raw(localization.AccessLevelToGetVisitors)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.GetVisitorActions, Html.Raw(localization.AccessLevelToGetVisitorActions)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Pages, Html.Raw(localization.AccessLevelToPages)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddPage, Html.Raw(localization.AccessLevelToAddPage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditPage, Html.Raw(localization.AccessLevelToEditPage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeletePage, Html.Raw(localization.AccessLevelToDeletePage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Categories, Html.Raw(localization.AccessLevelToCategories)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddCategory, Html.Raw(localization.AccessLevelToAddCategory)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditCategory, Html.Raw(localization.AccessLevelToEditCategory)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteCategory, Html.Raw(localization.AccessLevelToDeleteCategory)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CategoryProducts, Html.Raw(localization.AccessLevelToCategoryProducts)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddProduct, Html.Raw(localization.AccessLevelToAddProduct)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditProduct, Html.Raw(localization.AccessLevelToEditProduct)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteProduct, Html.Raw(localization.AccessLevelToDeleteProduct)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.ProductImages, Html.Raw(localization.AccessLevelToProductImages)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddProductImage, Html.Raw(localization.AccessLevelToAddProductImage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteProductImage, Html.Raw(localization.AccessLevelToDeleteProductImage)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Redirections, Html.Raw(localization.AccessLevelToRedirections)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddRedirection, Html.Raw(localization.AccessLevelToAddRedirection)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditRedirection, Html.Raw(localization.AccessLevelToEditRedirection)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteRedirection, Html.Raw(localization.AccessLevelToDeleteRedirection)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Templates, Html.Raw(localization.AccessLevelToTemplates)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddTemplate, Html.Raw(localization.AccessLevelToAddTemplate)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditTemplate, Html.Raw(localization.AccessLevelToEditTemplate)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteTemplate, Html.Raw(localization.AccessLevelToDeleteTemplate)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Chunks, Html.Raw(localization.AccessLevelToChunks)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddChunk, Html.Raw(localization.AccessLevelToAddChunk)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditChunk, Html.Raw(localization.AccessLevelToEditChunk)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteChunk, Html.Raw(localization.AccessLevelToDeleteChunk)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.FileManager, Html.Raw(localization.AccessLevelToFileManager)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.UploadFile, Html.Raw(localization.AccessLevelToUploadFile)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CreateFolder, Html.Raw(localization.AccessLevelToCreateFolder)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CreateStyle, Html.Raw(localization.AccessLevelToCreateStyle)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.CreateScript, Html.Raw(localization.AccessLevelToCreateScript)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditStyle, Html.Raw(localization.AccessLevelToEditStyle)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditScript, Html.Raw(localization.AccessLevelToEditScript)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteFileOrFolder, Html.Raw(localization.AccessLevelToDeleteFileOrFolder)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Users, Html.Raw(localization.AccessLevelToUsers)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddUser, Html.Raw(localization.AccessLevelToAddUser)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditUser, Html.Raw(localization.AccessLevelToEditUser)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteUser, Html.Raw(localization.AccessLevelToDeleteUser)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.UserTypes, Html.Raw(localization.AccessLevelToUserTypes)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddUserType, Html.Raw(localization.AccessLevelToAddUserType)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditUserType, Html.Raw(localization.AccessLevelToEditUserType)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteUserType, Html.Raw(localization.AccessLevelToDeleteUserType)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.SynonymsForStrings, Html.Raw(localization.AccessLevelToSynonymsForStrings)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.AddSynonymForString, Html.Raw(localization.AccessLevelToAddSynonymForString)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditSynonymForString, Html.Raw(localization.AccessLevelToEditSynonymForString)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.DeleteSynonymForString, Html.Raw(localization.AccessLevelToDeleteSynonymForString)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.UserProfile, Html.Raw(localization.AccessLevelToUserProfile)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditUserData, Html.Raw(localization.AccessLevelToEditUserData)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.GetUserLog, Html.Raw(localization.AccessLevelToGetUserLog)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.Settings, Html.Raw(localization.AccessLevelToSettings)),
+new KeyValuePair<AdminPanelPages, IHtmlContent>(AdminPanelPages.EditSettings, Html.Raw(localization.AccessLevelToEditSettings))
+};
+    List<IHtmlContent> accessLevels = new List<IHtmlContent>()
+{
+Html.Raw($"1 - {localization.VeryLowAccessLevel}"),
+Html.Raw($"2 - {localization.LowAccessLevel}"),
+Html.Raw($"3 - {localization.MiddleAccessLevel}"),
+Html.Raw($"4 - {localization.HighAccessLevel}"),
+Html.Raw($"5 - {localization.VeryHighAccessLevel}")
+};
+}
+<script src="/scripts/admin_panel/insert_tab.js"></script>
+            <form id="save-settings" method="post" data-admin-ajax>
+                @Html.AntiForgeryToken()
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                {
+                <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditSettings)">
+                <input id="save-settings-button" type="submit" value="@Html.Raw(localization.SaveButton)">
+                <script>
+                    function responseHandler(request) {
+                        if (request.status === 200) {
+                            alert('@Html.Raw(localization.SettingsSaved)');
+                            location.reload();
+                        }
+                    }
+                    document.getElementById('save-settings-button').addEventListener('click', createSendDataEventHandler('POST', 'save-settings', responseHandler));
+                    document.getElementById('ProductBlockTemplate').addEventListener('keydown', insertTabEventHandler);
+                </script>
+                }
+                @*IMMEDIATE GARBAGE COLLECTION*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.ForcedGarbageCollection)</td></tr>
+                    <tr>
+                        <td>@Html.Raw(localization.ValueToRun) (@Html.Raw(localization.InputZeroToDisable))</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="number" name="SettingsModel.ValueToRunForcedGarbageCollection" value="@Html.Raw(configuration.GetConfigValue("ForcedGarbageCollectionSettings:ValueToRun"))" placeholder="@Html.Raw(localization.ValueInMegabytes)"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("ForcedGarbageCollection:ValueToRun"))" disabled></td>
+                        }
+                        </tr>
+                </table>
+                @*CATEGORY PAGE SETTINGS*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.CategoryPageSettings)</td></tr>
+                    <tr>
+                        <td>@Html.Raw(localization.NumberOfProductsOnPage)</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="number" name="SettingsModel.NumberOfProductsOnPage" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:NumberOfProductsOnPage"))" disabled></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>@Html.Raw(localization.PaginationStyleName)</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="text" name="SettingsModel.PaginationStyleName" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="text" value="@Html.Raw(configuration.GetConfigValue("CategoryPageSettings:PaginationStyleName"))" disabled></td>
+                        }
+                    </tr>
+                </table>
+                @*PRODUCT TEMPLATE SETTINGS*@
+                <table>
+                    <tr><td>@Html.Raw(localization.ProductTemplate)</td></tr>
+                    @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                    {
+                    <tr><td class="without-padding"><textarea id="ProductBlockTemplate" name="SettingsModel.ProductBlockTemplate">@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
+                    }
+                    else
+                    {
+                    <tr><td class="without-padding"><textarea disabled>@Html.Raw(OtherFunctions.GetFileContent(env.GetProductBlockTemplateFullPath()))</textarea></td></tr>
+                    }
+                </table>
+                @*SEARCH PAGE SETTINGS*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.SearchPageSettings)</td></tr>
+                    <tr class="with-padding">
+                        <td>@Html.Raw(localization.SearchPageTemplate)</td>
+                        <td>
+                            <select name="SettingsModel.SearchPageTemplateId">
+                                @if (searchPageTemplateId.HasValue)
+                                {
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                                else
+                                {
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                            @foreach (var t in templates)
+                            {
+                                if (searchPageTemplateId.HasValue && t.ID == searchPageTemplateId.Value)
+                                {
+                                <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
+                            }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Raw(localization.MaxNumberOfSymbolsInSearchQuery)</td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                        <td class="without-padding"><input type="number" name="SettingsModel.MaxNumberOfSymbolsInSearchQuery" value="@Html.Raw(configuration.GetConfigValue("SearchPageSettings:MaxNumberOfSymbolsInSearchQuery"))"></td>
+                        }
+                        else
+                        {
+                        <td class="without-padding"><input type="number" value="@Html.Raw(configuration.GetConfigValue("SearchPageSettings:MaxNumberOfSymbolsInSearchQuery"))" disabled></td>
+                        }
+                    </tr>
+                </table>
+                @*PAGE NOT FOUND SETTINGS*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.PageNotFoundSettings)</td></tr>
+                    <tr class="with-padding">
+                        <td>@Html.Raw(localization.PageNotFoundTemplate)</td>
+                        <td>
+                            <select name="SettingsModel.PageNotFoundTemplateId">
+                                @if (pageNotFoundTemplateId.HasValue)
+                                {
+                                <option>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                                else
+                                {
+                                <option selected>@Html.Raw(localization.WithoutTemplate)</option>
+                                }
+                            @foreach (var t in templates)
+                            {
+                                if (pageNotFoundTemplateId.HasValue && t.ID == pageNotFoundTemplateId.Value)
+                                {
+                                <option value="@t.ID" selected>@Html.Raw(t.Name)</option>
+                                }
+                                else
+                                {
+                                <option value="@t.ID">@Html.Raw(t.Name)</option>
+                                }
+                            }
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                @*ACCESS SETTINGS*@
+                <table>
+                    <tr><td colspan="2">@Html.Raw(localization.AccessLevelSettings)</td></tr>
+                    @foreach (var s in settingList)
+                    {
+                    @*ПОЛУЧАЕМ ЗНАЧЕНИЕ НАСТРОЙКИ*@
+                    int settingAccessLevel = (int)accessLevelConfiguration.GetAccessLevelInfoTo(s.Key.ToString());
+                    <tr class="with-padding">
+                        <td>@s.Value</td>
+                        <td>
+                        @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditSettings, user, Context))
+                        {
+                            <select name="SettingsModel.AccessSettings.@s.Key.ToString()">
+                            @for (int i = 1; i <= accessLevels.Count; ++i)
+                            {
+                                if (i == settingAccessLevel)
+                                {
+                                <option value="@i" selected>@accessLevels[i - 1]</option>
+                                }
+                                else
+                                {
+                                <option value="@i">@accessLevels[i - 1]</option>
+                                }
+                            }
+                            </select>
+                        }
+                        else
+                        {
+                            @accessLevels[settingAccessLevel - 1];
+                        }
+                        </td>
+                    </tr>
+                    }
+                </table>
+            </form>

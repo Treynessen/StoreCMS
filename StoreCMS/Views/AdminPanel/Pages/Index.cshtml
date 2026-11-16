@@ -1,0 +1,63 @@
+﻿@model UsualPage[]
+@inject IPagesLocalization localization
+@{
+    Layout = "CommonPage";
+    Context.Items["PageStyle"] = "/styles/admin_panel/pages/index.css";
+    Context.Items["PageName"] = localization.Pages_PageName;
+    User user = Context.Items["User"] as User;
+}
+<script>
+                function responseHandler(request) {
+                    if (request.status == 200) {
+                        alert('@Html.Raw(localization.PageDeleted)');
+                        location.reload();
+                    }
+                    else if (request.status == 404) {
+                        alert('@Html.Raw(localization.PageNotFound)');
+                    }
+                }
+            </script>
+@if (SecurityFunctions.HasAccessTo(AdminPanelPages.AddPage, user, Context))
+{
+            <div class="add-page-button">
+                <a href="@Context.Request.Path?pageID=@((int)AdminPanelPages.AddPage)">@Html.Raw(localization.AddPage)</a>
+            </div>
+}
+            <table>
+                <tr>
+                    <td>ID</td>
+                    <td>@Html.Raw(localization.Name)</td>
+                    <td>URL</td>
+                    <td>@Html.Raw(localization.ActionsWithPage)</td>
+                </tr>
+    @foreach (var p in Model)
+    {
+                <tr>
+                    <td>@Html.Raw(p.ID)</td>
+                    <td>@Html.Raw(p.PageName)</td>
+                    <td>@Html.Raw(p.RequestPath)</td>
+                    <td>
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.EditPage, user, Context))
+                {
+                        <form method="get">
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.EditPage)" />
+                            <input type="hidden" name="itemID" value="@p.ID">
+                            <input type="submit" class="action-button" value="@Html.Raw(localization.EditPage)" />
+                        </form>
+                }
+                @if (SecurityFunctions.HasAccessTo(AdminPanelPages.DeletePage, user, Context))
+                {
+            <form id="delete-page-@p.ID" method="post" data-admin-ajax>
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="pageID" value="@((int)AdminPanelPages.DeletePage)" />
+                            <input type="hidden" name="itemID" value="@p.ID">
+                            <input id="delete-page-button-@p.ID" type="submit" class="action-button" value="@Html.Raw(localization.DeletePage)" />
+                        </form>
+                        <script>
+                            document.getElementById('delete-page-button-@p.ID').addEventListener('click', createSendDataEventHandler('DELETE', 'delete-page-@p.ID', responseHandler));
+                        </script>
+                }
+                    </td>
+                </tr>
+    }
+            </table>
