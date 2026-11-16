@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>StoreCMS.AtomicBootstrap.Tests</AssemblyName>
+    <RootNamespace>StoreCMS.UnitTests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../../StoreCMS/StoreCMS.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" PrivateAssets="all" />
+    <PackageReference Include="xunit" Version="2.9.3" PrivateAssets="all" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
