@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Treynessen;
 using Treynessen.Translit;
 using Treynessen.Security;
@@ -19,6 +21,10 @@ using Treynessen.SettingsManagement;
 
 public class Startup
 {
+    private readonly IConfiguration configuration;
+
+    public Startup(IConfiguration configuration) => this.configuration = configuration;
+
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -69,8 +75,18 @@ public class Startup
         services.PostConfigure<Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.MvcRazorRuntimeCompilationOptions>(options =>
             Treynessen.TemplatesManagement.GeneratedRazorFileProvider.WrapPhysicalProviders(options.FileProviders));
 
-        // [Комментарий ИИ-агента]: При прямом доступе схема и адрес клиента определяются транспортом, а не forwarded-заголовками клиента.
-        services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.None);
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.None;
+            if (!configuration.GetValue<bool>("ReverseProxy:TrustLocalNginx"))
+                return;
+
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownIPNetworks.Clear();
+            options.KnownProxies.Clear();
+            options.KnownProxies.Add(IPAddress.Loopback);
+            options.ForwardLimit = 1;
+        });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IHttpContextAccessor httpContextAccessor)
